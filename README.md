@@ -8,7 +8,7 @@ The docs site is a single page, `index.html`. Open it in a browser; no build ste
 
 - **Working with records:** data table, filter bar, bulk actions, details sheet
 - **Tasks and feedback:** multi-step form, command palette, destructive confirm, notifications, empty / loading / error states
-- **Admin console:** audit log, AI usage and caps, compliance overview, reports, asset inventory, configuration, roles and permissions
+- **Admin console:** audit log, usage caps, compliance overview, reports, asset inventory, configuration, roles and permissions
 
 Every pattern page has a working example with a "Screen reader hears" strip, a keyboard map, focus and announcement notes, usage code, props, and states.
 

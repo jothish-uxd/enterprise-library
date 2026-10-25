@@ -576,6 +576,14 @@
   .field-msg svg { width: 15px; height: 15px; flex: none; margin-top: 2px; }
   .field-msg.is-error, .field-msg.is-warning { color: var(--ink); font-weight: 500; }
 
+  .usage-tiles { list-style: none; margin: 0 0 14px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .usage-tile { display: grid; gap: 8px; align-content: start; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 8px; }
+  .usage-tile .usage-figure strong { font-size: 26px; }
+  .usage-tile .usage-figure span { font-size: 13.5px; }
+  .usage-tile .usage-sub { font-size: 12.5px; }
+  .usage-table tbody th.usage-name { padding-left: 38px; font-weight: 400; white-space: nowrap; }
+  .usage-table .group-row > th { padding: 8px 10px; background: var(--bg-subtle); }
+
   /* ---------- Forms (multi-step form, schedules, settings) ---------- */
   .text-input {
     width: 100%; height: 36px; padding: 0 10px;
@@ -924,7 +932,7 @@
       <h2 class="nav-heading" id="nav-admin"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-admin-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z"/><path d="M8.8 12.2l2.3 2.3 4.2-4.6"/></svg><span>Admin console</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
       <ul class="nav-list" id="nav-admin-list" aria-labelledby="nav-admin">
         <li><a class="nav-link" href="#audit-log">Audit log</a></li>
-        <li><a class="nav-link" href="#ai-usage">AI usage and caps</a></li>
+        <li><a class="nav-link" href="#usage-caps">Usage caps</a></li>
         <li><a class="nav-link" href="#compliance">Compliance</a></li>
         <li><a class="nav-link" href="#reports">Reports</a></li>
         <li><a class="nav-link" href="#assets">Asset inventory</a></li>
@@ -943,7 +951,7 @@
 <section class="panel" id="panel-overview" aria-labelledby="h-overview">
   <div class="hero">
     <h1 class="page-title" id="h-overview" tabindex="-1">Whole workflows, accessible by default.</h1>
-    <p class="page-lede">A React library of enterprise patterns: data tables, filters, bulk actions, and multi-step forms, plus admin screens like audit logs and AI usage caps. Each one decides where focus goes, what a screen reader hears, and how every state looks, so your team stops solving it again on every screen.</p>
+    <p class="page-lede">A React library of enterprise patterns: data tables, filters, bulk actions, and multi-step forms, plus admin screens like audit logs and usage caps. Each one decides where focus goes, what a screen reader hears, and how every state looks, so your team stops solving it again on every screen.</p>
     <div class="install">
       <div class="install-row"><span class="prompt" aria-hidden="true">$</span><code>npm install enterprise-library</code><button class="copy-button" type="button" data-copy-text="npm install enterprise-library" data-copy-label="install command"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div>
       <p class="note">Coming soon. The package isn't published yet, and the name may change before release.</p>
@@ -1074,10 +1082,10 @@
         <span class="gallery-head"><strong>Audit log</strong><span class="status-tag is-live">Live</span></span>
         <p>Who did what, and when. Each event expands to show what changed.</p>
       </a></li>
-      <li data-thumb="ai-usage"><a class="gallery-item" href="#ai-usage">
+      <li data-thumb="usage-caps"><a class="gallery-item" href="#usage-caps">
         <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M20 14H70" stroke="currentColor" stroke-width="6"/><rect x="20" y="26" width="140" height="9" rx="2" fill="var(--rule)"/><rect x="20" y="26" width="102" height="9" rx="2" fill="currentColor"/><rect x="122" y="26" width="24" height="9" fill="url(#mono-diag)" stroke="currentColor" stroke-width=".8"/><path d="M146 22V39" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"/><path d="M20 54H46M20 68H40" stroke="var(--rule-strong)" stroke-width="2"/><rect x="60" y="51" width="100" height="6" rx="1.5" fill="var(--rule)"/><rect x="60" y="51" width="78" height="6" rx="1.5" fill="currentColor"/><rect x="60" y="65" width="100" height="6" rx="1.5" fill="url(#mono-diag)" stroke="currentColor" stroke-width=".8"/></svg>
-        <span class="gallery-head"><strong>AI usage and caps</strong><span class="status-tag is-live">Live</span></span>
-        <p>Usage against monthly caps by team, with caps you can edit in place.</p>
+        <span class="gallery-head"><strong>Usage caps</strong><span class="status-tag is-live">Live</span></span>
+        <p>AI tokens, uploads, storage, and more against monthly caps, by team.</p>
       </a></li>
       <li data-thumb="compliance"><a class="gallery-item" href="#compliance">
         <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M20 28H160M20 44H160M20 60H160" stroke="var(--rule-strong)" stroke-width="1"/><circle cx="28" cy="20" r="4.5" fill="currentColor"/><circle cx="28" cy="36" r="4" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M25 39l6-6" stroke="currentColor" stroke-width="1.3"/><path d="M28 47.5l4.5 8h-9z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="28" cy="68" r="4.5" fill="currentColor"/><path d="M42 20H104M42 36H92M42 52H112M42 68H86" stroke="currentColor" stroke-width="2"/><path d="M130 20H158M130 36H158M130 52H158M130 68H158" stroke="var(--rule-strong)" stroke-width="2"/></svg>
@@ -1789,7 +1797,7 @@ export function AccessRequests({ rows, onUpdate }) {
       <section aria-labelledby="h-al-focus">
         <h2 id="h-al-focus">Focus and announcements</h2>
         <ul class="a11y-list">
-          <li>Each details button is named by its event, such as “Details for Changed AI usage cap, Oct 24, 09:42,” and says whether it’s expanded.</li>
+          <li>Each details button is named by its event, such as “Details for Changed usage cap, Oct 24, 09:42,” and says whether it’s expanded.</li>
           <li>Details open in the row right below, so they’re next in reading order. Focus stays on the button.</li>
           <li>The action column is the row header, so every value is read with what happened.</li>
           <li>Results are “Allowed” or “Blocked” with a shape, and blocked events give the reason.</li>
@@ -1848,84 +1856,95 @@ export function AccessRequests({ rows, onUpdate }) {
 </section>
 
 <!-- =====================================================================
-     Admin: AI usage and caps
+     Admin: Usage caps
      ===================================================================== -->
-<section class="panel" id="panel-ai-usage" aria-labelledby="h-ai-usage" hidden>
+<section class="panel" id="panel-usage-caps" aria-labelledby="h-usage-caps" hidden>
   <p class="page-kicker">Admin · Live</p>
-  <h1 class="page-title" id="h-ai-usage" tabindex="-1">AI usage and caps</h1>
-  <p class="page-lede">How much of the organization’s monthly AI allowance each team has used, and the caps that limit it. Every number is written out, so the meters are never the only way to read them.</p>
+  <h1 class="page-title" id="h-usage-caps" tabindex="-1">Usage caps</h1>
+  <p class="page-lede">How much of each monthly allowance every team has used, such as AI tokens, document uploads, and storage, and the caps that limit them. Show one usage type, a few, or all of them. Every number is written out, so the meters are never the only way to read them.</p>
 
   <div class="preview" data-demo="usage">
     <div class="details">
-      <section aria-labelledby="h-au-keys">
-        <h2 id="h-au-keys">Keyboard</h2>
+      <section aria-labelledby="h-uc-keys">
+        <h2 id="h-uc-keys">Keyboard</h2>
         <table class="doc-table key-table"><caption class="sr-only">Keyboard support</caption><tbody>
+          <tr><th scope="row"><kbd>Tab</kbd></th><td>The Show usage filters, then each team’s header and its Edit cap buttons.</td></tr>
+          <tr><th scope="row"><kbd>Space</kbd> <kbd>Enter</kbd></th><td>On a filter, show or hide that usage type; All shows every type. On a team, expand or collapse it.</td></tr>
           <tr><th scope="row"><kbd>Enter</kbd></th><td>On Edit cap, open the cap field. In the field, save.</td></tr>
           <tr><th scope="row"><kbd>Esc</kbd></th><td>Cancel editing and return to Edit cap.</td></tr>
-          <tr><th scope="row"><kbd>Tab</kbd></th><td>From the field to Save cap and Cancel.</td></tr>
         </tbody></table>
       </section>
-      <section aria-labelledby="h-au-focus">
-        <h2 id="h-au-focus">Focus and announcements</h2>
+      <section aria-labelledby="h-uc-focus">
+        <h2 id="h-uc-focus">Focus and announcements</h2>
         <ul class="a11y-list">
-          <li>Meters are hidden from screen readers; the used, cap, and percent cells say the same thing in words.</li>
+          <li>Usage types are toggle buttons in a labeled “Show usage” group. At least one always stays on.</li>
+          <li>Changing the filter announces what’s showing: “Showing AI tokens and Storage.”</li>
+          <li>Each team is a row group. Its header button says how many usages are near or at cap, and whether the group is expanded.</li>
+          <li>Nested rows are named by usage type, and Edit cap names both: “Edit AI tokens cap for Command.”</li>
+          <li>Meters are hidden from screen readers; used, cap, and percent say the same thing in words.</li>
           <li>Status is “Under cap,” “Near cap,” or “At cap, paused,” each with its own shape.</li>
-          <li>Edit cap opens a labeled field in the row below and moves focus into it.</li>
-          <li>A cap below what’s already used asks for a second Save and says what will happen.</li>
-          <li>Saving returns focus to Edit cap and announces the new cap and percent.</li>
+          <li>A cap below what’s already used asks for a second Save. Saving returns focus to Edit cap.</li>
         </ul>
       </section>
     </div>
   </div>
 
-  <section class="doc-section" aria-labelledby="h-au-usage">
-    <h2 id="h-au-usage">Usage</h2>
+  <section class="doc-section" aria-labelledby="h-uc-usage">
+    <h2 id="h-uc-usage">Usage</h2>
     <div class="code-block">
       <div class="code-block-bar"><span>UsageCaps.jsx</span><button class="copy-button" type="button" data-copy-label="UsageCaps.jsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div>
       <pre><code>import { UsageCaps } from "enterprise-library/admin";
 
 &lt;UsageCaps
-  unit={{ one: "token", other: "tokens" }}
   period={{ label: "October", resetsOn: "2026-11-01" }}
-  groups={teams} // [{ id, name, used, cap }]
+  types={[
+    { id: "tokens", name: "AI tokens", unit: { one: "token", other: "tokens" } },
+    { id: "uploads", name: "Doc uploads", unit: { one: "file", other: "files" } },
+    { id: "storage", name: "Storage", unit: { one: "GB", other: "GB" } },
+  ]}
+  groups={teams} // [{ id, name, usage: { tokens: { used, cap }, ... } }]
+  defaultShown={["tokens", "uploads"]}
   thresholds={{ near: 0.9 }}
   forecast // projects month-end use from the pace so far
-  onCapChange={(id, cap) =&gt; saveCap(id, cap)}
+  onCapChange={(groupId, typeId, cap) =&gt; saveCap(groupId, typeId, cap)}
 /&gt;</code></pre>
     </div>
   </section>
 
-  <section class="doc-section" aria-labelledby="h-au-props">
-    <h2 id="h-au-props">Props</h2>
+  <section class="doc-section" aria-labelledby="h-uc-props">
+    <h2 id="h-uc-props">Props</h2>
     <div class="table-scroll"><table class="doc-table options-table wide-table">
       <caption class="sr-only">UsageCaps props</caption>
       <thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">Description</th></tr></thead>
       <tbody>
-        <tr><td><code>groups</code></td><td><code class="type">{ id, name, used, cap }[]</code></td><td>Teams, projects, or API keys with their usage.</td></tr>
-        <tr><td><code>unit</code></td><td><code class="type">{ one, other }</code></td><td>What’s counted, such as tokens, requests, or seats.</td></tr>
+        <tr><td><code>types</code></td><td><code class="type">{ id, name, unit }[]</code></td><td>What’s counted, such as AI tokens, uploads, storage, API requests, or automation runs.</td></tr>
+        <tr><td><code>groups</code></td><td><code class="type">{ id, name, usage }[]</code></td><td>Teams, projects, or API keys. <code>usage</code> holds <code>{ used, cap }</code> for each type.</td></tr>
+        <tr><td><code>defaultShown</code></td><td><code class="type">string[]</code></td><td>Which types show first. Defaults to all of them.</td></tr>
         <tr><td><code>period</code></td><td><code class="type">{ label, resetsOn }</code></td><td>The billing period and when usage resets.</td></tr>
-        <tr><td><code>thresholds</code></td><td><code class="type">{ near }</code></td><td>Share of the cap that counts as “Near cap.” Default <code>0.9</code>.</td></tr>
+        <tr><td><code>thresholds</code></td><td><code class="type">{ near }</code></td><td>Share of a cap that counts as “Near cap.” Default <code>0.9</code>.</td></tr>
         <tr><td><code>forecast</code></td><td><code class="type">boolean</code></td><td>Shows projected month-end use as a hatched segment and in words.</td></tr>
-        <tr><td><code>onCapChange</code></td><td><code class="type">(id, cap) =&gt; Promise</code></td><td>Adds Edit cap. Without it, caps are read only.</td></tr>
+        <tr><td><code>onCapChange</code></td><td><code class="type">(groupId, typeId, cap) =&gt; Promise</code></td><td>Adds Edit cap to each nested row. Without it, caps are read only.</td></tr>
       </tbody>
     </table></div>
   </section>
 
-  <section class="doc-section" aria-labelledby="h-au-states">
-    <h2 id="h-au-states">States</h2>
+  <section class="doc-section" aria-labelledby="h-uc-states">
+    <h2 id="h-uc-states">States</h2>
     <div class="table-scroll"><table class="doc-table wide-table">
-      <caption class="sr-only">Usage and caps states</caption>
+      <caption class="sr-only">Usage caps states</caption>
       <thead><tr><th scope="col">State</th><th scope="col">What people see</th><th scope="col">What’s announced</th></tr></thead>
       <tbody>
-        <tr><th scope="row">Near cap</th><td>A triangle and “Near cap.”</td><td>Nothing; admins can opt in to an email.</td></tr>
+        <tr><th scope="row">Filtered</th><td>Only the chosen usage types, in the cards and in each team.</td><td>“Showing AI tokens and Storage.”</td></tr>
+        <tr><th scope="row">Last type turned off</th><td>Nothing changes.</td><td>“Keep at least one usage type shown.”</td></tr>
+        <tr><th scope="row">Near cap</th><td>A triangle and “Near cap,” and the team header counts it.</td><td>Nothing; admins can opt in to an email.</td></tr>
         <tr><th scope="row">At cap</th><td>A hatched meter, a square, and “At cap, paused.”</td><td>Nothing on this page; people on that team see a banner in the product.</td></tr>
         <tr><th scope="row">Invalid cap</th><td>The field is marked and the message says what to enter.</td><td>“Enter a whole number of tokens, such as 400000.”</td></tr>
         <tr><th scope="row">Cap below usage</th><td>A warning and a second Save.</td><td>The warning text.</td></tr>
-        <tr><th scope="row">Saved</th><td>The row updates.</td><td>“Command cap set to 450,000 tokens. 69% used.”</td></tr>
+        <tr><th scope="row">Saved</th><td>The row and cards update, with a success message above the table.</td><td>“Command AI tokens cap set to 450,000 tokens. 69% used.”</td></tr>
       </tbody>
     </table></div>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="ai-usage"></nav>
+  <nav class="pager" aria-label="More patterns" data-current="usage-caps"></nav>
 </section>
 
 <!-- =====================================================================
@@ -2754,7 +2773,7 @@ export function AccessRequests({ rows, onUpdate }) {
 
   /* ---------------- Admin: audit log ---------------- */
   const AUDIT = [
-    { id: 9031, when: "2026-10-24T09:42", actor: "Mon Mothma",       action: "Changed AI usage cap",     target: "Command team",            result: "allowed", source: "Web · 10.4.18.22",  facts: [["Before", "400,000 tokens a month"], ["After", "450,000 tokens a month"]] },
+    { id: 9031, when: "2026-10-24T09:42", actor: "Mon Mothma",       action: "Changed usage cap",        target: "Command team · AI tokens", result: "allowed", source: "Web · 10.4.18.22",  facts: [["Before", "400,000 tokens a month"], ["After", "450,000 tokens a month"]] },
     { id: 9030, when: "2026-10-24T09:15", actor: "Leia Organa",      action: "Approved access request",  target: "AR-1043 · Poe Dameron",   result: "allowed", source: "Web · 10.4.18.40",  facts: [["Access", "Navigation archive, Viewer, 30 days"]] },
     { id: 9029, when: "2026-10-24T08:58", actor: "System",           action: "Rotated API key",          target: "Data vault integration",  result: "allowed", source: "Scheduled job",     facts: [["Key", "Ending 4f2a replaced by ending 91c7"]] },
     { id: 9028, when: "2026-10-24T08:31", actor: "Lando Calrissian", action: "Exported report",          target: "Budget ledger, Q3",       result: "blocked", source: "Web · 10.9.2.7",    facts: [["Reason", "Needs the Finance admin role"]] },
@@ -2907,7 +2926,7 @@ export function AccessRequests({ rows, onUpdate }) {
     renderChips(); render();
   }
 
-  /* ---------------- Admin: AI usage and caps ---------------- */
+  /* ---------------- Admin: usage caps ---------------- */
   const TEAMS = [
     { id: "command",      name: "Command",          used: 312000, cap: 400000 },
     { id: "intelligence", name: "Intelligence",     used: 588000, cap: 600000 },
@@ -2923,106 +2942,133 @@ export function AccessRequests({ rows, onUpdate }) {
     at:    { label: "At cap, paused", icon: '<rect x="1.5" y="1.5" width="11" height="11" rx="1.5" fill="currentColor"/>' },
   };
 
+  const USAGE_TYPES = [
+    { id: "tokens",  name: "AI tokens",       unit: ["token", "tokens"] },
+    { id: "uploads", name: "Doc uploads",     unit: ["file", "files"] },
+    { id: "storage", name: "Storage",         unit: ["GB", "GB"] },
+    { id: "api",     name: "API requests",    unit: ["request", "requests"] },
+    { id: "runs",    name: "Automation runs", unit: ["run", "runs"] },
+  ];
+  const USAGE = [
+    { id: "command",      name: "Command",      use: { tokens: [312000, 400000], uploads: [182, 500], storage: [38, 50],   api: [41000, 100000],  runs: [640, 1000] } },
+    { id: "intelligence", name: "Intelligence", use: { tokens: [588000, 600000], uploads: [461, 500], storage: [49, 50],   api: [96000, 100000],  runs: [210, 1000] } },
+    { id: "engineering",  name: "Engineering",  use: { tokens: [410000, 500000], uploads: [120, 300], storage: [120, 200], api: [250000, 250000], runs: [1890, 2000] } },
+    { id: "logistics",    name: "Logistics",    use: { tokens: [250000, 250000], uploads: [75, 200],  storage: [12, 50],   api: [8000, 50000],    runs: [300, 300] } },
+  ];
+
   function createUsageDemo(root, n) {
     const p = "usage" + n;
-    const teams = TEAMS.map(t => ({ ...t }));
-    const state = { editing: null };
-    const share = t => t.cap ? t.used / t.cap : 1;
-    const pctOf = t => Math.round(share(t) * 100);
-    const statusOf = t => share(t) >= 1 ? "at" : share(t) >= NEAR ? "near" : "under";
+    const teams = USAGE.map(t => ({ ...t, use: Object.fromEntries(Object.entries(t.use).map(([k, v]) => [k, { used: v[0], cap: v[1] }])) }));
+    const state = { shown: new Set(USAGE_TYPES.map(t => t.id)), closed: new Set(), editing: null };
+    const typeOf = id => USAGE_TYPES.find(t => t.id === id);
+    const share = u => u.cap ? u.used / u.cap : 1;
+    const pctOf = u => Math.round(share(u) * 100);
+    const statusOf = u => share(u) >= 1 ? "at" : share(u) >= NEAR ? "near" : "under";
+    const unitWord = (type, v) => type.unit[v === 1 ? 0 : 1];
+    const fmtFull = (type, v) => `${fmtNum(v)} ${unitWord(type, v)}`;
+    const fmtShort = (type, v) => type.id === "storage" ? `${fmtNum(v)} GB` : fmtCompact(v);
+    const shownTypes = () => USAGE_TYPES.filter(t => state.shown.has(t.id));
+    const listWords = w => w.length <= 1 ? w.join("") : w.length === 2 ? `${w[0]} and ${w[1]}` : `${w.slice(0, -1).join(", ")}, and ${w[w.length - 1]}`;
 
     root.insertAdjacentHTML("afterbegin", `
       <div class="preview-stage">
-        <p class="sample-note">Sample data. Usage is counted in tokens and resets on November 1.</p>
-        <div class="usage-summary">
-          <div>
-            <p class="usage-label">Organization, October</p>
-            <p class="usage-figure"><strong class="js-org-used"></strong><span class="js-org-of"></span></p>
-            <p class="usage-sub js-org-sub"></p>
+        <p class="sample-note">Sample data. Usage resets on November 1.</p>
+        <div class="filter-bar">
+          <div class="chip-group">
+            <span class="group-label" id="${p}-show">Show usage</span>
+            <div class="chips js-chips" role="group" aria-labelledby="${p}-show"></div>
           </div>
-          <div class="meter meter-lg" aria-hidden="true"><span class="meter-forecast js-org-forecast"></span><span class="meter-fill js-org-fill"></span><span class="meter-tick" style="left:${NEAR * 100}%"></span></div>
-          <ul class="meter-legend" aria-hidden="true">
-            <li><span class="key key-used"></span>Used so far</li>
-            <li><span class="key key-forecast"></span>Forecast to October 31</li>
-            <li><span class="key key-tick"></span>Near cap at ${NEAR * 100}%</li>
-          </ul>
         </div>
+        <ul class="usage-tiles js-tiles"></ul>
+        <ul class="meter-legend" aria-hidden="true" style="margin-bottom:20px">
+          <li><span class="key key-used"></span>Used so far</li>
+          <li><span class="key key-forecast"></span>Forecast to October 31</li>
+          <li><span class="key key-tick"></span>Near cap at ${NEAR * 100}%</li>
+        </ul>
+        <p class="message is-success is-compact js-saved" hidden style="margin-bottom:12px">${SUCCESS_ICON}<span></span></p>
         <div class="grid-frame"><div class="grid-scroll">
-          <table class="data-table usage-table">
-            <caption>Monthly caps by team <span class="js-count"></span></caption>
+          <table class="data-table usage-table js-table">
+            <caption>Usage by team <span class="js-count"></span></caption>
             <thead><tr>
-              <th scope="col">Team</th>
+              <th scope="col">Usage</th>
               <th scope="col" class="num">Used</th>
               <th scope="col" class="num">Cap</th>
               <th scope="col">Share of cap</th>
               <th scope="col">Status</th>
               <th scope="col"><span class="sr-only">Actions</span></th>
             </tr></thead>
-            <tbody class="js-body"></tbody>
           </table>
         </div></div>
         <div class="sr-only js-live" role="status" aria-live="polite"></div>
-      </div>${HEARS_HTML("Edit a team’s cap to hear the result.")}`);
+      </div>${HEARS_HTML("Show or hide a usage type, or edit a cap.")}`);
 
     const q = s => root.querySelector(s);
-    const body = q(".js-body");
+    const table = q(".js-table"), chips = q(".js-chips"), saved = q(".js-saved");
     const announce = attachHears(root);
+    const meterHTML = (u, big) => `<div class="meter${big ? " meter-lg" : ""}" aria-hidden="true"><span class="meter-fill${statusOf(u) === "at" ? " is-capped" : ""}" style="width:${Math.min(100, share(u) * 100)}%"></span><span class="meter-tick" style="left:${NEAR * 100}%"></span></div>`;
 
-    function renderSummary() {
-      const used = teams.reduce((s, t) => s + t.used, 0), cap = teams.reduce((s, t) => s + t.cap, 0);
-      const forecast = Math.round(used * DAYS_IN_MONTH / DAY_OF_MONTH);
-      const pct = Math.round(used / cap * 100);
-      q(".js-org-used").textContent = fmtCompact(used);
-      q(".js-org-of").textContent = `of ${fmtCompact(cap)} tokens`;
-      q(".js-org-sub").textContent = `${pct}% used with 7 days left. At this pace, the organization reaches ${fmtCompact(forecast)} by October 31${forecast > cap ? ", over its total cap" : ""}.`;
-      q(".js-org-fill").style.width = Math.min(100, used / cap * 100) + "%";
-      const f = q(".js-org-forecast");
-      f.style.left = Math.min(100, used / cap * 100) + "%";
-      f.style.width = Math.max(0, Math.min(100, forecast / cap * 100) - Math.min(100, used / cap * 100)) + "%";
-      q(".js-count").textContent = `${teams.length} teams`;
+    function renderChips() {
+      const all = state.shown.size === USAGE_TYPES.length;
+      const focused = chips.contains(document.activeElement) ? document.activeElement.dataset.type : null;
+      chips.innerHTML = `<button class="chip" type="button" data-type="all" aria-pressed="${all}">All</button>`
+        + USAGE_TYPES.map(t => `<button class="chip" type="button" data-type="${t.id}" aria-pressed="${state.shown.has(t.id)}">${t.name}</button>`).join("");
+      if (focused) chips.querySelector(`[data-type="${focused}"]`).focus();
     }
 
-    function renderBody() {
-      body.innerHTML = teams.map(t => {
-        const st = statusOf(t), editing = state.editing === t.id;
-        const row = `<tr${editing ? ' class="is-editing"' : ""}>
-          <th scope="row">${esc(t.name)}</th>
-          <td class="num">${fmtNum(t.used)}</td>
-          <td class="num">${fmtNum(t.cap)}</td>
-          <td><div class="usage-cell"><div class="meter" aria-hidden="true"><span class="meter-fill${st === "at" ? " is-capped" : ""}" style="width:${Math.min(100, share(t) * 100)}%"></span><span class="meter-tick" style="left:${NEAR * 100}%"></span></div><span class="pct">${pctOf(t)}%</span></div></td>
-          <td><span class="status"><svg viewBox="0 0 14 14" aria-hidden="true">${CAP_STATUS[st].icon}</svg>${CAP_STATUS[st].label}</span></td>
-          <td><button class="btn js-edit" type="button" data-id="${t.id}" aria-label="Edit cap for ${esc(t.name)}" aria-expanded="${editing}" aria-controls="${p}-edit-${t.id}">Edit cap</button></td>
-        </tr>`;
-        if (!editing) return row;
-        return row + `<tr class="edit-row" id="${p}-edit-${t.id}"><td colspan="6">
-          <form class="cap-form js-cap-form" data-id="${t.id}" novalidate>
-            <div class="field">
-              <label for="${p}-cap-${t.id}">Monthly cap for ${esc(t.name)}, in tokens</label>
-              <input class="search-input js-cap-input" id="${p}-cap-${t.id}" type="text" inputmode="numeric" autocomplete="off" value="${t.cap}" aria-describedby="${p}-cap-${t.id}-msg">
-            </div>
-            <button class="btn btn-primary js-cap-save" type="submit">Save cap</button>
-            <button class="btn js-cap-cancel" type="button">Cancel</button>
-            <p class="field-msg js-cap-msg" id="${p}-cap-${t.id}-msg">${esc(t.name)} has used ${fmtNum(t.used)} tokens so far this month.</p>
-          </form>
-        </td></tr>`;
+    // One card per shown usage type: the organization's total, a meter, and the month-end forecast in words.
+    function renderTiles() {
+      q(".js-tiles").innerHTML = shownTypes().map(type => {
+        const used = teams.reduce((s, t) => s + t.use[type.id].used, 0), cap = teams.reduce((s, t) => s + t.use[type.id].cap, 0);
+        const forecast = Math.round(used * DAYS_IN_MONTH / DAY_OF_MONTH), pct = Math.round(used / cap * 100);
+        const left = Math.min(100, used / cap * 100), right = Math.min(100, forecast / cap * 100);
+        return `<li class="usage-tile">
+          <p class="usage-label">${type.name}, October</p>
+          <p class="usage-figure"><strong>${fmtShort(type, used)}</strong><span>of ${fmtShort(type, cap)}${type.id === "storage" ? "" : " " + type.unit[1]}</span></p>
+          <div class="meter" aria-hidden="true"><span class="meter-forecast" style="left:${left}%;width:${Math.max(0, right - left)}%"></span><span class="meter-fill" style="width:${left}%"></span><span class="meter-tick" style="left:${NEAR * 100}%"></span></div>
+          <p class="usage-sub">${pct}% used. At this pace, ${fmtShort(type, forecast)} by October 31${forecast > cap ? ", over the total cap" : ""}.</p>
+        </li>`;
       }).join("");
     }
-    const render = () => { renderSummary(); renderBody(); };
-    const editButton = id => body.querySelector(`.js-edit[data-id="${id}"]`);
 
-    function openEditor(id) {
-      state.editing = id;
-      renderBody();
-      const input = body.querySelector(".js-cap-input");
-      input.focus();
-      input.select();
+    // Each team is a row group: a header row that can collapse, then one nested row per shown usage type.
+    function renderTable(focusSel) {
+      const types = shownTypes();
+      q(".js-count").textContent = `${teams.length} teams, ${types.length} ${types.length === 1 ? "usage type" : "usage types"}`;
+      table.querySelectorAll("tbody").forEach(b => b.remove());
+      table.insertAdjacentHTML("beforeend", teams.map(t => {
+        const open = !state.closed.has(t.id);
+        const at = types.filter(ty => statusOf(t.use[ty.id]) === "at").length, near = types.filter(ty => statusOf(t.use[ty.id]) === "near").length;
+        const summary = at || near ? [at && `${at} at cap`, near && `${near} near cap`].filter(Boolean).join(", ") : "All under cap";
+        const head = `<tr class="group-row"><th scope="rowgroup" colspan="6"><button class="group-toggle" type="button" data-team="${t.id}" aria-expanded="${open}">${CHEVRON}${esc(t.name)} <small>${summary}</small></button></th></tr>`;
+        return `<tbody>${head}${types.map(type => {
+          const u = t.use[type.id], st = statusOf(u), key = `${t.id}:${type.id}`, editing = state.editing === key;
+          const row = `<tr data-team="${t.id}"${open ? "" : " hidden"}${editing ? ' class="is-editing"' : ""}>
+            <th scope="row" class="usage-name">${type.name}</th>
+            <td class="num">${fmtNum(u.used)}</td>
+            <td class="num">${fmtNum(u.cap)}</td>
+            <td><div class="usage-cell">${meterHTML(u)}<span class="pct">${pctOf(u)}%</span></div></td>
+            <td><span class="status"><svg viewBox="0 0 14 14" aria-hidden="true">${CAP_STATUS[st].icon}</svg>${CAP_STATUS[st].label}</span></td>
+            <td><button class="btn js-edit" type="button" data-key="${key}" aria-label="Edit ${type.name} cap for ${esc(t.name)}" aria-expanded="${editing}" aria-controls="${p}-edit-${t.id}-${type.id}">Edit cap</button></td>
+          </tr>`;
+          if (!editing) return row;
+          const fid = `${p}-cap-${t.id}-${type.id}`;
+          return row + `<tr class="edit-row" id="${p}-edit-${t.id}-${type.id}" data-team="${t.id}"><td colspan="6">
+            <form class="cap-form js-cap-form" data-key="${key}" novalidate>
+              <div class="field">
+                <label for="${fid}">${type.name} cap for ${esc(t.name)}, in ${type.unit[1]} a month</label>
+                <input class="search-input js-cap-input" id="${fid}" type="text" inputmode="numeric" autocomplete="off" value="${u.cap}" aria-describedby="${fid}-msg">
+              </div>
+              <button class="btn btn-primary js-cap-save" type="submit">Save cap</button>
+              <button class="btn js-cap-cancel" type="button">Cancel</button>
+              <p class="field-msg js-cap-msg" id="${fid}-msg">${esc(t.name)} has used ${fmtFull(type, u.used)} so far this month.</p>
+            </form>
+          </td></tr>`;
+        }).join("")}</tbody>`;
+      }).join(""));
+      if (focusSel) { const f = table.querySelector(focusSel); if (f) { f.focus(); if (f.select) f.select(); } }
     }
-    function closeEditor() {
-      const id = state.editing;
-      state.editing = null;
-      renderBody();
-      editButton(id).focus();
-    }
+    const render = focusSel => { renderChips(); renderTiles(); renderTable(focusSel); };
+    const closeEditor = () => { const key = state.editing; state.editing = null; renderTable(`.js-edit[data-key="${key}"]`); };
     function setMessage(form, kind, text) {
       const msg = form.querySelector(".js-cap-msg"), input = form.querySelector(".js-cap-input");
       msg.className = `field-msg js-cap-msg is-${kind}`;
@@ -3031,40 +3077,69 @@ export function AccessRequests({ rows, onUpdate }) {
       announce(text);
     }
 
-    body.addEventListener("click", e => {
+    chips.addEventListener("click", e => {
+      const b = e.target.closest(".chip");
+      if (!b) return;
+      const id = b.dataset.type;
+      if (id === "all") USAGE_TYPES.forEach(t => state.shown.add(t.id));
+      else if (state.shown.has(id)) {
+        if (state.shown.size === 1) { announce("Keep at least one usage type shown."); return; }
+        state.shown.delete(id);
+      } else state.shown.add(id);
+      if (state.editing && !state.shown.has(state.editing.split(":")[1])) state.editing = null;
+      render();
+      const names = shownTypes().map(t => t.name);
+      announce(names.length === USAGE_TYPES.length ? "Showing all usage types." : `Showing ${listWords(names)}.`);
+    });
+    table.addEventListener("click", e => {
+      const g = e.target.closest(".group-toggle");
+      if (g) {
+        const id = g.dataset.team, open = state.closed.has(id);
+        open ? state.closed.delete(id) : state.closed.add(id);
+        g.setAttribute("aria-expanded", String(open));
+        table.querySelectorAll(`tr[data-team="${id}"]`).forEach(tr => { tr.hidden = !open; });
+        return;
+      }
       const edit = e.target.closest(".js-edit");
-      if (edit) { state.editing === edit.dataset.id ? closeEditor() : openEditor(edit.dataset.id); return; }
+      if (edit) {
+        if (state.editing === edit.dataset.key) { closeEditor(); return; }
+        state.editing = edit.dataset.key;
+        saved.hidden = true;
+        renderTable(".js-cap-input");
+        return;
+      }
       if (e.target.closest(".js-cap-cancel")) closeEditor();
     });
-    body.addEventListener("keydown", e => {
+    table.addEventListener("keydown", e => {
       if (e.key === "Escape" && e.target.closest(".js-cap-form")) { e.preventDefault(); e.stopPropagation(); closeEditor(); }
     });
-    body.addEventListener("input", e => {
-      // Editing the number again cancels a pending "save below usage" confirmation.
+    table.addEventListener("input", e => {
+      // Typing again cancels a pending "save below usage" confirmation.
       const form = e.target.closest(".js-cap-form");
-      if (form) delete form.dataset.confirm;
-      if (form) form.querySelector(".js-cap-save").textContent = "Save cap";
+      if (form) { delete form.dataset.confirm; form.querySelector(".js-cap-save").textContent = "Save cap"; }
     });
-    body.addEventListener("submit", e => {
+    table.addEventListener("submit", e => {
       e.preventDefault();
-      const form = e.target, t = teams.find(x => x.id === form.dataset.id);
+      const form = e.target, [teamId, typeId] = form.dataset.key.split(":");
+      const t = teams.find(x => x.id === teamId), type = typeOf(typeId), u = t.use[typeId];
       const input = form.querySelector(".js-cap-input");
       const raw = input.value.replace(/[,\s_]/g, "");
-      if (!/^\d+$/.test(raw)) { setMessage(form, "error", "Enter a whole number of tokens, such as 400000."); input.focus(); return; }
+      if (!/^\d+$/.test(raw)) { setMessage(form, "error", `Enter a whole number of ${type.unit[1]}, such as ${u.cap}.`); input.focus(); return; }
       const cap = Number(raw);
-      if (cap < t.used && form.dataset.confirm !== raw) {
+      if (cap < u.used && form.dataset.confirm !== raw) {
         form.dataset.confirm = raw;
-        form.querySelector(".js-cap-save").textContent = "Save and pause requests";
-        setMessage(form, "warning", `${t.name} has already used ${fmtNum(t.used)} tokens. A cap of ${fmtNum(cap)} pauses AI requests for this team until November 1. Select Save and pause requests to confirm.`);
+        form.querySelector(".js-cap-save").textContent = "Save and pause";
+        setMessage(form, "warning", `${t.name} has already used ${fmtFull(type, u.used)}. A cap of ${fmtFull(type, cap)} pauses ${type.name.toLowerCase()} for this team until November 1. Select Save and pause to confirm.`);
         input.focus();
         return;
       }
-      t.cap = cap;
-      const id = t.id;
+      u.cap = cap;
       state.editing = null;
-      render();
-      editButton(id).focus();
-      announce(`${t.name} cap set to ${fmtNum(cap)} tokens. ${pctOf(t)}% used${statusOf(t) === "at" ? ". AI requests are paused for this team" : ""}.`);
+      render(`.js-edit[data-key="${teamId}:${typeId}"]`);
+      const msg = `${t.name} ${type.name} cap set to ${fmtFull(type, cap)}. ${pctOf(u)}% used${statusOf(u) === "at" ? `. ${type.name} is paused for this team` : ""}.`;
+      saved.querySelector("span").textContent = msg;
+      saved.hidden = false;
+      announce(msg);
     });
 
     render();
@@ -3200,7 +3275,7 @@ export function AccessRequests({ rows, onUpdate }) {
     const COMMANDS = [
       { id: "table",  group: "Pages",   label: "Go to Data table", run: go("data-table") },
       { id: "audit",  group: "Pages",   label: "Go to Audit log", run: go("audit-log") },
-      { id: "usage",  group: "Pages",   label: "Go to AI usage and caps", run: go("ai-usage") },
+      { id: "usage",  group: "Pages",   label: "Go to Usage caps", run: go("usage-caps") },
       { id: "roles",  group: "Pages",   label: "Go to Roles and permissions", run: go("roles") },
       { id: "new",    group: "Actions", label: "Create access request", result: "Opened a new access request." },
       { id: "invite", group: "Actions", label: "Invite a person", result: "Opened the invite form." },
