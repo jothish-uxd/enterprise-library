@@ -6,7 +6,7 @@ The docs site is a single page, `index.html`. Open it in a browser; no build ste
 
 ## What's inside
 
-- **Working with records:** data table, filter bar, bulk actions, details sheet
+- **Working with records:** bulk actions, data table, details sheet, filter bar, pagination
 - **Tasks and feedback:** multi-step form, command palette, destructive confirm, notifications, empty / loading / error states
 - **Admin console:** audit log, usage caps, compliance overview, reports, asset inventory, configuration, roles and permissions
 
