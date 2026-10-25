@@ -589,6 +589,11 @@
   .usage-tile .usage-figure strong { font-size: 26px; }
   .usage-tile .usage-figure span { font-size: 13.5px; }
   .usage-tile .usage-sub { font-size: 12.5px; }
+  .usage-tiles.is-single { grid-template-columns: minmax(0, 1fr); }
+  .usage-tiles.is-single .usage-tile { padding: 18px 20px; gap: 10px; }
+  .usage-tiles.is-single .usage-figure strong { font-size: 32px; }
+  .usage-tiles.is-single .meter { height: 12px; }
+  .usage-tiles.is-single .usage-sub { font-size: 13.5px; }
   .usage-table tbody th.usage-name { padding-left: 38px; font-weight: 400; white-space: nowrap; }
   .usage-table .group-row > th { padding: 8px 10px; background: var(--bg-subtle); }
 
@@ -3053,6 +3058,8 @@ export function AccessRequests({ rows, onUpdate }) {
 
     // One card per shown usage type: the organization's total, a meter, and the month-end forecast in words.
     function renderTiles() {
+      // A single usage type gets one full-width card; All keeps the grid of smaller cards.
+      q(".js-tiles").classList.toggle("is-single", shownTypes().length === 1);
       q(".js-tiles").innerHTML = shownTypes().map(type => {
         const used = people.reduce((s, u) => s + u.use[type.id].used, 0), cap = people.reduce((s, u) => s + u.use[type.id].cap, 0);
         const forecast = Math.round(used * DAYS_IN_MONTH / DAY_OF_MONTH), pct = Math.round(used / cap * 100);
