@@ -584,6 +584,38 @@
   .person { display: grid; line-height: 1.35; }
   .person small { display: block; font-size: 12.5px; font-weight: 400; color: var(--ink-soft); }
   .person-meta { display: inline-flex; flex-wrap: wrap; gap: 4px 16px; margin-left: 18px; vertical-align: top; padding-top: 4px; font-size: 12.5px; font-weight: 400; color: var(--ink-soft); }
+  .people-picker { display: grid; gap: 6px; margin-bottom: 18px; max-width: 640px; }
+  .picker-label { font-size: 13.5px; font-weight: 500; }
+  .picker-field { position: relative; }
+  .picker-box {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 40px; padding: 4px 6px;
+    border: 1px solid var(--rule-strong); border-radius: 6px; background: var(--bg); cursor: text;
+  }
+  .picker-box:focus-within { border-color: var(--focus); box-shadow: 0 0 0 1px var(--focus); }
+  .picker-chips { list-style: none; margin: 0; padding: 0; display: contents; }
+  .picker-chip {
+    appearance: none; display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 6px 0 10px;
+    border: 1px solid var(--rule-strong); border-radius: 14px; background: var(--bg-hover); color: var(--ink);
+    font: inherit; font-size: 13px; cursor: pointer;
+  }
+  .picker-chip:hover { border-color: var(--ink); }
+  .picker-chip svg { width: 14px; height: 14px; }
+  .picker-input { flex: 1 1 180px; min-width: 120px; height: 30px; padding: 0 4px; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 14px; }
+  .picker-input:focus-visible { outline: none; }
+  .picker-input::placeholder { color: var(--ink-faint); }
+  .picker-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 12px; }
+  .picker-list {
+    position: absolute; z-index: 30; top: calc(100% + 4px); left: 0; right: 0; max-height: 320px; overflow-y: auto; padding: 4px;
+    background: var(--bg); border: 1px solid var(--rule-strong); border-radius: 8px; box-shadow: 0 12px 32px rgba(0, 0, 0, .18);
+  }
+  .picker-option { display: flex; align-items: center; gap: 8px; padding: 7px 10px 7px 8px; border-radius: 6px; font-size: 14px; cursor: pointer; }
+  .picker-option > span { display: grid; line-height: 1.35; }
+  .picker-option small { font-size: 12.5px; color: var(--ink-soft); }
+  .picker-option[aria-selected="true"] { font-weight: 500; }
+  .picker-option[aria-selected="true"] .cs-check { visibility: visible; }
+  .picker-option.is-active { background: var(--bg-hover); box-shadow: inset 3px 0 0 var(--ink); }
+  .picker-note, .picker-empty { padding: 10px 12px; font-size: 12.5px; color: var(--ink-soft); }
+  .load-more { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 12px; margin-top: 12px; font-size: 13.5px; color: var(--ink-soft); }
   .usage-tiles { list-style: none; margin: 0 0 14px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
   .usage-tile { display: grid; gap: 8px; align-content: start; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 8px; }
   .usage-tile .usage-figure strong { font-size: 26px; }
@@ -890,7 +922,7 @@
     .step.is-done .step-mark { forced-color-adjust: none; background: CanvasText; color: Canvas; }
     .palette-option[aria-selected="true"] { outline: 2px solid Highlight; }
     .message { border: 2px solid CanvasText; }
-    .cs-option.is-active { outline: 2px solid Highlight; }
+    .cs-option.is-active, .picker-option.is-active { outline: 2px solid Highlight; }
     .meter-fill.is-capped, .meter-forecast, .key-forecast { forced-color-adjust: none; background: repeating-linear-gradient(135deg, CanvasText 0 2px, Canvas 2px 5px); }
     .tab[aria-selected="true"] { border-bottom-color: Highlight; color: Highlight; }
   }
@@ -1874,7 +1906,7 @@ export function AccessRequests({ rows, onUpdate }) {
 <section class="panel" id="panel-usage-caps" aria-labelledby="h-usage-caps" hidden>
   <p class="page-kicker">Admin · Live</p>
   <h1 class="page-title" id="h-usage-caps" tabindex="-1">Usage caps</h1>
-  <p class="page-lede">How much of each monthly allowance every person has used, such as AI tokens, document uploads, and storage, and the caps that limit them. Choose All to see every usage type for each person, or one type to compare everyone on it. Every number is written out, so the meters are never the only way to read them.</p>
+  <p class="page-lede">How much of each monthly allowance every person has used, such as AI tokens, document uploads, and storage, and the caps that limit them. Choose All to see every usage type for each person, or one type to compare everyone on it. With hundreds of people, the table loads 25 at a time, and Find people narrows it to the people you pick. Every number is written out, so the meters are never the only way to read them.</p>
 
   <div class="preview" data-demo="usage">
     <div class="details">
@@ -1884,6 +1916,8 @@ export function AccessRequests({ rows, onUpdate }) {
           <tr><th scope="row"><kbd>Tab</kbd></th><td>The selected usage tab, then each person’s header and Edit cap buttons.</td></tr>
           <tr><th scope="row"><kbd>←</kbd> <kbd>→</kbd></th><td>Move between usage tabs. <kbd>Home</kbd> and <kbd>End</kbd> jump to the first or last.</td></tr>
           <tr><th scope="row"><kbd>Space</kbd> <kbd>Enter</kbd></th><td>On a person, expand or collapse their usage.</td></tr>
+          <tr><th scope="row"><kbd>↑</kbd> <kbd>↓</kbd> <kbd>Enter</kbd></th><td>In Find people, move through the list and select or unselect a person. The list stays open, so you can pick several.</td></tr>
+          <tr><th scope="row"><kbd>Backspace</kbd></th><td>In an empty Find people box, remove the last person picked.</td></tr>
           <tr><th scope="row"><kbd>Enter</kbd></th><td>On Edit cap, open the cap field. In the field, save.</td></tr>
           <tr><th scope="row"><kbd>Esc</kbd></th><td>Cancel editing and return to Edit cap.</td></tr>
         </tbody></table>
@@ -1895,6 +1929,9 @@ export function AccessRequests({ rows, onUpdate }) {
           <li>All nests every usage type under each person. A single type shows one row per person, with their department.</li>
           <li>In All, each person is a row group. Its header button gives their name and email and says whether it’s expanded; their department and how many usages are near or at cap follow.</li>
           <li>Edit cap names the usage and the person: “Edit AI tokens cap for Leia Organa.”</li>
+          <li>Find people is a combo box with a multi-select list. Each option says whether it’s selected, and picking announces “Leia Organa selected. 2 people selected.”</li>
+          <li>Picked people show as chips named “Remove Leia Organa.” Removing one moves focus to the next chip, or back to the box.</li>
+          <li>Show 25 more moves focus to the first person it adds and announces the new count.</li>
           <li>Meters are hidden from screen readers; used, cap, and percent say the same thing in words.</li>
           <li>Status is “Under cap,” “Near cap,” or “At cap, paused,” each with its own shape.</li>
           <li>A cap below what’s already used asks for a second Save. Saving returns focus to Edit cap.</li>
@@ -1918,6 +1955,7 @@ export function AccessRequests({ rows, onUpdate }) {
   ]}
   people={people} // [{ id, name, email, department, usage: { tokens: { used, cap }, ... } }]
   defaultTab="all"
+  pageSize={25} // load more in steps, and let people search for anyone
   thresholds={{ near: 0.9 }}
   forecast // projects month-end use from the pace so far
   onCapChange={(personId, typeId, cap) =&gt; saveCap(personId, typeId, cap)}
@@ -1933,6 +1971,7 @@ export function AccessRequests({ rows, onUpdate }) {
       <tbody>
         <tr><td><code>types</code></td><td><code class="type">{ id, name, unit }[]</code></td><td>What’s counted, such as AI tokens, uploads, storage, API requests, or automation runs. Tabs list them alphabetically.</td></tr>
         <tr><td><code>people</code></td><td><code class="type">{ id, name, email, department, usage }[]</code></td><td>Shown alphabetically by name. <code>usage</code> holds <code>{ used, cap }</code> for each type.</td></tr>
+        <tr><td><code>pageSize</code></td><td><code class="type">number</code></td><td>How many people show at first and with each Show more. Default <code>25</code>.</td></tr>
         <tr><td><code>defaultTab</code></td><td><code class="type">"all" | string</code></td><td>Which tab opens first. Default <code>"all"</code>.</td></tr>
         <tr><td><code>period</code></td><td><code class="type">{ label, resetsOn }</code></td><td>The billing period and when usage resets.</td></tr>
         <tr><td><code>thresholds</code></td><td><code class="type">{ near }</code></td><td>Share of a cap that counts as “Near cap.” Default <code>0.9</code>.</td></tr>
@@ -1950,6 +1989,9 @@ export function AccessRequests({ rows, onUpdate }) {
       <tbody>
         <tr><th scope="row">All</th><td>Every usage type nested under each person, and a card per type.</td><td>The tab: “All, tab, selected, 1 of 6.”</td></tr>
         <tr><th scope="row">One usage type</th><td>One row per person with their department, and one card.</td><td>The tab: “AI tokens, tab, selected, 2 of 6.”</td></tr>
+        <tr><th scope="row">More than 25 people</th><td>The first 25, “Showing 25 of 200 people,” and Show 25 more.</td><td>“Showing 50 of 200 people,” after Show more.</td></tr>
+        <tr><th scope="row">People picked</th><td>Chips in Find people; the table shows only them.</td><td>“Leia Organa selected. 2 people selected.”</td></tr>
+        <tr><th scope="row">No match</th><td>“No one matches” in the list.</td><td>“No one matches xyz,” after you pause typing.</td></tr>
         <tr><th scope="row">Near cap</th><td>A triangle and “Near cap,” and the person’s header counts it in All.</td><td>Nothing; admins can opt in to an email.</td></tr>
         <tr><th scope="row">At cap</th><td>A hatched meter, a square, and “At cap, paused.”</td><td>Nothing on this page; people on that team see a banner in the product.</td></tr>
         <tr><th scope="row">Invalid cap</th><td>The field is marked and the message says what to enter.</td><td>“Enter a whole number of tokens, such as 400000.”</td></tr>
@@ -2687,7 +2729,8 @@ export function AccessRequests({ rows, onUpdate }) {
         const act = el.getAttribute("aria-activedescendant");
         if (act && $(act)) {
           const opt = $(act), opts = [...opt.closest('[role="listbox"]').querySelectorAll('[role="option"]')];
-          parts.push(opt.textContent.replace(/\s+/g, " ").trim(), opt.getAttribute("aria-disabled") === "true" ? "unavailable" : "", `${opts.indexOf(opt) + 1} of ${opts.length}`);
+          const multi = opt.closest('[role="listbox"]').getAttribute("aria-multiselectable") === "true";
+          parts.push(opt.textContent.replace(/\s+/g, " ").trim(), opt.getAttribute("aria-disabled") === "true" ? "unavailable" : "", multi ? (opt.getAttribute("aria-selected") === "true" ? "selected" : "not selected") : "", `${opts.indexOf(opt) + 1} of ${opts.length}`);
         }
       }
       else if (el.tagName === "SELECT") parts.push(name, "combo box", el.options[el.selectedIndex].text);
@@ -2962,54 +3005,102 @@ export function AccessRequests({ rows, onUpdate }) {
 
   const byName = (a, b) => a.name.localeCompare(b.name);
   const USAGE_TYPES = [
-    { id: "tokens",  name: "AI tokens",       unit: ["token", "tokens"] },
-    { id: "api",     name: "API requests",    unit: ["request", "requests"] },
-    { id: "runs",    name: "Automation runs", unit: ["run", "runs"] },
-    { id: "uploads", name: "Doc uploads",     unit: ["file", "files"] },
-    { id: "storage", name: "Storage",         unit: ["GB", "GB"] },
+    { id: "tokens",  name: "AI tokens",       unit: ["token", "tokens"],     cap: 100000 },
+    { id: "api",     name: "API requests",    unit: ["request", "requests"], cap: 10000 },
+    { id: "runs",    name: "Automation runs", unit: ["run", "runs"],         cap: 100 },
+    { id: "uploads", name: "Doc uploads",     unit: ["file", "files"],       cap: 50 },
+    { id: "storage", name: "Storage",         unit: ["GB", "GB"],            cap: 10 },
   ].sort(byName);
-  const USAGE_PEOPLE = [
-    { id: "bodhi",   name: "Bodhi Rook",     dept: "Logistics",    use: { tokens: [42000, 100000],  api: [1200, 10000],  runs: [95, 100],  uploads: [12, 50], storage: [4, 10] } },
-    { id: "cassian", name: "Cassian Andor",  dept: "Intelligence", use: { tokens: [97000, 100000],  api: [8800, 10000],  runs: [20, 100],  uploads: [48, 50], storage: [9, 10] } },
-    { id: "hera",    name: "Hera Syndulla",  dept: "Command",      use: { tokens: [61000, 100000],  api: [10000, 10000], runs: [44, 100],  uploads: [20, 50], storage: [3, 10] } },
-    { id: "jyn",     name: "Jyn Erso",       dept: "Intelligence", use: { tokens: [100000, 100000], api: [2400, 10000],  runs: [12, 100],  uploads: [31, 50], storage: [10, 10] } },
-    { id: "leia",    name: "Leia Organa",    dept: "Command",      use: { tokens: [78000, 150000],  api: [5100, 20000],  runs: [130, 200], uploads: [44, 50], storage: [6, 20] } },
-    { id: "poe",     name: "Poe Dameron",    dept: "Engineering",  use: { tokens: [23000, 100000],  api: [600, 10000],   runs: [100, 100], uploads: [5, 50],  storage: [2, 10] } },
-    { id: "rose",    name: "Rose Tico",      dept: "Engineering",  use: { tokens: [91000, 100000],  api: [9400, 10000],  runs: [88, 100],  uploads: [50, 50], storage: [7, 10] } },
-    { id: "wedge",   name: "Wedge Antilles", dept: "Logistics",    use: { tokens: [15000, 100000],  api: [300, 10000],   runs: [8, 100],   uploads: [9, 50],  storage: [1, 10] } },
-  ].map(u => ({ ...u, email: u.name.toLowerCase().replace(/\s+/g, ".") + "@rebellion.example" })).sort(byName);
 
+  // 200 sample people: the eight used across the site, plus generated names from a fixed seed,
+  // so the sample is the same on every load.
+  const USAGE_PEOPLE = (() => {
+    let seed = 20261025;
+    const rand = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
+    const pick = list => list[Math.floor(rand() * list.length)];
+    const DEPTS = ["Command", "Engineering", "Intelligence", "Logistics"];
+    const FIRST = ["Aarav", "Abena", "Ada", "Ahmed", "Aiko", "Alejandro", "Amara", "Ana", "Anya", "Arjun", "Bao", "Beatriz", "Chidi", "Dalia", "Diego", "Elif", "Emeka", "Esther", "Farah", "Felix", "Freya", "Grace", "Hana", "Hiroshi", "Ibrahim", "Ines", "Isla", "Jamal", "Javier", "Kai", "Kavya", "Kenji", "Lars", "Leila", "Liam", "Lucia", "Malik", "Maya", "Mei", "Nadia", "Naveen", "Nia", "Noah", "Olga", "Omar", "Priya", "Rafael", "Rania", "Ravi", "Rosa", "Sami", "Sana", "Sofia", "Tariq", "Thandiwe", "Tomas", "Uma", "Valentina", "Wei", "Yara", "Yusuf", "Zara"];
+    const LAST = ["Abara", "Bauer", "Castillo", "Chen", "Costa", "Dang", "Diaz", "Eriksen", "Fischer", "Garcia", "Haddad", "Ito", "Jensen", "Kaur", "Kim", "Kowalski", "Larsen", "Lopez", "Mbeki", "Mehta", "Moreau", "Nakamura", "Novak", "Okafor", "Olsen", "Park", "Patel", "Petrov", "Quinn", "Rossi", "Sato", "Schmidt", "Silva", "Singh", "Suzuki", "Tanaka", "Torres", "Usman", "Vargas", "Weber", "Yilmaz", "Zhou"];
+    const fixed = [
+      ["Bodhi Rook", "Logistics", [42000, 100000], [1200, 10000], [95, 100], [12, 50], [4, 10]],
+      ["Cassian Andor", "Intelligence", [97000, 100000], [8800, 10000], [20, 100], [48, 50], [9, 10]],
+      ["Hera Syndulla", "Command", [61000, 100000], [10000, 10000], [44, 100], [20, 50], [3, 10]],
+      ["Jyn Erso", "Intelligence", [100000, 100000], [2400, 10000], [12, 100], [31, 50], [10, 10]],
+      ["Leia Organa", "Command", [78000, 150000], [5100, 20000], [130, 200], [44, 50], [6, 20]],
+      ["Poe Dameron", "Engineering", [23000, 100000], [600, 10000], [100, 100], [5, 50], [2, 10]],
+      ["Rose Tico", "Engineering", [91000, 100000], [9400, 10000], [88, 100], [50, 50], [7, 10]],
+      ["Wedge Antilles", "Logistics", [15000, 100000], [300, 10000], [8, 100], [9, 50], [1, 10]],
+    ];
+    const order = ["tokens", "api", "runs", "uploads", "storage"];
+    const people = fixed.map(([name, dept, ...vals]) => ({ name, dept, use: Object.fromEntries(order.map((k, i) => [k, vals[i]])) }));
+    const names = new Set(people.map(x => x.name));
+    while (people.length < 200) {
+      const name = `${pick(FIRST)} ${pick(LAST)}`;
+      if (names.has(name)) continue;
+      names.add(name);
+      const use = {};
+      USAGE_TYPES.forEach(t => {
+        const r = rand(), shareUsed = r < 0.06 ? 1 : r < 0.16 ? 0.9 + rand() * 0.09 : rand() * 0.85;
+        use[t.id] = [Math.round(t.cap * shareUsed), t.cap];
+      });
+      people.push({ name, dept: pick(DEPTS), use });
+    }
+    return people.map(x => {
+      const slug = x.name.toLowerCase().replace(/[^a-z]+/g, ".");
+      return { ...x, id: slug.replace(/\./g, "-"), email: `${slug}@rebellion.example` };
+    }).sort(byName);
+  })();
+
+  const PICK_CHECK = '<svg class="cs-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>';
   function createUsageDemo(root, n) {
-    const p = "usage" + n;
+    const p = "usage" + n, PAGE = 25;
     const people = USAGE_PEOPLE.map(u => ({ ...u, use: Object.fromEntries(Object.entries(u.use).map(([k, v]) => [k, { used: v[0], cap: v[1] }])) }));
     // "all" shows every usage type nested under each person; a single type flattens to one row per person.
     const TABS = [{ id: "all", name: "All" }].concat(USAGE_TYPES);
-    const state = { tab: "all", closed: new Set(), editing: null };
+    const state = { tab: "all", closed: new Set(), editing: null, limit: PAGE, picked: new Set(), query: "", active: 0, matches: [] };
     const typeOf = id => USAGE_TYPES.find(t => t.id === id);
+    const personOf = id => people.find(x => x.id === id);
     const share = u => u.cap ? u.used / u.cap : 1;
     const pctOf = u => Math.round(share(u) * 100);
     const statusOf = u => share(u) >= 1 ? "at" : share(u) >= NEAR ? "near" : "under";
     const fmtFull = (type, v) => `${fmtNum(v)} ${type.unit[v === 1 ? 0 : 1]}`;
     const fmtShort = (type, v) => type.id === "storage" ? `${fmtNum(v)} GB` : fmtCompact(v);
     const shownTypes = () => state.tab === "all" ? USAGE_TYPES : [typeOf(state.tab)];
+    const pool = () => state.picked.size ? people.filter(x => state.picked.has(x.id)) : people;
+    const plural = (c, one, other) => `${c} ${c === 1 ? one : other}`;
 
     root.insertAdjacentHTML("afterbegin", `
       <div class="preview-stage">
-        <p class="sample-note">Sample data. Usage resets on November 1.</p>
+        <p class="sample-note">Sample data: 200 people. Usage resets on November 1.</p>
         <div class="js-content">
           <ul class="usage-tiles js-tiles"></ul>
-          <ul class="meter-legend" aria-hidden="true" style="margin-bottom:20px">
+          <ul class="meter-legend" aria-hidden="true" style="margin-bottom:24px">
             <li><span class="key key-used"></span>Used so far</li>
             <li><span class="key key-forecast"></span>Forecast to October 31</li>
             <li><span class="key key-tick"></span>Near cap at ${NEAR * 100}%</li>
           </ul>
-          <p class="message is-success is-compact js-saved" hidden style="margin-bottom:12px">${SUCCESS_ICON}<span></span></p>
+          <div class="people-picker js-picker">
+            <label class="picker-label" for="${p}-pick">Find people</label>
+            <div class="picker-field">
+              <div class="picker-box js-box">
+                <ul class="picker-chips js-chips" aria-label="Selected people"></ul>
+                <input class="picker-input js-pick" id="${p}-pick" type="text" role="combobox" aria-expanded="false" aria-controls="${p}-pick-list" aria-autocomplete="list" aria-describedby="${p}-pick-hint" autocomplete="off" spellcheck="false" placeholder="Name, email, or department">
+              </div>
+              <div class="picker-list js-list" id="${p}-pick-list" role="listbox" aria-multiselectable="true" aria-label="People" hidden></div>
+            </div>
+            <div class="picker-foot">
+              <span class="field-hint" id="${p}-pick-hint">Type to narrow the list, then select one person or several.</span>
+              <button class="btn-link js-clear" type="button" hidden>Clear selection</button>
+            </div>
+          </div>
+          <p class="message is-success is-compact js-saved" hidden style="margin:0 0 12px">${SUCCESS_ICON}<span></span></p>
           <div class="grid-frame"><div class="grid-scroll">
             <table class="data-table usage-table js-table"><caption class="js-caption"></caption><thead></thead></table>
           </div></div>
+          <div class="load-more js-more-wrap"><span class="js-showing"></span><button class="btn js-more" type="button">Show 25 more</button></div>
         </div>
         <div class="sr-only js-live" role="status" aria-live="polite"></div>
-      </div>${HEARS_HTML("Edit a cap to hear the result.")}`);
+      </div>${HEARS_HTML("Search for people, show more, or edit a cap.")}`);
 
     // Tabs sit above the example, pinned under the header like the overview's. Each tab shows a short
     // description, then the example, so the tab panel holds both.
@@ -3037,6 +3128,7 @@ export function AccessRequests({ rows, onUpdate }) {
 
     const q = s => root.querySelector(s);
     const table = q(".js-table"), tabs = [...tabbar.querySelectorAll('[role="tab"]')], saved = q(".js-saved");
+    const input = q(".js-pick"), list = q(".js-list"), chips = q(".js-chips"), clearBtn = q(".js-clear");
     const announce = attachHears(root);
     const meterHTML = u => `<div class="meter" aria-hidden="true"><span class="meter-fill${statusOf(u) === "at" ? " is-capped" : ""}" style="width:${Math.min(100, share(u) * 100)}%"></span><span class="meter-tick" style="left:${NEAR * 100}%"></span></div>`;
     const statusCell = u => { const st = statusOf(u); return `<span class="status"><svg viewBox="0 0 14 14" aria-hidden="true">${CAP_STATUS[st].icon}</svg>${CAP_STATUS[st].label}</span>`; };
@@ -3058,14 +3150,13 @@ export function AccessRequests({ rows, onUpdate }) {
 
     // One card per shown usage type: the organization's total, a meter, and the month-end forecast in words.
     function renderTiles() {
-      // A single usage type gets one full-width card; All keeps the grid of smaller cards.
       q(".js-tiles").classList.toggle("is-single", shownTypes().length === 1);
       q(".js-tiles").innerHTML = shownTypes().map(type => {
         const used = people.reduce((s, u) => s + u.use[type.id].used, 0), cap = people.reduce((s, u) => s + u.use[type.id].cap, 0);
         const forecast = Math.round(used * DAYS_IN_MONTH / DAY_OF_MONTH), pct = Math.round(used / cap * 100);
         const left = Math.min(100, used / cap * 100), right = Math.min(100, forecast / cap * 100);
         return `<li class="usage-tile">
-          <p class="usage-label">${type.name}, October</p>
+          <p class="usage-label">${type.name}, October, all ${people.length} people</p>
           <p class="usage-figure"><strong>${fmtShort(type, used)}</strong><span>of ${fmtShort(type, cap)}${type.id === "storage" ? "" : " " + type.unit[1]}</span></p>
           <div class="meter" aria-hidden="true"><span class="meter-forecast" style="left:${left}%;width:${Math.max(0, right - left)}%"></span><span class="meter-fill" style="width:${left}%"></span><span class="meter-tick" style="left:${NEAR * 100}%"></span></div>
           <p class="usage-sub">${pct}% used. At this pace, ${fmtShort(type, forecast)} by October 31${forecast > cap ? ", over the total cap" : ""}.</p>
@@ -3074,19 +3165,18 @@ export function AccessRequests({ rows, onUpdate }) {
     }
 
     function renderTable(focusSel) {
-      const all = state.tab === "all";
-      q(".js-caption").innerHTML = all
-        ? `Usage by person <span>${people.length} people, every usage type</span>`
-        : `${typeOf(state.tab).name} by person <span>${people.length} people</span>`;
+      const all = state.tab === "all", rows = pool(), shown = rows.slice(0, state.limit);
+      const who = state.picked.size ? `${plural(rows.length, "selected person", "selected people")}` : `${shown.length} of ${rows.length} people`;
+      q(".js-caption").innerHTML = all ? `Usage by person <span>${who}, every usage type</span>` : `${typeOf(state.tab).name} by person <span>${who}</span>`;
       table.querySelectorAll("tbody").forEach(b => b.remove());
       if (all) {
         table.querySelector("thead").innerHTML = `<tr><th scope="col">Usage</th><th scope="col" class="num">Used</th><th scope="col" class="num">Cap</th><th scope="col">Share of cap</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Actions</span></th></tr>`;
         // Each person is a row group: a header row that can collapse, then one nested row per usage type.
-        table.insertAdjacentHTML("beforeend", people.map(person => {
+        table.insertAdjacentHTML("beforeend", shown.map(person => {
           const open = !state.closed.has(person.id);
           const at = USAGE_TYPES.filter(t => statusOf(person.use[t.id]) === "at").length, near = USAGE_TYPES.filter(t => statusOf(person.use[t.id]) === "near").length;
           const summary = at || near ? [at && `${at} at cap`, near && `${near} near cap`].filter(Boolean).join(", ") : "All under cap";
-          const head = `<tr class="group-row"><th scope="rowgroup" colspan="6">
+          const head = `<tr class="group-row" data-head="${person.id}"><th scope="rowgroup" colspan="6">
               <button class="group-toggle person-toggle" type="button" data-person="${person.id}" aria-expanded="${open}">${CHEVRON}<span class="person"><span>${esc(person.name)}</span><small>${esc(person.email)}</small></span></button>
               <span class="person-meta"><span>${esc(person.dept)}</span><span>${summary}</span></span>
             </th></tr>`;
@@ -3105,10 +3195,10 @@ export function AccessRequests({ rows, onUpdate }) {
       } else {
         const type = typeOf(state.tab);
         table.querySelector("thead").innerHTML = `<tr><th scope="col">Person</th><th scope="col">Department</th><th scope="col" class="num">Used</th><th scope="col" class="num">Cap</th><th scope="col">Share of cap</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Actions</span></th></tr>`;
-        table.insertAdjacentHTML("beforeend", `<tbody>${people.map(person => {
+        table.insertAdjacentHTML("beforeend", `<tbody>${shown.map(person => {
           const u = person.use[type.id], key = `${person.id}:${type.id}`, editing = state.editing === key;
-          const row = `<tr${editing ? ' class="is-editing"' : ""}>
-            <th scope="row" class="who">${esc(person.name)}<small>${esc(person.email)}</small></th>
+          const row = `<tr data-head="${person.id}"${editing ? ' class="is-editing"' : ""}>
+            <th scope="row" class="who" tabindex="-1">${esc(person.name)}<small>${esc(person.email)}</small></th>
             <td class="muted">${esc(person.dept)}</td>
             <td class="num">${fmtNum(u.used)}</td><td class="num">${fmtNum(u.cap)}</td>
             <td><div class="usage-cell">${meterHTML(u)}<span class="pct">${pctOf(u)}%</span></div></td>
@@ -3118,9 +3208,120 @@ export function AccessRequests({ rows, onUpdate }) {
           return editing ? row + editRow(person, type, 7) : row;
         }).join("")}</tbody>`);
       }
+      // Load more: count in words, and the button only while there are more people to show.
+      const more = rows.length - shown.length;
+      q(".js-showing").textContent = state.picked.size ? `Showing ${plural(rows.length, "selected person", "selected people")}` : `Showing ${shown.length} of ${rows.length} people`;
+      q(".js-more").hidden = more <= 0;
+      q(".js-more").textContent = `Show ${Math.min(PAGE, more)} more`;
       if (focusSel) { const f = table.querySelector(focusSel); if (f) { f.focus(); if (f.select) f.select(); } }
     }
     const render = focusSel => { renderTiles(); renderTable(focusSel); };
+
+    q(".js-more").addEventListener("click", () => {
+      const first = pool()[state.limit];
+      state.limit += PAGE;
+      // Focus the first person just added, so keyboard users continue where the list grew.
+      renderTable(state.tab === "all" ? `.person-toggle[data-person="${first.id}"]` : `tr[data-head="${first.id}"] th`);
+      announce(`Showing ${Math.min(state.limit, pool().length)} of ${pool().length} people.`);
+    });
+
+    /* People picker: a multi-select combo box. Selecting people narrows the table to them. */
+    const matchesFor = s => { const t = s.trim().toLowerCase(); return t ? people.filter(x => [x.name, x.email, x.dept].some(v => v.toLowerCase().includes(t))) : people; };
+    const LIST_MAX = 50;
+    function renderList() {
+      state.matches = matchesFor(state.query);
+      const shown = state.matches.slice(0, LIST_MAX);
+      state.active = Math.min(state.active, Math.max(0, shown.length - 1));
+      if (!shown.length) {
+        list.innerHTML = `<div class="picker-empty" role="presentation">No one matches “${esc(state.query.trim())}”.</div>`;
+        input.removeAttribute("aria-activedescendant");
+        return;
+      }
+      list.innerHTML = shown.map((x, i) => `<div class="picker-option${i === state.active ? " is-active" : ""}" role="option" id="${p}-opt-${x.id}" data-id="${x.id}" aria-selected="${state.picked.has(x.id)}">${PICK_CHECK}<span><span>${esc(x.name)}</span><small>${esc(x.email)} · ${esc(x.dept)}</small></span></div>`).join("")
+        + (state.matches.length > LIST_MAX ? `<div class="picker-note" role="presentation">Showing ${LIST_MAX} of ${state.matches.length} matches. Keep typing to narrow the list.</div>` : "");
+      const act = shown[state.active];
+      input.setAttribute("aria-activedescendant", `${p}-opt-${act.id}`);
+      $(`${p}-opt-${act.id}`).scrollIntoView({ block: "nearest" });
+    }
+    const openList = () => { list.hidden = false; input.setAttribute("aria-expanded", "true"); renderList(); };
+    const closeList = () => { list.hidden = true; input.setAttribute("aria-expanded", "false"); input.removeAttribute("aria-activedescendant"); };
+    function renderChips() {
+      const picked = people.filter(x => state.picked.has(x.id));
+      chips.innerHTML = picked.map(x => `<li><button class="picker-chip" type="button" data-id="${x.id}" aria-label="Remove ${esc(x.name)}">${esc(x.name)}<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg></button></li>`).join("");
+      chips.hidden = !picked.length;
+      clearBtn.hidden = !picked.length;
+    }
+    function selectionChanged(msg) {
+      state.limit = PAGE;
+      state.editing = null;
+      renderChips();
+      if (!list.hidden) renderList();
+      renderTable();
+      announce(`${msg} ${state.picked.size ? plural(state.picked.size, "person", "people") + " selected." : "Showing everyone."}`);
+    }
+    function toggle(id) {
+      const x = personOf(id), on = !state.picked.has(id);
+      on ? state.picked.add(id) : state.picked.delete(id);
+      selectionChanged(`${x.name} ${on ? "selected" : "removed"}.`);
+    }
+    let countTimer;
+    input.addEventListener("focus", openList);
+    input.addEventListener("click", openList);
+    input.addEventListener("input", () => {
+      state.query = input.value;
+      state.active = 0;
+      openList();
+      clearTimeout(countTimer);
+      countTimer = setTimeout(() => {
+        const c = state.matches.length;
+        announce(c ? `${plural(c, "person matches", "people match")}.` : `No one matches ${state.query.trim()}.`);
+      }, 500);
+    });
+    input.addEventListener("keydown", e => {
+      const shown = state.matches.slice(0, LIST_MAX);
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        if (list.hidden) { openList(); return; }
+        if (!shown.length) return;
+        state.active = Math.max(0, Math.min(shown.length - 1, state.active + (e.key === "ArrowDown" ? 1 : -1)));
+        renderList();
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (!list.hidden && shown[state.active]) toggle(shown[state.active].id);
+      } else if (e.key === "Escape") {
+        if (!list.hidden) { e.preventDefault(); e.stopPropagation(); closeList(); }
+        else if (input.value) { e.preventDefault(); e.stopPropagation(); input.value = ""; state.query = ""; }
+      } else if (e.key === "Backspace" && !input.value && state.picked.size) {
+        const last = people.filter(x => state.picked.has(x.id)).pop();
+        state.picked.delete(last.id);
+        selectionChanged(`${last.name} removed.`);
+      } else if (e.key === "Tab") closeList();
+    });
+    input.addEventListener("blur", e => { if (!q(".js-picker").contains(e.relatedTarget)) closeList(); });
+    list.addEventListener("mousedown", e => e.preventDefault());
+    list.addEventListener("click", e => { const o = e.target.closest('[role="option"]'); if (o) toggle(o.dataset.id); });
+    list.addEventListener("mousemove", e => {
+      const o = e.target.closest('[role="option"]');
+      if (!o) return;
+      const i = state.matches.findIndex(x => x.id === o.dataset.id);
+      if (i !== state.active) { state.active = i; renderList(); }
+    });
+    q(".js-box").addEventListener("click", e => { if (e.target === e.currentTarget) input.focus(); });
+    chips.addEventListener("click", e => {
+      const c = e.target.closest(".picker-chip");
+      if (!c) return;
+      const all = [...chips.querySelectorAll(".picker-chip")], i = all.indexOf(c), x = personOf(c.dataset.id);
+      state.picked.delete(x.id);
+      selectionChanged(`${x.name} removed.`);
+      // Focus moves to the chip that took its place, or back to the search box.
+      const next = chips.querySelectorAll(".picker-chip");
+      (next[i] || next[i - 1] || input).focus();
+    });
+    clearBtn.addEventListener("click", () => {
+      state.picked.clear();
+      selectionChanged("Selection cleared.");
+      input.focus();
+    });
 
     function selectTab(id, focus) {
       state.tab = id;
@@ -3151,10 +3352,10 @@ export function AccessRequests({ rows, onUpdate }) {
 
     const closeEditor = () => { const key = state.editing; state.editing = null; renderTable(`.js-edit[data-key="${key}"]`); };
     function setMessage(form, kind, text) {
-      const msg = form.querySelector(".js-cap-msg"), input = form.querySelector(".js-cap-input");
+      const msg = form.querySelector(".js-cap-msg"), capInput = form.querySelector(".js-cap-input");
       msg.className = `field-msg js-cap-msg is-${kind}`;
       msg.innerHTML = (kind === "error" ? ERROR_ICON : WARNING_ICON) + `<span>${esc(text)}</span>`;
-      input.setAttribute("aria-invalid", String(kind === "error"));
+      capInput.setAttribute("aria-invalid", String(kind === "error"));
       announce(text);
     }
     table.addEventListener("click", e => {
@@ -3187,16 +3388,16 @@ export function AccessRequests({ rows, onUpdate }) {
     table.addEventListener("submit", e => {
       e.preventDefault();
       const form = e.target, [personId, typeId] = form.dataset.key.split(":");
-      const person = people.find(x => x.id === personId), type = typeOf(typeId), u = person.use[typeId];
-      const input = form.querySelector(".js-cap-input");
-      const raw = input.value.replace(/[,\s_]/g, "");
-      if (!/^\d+$/.test(raw)) { setMessage(form, "error", `Enter a whole number of ${type.unit[1]}, such as ${u.cap}.`); input.focus(); return; }
+      const person = personOf(personId), type = typeOf(typeId), u = person.use[typeId];
+      const capInput = form.querySelector(".js-cap-input");
+      const raw = capInput.value.replace(/[,\s_]/g, "");
+      if (!/^\d+$/.test(raw)) { setMessage(form, "error", `Enter a whole number of ${type.unit[1]}, such as ${u.cap}.`); capInput.focus(); return; }
       const cap = Number(raw);
       if (cap < u.used && form.dataset.confirm !== raw) {
         form.dataset.confirm = raw;
         form.querySelector(".js-cap-save").textContent = "Save and pause";
         setMessage(form, "warning", `${person.name} has already used ${fmtFull(type, u.used)}. A cap of ${fmtFull(type, cap)} pauses ${type.name.toLowerCase()} for them until November 1. Select Save and pause to confirm.`);
-        input.focus();
+        capInput.focus();
         return;
       }
       u.cap = cap;
@@ -3208,6 +3409,7 @@ export function AccessRequests({ rows, onUpdate }) {
       announce(msg);
     });
 
+    renderChips();
     render();
   }
 
