@@ -1,8 +1,8 @@
-# Enterprise Library
+# enterprise library
 
 A React design system of accessible enterprise patterns: whole workflows, not just atoms and molecules. Each pattern decides where focus goes, what a screen reader hears, and how every state looks.
 
-The docs site is a single page, `accessible-patterns.html`. Open it in a browser; no build step.
+The docs site is a single page, `index.html`. Open it in a browser; no build step.
 
 ## What's inside
 
@@ -21,4 +21,4 @@ Every pattern page has a working example with a "Screen reader hears" strip, a k
 
 ## Status
 
-v0.1 preview. The React package (`accessible-patterns`) isn't published yet; the examples in the page are plain HTML and JavaScript that show the intended behavior.
+v0.1 preview. The React package (`enterprise-library`) isn't published yet; the examples in the page are plain HTML and JavaScript that show the intended behavior.
