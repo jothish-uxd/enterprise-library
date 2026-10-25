@@ -1,4 +1,4 @@
-# enterprise library
+# Enterprise Library
 
 A React design system of accessible enterprise patterns: whole workflows, not just atoms and molecules. Each pattern decides where focus goes, what a screen reader hears, and how every state looks.
 

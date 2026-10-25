@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>enterprise library</title>
+<title>Enterprise Library</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -136,8 +136,6 @@
     font-weight: 600; font-size: 15px; letter-spacing: -.01em; white-space: nowrap;
   }
   .wordmark-glyph { width: 20px; height: 20px; flex: none; }
-  .brand { font-variant-caps: small-caps; letter-spacing: .03em; }
-  .wordmark .brand { font-size: 17px; line-height: 1; }
   .header-sep { color: var(--rule-strong); font-weight: 300; font-size: 20px; line-height: 1; }
   .badge {
     font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
@@ -887,7 +885,7 @@
 
 <header class="site-header">
   <button class="icon-button menu-button" id="menuButton" type="button" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Menu</span></button>
-  <a class="wordmark" href="#overview"><svg class="wordmark-glyph" viewBox="0 0 20 20" aria-hidden="true"><rect x="1" y="1" width="8" height="8" fill="currentColor"/><rect x="11" y="1" width="8" height="8" fill="currentColor" opacity=".7"/><rect x="1" y="11" width="8" height="8" fill="currentColor" opacity=".45"/><rect x="11.75" y="11.75" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="brand">enterprise library</span></a>
+  <a class="wordmark" href="#overview"><svg class="wordmark-glyph" viewBox="0 0 20 20" aria-hidden="true"><rect x="1" y="1" width="8" height="8" fill="currentColor"/><rect x="11" y="1" width="8" height="8" fill="currentColor" opacity=".7"/><rect x="1" y="11" width="8" height="8" fill="currentColor" opacity=".45"/><rect x="11.75" y="11.75" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Enterprise Library</a>
   <span class="header-sep" aria-hidden="true">/</span>
   <span class="badge">v0.1 preview</span>
   <div class="header-actions">
@@ -4406,7 +4404,7 @@ export function AccessRequests({ rows, onUpdate }) {
     }
     panels.forEach(p => { p.hidden = p.id !== "panel-" + route; });
     const h1 = $("panel-" + route).querySelector("h1");
-    document.title = route === "overview" ? "enterprise library" : `${h1.textContent} · enterprise library`;
+    document.title = route === "overview" ? "Enterprise Library" : `${h1.textContent} · Enterprise Library`;
     document.querySelectorAll(".nav-link").forEach(a => {
       a.getAttribute("href") === "#" + route ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current");
     });
