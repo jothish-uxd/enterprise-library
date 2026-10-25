@@ -576,6 +576,12 @@
   .field-msg svg { width: 15px; height: 15px; flex: none; margin-top: 2px; }
   .field-msg.is-error, .field-msg.is-warning { color: var(--ink); font-weight: 500; }
 
+  .demo-tabs { margin-bottom: 20px; border-bottom: 1px solid var(--rule); overflow-x: auto; }
+  .person-toggle { align-items: flex-start; text-align: left; }
+  .person-toggle svg { margin-top: 3px; }
+  .person { display: grid; line-height: 1.35; }
+  .person small { display: block; font-size: 12.5px; font-weight: 400; color: var(--ink-soft); }
+  .person-meta { display: inline-flex; flex-wrap: wrap; gap: 4px 16px; margin-left: 18px; vertical-align: top; padding-top: 4px; font-size: 12.5px; font-weight: 400; color: var(--ink-soft); }
   .usage-tiles { list-style: none; margin: 0 0 14px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
   .usage-tile { display: grid; gap: 8px; align-content: start; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 8px; }
   .usage-tile .usage-figure strong { font-size: 26px; }
@@ -910,34 +916,34 @@
       </ul>
     </div>
     <div class="nav-group">
-      <h2 class="nav-heading" id="nav-data"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-data-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 15h18M9.5 9.5V20"/></svg><span>Working with records</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
-      <ul class="nav-list" id="nav-data-list" aria-labelledby="nav-data">
-        <li><a class="nav-link" href="#data-table">Data table</a></li>
-        <li><a class="nav-link" href="#filter-bar">Filter bar</a></li>
-        <li><a class="nav-link" href="#bulk-actions">Bulk actions</a></li>
-        <li><a class="nav-link" href="#details-sheet">Details sheet</a></li>
+      <h2 class="nav-heading" id="nav-admin"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-admin-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z"/><path d="M8.8 12.2l2.3 2.3 4.2-4.6"/></svg><span>Admin console</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
+      <ul class="nav-list" id="nav-admin-list" aria-labelledby="nav-admin">
+        <li><a class="nav-link" href="#assets">Asset inventory</a></li>
+        <li><a class="nav-link" href="#audit-log">Audit log</a></li>
+        <li><a class="nav-link" href="#compliance">Compliance</a></li>
+        <li><a class="nav-link" href="#configuration">Configuration</a></li>
+        <li><a class="nav-link" href="#reports">Reports</a></li>
+        <li><a class="nav-link" href="#roles">Roles and permissions</a></li>
+        <li><a class="nav-link" href="#usage-caps">Usage caps</a></li>
       </ul>
     </div>
     <div class="nav-group">
       <h2 class="nav-heading" id="nav-flow"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-flow-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6.5h10M10 12h10M10 17.5h10"/><path d="M3.5 6.5l1.6 1.6 2.9-3M3.5 12l1.6 1.6 2.9-3"/><circle cx="5.5" cy="17.5" r="1.6"/></svg><span>Tasks and feedback</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
       <ul class="nav-list" id="nav-flow-list" aria-labelledby="nav-flow">
-        <li><a class="nav-link" href="#multi-step-form">Multi-step form</a></li>
         <li><a class="nav-link" href="#command-palette">Command palette</a></li>
         <li><a class="nav-link" href="#destructive-confirm">Destructive confirm</a></li>
-        <li><a class="nav-link" href="#notifications">Notifications</a></li>
         <li><a class="nav-link" href="#states">Empty, loading, error</a></li>
+        <li><a class="nav-link" href="#multi-step-form">Multi-step form</a></li>
+        <li><a class="nav-link" href="#notifications">Notifications</a></li>
       </ul>
     </div>
     <div class="nav-group">
-      <h2 class="nav-heading" id="nav-admin"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-admin-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z"/><path d="M8.8 12.2l2.3 2.3 4.2-4.6"/></svg><span>Admin console</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
-      <ul class="nav-list" id="nav-admin-list" aria-labelledby="nav-admin">
-        <li><a class="nav-link" href="#audit-log">Audit log</a></li>
-        <li><a class="nav-link" href="#usage-caps">Usage caps</a></li>
-        <li><a class="nav-link" href="#compliance">Compliance</a></li>
-        <li><a class="nav-link" href="#reports">Reports</a></li>
-        <li><a class="nav-link" href="#assets">Asset inventory</a></li>
-        <li><a class="nav-link" href="#configuration">Configuration</a></li>
-        <li><a class="nav-link" href="#roles">Roles and permissions</a></li>
+      <h2 class="nav-heading" id="nav-data"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-data-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 15h18M9.5 9.5V20"/></svg><span>Working with records</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
+      <ul class="nav-list" id="nav-data-list" aria-labelledby="nav-data">
+        <li><a class="nav-link" href="#bulk-actions">Bulk actions</a></li>
+        <li><a class="nav-link" href="#data-table">Data table</a></li>
+        <li><a class="nav-link" href="#details-sheet">Details sheet</a></li>
+        <li><a class="nav-link" href="#filter-bar">Filter bar</a></li>
       </ul>
     </div>
     <p class="sidebar-credit">An experiment in accessible enterprise patterns by Jothish, © 2026</p>
@@ -961,16 +967,16 @@
   <div id="tabs-anchor" aria-hidden="true"></div>
   <div class="tabbar is-wide" id="overview-tabbar">
     <div class="tablist" role="tablist" aria-label="Overview sections">
-      <button class="tab" type="button" role="tab" id="tab-patterns" aria-controls="patterns" aria-selected="true" tabindex="0">Patterns</button>
-      <button class="tab" type="button" role="tab" id="tab-example" aria-controls="example" aria-selected="false" tabindex="-1">Live example</button>
+      <button class="tab" type="button" role="tab" id="tab-example" aria-controls="example" aria-selected="true" tabindex="0">Live example</button>
+      <button class="tab" type="button" role="tab" id="tab-patterns" aria-controls="patterns" aria-selected="false" tabindex="-1">Patterns</button>
       <button class="tab" type="button" role="tab" id="tab-quick-start" aria-controls="quick-start" aria-selected="false" tabindex="-1">Quick start</button>
-      <button class="tab" type="button" role="tab" id="tab-layers" aria-controls="layers" aria-selected="false" tabindex="-1">Why patterns</button>
-      <button class="tab" type="button" role="tab" id="tab-includes" aria-controls="includes" aria-selected="false" tabindex="-1">What’s included</button>
       <button class="tab" type="button" role="tab" id="tab-support" aria-controls="support" aria-selected="false" tabindex="-1">Support targets</button>
+      <button class="tab" type="button" role="tab" id="tab-includes" aria-controls="includes" aria-selected="false" tabindex="-1">What’s included</button>
+      <button class="tab" type="button" role="tab" id="tab-layers" aria-controls="layers" aria-selected="false" tabindex="-1">Why patterns</button>
     </div>
   </div>
 
-  <section class="doc-section is-wide tab-panel" id="example" role="tabpanel" aria-labelledby="tab-example" tabindex="0" hidden>
+  <section class="doc-section is-wide tab-panel" id="example" role="tabpanel" aria-labelledby="tab-example" tabindex="0">
     <h2 class="sr-only" id="h-example">Live example</h2>
     <p>Four patterns working together: a filter bar, a sortable data table, bulk actions, and a details sheet. Choose a requester’s name to open the sheet; the table narrows to make room. Use only the keyboard, or turn on your screen reader. The strip under the example shows what gets announced.</p>
     <div class="preview" data-demo="filters bulk sheet" data-heading="3">
@@ -990,10 +996,10 @@
         <section aria-labelledby="h-ov-focus">
           <h3 id="h-ov-focus">Each pattern’s page has the details</h3>
           <ul class="a11y-list">
-            <li><a href="#data-table">Data table</a>: sorting, row headers, and the caption count.</li>
-            <li><a href="#filter-bar">Filter bar</a>: when the result count is announced.</li>
             <li><a href="#bulk-actions">Bulk actions</a>: where focus stays after an action, and Undo.</li>
+            <li><a href="#data-table">Data table</a>: sorting, row headers, and the caption count.</li>
             <li><a href="#details-sheet">Details sheet</a>: moving focus in and out without trapping it.</li>
+            <li><a href="#filter-bar">Filter bar</a>: when the result count is announced.</li>
           </ul>
         </section>
       </div>
@@ -1024,93 +1030,93 @@
     </div>
   </section>
 
-  <section class="doc-section tab-panel" id="patterns" role="tabpanel" aria-labelledby="tab-patterns" tabindex="0">
+  <section class="doc-section tab-panel" id="patterns" role="tabpanel" aria-labelledby="tab-patterns" tabindex="0" hidden>
     <h2 class="sr-only" id="h-patterns">Patterns</h2>
     <p>The first set covers the screens enterprise teams build most: finding records, acting on many at once, and moving through long tasks.</p>
     <ul class="gallery">
-      <li data-thumb="data-table"><a class="gallery-item" href="#data-table">
-        <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="20" y="10" width="140" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M20.6 10.6h138.8v12.4H20.6z" fill="url(#mono-dots)"/><path d="M20 23H160" stroke="currentColor" stroke-width="1.2"/><path d="M20 35H160M20 47H160M20 59H160" stroke="var(--rule-strong)" stroke-width="1"/><path d="M30 29H72M30 41H62M30 53H76M30 64.5H58" stroke="currentColor" stroke-width="2"/><path d="M104 29H134M104 41H126M104 53H140M104 64.5H120" stroke="var(--rule-strong)" stroke-width="2"/></svg>
-        <span class="gallery-head"><strong>Data table</strong><span class="status-tag is-live">Live</span></span>
-        <p>Sortable columns, row headers, and a caption that counts results.</p>
-      </a></li>
-      <li data-thumb="filter-bar"><a class="gallery-item" href="#filter-bar">
-        <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="20" y="14" width="74" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="30" cy="22" r="3.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M38 22H72" stroke="var(--rule-strong)" stroke-width="2"/><rect x="100" y="14" width="26" height="16" rx="3" fill="currentColor"/><rect x="130" y="14" width="30" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M20 44H160M20 56H160M20 68H160" stroke="var(--rule-strong)" stroke-width="1"/><path d="M20 50H84M20 62H70" stroke="currentColor" stroke-width="2"/></svg>
-        <span class="gallery-head"><strong>Filter bar</strong><span class="status-tag is-live">Live</span></span>
-        <p>Search and facets with counts, announced after you pause.</p>
-      </a></li>
       <li data-thumb="bulk-actions"><a class="gallery-item" href="#bulk-actions">
         <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="22" y="10" width="9" height="9" rx="1.5" fill="currentColor"/><rect x="22" y="24" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="22" y="38" width="9" height="9" rx="1.5" fill="currentColor"/><path d="M40 14.5H120M40 28.5H104M40 42.5H128" stroke="var(--rule-strong)" stroke-width="2"/><rect x="20" y="54" width="140" height="18" rx="3" fill="url(#mono-diag)" stroke="currentColor" stroke-width="1.2"/><rect x="112" y="58" width="20" height="10" rx="2" fill="currentColor"/><rect x="135" y="58" width="20" height="10" rx="2" style="fill:var(--bg)" stroke="currentColor" stroke-width="1.2"/></svg>
         <span class="gallery-head"><strong>Bulk actions</strong><span class="status-tag is-live">Live</span></span>
         <p>Select many, act once, undo, and keep focus where it was.</p>
-      </a></li>
-      <li data-thumb="details-sheet"><a class="gallery-item" href="#details-sheet">
-        <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="20" y="10" width="50" height="14" rx="2" fill="currentColor"/><path d="M26 34H62M26 46H56M26 58H64" stroke="var(--rule-strong)" stroke-width="2"/><rect x="78" y="10" width="82" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M88 22H130" stroke="currentColor" stroke-width="2.5"/><path d="M88 36H150M88 46H142M88 56H120" stroke="var(--rule-strong)" stroke-width="2"/></svg>
-        <span class="gallery-head"><strong>Details sheet</strong><span class="status-tag is-live">Live</span></span>
-        <p>Choose a row and its details open beside the table, which narrows to make room.</p>
-      </a></li>
-      <li data-thumb="multi-step-form"><a class="gallery-item" href="#multi-step-form">
-        <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M47 20H83M97 20H133" stroke="var(--rule-strong)" stroke-width="2"/><circle cx="40" cy="20" r="7" fill="currentColor"/><circle cx="90" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="140" cy="20" r="7" fill="none" stroke="var(--rule-strong)" stroke-width="1.5"/><rect x="30" y="38" width="120" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="30" y="56" width="76" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
-        <span class="gallery-head"><strong>Multi-step form</strong><span class="status-tag is-live">Live</span></span>
-        <p>Step progress, saved drafts, and one error summary per step.</p>
       </a></li>
       <li data-thumb="command-palette"><a class="gallery-item" href="#command-palette">
         <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="36" y="6" width="108" height="68" rx="4" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M36 22H144" stroke="currentColor" stroke-width="1.2"/><path d="M46 14H90" stroke="var(--rule-strong)" stroke-width="2"/><rect x="40" y="28" width="100" height="12" rx="2" fill="url(#mono-diag)" stroke="currentColor" stroke-width="1"/><path d="M48 50H110M48 62H96" stroke="var(--rule-strong)" stroke-width="2"/></svg>
         <span class="gallery-head"><strong>Command palette</strong><span class="status-tag is-live">Live</span></span>
         <p>Search across actions and pages, with the active option announced.</p>
       </a></li>
+      <li data-thumb="data-table"><a class="gallery-item" href="#data-table">
+        <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="20" y="10" width="140" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M20.6 10.6h138.8v12.4H20.6z" fill="url(#mono-dots)"/><path d="M20 23H160" stroke="currentColor" stroke-width="1.2"/><path d="M20 35H160M20 47H160M20 59H160" stroke="var(--rule-strong)" stroke-width="1"/><path d="M30 29H72M30 41H62M30 53H76M30 64.5H58" stroke="currentColor" stroke-width="2"/><path d="M104 29H134M104 41H126M104 53H140M104 64.5H120" stroke="var(--rule-strong)" stroke-width="2"/></svg>
+        <span class="gallery-head"><strong>Data table</strong><span class="status-tag is-live">Live</span></span>
+        <p>Sortable columns, row headers, and a caption that counts results.</p>
+      </a></li>
       <li data-thumb="destructive-confirm"><a class="gallery-item" href="#destructive-confirm">
         <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="44" y="10" width="92" height="60" rx="4" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M54 24H104" stroke="currentColor" stroke-width="2.5"/><path d="M54 36H124M54 44H110" stroke="var(--rule-strong)" stroke-width="2"/><rect x="72" y="52" width="26" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="102" y="52" width="26" height="11" rx="2" fill="currentColor"/></svg>
         <span class="gallery-head"><strong>Destructive confirm</strong><span class="status-tag is-live">Live</span></span>
         <p>Dialogs that name what will be lost and open on the safe choice.</p>
       </a></li>
-      <li data-thumb="notifications"><a class="gallery-item" href="#notifications">
-        <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="62" y="8" width="96" height="18" rx="3" fill="none" stroke="var(--rule-strong)" stroke-width="1.2"/><rect x="56" y="30" width="102" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="50" y="52" width="108" height="20" rx="3" fill="url(#mono-dots)" stroke="currentColor" stroke-width="1.2"/><path d="M64 39H120" stroke="currentColor" stroke-width="2"/></svg>
-        <span class="gallery-head"><strong>Notifications</strong><span class="status-tag is-live">Live</span></span>
-        <p>Toasts and banners that announce once and wait for slow readers.</p>
+      <li data-thumb="details-sheet"><a class="gallery-item" href="#details-sheet">
+        <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="20" y="10" width="50" height="14" rx="2" fill="currentColor"/><path d="M26 34H62M26 46H56M26 58H64" stroke="var(--rule-strong)" stroke-width="2"/><rect x="78" y="10" width="82" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M88 22H130" stroke="currentColor" stroke-width="2.5"/><path d="M88 36H150M88 46H142M88 56H120" stroke="var(--rule-strong)" stroke-width="2"/></svg>
+        <span class="gallery-head"><strong>Details sheet</strong><span class="status-tag is-live">Live</span></span>
+        <p>Choose a row and its details open beside the table, which narrows to make room.</p>
       </a></li>
       <li data-thumb="states"><a class="gallery-item" href="#states">
         <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="20" y="10" width="140" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 4"/><circle cx="90" cy="32" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M84 38l12-12" stroke="currentColor" stroke-width="1.5"/><path d="M62 52H118" stroke="currentColor" stroke-width="2"/><path d="M72 60H108" stroke="var(--rule-strong)" stroke-width="2"/></svg>
         <span class="gallery-head"><strong>Empty, loading, error</strong><span class="status-tag is-live">Live</span></span>
         <p>Every state written and announced, with a next step in each.</p>
       </a></li>
+      <li data-thumb="filter-bar"><a class="gallery-item" href="#filter-bar">
+        <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="20" y="14" width="74" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="30" cy="22" r="3.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M38 22H72" stroke="var(--rule-strong)" stroke-width="2"/><rect x="100" y="14" width="26" height="16" rx="3" fill="currentColor"/><rect x="130" y="14" width="30" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M20 44H160M20 56H160M20 68H160" stroke="var(--rule-strong)" stroke-width="1"/><path d="M20 50H84M20 62H70" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="gallery-head"><strong>Filter bar</strong><span class="status-tag is-live">Live</span></span>
+        <p>Search and facets with counts, announced after you pause.</p>
+      </a></li>
+      <li data-thumb="multi-step-form"><a class="gallery-item" href="#multi-step-form">
+        <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M47 20H83M97 20H133" stroke="var(--rule-strong)" stroke-width="2"/><circle cx="40" cy="20" r="7" fill="currentColor"/><circle cx="90" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="140" cy="20" r="7" fill="none" stroke="var(--rule-strong)" stroke-width="1.5"/><rect x="30" y="38" width="120" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="30" y="56" width="76" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span class="gallery-head"><strong>Multi-step form</strong><span class="status-tag is-live">Live</span></span>
+        <p>Step progress, saved drafts, and one error summary per step.</p>
+      </a></li>
+      <li data-thumb="notifications"><a class="gallery-item" href="#notifications">
+        <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="62" y="8" width="96" height="18" rx="3" fill="none" stroke="var(--rule-strong)" stroke-width="1.2"/><rect x="56" y="30" width="102" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="50" y="52" width="108" height="20" rx="3" fill="url(#mono-dots)" stroke="currentColor" stroke-width="1.2"/><path d="M64 39H120" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="gallery-head"><strong>Notifications</strong><span class="status-tag is-live">Live</span></span>
+        <p>Toasts and banners that announce once and wait for slow readers.</p>
+      </a></li>
     </ul>
     <h3 style="margin-top:56px">For admins</h3>
     <p class="note" style="margin:0 0 20px">Screens for the people who run the organization’s account: who did what, what it costs, and whether it’s compliant.</p>
     <ul class="gallery">
+      <li data-thumb="assets"><a class="gallery-item" href="#assets">
+        <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M22.5 13.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M36 15H90" stroke="currentColor" stroke-width="2.5"/><path d="M20 24H160M20 38H160M20 52H160M20 66H160" stroke="var(--rule-strong)" stroke-width="1"/><path d="M44 31H98M44 45H86M44 59H104" stroke="currentColor" stroke-width="1.8"/><path d="M128 31H156M128 45H156M128 59H150" stroke="var(--rule-strong)" stroke-width="2"/><path d="M24 70.5l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M36 73.5H80" stroke="currentColor" stroke-width="2.5"/></svg>
+        <span class="gallery-head"><strong>Asset inventory</strong><span class="status-tag is-live">Live</span></span>
+        <p>Devices, licenses, and integrations, grouped by type with owners.</p>
+      </a></li>
       <li data-thumb="audit-log"><a class="gallery-item" href="#audit-log">
         <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M20 12H160M20 28H160M20 44H160M20 60H160M20 76H160" stroke="var(--rule-strong)" stroke-width="1"/><path d="M24 17l3 3-3 3M22.5 34.5l3 3 3-3M24 49l3 3-3 3M24 65l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M36 20H54M36 36H54M36 52H54M36 68H54" stroke="var(--rule-strong)" stroke-width="2"/><path d="M62 20H112M62 36H100M62 52H118M62 68H96" stroke="currentColor" stroke-width="2"/><circle cx="150" cy="20" r="4" fill="currentColor"/><circle cx="150" cy="36" r="4" fill="currentColor"/><circle cx="150" cy="52" r="3.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M147.4 54.6l5.2-5.2" stroke="currentColor" stroke-width="1.3"/><circle cx="150" cy="68" r="4" fill="currentColor"/></svg>
         <span class="gallery-head"><strong>Audit log</strong><span class="status-tag is-live">Live</span></span>
         <p>Who did what, and when. Each event expands to show what changed.</p>
-      </a></li>
-      <li data-thumb="usage-caps"><a class="gallery-item" href="#usage-caps">
-        <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M20 14H70" stroke="currentColor" stroke-width="6"/><rect x="20" y="26" width="140" height="9" rx="2" fill="var(--rule)"/><rect x="20" y="26" width="102" height="9" rx="2" fill="currentColor"/><rect x="122" y="26" width="24" height="9" fill="url(#mono-diag)" stroke="currentColor" stroke-width=".8"/><path d="M146 22V39" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"/><path d="M20 54H46M20 68H40" stroke="var(--rule-strong)" stroke-width="2"/><rect x="60" y="51" width="100" height="6" rx="1.5" fill="var(--rule)"/><rect x="60" y="51" width="78" height="6" rx="1.5" fill="currentColor"/><rect x="60" y="65" width="100" height="6" rx="1.5" fill="url(#mono-diag)" stroke="currentColor" stroke-width=".8"/></svg>
-        <span class="gallery-head"><strong>Usage caps</strong><span class="status-tag is-live">Live</span></span>
-        <p>AI tokens, uploads, storage, and more against monthly caps, by team.</p>
       </a></li>
       <li data-thumb="compliance"><a class="gallery-item" href="#compliance">
         <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M20 28H160M20 44H160M20 60H160" stroke="var(--rule-strong)" stroke-width="1"/><circle cx="28" cy="20" r="4.5" fill="currentColor"/><circle cx="28" cy="36" r="4" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M25 39l6-6" stroke="currentColor" stroke-width="1.3"/><path d="M28 47.5l4.5 8h-9z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="28" cy="68" r="4.5" fill="currentColor"/><path d="M42 20H104M42 36H92M42 52H112M42 68H86" stroke="currentColor" stroke-width="2"/><path d="M130 20H158M130 36H158M130 52H158M130 68H158" stroke="var(--rule-strong)" stroke-width="2"/></svg>
         <span class="gallery-head"><strong>Compliance overview</strong><span class="status-tag is-live">Live</span></span>
         <p>Controls by framework, what’s failing, and which evidence is due.</p>
       </a></li>
-      <li data-thumb="reports"><a class="gallery-item" href="#reports">
-        <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="52" y="6" width="76" height="68" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M62 18H104" stroke="currentColor" stroke-width="2.5"/><path d="M62 26H116" stroke="var(--rule-strong)" stroke-width="2"/><rect x="64" y="44" width="10" height="20" fill="currentColor"/><rect x="80" y="34" width="10" height="30" fill="url(#mono-diag)" stroke="currentColor" stroke-width="1"/><rect x="96" y="50" width="10" height="14" fill="url(#mono-dots)" stroke="currentColor" stroke-width="1"/><path d="M60 64.5H120" stroke="var(--rule-strong)" stroke-width="1"/></svg>
-        <span class="gallery-head"><strong>Reports</strong><span class="status-tag is-live">Live</span></span>
-        <p>Scheduled and on-demand reports, each with a summary and data table.</p>
-      </a></li>
-      <li data-thumb="assets"><a class="gallery-item" href="#assets">
-        <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M22.5 13.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M36 15H90" stroke="currentColor" stroke-width="2.5"/><path d="M20 24H160M20 38H160M20 52H160M20 66H160" stroke="var(--rule-strong)" stroke-width="1"/><path d="M44 31H98M44 45H86M44 59H104" stroke="currentColor" stroke-width="1.8"/><path d="M128 31H156M128 45H156M128 59H150" stroke="var(--rule-strong)" stroke-width="2"/><path d="M24 70.5l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M36 73.5H80" stroke="currentColor" stroke-width="2.5"/></svg>
-        <span class="gallery-head"><strong>Asset inventory</strong><span class="status-tag is-live">Live</span></span>
-        <p>Devices, licenses, and integrations, grouped by type with owners.</p>
-      </a></li>
       <li data-thumb="configuration"><a class="gallery-item" href="#configuration">
         <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M20 14H70" stroke="currentColor" stroke-width="2.5"/><path d="M20 30H160M20 52H160" stroke="var(--rule-strong)" stroke-width="1"/><path d="M20 40H92M20 62H84" stroke="currentColor" stroke-width="2"/><path d="M20 46H110M20 68H100" stroke="var(--rule-strong)" stroke-width="1.6"/><rect x="132" y="36" width="26" height="14" rx="7" fill="currentColor"/><circle cx="151" cy="43" r="5" style="fill:var(--bg)"/><rect x="132" y="58" width="26" height="14" rx="7" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="139" cy="65" r="4.5" fill="currentColor"/></svg>
         <span class="gallery-head"><strong>Configuration</strong><span class="status-tag is-live">Live</span></span>
         <p>Settings in sections that say who they affect and log every change.</p>
       </a></li>
+      <li data-thumb="reports"><a class="gallery-item" href="#reports">
+        <svg viewBox="0 0 180 80" aria-hidden="true"><rect x="52" y="6" width="76" height="68" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M62 18H104" stroke="currentColor" stroke-width="2.5"/><path d="M62 26H116" stroke="var(--rule-strong)" stroke-width="2"/><rect x="64" y="44" width="10" height="20" fill="currentColor"/><rect x="80" y="34" width="10" height="30" fill="url(#mono-diag)" stroke="currentColor" stroke-width="1"/><rect x="96" y="50" width="10" height="14" fill="url(#mono-dots)" stroke="currentColor" stroke-width="1"/><path d="M60 64.5H120" stroke="var(--rule-strong)" stroke-width="1"/></svg>
+        <span class="gallery-head"><strong>Reports</strong><span class="status-tag is-live">Live</span></span>
+        <p>Scheduled and on-demand reports, each with a summary and data table.</p>
+      </a></li>
       <li data-thumb="roles"><a class="gallery-item" href="#roles">
         <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M74 12H90M100 12H116M126 12H142" stroke="currentColor" stroke-width="2"/><path d="M20 30H58M20 48H52M20 66H60" stroke="currentColor" stroke-width="2"/><path d="M20 21H160M20 39H160M20 57H160" stroke="var(--rule-strong)" stroke-width="1"/><rect x="78" y="25" width="9" height="9" rx="1.5" fill="currentColor"/><rect x="104" y="25" width="9" height="9" rx="1.5" fill="currentColor"/><rect x="130" y="25" width="9" height="9" rx="1.5" fill="currentColor"/><rect x="78" y="43" width="9" height="9" rx="1.5" fill="currentColor"/><rect x="104" y="43" width="9" height="9" rx="1.5" fill="currentColor"/><rect x="130" y="43" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="78" y="61" width="9" height="9" rx="1.5" fill="currentColor"/><rect x="104" y="61" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="130" y="61" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
         <span class="gallery-head"><strong>Roles and permissions</strong><span class="status-tag is-live">Live</span></span>
         <p>Who can do what, as a readable table with a summary of each role.</p>
+      </a></li>
+      <li data-thumb="usage-caps"><a class="gallery-item" href="#usage-caps">
+        <svg viewBox="0 0 180 80" aria-hidden="true"><path d="M20 14H70" stroke="currentColor" stroke-width="6"/><rect x="20" y="26" width="140" height="9" rx="2" fill="var(--rule)"/><rect x="20" y="26" width="102" height="9" rx="2" fill="currentColor"/><rect x="122" y="26" width="24" height="9" fill="url(#mono-diag)" stroke="currentColor" stroke-width=".8"/><path d="M146 22V39" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"/><path d="M20 54H46M20 68H40" stroke="var(--rule-strong)" stroke-width="2"/><rect x="60" y="51" width="100" height="6" rx="1.5" fill="var(--rule)"/><rect x="60" y="51" width="78" height="6" rx="1.5" fill="currentColor"/><rect x="60" y="65" width="100" height="6" rx="1.5" fill="url(#mono-diag)" stroke="currentColor" stroke-width=".8"/></svg>
+        <span class="gallery-head"><strong>Usage caps</strong><span class="status-tag is-live">Live</span></span>
+        <p>AI tokens, uploads, storage, and more against monthly caps, per person.</p>
       </a></li>
     </ul>
   </section>
@@ -1861,15 +1867,16 @@ export function AccessRequests({ rows, onUpdate }) {
 <section class="panel" id="panel-usage-caps" aria-labelledby="h-usage-caps" hidden>
   <p class="page-kicker">Admin · Live</p>
   <h1 class="page-title" id="h-usage-caps" tabindex="-1">Usage caps</h1>
-  <p class="page-lede">How much of each monthly allowance every team has used, such as AI tokens, document uploads, and storage, and the caps that limit them. Show one usage type, a few, or all of them. Every number is written out, so the meters are never the only way to read them.</p>
+  <p class="page-lede">How much of each monthly allowance every person has used, such as AI tokens, document uploads, and storage, and the caps that limit them. Choose All to see every usage type for each person, or one type to compare everyone on it. Every number is written out, so the meters are never the only way to read them.</p>
 
   <div class="preview" data-demo="usage">
     <div class="details">
       <section aria-labelledby="h-uc-keys">
         <h2 id="h-uc-keys">Keyboard</h2>
         <table class="doc-table key-table"><caption class="sr-only">Keyboard support</caption><tbody>
-          <tr><th scope="row"><kbd>Tab</kbd></th><td>The Show usage filters, then each team’s header and its Edit cap buttons.</td></tr>
-          <tr><th scope="row"><kbd>Space</kbd> <kbd>Enter</kbd></th><td>On a filter, show or hide that usage type; All shows every type. On a team, expand or collapse it.</td></tr>
+          <tr><th scope="row"><kbd>Tab</kbd></th><td>The selected usage tab, then each person’s header and Edit cap buttons.</td></tr>
+          <tr><th scope="row"><kbd>←</kbd> <kbd>→</kbd></th><td>Move between usage tabs. <kbd>Home</kbd> and <kbd>End</kbd> jump to the first or last.</td></tr>
+          <tr><th scope="row"><kbd>Space</kbd> <kbd>Enter</kbd></th><td>On a person, expand or collapse their usage.</td></tr>
           <tr><th scope="row"><kbd>Enter</kbd></th><td>On Edit cap, open the cap field. In the field, save.</td></tr>
           <tr><th scope="row"><kbd>Esc</kbd></th><td>Cancel editing and return to Edit cap.</td></tr>
         </tbody></table>
@@ -1877,10 +1884,10 @@ export function AccessRequests({ rows, onUpdate }) {
       <section aria-labelledby="h-uc-focus">
         <h2 id="h-uc-focus">Focus and announcements</h2>
         <ul class="a11y-list">
-          <li>Usage types are toggle buttons in a labeled “Show usage” group. At least one always stays on.</li>
-          <li>Changing the filter announces what’s showing: “Showing AI tokens and Storage.”</li>
-          <li>Each team is a row group. Its header button says how many usages are near or at cap, and whether the group is expanded.</li>
-          <li>Nested rows are named by usage type, and Edit cap names both: “Edit AI tokens cap for Command.”</li>
+          <li>Usage types are tabs, listed alphabetically after All. The selected tab is announced, and the table caption names the view.</li>
+          <li>All nests every usage type under each person. A single type shows one row per person, with their department.</li>
+          <li>In All, each person is a row group. Its header button gives their name and email and says whether it’s expanded; their department and how many usages are near or at cap follow.</li>
+          <li>Edit cap names the usage and the person: “Edit AI tokens cap for Leia Organa.”</li>
           <li>Meters are hidden from screen readers; used, cap, and percent say the same thing in words.</li>
           <li>Status is “Under cap,” “Near cap,” or “At cap, paused,” each with its own shape.</li>
           <li>A cap below what’s already used asks for a second Save. Saving returns focus to Edit cap.</li>
@@ -1902,11 +1909,11 @@ export function AccessRequests({ rows, onUpdate }) {
     { id: "uploads", name: "Doc uploads", unit: { one: "file", other: "files" } },
     { id: "storage", name: "Storage", unit: { one: "GB", other: "GB" } },
   ]}
-  groups={teams} // [{ id, name, usage: { tokens: { used, cap }, ... } }]
-  defaultShown={["tokens", "uploads"]}
+  people={people} // [{ id, name, email, department, usage: { tokens: { used, cap }, ... } }]
+  defaultTab="all"
   thresholds={{ near: 0.9 }}
   forecast // projects month-end use from the pace so far
-  onCapChange={(groupId, typeId, cap) =&gt; saveCap(groupId, typeId, cap)}
+  onCapChange={(personId, typeId, cap) =&gt; saveCap(personId, typeId, cap)}
 /&gt;</code></pre>
     </div>
   </section>
@@ -1917,13 +1924,13 @@ export function AccessRequests({ rows, onUpdate }) {
       <caption class="sr-only">UsageCaps props</caption>
       <thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">Description</th></tr></thead>
       <tbody>
-        <tr><td><code>types</code></td><td><code class="type">{ id, name, unit }[]</code></td><td>What’s counted, such as AI tokens, uploads, storage, API requests, or automation runs.</td></tr>
-        <tr><td><code>groups</code></td><td><code class="type">{ id, name, usage }[]</code></td><td>Teams, projects, or API keys. <code>usage</code> holds <code>{ used, cap }</code> for each type.</td></tr>
-        <tr><td><code>defaultShown</code></td><td><code class="type">string[]</code></td><td>Which types show first. Defaults to all of them.</td></tr>
+        <tr><td><code>types</code></td><td><code class="type">{ id, name, unit }[]</code></td><td>What’s counted, such as AI tokens, uploads, storage, API requests, or automation runs. Tabs list them alphabetically.</td></tr>
+        <tr><td><code>people</code></td><td><code class="type">{ id, name, email, department, usage }[]</code></td><td>Shown alphabetically by name. <code>usage</code> holds <code>{ used, cap }</code> for each type.</td></tr>
+        <tr><td><code>defaultTab</code></td><td><code class="type">"all" | string</code></td><td>Which tab opens first. Default <code>"all"</code>.</td></tr>
         <tr><td><code>period</code></td><td><code class="type">{ label, resetsOn }</code></td><td>The billing period and when usage resets.</td></tr>
         <tr><td><code>thresholds</code></td><td><code class="type">{ near }</code></td><td>Share of a cap that counts as “Near cap.” Default <code>0.9</code>.</td></tr>
         <tr><td><code>forecast</code></td><td><code class="type">boolean</code></td><td>Shows projected month-end use as a hatched segment and in words.</td></tr>
-        <tr><td><code>onCapChange</code></td><td><code class="type">(groupId, typeId, cap) =&gt; Promise</code></td><td>Adds Edit cap to each nested row. Without it, caps are read only.</td></tr>
+        <tr><td><code>onCapChange</code></td><td><code class="type">(groupId, typeId, cap) =&gt; Promise</code></td><td>Adds Edit cap to each row. Without it, caps are read only.</td></tr>
       </tbody>
     </table></div>
   </section>
@@ -1934,13 +1941,13 @@ export function AccessRequests({ rows, onUpdate }) {
       <caption class="sr-only">Usage caps states</caption>
       <thead><tr><th scope="col">State</th><th scope="col">What people see</th><th scope="col">What’s announced</th></tr></thead>
       <tbody>
-        <tr><th scope="row">Filtered</th><td>Only the chosen usage types, in the cards and in each team.</td><td>“Showing AI tokens and Storage.”</td></tr>
-        <tr><th scope="row">Last type turned off</th><td>Nothing changes.</td><td>“Keep at least one usage type shown.”</td></tr>
-        <tr><th scope="row">Near cap</th><td>A triangle and “Near cap,” and the team header counts it.</td><td>Nothing; admins can opt in to an email.</td></tr>
+        <tr><th scope="row">All</th><td>Every usage type nested under each person, and a card per type.</td><td>The tab: “All, tab, selected, 1 of 6.”</td></tr>
+        <tr><th scope="row">One usage type</th><td>One row per person with their department, and one card.</td><td>The tab: “AI tokens, tab, selected, 2 of 6.”</td></tr>
+        <tr><th scope="row">Near cap</th><td>A triangle and “Near cap,” and the person’s header counts it in All.</td><td>Nothing; admins can opt in to an email.</td></tr>
         <tr><th scope="row">At cap</th><td>A hatched meter, a square, and “At cap, paused.”</td><td>Nothing on this page; people on that team see a banner in the product.</td></tr>
         <tr><th scope="row">Invalid cap</th><td>The field is marked and the message says what to enter.</td><td>“Enter a whole number of tokens, such as 400000.”</td></tr>
         <tr><th scope="row">Cap below usage</th><td>A warning and a second Save.</td><td>The warning text.</td></tr>
-        <tr><th scope="row">Saved</th><td>The row and cards update, with a success message above the table.</td><td>“Command AI tokens cap set to 450,000 tokens. 69% used.”</td></tr>
+        <tr><th scope="row">Saved</th><td>The row and cards update, with a success message above the table.</td><td>“Leia Organa’s AI tokens cap set to 200,000 tokens. 39% used.”</td></tr>
       </tbody>
     </table></div>
   </section>
@@ -2313,7 +2320,7 @@ export function AccessRequests({ rows, onUpdate }) {
     function renderChips() {
       if (!chips) return;
       const base = rows.filter(matchesQuery);
-      const opts = [["all", "All", base.length]].concat(Object.keys(STATUS).map(k => [k, STATUS[k].label, base.filter(r => r.status === k).length]));
+      const opts = [["all", "All", base.length]].concat(Object.keys(STATUS).sort((a, b) => STATUS[a].label.localeCompare(STATUS[b].label)).map(k => [k, STATUS[k].label, base.filter(r => r.status === k).length]));
       const focused = chips.contains(document.activeElement) ? document.activeElement.dataset.status : null;
       chips.innerHTML = opts.map(([key, label, count]) =>
         `<button class="chip" type="button" data-status="${key}" aria-pressed="${state.status === key}">${label}<span class="count">${count}</span></button>`).join("");
@@ -2629,7 +2636,7 @@ export function AccessRequests({ rows, onUpdate }) {
       </div>`;
   const CHEVRON = '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const fmtNum = v => v.toLocaleString("en-US");
-  const fmtCompact = v => new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 2 }).format(v);
+  const fmtCompact = v => new Intl.NumberFormat("en-US", { notation: "compact", maximumSignificantDigits: 3 }).format(v);
 
   // Mirrors focus into the "Screen reader hears" strip and returns this example's announce().
   function attachHears(root) {
@@ -2661,7 +2668,11 @@ export function AccessRequests({ rows, onUpdate }) {
       const table = el.closest("table");
       if (entering(table) && table.caption) parts.push(`table, ${table.caption.textContent.replace(/\s+/g, " ").trim()}`);
       const name = nameOf(el), role = el.getAttribute("role");
-      if (role === "switch") parts.push(name, "switch", el.getAttribute("aria-checked") === "true" ? "on" : "off");
+      if (role === "tab") {
+        const all = [...el.closest('[role="tablist"]').querySelectorAll('[role="tab"]')];
+        parts.push(name, "tab", el.getAttribute("aria-selected") === "true" ? "selected" : "", `${all.indexOf(el) + 1} of ${all.length}`);
+      }
+      else if (role === "switch") parts.push(name, "switch", el.getAttribute("aria-checked") === "true" ? "on" : "off");
       else if (role === "combobox") {
         const shown = el.tagName === "INPUT" ? el.value : (el.querySelector(".cs-value") || el).textContent.trim();
         parts.push(name, "combo box", shown || "blank");
@@ -2942,83 +2953,87 @@ export function AccessRequests({ rows, onUpdate }) {
     at:    { label: "At cap, paused", icon: '<rect x="1.5" y="1.5" width="11" height="11" rx="1.5" fill="currentColor"/>' },
   };
 
+  const byName = (a, b) => a.name.localeCompare(b.name);
   const USAGE_TYPES = [
     { id: "tokens",  name: "AI tokens",       unit: ["token", "tokens"] },
-    { id: "uploads", name: "Doc uploads",     unit: ["file", "files"] },
-    { id: "storage", name: "Storage",         unit: ["GB", "GB"] },
     { id: "api",     name: "API requests",    unit: ["request", "requests"] },
     { id: "runs",    name: "Automation runs", unit: ["run", "runs"] },
-  ];
-  const USAGE = [
-    { id: "command",      name: "Command",      use: { tokens: [312000, 400000], uploads: [182, 500], storage: [38, 50],   api: [41000, 100000],  runs: [640, 1000] } },
-    { id: "intelligence", name: "Intelligence", use: { tokens: [588000, 600000], uploads: [461, 500], storage: [49, 50],   api: [96000, 100000],  runs: [210, 1000] } },
-    { id: "engineering",  name: "Engineering",  use: { tokens: [410000, 500000], uploads: [120, 300], storage: [120, 200], api: [250000, 250000], runs: [1890, 2000] } },
-    { id: "logistics",    name: "Logistics",    use: { tokens: [250000, 250000], uploads: [75, 200],  storage: [12, 50],   api: [8000, 50000],    runs: [300, 300] } },
-  ];
+    { id: "uploads", name: "Doc uploads",     unit: ["file", "files"] },
+    { id: "storage", name: "Storage",         unit: ["GB", "GB"] },
+  ].sort(byName);
+  const USAGE_PEOPLE = [
+    { id: "bodhi",   name: "Bodhi Rook",     dept: "Logistics",    use: { tokens: [42000, 100000],  api: [1200, 10000],  runs: [95, 100],  uploads: [12, 50], storage: [4, 10] } },
+    { id: "cassian", name: "Cassian Andor",  dept: "Intelligence", use: { tokens: [97000, 100000],  api: [8800, 10000],  runs: [20, 100],  uploads: [48, 50], storage: [9, 10] } },
+    { id: "hera",    name: "Hera Syndulla",  dept: "Command",      use: { tokens: [61000, 100000],  api: [10000, 10000], runs: [44, 100],  uploads: [20, 50], storage: [3, 10] } },
+    { id: "jyn",     name: "Jyn Erso",       dept: "Intelligence", use: { tokens: [100000, 100000], api: [2400, 10000],  runs: [12, 100],  uploads: [31, 50], storage: [10, 10] } },
+    { id: "leia",    name: "Leia Organa",    dept: "Command",      use: { tokens: [78000, 150000],  api: [5100, 20000],  runs: [130, 200], uploads: [44, 50], storage: [6, 20] } },
+    { id: "poe",     name: "Poe Dameron",    dept: "Engineering",  use: { tokens: [23000, 100000],  api: [600, 10000],   runs: [100, 100], uploads: [5, 50],  storage: [2, 10] } },
+    { id: "rose",    name: "Rose Tico",      dept: "Engineering",  use: { tokens: [91000, 100000],  api: [9400, 10000],  runs: [88, 100],  uploads: [50, 50], storage: [7, 10] } },
+    { id: "wedge",   name: "Wedge Antilles", dept: "Logistics",    use: { tokens: [15000, 100000],  api: [300, 10000],   runs: [8, 100],   uploads: [9, 50],  storage: [1, 10] } },
+  ].map(u => ({ ...u, email: u.name.toLowerCase().replace(/\s+/g, ".") + "@rebellion.example" })).sort(byName);
 
   function createUsageDemo(root, n) {
     const p = "usage" + n;
-    const teams = USAGE.map(t => ({ ...t, use: Object.fromEntries(Object.entries(t.use).map(([k, v]) => [k, { used: v[0], cap: v[1] }])) }));
-    const state = { shown: new Set(USAGE_TYPES.map(t => t.id)), closed: new Set(), editing: null };
+    const people = USAGE_PEOPLE.map(u => ({ ...u, use: Object.fromEntries(Object.entries(u.use).map(([k, v]) => [k, { used: v[0], cap: v[1] }])) }));
+    // "all" shows every usage type nested under each person; a single type flattens to one row per person.
+    const TABS = [{ id: "all", name: "All" }].concat(USAGE_TYPES);
+    const state = { tab: "all", closed: new Set(), editing: null };
     const typeOf = id => USAGE_TYPES.find(t => t.id === id);
     const share = u => u.cap ? u.used / u.cap : 1;
     const pctOf = u => Math.round(share(u) * 100);
     const statusOf = u => share(u) >= 1 ? "at" : share(u) >= NEAR ? "near" : "under";
-    const unitWord = (type, v) => type.unit[v === 1 ? 0 : 1];
-    const fmtFull = (type, v) => `${fmtNum(v)} ${unitWord(type, v)}`;
+    const fmtFull = (type, v) => `${fmtNum(v)} ${type.unit[v === 1 ? 0 : 1]}`;
     const fmtShort = (type, v) => type.id === "storage" ? `${fmtNum(v)} GB` : fmtCompact(v);
-    const shownTypes = () => USAGE_TYPES.filter(t => state.shown.has(t.id));
-    const listWords = w => w.length <= 1 ? w.join("") : w.length === 2 ? `${w[0]} and ${w[1]}` : `${w.slice(0, -1).join(", ")}, and ${w[w.length - 1]}`;
+    const shownTypes = () => state.tab === "all" ? USAGE_TYPES : [typeOf(state.tab)];
 
     root.insertAdjacentHTML("afterbegin", `
       <div class="preview-stage">
         <p class="sample-note">Sample data. Usage resets on November 1.</p>
-        <div class="filter-bar">
-          <div class="chip-group">
-            <span class="group-label" id="${p}-show">Show usage</span>
-            <div class="chips js-chips" role="group" aria-labelledby="${p}-show"></div>
+        <div class="demo-tabs">
+          <div class="tablist js-tablist" role="tablist" aria-label="Usage types">
+            ${TABS.map((t, i) => `<button class="tab" type="button" role="tab" id="${p}-tab-${t.id}" data-tab="${t.id}" aria-controls="${p}-panel" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${t.name}</button>`).join("")}
           </div>
         </div>
-        <ul class="usage-tiles js-tiles"></ul>
-        <ul class="meter-legend" aria-hidden="true" style="margin-bottom:20px">
-          <li><span class="key key-used"></span>Used so far</li>
-          <li><span class="key key-forecast"></span>Forecast to October 31</li>
-          <li><span class="key key-tick"></span>Near cap at ${NEAR * 100}%</li>
-        </ul>
-        <p class="message is-success is-compact js-saved" hidden style="margin-bottom:12px">${SUCCESS_ICON}<span></span></p>
-        <div class="grid-frame"><div class="grid-scroll">
-          <table class="data-table usage-table js-table">
-            <caption>Usage by team <span class="js-count"></span></caption>
-            <thead><tr>
-              <th scope="col">Usage</th>
-              <th scope="col" class="num">Used</th>
-              <th scope="col" class="num">Cap</th>
-              <th scope="col">Share of cap</th>
-              <th scope="col">Status</th>
-              <th scope="col"><span class="sr-only">Actions</span></th>
-            </tr></thead>
-          </table>
-        </div></div>
+        <div class="js-tabpanel" id="${p}-panel" role="tabpanel" aria-labelledby="${p}-tab-all">
+          <ul class="usage-tiles js-tiles"></ul>
+          <ul class="meter-legend" aria-hidden="true" style="margin-bottom:20px">
+            <li><span class="key key-used"></span>Used so far</li>
+            <li><span class="key key-forecast"></span>Forecast to October 31</li>
+            <li><span class="key key-tick"></span>Near cap at ${NEAR * 100}%</li>
+          </ul>
+          <p class="message is-success is-compact js-saved" hidden style="margin-bottom:12px">${SUCCESS_ICON}<span></span></p>
+          <div class="grid-frame"><div class="grid-scroll">
+            <table class="data-table usage-table js-table"><caption class="js-caption"></caption><thead></thead></table>
+          </div></div>
+        </div>
         <div class="sr-only js-live" role="status" aria-live="polite"></div>
-      </div>${HEARS_HTML("Show or hide a usage type, or edit a cap.")}`);
+      </div>${HEARS_HTML("Edit a cap to hear the result.")}`);
 
     const q = s => root.querySelector(s);
-    const table = q(".js-table"), chips = q(".js-chips"), saved = q(".js-saved");
+    const table = q(".js-table"), tabs = [...root.querySelectorAll('[role="tab"]')], saved = q(".js-saved");
     const announce = attachHears(root);
-    const meterHTML = (u, big) => `<div class="meter${big ? " meter-lg" : ""}" aria-hidden="true"><span class="meter-fill${statusOf(u) === "at" ? " is-capped" : ""}" style="width:${Math.min(100, share(u) * 100)}%"></span><span class="meter-tick" style="left:${NEAR * 100}%"></span></div>`;
-
-    function renderChips() {
-      const all = state.shown.size === USAGE_TYPES.length;
-      const focused = chips.contains(document.activeElement) ? document.activeElement.dataset.type : null;
-      chips.innerHTML = `<button class="chip" type="button" data-type="all" aria-pressed="${all}">All</button>`
-        + USAGE_TYPES.map(t => `<button class="chip" type="button" data-type="${t.id}" aria-pressed="${state.shown.has(t.id)}">${t.name}</button>`).join("");
-      if (focused) chips.querySelector(`[data-type="${focused}"]`).focus();
+    const meterHTML = u => `<div class="meter" aria-hidden="true"><span class="meter-fill${statusOf(u) === "at" ? " is-capped" : ""}" style="width:${Math.min(100, share(u) * 100)}%"></span><span class="meter-tick" style="left:${NEAR * 100}%"></span></div>`;
+    const statusCell = u => { const st = statusOf(u); return `<span class="status"><svg viewBox="0 0 14 14" aria-hidden="true">${CAP_STATUS[st].icon}</svg>${CAP_STATUS[st].label}</span>`; };
+    const editButton = (person, type, key, editing) => `<button class="btn js-edit" type="button" data-key="${key}" aria-label="Edit ${type.name} cap for ${esc(person.name)}" aria-expanded="${editing}" aria-controls="${p}-edit-${person.id}-${type.id}">Edit cap</button>`;
+    function editRow(person, type, cols) {
+      const u = person.use[type.id], fid = `${p}-cap-${person.id}-${type.id}`;
+      return `<tr class="edit-row" id="${p}-edit-${person.id}-${type.id}" data-person="${person.id}"><td colspan="${cols}">
+        <form class="cap-form js-cap-form" data-key="${person.id}:${type.id}" novalidate>
+          <div class="field">
+            <label for="${fid}">${type.name} cap for ${esc(person.name)}, in ${type.unit[1]} a month</label>
+            <input class="search-input js-cap-input" id="${fid}" type="text" inputmode="numeric" autocomplete="off" value="${u.cap}" aria-describedby="${fid}-msg">
+          </div>
+          <button class="btn btn-primary js-cap-save" type="submit">Save cap</button>
+          <button class="btn js-cap-cancel" type="button">Cancel</button>
+          <p class="field-msg js-cap-msg" id="${fid}-msg">${esc(person.name)} has used ${fmtFull(type, u.used)} so far this month.</p>
+        </form>
+      </td></tr>`;
     }
 
     // One card per shown usage type: the organization's total, a meter, and the month-end forecast in words.
     function renderTiles() {
       q(".js-tiles").innerHTML = shownTypes().map(type => {
-        const used = teams.reduce((s, t) => s + t.use[type.id].used, 0), cap = teams.reduce((s, t) => s + t.use[type.id].cap, 0);
+        const used = people.reduce((s, u) => s + u.use[type.id].used, 0), cap = people.reduce((s, u) => s + u.use[type.id].cap, 0);
         const forecast = Math.round(used * DAYS_IN_MONTH / DAY_OF_MONTH), pct = Math.round(used / cap * 100);
         const left = Math.min(100, used / cap * 100), right = Math.min(100, forecast / cap * 100);
         return `<li class="usage-tile">
@@ -3030,44 +3045,78 @@ export function AccessRequests({ rows, onUpdate }) {
       }).join("");
     }
 
-    // Each team is a row group: a header row that can collapse, then one nested row per shown usage type.
     function renderTable(focusSel) {
-      const types = shownTypes();
-      q(".js-count").textContent = `${teams.length} teams, ${types.length} ${types.length === 1 ? "usage type" : "usage types"}`;
+      const all = state.tab === "all";
+      q(".js-caption").innerHTML = all
+        ? `Usage by person <span>${people.length} people, every usage type</span>`
+        : `${typeOf(state.tab).name} by person <span>${people.length} people</span>`;
       table.querySelectorAll("tbody").forEach(b => b.remove());
-      table.insertAdjacentHTML("beforeend", teams.map(t => {
-        const open = !state.closed.has(t.id);
-        const at = types.filter(ty => statusOf(t.use[ty.id]) === "at").length, near = types.filter(ty => statusOf(t.use[ty.id]) === "near").length;
-        const summary = at || near ? [at && `${at} at cap`, near && `${near} near cap`].filter(Boolean).join(", ") : "All under cap";
-        const head = `<tr class="group-row"><th scope="rowgroup" colspan="6"><button class="group-toggle" type="button" data-team="${t.id}" aria-expanded="${open}">${CHEVRON}${esc(t.name)} <small>${summary}</small></button></th></tr>`;
-        return `<tbody>${head}${types.map(type => {
-          const u = t.use[type.id], st = statusOf(u), key = `${t.id}:${type.id}`, editing = state.editing === key;
-          const row = `<tr data-team="${t.id}"${open ? "" : " hidden"}${editing ? ' class="is-editing"' : ""}>
-            <th scope="row" class="usage-name">${type.name}</th>
-            <td class="num">${fmtNum(u.used)}</td>
-            <td class="num">${fmtNum(u.cap)}</td>
+      if (all) {
+        table.querySelector("thead").innerHTML = `<tr><th scope="col">Usage</th><th scope="col" class="num">Used</th><th scope="col" class="num">Cap</th><th scope="col">Share of cap</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Actions</span></th></tr>`;
+        // Each person is a row group: a header row that can collapse, then one nested row per usage type.
+        table.insertAdjacentHTML("beforeend", people.map(person => {
+          const open = !state.closed.has(person.id);
+          const at = USAGE_TYPES.filter(t => statusOf(person.use[t.id]) === "at").length, near = USAGE_TYPES.filter(t => statusOf(person.use[t.id]) === "near").length;
+          const summary = at || near ? [at && `${at} at cap`, near && `${near} near cap`].filter(Boolean).join(", ") : "All under cap";
+          const head = `<tr class="group-row"><th scope="rowgroup" colspan="6">
+              <button class="group-toggle person-toggle" type="button" data-person="${person.id}" aria-expanded="${open}">${CHEVRON}<span class="person"><span>${esc(person.name)}</span><small>${esc(person.email)}</small></span></button>
+              <span class="person-meta"><span>${esc(person.dept)}</span><span>${summary}</span></span>
+            </th></tr>`;
+          return `<tbody>${head}${USAGE_TYPES.map(type => {
+            const u = person.use[type.id], key = `${person.id}:${type.id}`, editing = state.editing === key;
+            const row = `<tr data-person="${person.id}"${open ? "" : " hidden"}${editing ? ' class="is-editing"' : ""}>
+              <th scope="row" class="usage-name">${type.name}</th>
+              <td class="num">${fmtNum(u.used)}</td><td class="num">${fmtNum(u.cap)}</td>
+              <td><div class="usage-cell">${meterHTML(u)}<span class="pct">${pctOf(u)}%</span></div></td>
+              <td>${statusCell(u)}</td>
+              <td>${editButton(person, type, key, editing)}</td>
+            </tr>`;
+            return editing ? row + editRow(person, type, 6) : row;
+          }).join("")}</tbody>`;
+        }).join(""));
+      } else {
+        const type = typeOf(state.tab);
+        table.querySelector("thead").innerHTML = `<tr><th scope="col">Person</th><th scope="col">Department</th><th scope="col" class="num">Used</th><th scope="col" class="num">Cap</th><th scope="col">Share of cap</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Actions</span></th></tr>`;
+        table.insertAdjacentHTML("beforeend", `<tbody>${people.map(person => {
+          const u = person.use[type.id], key = `${person.id}:${type.id}`, editing = state.editing === key;
+          const row = `<tr${editing ? ' class="is-editing"' : ""}>
+            <th scope="row" class="who">${esc(person.name)}<small>${esc(person.email)}</small></th>
+            <td class="muted">${esc(person.dept)}</td>
+            <td class="num">${fmtNum(u.used)}</td><td class="num">${fmtNum(u.cap)}</td>
             <td><div class="usage-cell">${meterHTML(u)}<span class="pct">${pctOf(u)}%</span></div></td>
-            <td><span class="status"><svg viewBox="0 0 14 14" aria-hidden="true">${CAP_STATUS[st].icon}</svg>${CAP_STATUS[st].label}</span></td>
-            <td><button class="btn js-edit" type="button" data-key="${key}" aria-label="Edit ${type.name} cap for ${esc(t.name)}" aria-expanded="${editing}" aria-controls="${p}-edit-${t.id}-${type.id}">Edit cap</button></td>
+            <td>${statusCell(u)}</td>
+            <td>${editButton(person, type, key, editing)}</td>
           </tr>`;
-          if (!editing) return row;
-          const fid = `${p}-cap-${t.id}-${type.id}`;
-          return row + `<tr class="edit-row" id="${p}-edit-${t.id}-${type.id}" data-team="${t.id}"><td colspan="6">
-            <form class="cap-form js-cap-form" data-key="${key}" novalidate>
-              <div class="field">
-                <label for="${fid}">${type.name} cap for ${esc(t.name)}, in ${type.unit[1]} a month</label>
-                <input class="search-input js-cap-input" id="${fid}" type="text" inputmode="numeric" autocomplete="off" value="${u.cap}" aria-describedby="${fid}-msg">
-              </div>
-              <button class="btn btn-primary js-cap-save" type="submit">Save cap</button>
-              <button class="btn js-cap-cancel" type="button">Cancel</button>
-              <p class="field-msg js-cap-msg" id="${fid}-msg">${esc(t.name)} has used ${fmtFull(type, u.used)} so far this month.</p>
-            </form>
-          </td></tr>`;
-        }).join("")}</tbody>`;
-      }).join(""));
+          return editing ? row + editRow(person, type, 7) : row;
+        }).join("")}</tbody>`);
+      }
       if (focusSel) { const f = table.querySelector(focusSel); if (f) { f.focus(); if (f.select) f.select(); } }
     }
-    const render = focusSel => { renderChips(); renderTiles(); renderTable(focusSel); };
+    const render = focusSel => { renderTiles(); renderTable(focusSel); };
+
+    function selectTab(id, focus) {
+      state.tab = id;
+      state.editing = null;
+      saved.hidden = true;
+      tabs.forEach(t => {
+        const on = t.dataset.tab === id;
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      q(".js-tabpanel").setAttribute("aria-labelledby", `${p}-tab-${id}`);
+      render();
+    }
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => selectTab(t.dataset.tab, false));
+      t.addEventListener("keydown", e => {
+        const moves = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+        if (!(e.key in moves)) return;
+        e.preventDefault();
+        selectTab(tabs[(moves[e.key] + tabs.length) % tabs.length].dataset.tab, true);
+      });
+    });
+
     const closeEditor = () => { const key = state.editing; state.editing = null; renderTable(`.js-edit[data-key="${key}"]`); };
     function setMessage(form, kind, text) {
       const msg = form.querySelector(".js-cap-msg"), input = form.querySelector(".js-cap-input");
@@ -3076,28 +3125,13 @@ export function AccessRequests({ rows, onUpdate }) {
       input.setAttribute("aria-invalid", String(kind === "error"));
       announce(text);
     }
-
-    chips.addEventListener("click", e => {
-      const b = e.target.closest(".chip");
-      if (!b) return;
-      const id = b.dataset.type;
-      if (id === "all") USAGE_TYPES.forEach(t => state.shown.add(t.id));
-      else if (state.shown.has(id)) {
-        if (state.shown.size === 1) { announce("Keep at least one usage type shown."); return; }
-        state.shown.delete(id);
-      } else state.shown.add(id);
-      if (state.editing && !state.shown.has(state.editing.split(":")[1])) state.editing = null;
-      render();
-      const names = shownTypes().map(t => t.name);
-      announce(names.length === USAGE_TYPES.length ? "Showing all usage types." : `Showing ${listWords(names)}.`);
-    });
     table.addEventListener("click", e => {
-      const g = e.target.closest(".group-toggle");
+      const g = e.target.closest(".person-toggle");
       if (g) {
-        const id = g.dataset.team, open = state.closed.has(id);
+        const id = g.dataset.person, open = state.closed.has(id);
         open ? state.closed.delete(id) : state.closed.add(id);
         g.setAttribute("aria-expanded", String(open));
-        table.querySelectorAll(`tr[data-team="${id}"]`).forEach(tr => { tr.hidden = !open; });
+        table.querySelectorAll(`tr[data-person="${id}"]`).forEach(tr => { tr.hidden = !open; });
         return;
       }
       const edit = e.target.closest(".js-edit");
@@ -3120,8 +3154,8 @@ export function AccessRequests({ rows, onUpdate }) {
     });
     table.addEventListener("submit", e => {
       e.preventDefault();
-      const form = e.target, [teamId, typeId] = form.dataset.key.split(":");
-      const t = teams.find(x => x.id === teamId), type = typeOf(typeId), u = t.use[typeId];
+      const form = e.target, [personId, typeId] = form.dataset.key.split(":");
+      const person = people.find(x => x.id === personId), type = typeOf(typeId), u = person.use[typeId];
       const input = form.querySelector(".js-cap-input");
       const raw = input.value.replace(/[,\s_]/g, "");
       if (!/^\d+$/.test(raw)) { setMessage(form, "error", `Enter a whole number of ${type.unit[1]}, such as ${u.cap}.`); input.focus(); return; }
@@ -3129,14 +3163,14 @@ export function AccessRequests({ rows, onUpdate }) {
       if (cap < u.used && form.dataset.confirm !== raw) {
         form.dataset.confirm = raw;
         form.querySelector(".js-cap-save").textContent = "Save and pause";
-        setMessage(form, "warning", `${t.name} has already used ${fmtFull(type, u.used)}. A cap of ${fmtFull(type, cap)} pauses ${type.name.toLowerCase()} for this team until November 1. Select Save and pause to confirm.`);
+        setMessage(form, "warning", `${person.name} has already used ${fmtFull(type, u.used)}. A cap of ${fmtFull(type, cap)} pauses ${type.name.toLowerCase()} for them until November 1. Select Save and pause to confirm.`);
         input.focus();
         return;
       }
       u.cap = cap;
       state.editing = null;
-      render(`.js-edit[data-key="${teamId}:${typeId}"]`);
-      const msg = `${t.name} ${type.name} cap set to ${fmtFull(type, cap)}. ${pctOf(u)}% used${statusOf(u) === "at" ? `. ${type.name} is paused for this team` : ""}.`;
+      render(`.js-edit[data-key="${personId}:${typeId}"]`);
+      const msg = `${person.name}’s ${type.name} cap set to ${fmtFull(type, cap)}. ${pctOf(u)}% used${statusOf(u) === "at" ? `. ${type.name} is paused for them` : ""}.`;
       saved.querySelector("span").textContent = msg;
       saved.hidden = false;
       announce(msg);
@@ -3153,7 +3187,7 @@ export function AccessRequests({ rows, onUpdate }) {
       [{ key: "name", label: "Full name", type: "text", auto: "name" },
        { key: "team", label: "Team", type: "select", options: ["Command", "Engineering", "Intelligence", "Logistics", "Red Squadron"] }],
       [{ key: "system", label: "System", type: "select", options: ["Budget ledger", "Cargo manifests", "Data vault", "Flight scheduler", "Hangar control"] },
-       { key: "level", label: "Access level", type: "radio", options: ["Viewer", "Editor", "Admin"] },
+       { key: "level", label: "Access level", type: "radio", options: ["Admin", "Editor", "Viewer"] },
        { key: "duration", label: "How long", type: "select", options: ["30 days", "90 days", "1 year"], preset: true }],
       [{ key: "reason", label: "Why do you need it?", type: "textarea", hint: "At least 20 characters, so the approver knows why." }],
     ];
@@ -3305,8 +3339,8 @@ export function AccessRequests({ rows, onUpdate }) {
       const s = query.trim().toLowerCase();
       const groups = [];
       if (!s && recent.length) groups.push(["Recent", recent.map(id => COMMANDS.find(c => c.id === id))]);
-      ["Pages", "Actions"].forEach(g => {
-        const items = COMMANDS.filter(c => c.group === g && (!s || c.label.toLowerCase().includes(s)));
+      ["Actions", "Pages"].forEach(g => {
+        const items = COMMANDS.filter(c => c.group === g && (!s || c.label.toLowerCase().includes(s))).sort((a, b) => a.label.localeCompare(b.label));
         if (items.length) groups.push([g, items]);
       });
       options = groups.flatMap(([, items]) => items);
@@ -3383,6 +3417,7 @@ export function AccessRequests({ rows, onUpdate }) {
       { id: "cargo", name: "Cargo manifests",  created: "Jul 7, 2026",  used: "12 days ago" },
       { id: "prod",  name: "Production",       created: "Jan 11, 2026", used: "1 minute ago", risky: true },
     ];
+    SEED_KEYS.sort(byName);
     let keys = SEED_KEYS.map(k => ({ ...k }));
     root.insertAdjacentHTML("afterbegin", `
       <div class="preview-stage">
@@ -3443,9 +3478,9 @@ export function AccessRequests({ rows, onUpdate }) {
         <p class="sample-note">Sample actions. Nothing is saved or archived.</p>
         <div class="js-banner-slot"></div>
         <div class="demo-actions">
-          <button class="btn js-save" type="button">Save changes</button>
           <button class="btn js-archive" type="button">Archive 3 requests</button>
           <button class="btn js-outage" type="button">Report a sign-in outage</button>
+          <button class="btn js-save" type="button">Save changes</button>
         </div>
         <section class="toast-region js-region" role="region" aria-label="Notifications">
           <ol class="toast-list js-toasts"></ol>
@@ -3539,7 +3574,7 @@ export function AccessRequests({ rows, onUpdate }) {
     const p = "state" + n;
     const SCENARIOS = [
       ["normal", "Load normally"], ["slow", "Load slowly"], ["empty", "First use"], ["denied", "No permission"], ["error", "Fail to load"],
-    ];
+    ].sort((a, b) => a[1].localeCompare(b[1]));
     let token = 0;
     root.insertAdjacentHTML("afterbegin", `
       <div class="preview-stage">
@@ -3691,7 +3726,7 @@ export function AccessRequests({ rows, onUpdate }) {
       const failing = all.filter(c => c.status === "failing").length, ev = all.filter(c => c.status === "evidence").length;
       q(".js-score-sub").textContent = `${failing} failing, ${ev} ${ev === 1 ? "needs" : "need"} evidence, ${all.length - applicable.length} not applicable.`;
       const focusedChip = chips.contains(document.activeElement) ? document.activeElement.dataset.status : null;
-      chips.innerHTML = [["all", "All", all.length]].concat(Object.keys(CONTROL_STATUS).map(k => [k, CONTROL_STATUS[k].label, all.filter(c => c.status === k).length]))
+      chips.innerHTML = [["all", "All", all.length]].concat(Object.keys(CONTROL_STATUS).sort((a, b) => CONTROL_STATUS[a].label.localeCompare(CONTROL_STATUS[b].label)).map(k => [k, CONTROL_STATUS[k].label, all.filter(c => c.status === k).length]))
         .map(([k, l, c]) => `<button class="chip" type="button" data-status="${k}" aria-pressed="${state.status === k}">${l}<span class="count">${c}</span></button>`).join("");
       if (focusedChip) chips.querySelector(`[data-status="${focusedChip}"]`).focus();
       const list = visible();
@@ -3767,6 +3802,7 @@ export function AccessRequests({ rows, onUpdate }) {
         summary: "Most sign-ins, 74%, used single sign-on. Password sign-ins fell to 10% since single sign-on became required.",
         unit: "sign-ins", rows: [["Single sign-on", 1820], ["Passkey", 410], ["Password", 240]] },
     ];
+    reports.sort(byName);
     const state = { editing: null, viewing: null };
     root.insertAdjacentHTML("afterbegin", `
       <div class="preview-stage">
@@ -3879,7 +3915,7 @@ export function AccessRequests({ rows, onUpdate }) {
   }
 
   /* ---------------- Admin: asset inventory ---------------- */
-  const PEOPLE = ["Leia Organa", "Wedge Antilles", "Hera Syndulla", "Bodhi Rook", "Cassian Andor", "Mon Mothma", "Rose Tico"];
+  const PEOPLE = ["Leia Organa", "Wedge Antilles", "Hera Syndulla", "Bodhi Rook", "Cassian Andor", "Mon Mothma", "Rose Tico"].sort();
   function createAssetsDemo(root, n) {
     const p = "asset" + n;
     const groups = [
@@ -3899,6 +3935,8 @@ export function AccessRequests({ rows, onUpdate }) {
         { id: "payroll", name: "Payroll sync",         owner: "",              seen: "2026-09-29" },
       ] },
     ];
+    groups.sort(byName);
+    groups.forEach(g => g.items.sort(byName));
     const state = { closed: new Set(), selected: new Set() };
     root.insertAdjacentHTML("afterbegin", `
       <div class="preview-stage">
@@ -4013,8 +4051,8 @@ export function AccessRequests({ rows, onUpdate }) {
         { key: "session", type: "select", label: "Sign people out after", who: "Affects all 312 people", options: ["8 hours", "12 hours", "24 hours"], value: "12 hours" },
       ] },
       { id: "retention", title: "Data retention", noun: "Data retention settings", settings: [
-        { key: "audit", type: "select", label: "Keep audit log events for", who: "Applies to the audit log", options: ["1 year", "3 years", "7 years"], value: "7 years" },
         { key: "files", type: "select", label: "Delete uploaded files after", who: "Affects all teams", options: ["90 days", "1 year", "Never"], value: "1 year" },
+        { key: "audit", type: "select", label: "Keep audit log events for", who: "Applies to the audit log", options: ["1 year", "3 years", "7 years"], value: "7 years" },
       ] },
       { id: "ai", title: "AI features", noun: "AI settings", settings: [
         { key: "assistant", type: "switch", label: "Allow the AI assistant", who: "Affects all teams", value: true },
@@ -4106,11 +4144,12 @@ export function AccessRequests({ rows, onUpdate }) {
   /* ---------------- Admin: roles and permissions ---------------- */
   function createRolesDemo(root, n) {
     const p = "roles" + n;
-    const PERMS = ["View requests", "Approve access requests", "Run reports", "Change settings", "Manage roles"];
+    const PERMS = ["Approve access requests", "Change settings", "Manage roles", "Run reports", "View requests"];
+    const MANAGE = PERMS.indexOf("Manage roles");
     const roles = [
-      { id: "viewer", name: "Viewer", plural: "Viewers", people: 210, perms: [true, false, false, false, false] },
-      { id: "editor", name: "Editor", plural: "Editors", people: 48,  perms: [true, true, true, false, false] },
       { id: "admin",  name: "Admin",  plural: "Admins",  people: 6,   perms: [true, true, true, true, true] },
+      { id: "editor", name: "Editor", plural: "Editors", people: 48,  perms: [true, false, false, true, true] },
+      { id: "viewer", name: "Viewer", plural: "Viewers", people: 210, perms: [false, false, false, false, true] },
     ];
     roles.forEach(r => { r.saved = r.perms.slice(); });
     root.insertAdjacentHTML("afterbegin", `
@@ -4156,7 +4195,7 @@ export function AccessRequests({ rows, onUpdate }) {
       const r = roles.find(x => x.id === box.dataset.role), i = Number(box.dataset.perm);
       r.perms[i] = box.checked;
       // Someone must always be able to manage roles, or nobody could fix a mistake.
-      if (i === PERMS.length - 1 && !roles.some(x => x.perms[i])) {
+      if (i === MANAGE && !roles.some(x => x.perms[i])) {
         r.perms[i] = true;
         box.checked = true;
         q(".js-rule").hidden = false;
@@ -4440,7 +4479,8 @@ export function AccessRequests({ rows, onUpdate }) {
   /* ---------------- Routing: one page per pattern ---------------- */
   const panels = [...document.querySelectorAll(".panel")];
   const routes = panels.map(p => p.id.replace("panel-", ""));
-  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  // Only the overview's tabs: examples on other pages have tabs of their own.
+  const tabs = [...document.querySelectorAll('#overview-tabbar [role="tab"]')];
   const tabsAnchor = $("tabs-anchor");
   // If the bar is pinned, bring the new panel's top up under it instead of leaving the reader mid-page.
   function toTabs() {
