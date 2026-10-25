@@ -629,6 +629,8 @@
   .pg-btn[aria-current="page"] { background: var(--ink); color: var(--bg); font-weight: 600; }
   .pg-btn[aria-disabled="true"] { background: none; color: var(--ink-faint); cursor: not-allowed; }
   .pg-gap { padding: 0 4px; color: var(--ink-soft); }
+  .sample-more { margin: 12px 0 0; font-size: 13px; color: var(--ink-soft); }
+  .sample-more:empty { display: none; }
   .load-more { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 12px; margin-top: 12px; font-size: 13.5px; color: var(--ink-soft); }
   .usage-tiles { list-style: none; margin: 0 0 14px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
   .usage-tile { display: grid; gap: 8px; align-content: start; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 8px; }
@@ -2015,7 +2017,7 @@ export function AccessRequests({ rows, onUpdate }) {
 <section class="panel" id="panel-usage-caps" aria-labelledby="h-usage-caps" hidden>
   <p class="page-kicker">Admin · Live</p>
   <h1 class="page-title" id="h-usage-caps" tabindex="-1">Usage caps</h1>
-  <p class="page-lede">How much of each monthly allowance every person has used, such as AI tokens, document uploads, and storage, and the caps that limit them. Choose All to see every usage type for each person, or one type to compare everyone on it. With hundreds of people, the table is split into pages, like the <a href="#pagination">pagination</a> pattern, and Find people narrows it to the people you pick. Every number is written out, so the meters are never the only way to read them.</p>
+  <p class="page-lede">How much of each monthly allowance every person has used, such as AI tokens, document uploads, and storage, and the caps that limit them. Choose All to see every usage type for each person, or one type to compare everyone on it. With hundreds of people, Find people narrows the table to the people you pick. Paging through the rest is the <a href="#pagination">pagination</a> pattern’s job, so this example shows the first 25. Every number is written out, so the meters are never the only way to read them.</p>
 
   <div class="preview" data-demo="usage">
     <div class="details">
@@ -2034,13 +2036,12 @@ export function AccessRequests({ rows, onUpdate }) {
       <section aria-labelledby="h-uc-focus">
         <h2 id="h-uc-focus">Focus and announcements</h2>
         <ul class="a11y-list">
-          <li>Usage types are tabs, listed alphabetically after All. The selected tab is announced, and the table caption names the view.</li>
+          <li>Usage types are tabs, listed alphabetically after All. The selected tab is announced, and the table caption names the view. The strip below shows what the tabs say, too.</li>
           <li>All nests every usage type under each person. A single type shows one row per person, with their department.</li>
           <li>In All, each person is a row group. Its header button gives their name and email and says whether it’s expanded; their department and how many usages are near or at cap follow.</li>
           <li>Edit cap names the usage and the person: “Edit AI tokens cap for Leia Organa.”</li>
           <li>Find people is a combo box with a multi-select list. Each option says whether it’s selected, and picking announces “Leia Organa selected. 2 people selected.”</li>
           <li>Picked people show as chips named “Remove Leia Organa.” Removing one moves focus to the next chip, or back to the box.</li>
-          <li>Pages work like the <a href="#pagination">pagination</a> pattern: 25, 50, 75, or 100 people per page, with focus kept in the page buttons.</li>
           <li>Meters are hidden from screen readers; used, cap, and percent say the same thing in words.</li>
           <li>Status is “Under cap,” “Near cap,” or “At cap, paused,” each with its own shape.</li>
           <li>A cap below what’s already used asks for a second Save. Saving returns focus to Edit cap.</li>
@@ -2064,7 +2065,7 @@ export function AccessRequests({ rows, onUpdate }) {
   ]}
   people={people} // [{ id, name, email, department, usage: { tokens: { used, cap }, ... } }]
   defaultTab="all"
-  pageSize={25} // people per page; see Pagination
+  pagination={<Pagination itemName={{ one: "person", other: "people" }} />} // see Pagination
   thresholds={{ near: 0.9 }}
   forecast // projects month-end use from the pace so far
   onCapChange={(personId, typeId, cap) =&gt; saveCap(personId, typeId, cap)}
@@ -2080,7 +2081,7 @@ export function AccessRequests({ rows, onUpdate }) {
       <tbody>
         <tr><td><code>types</code></td><td><code class="type">{ id, name, unit }[]</code></td><td>What’s counted, such as AI tokens, uploads, storage, API requests, or automation runs. Tabs list them alphabetically.</td></tr>
         <tr><td><code>people</code></td><td><code class="type">{ id, name, email, department, usage }[]</code></td><td>Shown alphabetically by name. <code>usage</code> holds <code>{ used, cap }</code> for each type.</td></tr>
-        <tr><td><code>pageSize</code></td><td><code class="type">number</code></td><td>People per page: 25, 50, 75, or 100. Default <code>25</code>.</td></tr>
+        <tr><td><code>pagination</code></td><td><code class="type">ReactNode</code></td><td>A <a href="#pagination">Pagination</a> for long lists of people. Without it, every person shows.</td></tr>
         <tr><td><code>defaultTab</code></td><td><code class="type">"all" | string</code></td><td>Which tab opens first. Default <code>"all"</code>.</td></tr>
         <tr><td><code>period</code></td><td><code class="type">{ label, resetsOn }</code></td><td>The billing period and when usage resets.</td></tr>
         <tr><td><code>thresholds</code></td><td><code class="type">{ near }</code></td><td>Share of a cap that counts as “Near cap.” Default <code>0.9</code>.</td></tr>
@@ -2098,7 +2099,7 @@ export function AccessRequests({ rows, onUpdate }) {
       <tbody>
         <tr><th scope="row">All</th><td>Every usage type nested under each person, and a card per type.</td><td>The tab: “All, tab, selected, 1 of 6.”</td></tr>
         <tr><th scope="row">One usage type</th><td>One row per person with their department, and one card.</td><td>The tab: “AI tokens, tab, selected, 2 of 6.”</td></tr>
-        <tr><th scope="row">More than 25 people</th><td>Pages of 25, with Rows per page and page numbers.</td><td>“Page 2 of 8. Showing 26–50 of 200 people.”</td></tr>
+        <tr><th scope="row">Hundreds of people</th><td>Pages from the <a href="#pagination">pagination</a> pattern; here, the first 25 and a note.</td><td>See Pagination.</td></tr>
         <tr><th scope="row">People picked</th><td>Chips in Find people; the table shows only them.</td><td>“Leia Organa selected. 2 people selected.”</td></tr>
         <tr><th scope="row">No match</th><td>“No one matches” in the list.</td><td>“No one matches xyz,” after you pause typing.</td></tr>
         <tr><th scope="row">Near cap</th><td>A triangle and “Near cap,” and the person’s header counts it in All.</td><td>Nothing; admins can opt in to an email.</td></tr>
@@ -2821,6 +2822,10 @@ export function AccessRequests({ rows, onUpdate }) {
       }
       const region = el.closest('[role="region"][aria-label], aside[aria-label], nav[aria-label]');
       if (entering(region)) parts.push(labelOf(region), region.tagName === "ASIDE" ? "complementary" : region.tagName === "NAV" ? "navigation" : "region");
+      const tablist = el.closest('[role="tablist"]');
+      if (entering(tablist)) parts.push(labelOf(tablist), "tab list");
+      const tabpanel = el.closest('[role="tabpanel"]');
+      if (entering(tabpanel) && tabpanel.contains(root)) parts.push(labelOf(tabpanel), "tab panel");
       const group = el.closest('[role="group"], fieldset');
       if (entering(group)) parts.push(group.tagName === "FIELDSET" ? group.querySelector("legend").textContent.trim() : labelOf(group), "group");
       const table = el.closest("table");
@@ -2882,6 +2887,13 @@ export function AccessRequests({ rows, onUpdate }) {
         if (root.contains(el)) mirror(el, el === last ? el : last);
       }, 0);
     }));
+    // Controls that sit outside the example, such as tabs above it, can be watched too.
+    const watch = el => {
+      el.addEventListener("focusin", e => mirror(e.target, e.relatedTarget));
+      ["click", "keyup"].forEach(t => el.addEventListener(t, () => {
+        setTimeout(() => { const a = document.activeElement; if (el.contains(a)) mirror(a, a === last ? a : last); }, 0);
+      }));
+    };
     const showHeard = msg => { liveText.textContent = msg; liveText.classList.remove("is-empty"); };
     const announce = msg => {
       liveEl.textContent = "";
@@ -2890,6 +2902,7 @@ export function AccessRequests({ rows, onUpdate }) {
     };
     // For content that announces itself, such as role="alert": show it in the strip without saying it twice.
     announce.mirror = showHeard;
+    announce.watch = watch;
     return announce;
   }
 
@@ -3163,7 +3176,7 @@ export function AccessRequests({ rows, onUpdate }) {
 
   const PICK_CHECK = '<svg class="cs-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>';
   function createUsageDemo(root, n) {
-    const p = "usage" + n, PAGE = 25;
+    const p = "usage" + n, SAMPLE = 25;
     const people = USAGE_PEOPLE.map(u => ({ ...u, use: Object.fromEntries(Object.entries(u.use).map(([k, v]) => [k, { used: v[0], cap: v[1] }])) }));
     // "all" shows every usage type nested under each person; a single type flattens to one row per person.
     const TABS = [{ id: "all", name: "All" }].concat(USAGE_TYPES);
@@ -3206,7 +3219,8 @@ export function AccessRequests({ rows, onUpdate }) {
           <p class="message is-success is-compact js-saved" hidden style="margin:0 0 12px">${SUCCESS_ICON}<span></span></p>
           <div class="grid-frame"><div class="grid-scroll">
             <table class="data-table usage-table js-table"><caption class="js-caption"></caption><thead></thead></table>
-          </div><div class="js-pager"></div></div>
+          </div></div>
+          <p class="sample-more js-sample-more"></p>
         </div>
         <div class="sr-only js-live" role="status" aria-live="polite"></div>
       </div>${HEARS_HTML("Search for people, show more, or edit a cap.")}`);
@@ -3239,7 +3253,7 @@ export function AccessRequests({ rows, onUpdate }) {
     const table = q(".js-table"), tabs = [...tabbar.querySelectorAll('[role="tab"]')], saved = q(".js-saved");
     const input = q(".js-pick"), list = q(".js-list"), chips = q(".js-chips"), clearBtn = q(".js-clear");
     const announce = attachHears(root);
-    const pager = createPager(q(".js-pager"), { id: `${p}-pg`, noun: ["person", "people"], label: "Pagination, people", announce, onChange: () => renderTable() });
+    announce.watch(tabbar);
     const meterHTML = u => `<div class="meter" aria-hidden="true"><span class="meter-fill${statusOf(u) === "at" ? " is-capped" : ""}" style="width:${Math.min(100, share(u) * 100)}%"></span><span class="meter-tick" style="left:${NEAR * 100}%"></span></div>`;
     const statusCell = u => { const st = statusOf(u); return `<span class="status"><svg viewBox="0 0 14 14" aria-hidden="true">${CAP_STATUS[st].icon}</svg>${CAP_STATUS[st].label}</span>`; };
     const editButton = (person, type, key, editing) => `<button class="btn js-edit" type="button" data-key="${key}" aria-label="Edit ${type.name} cap for ${esc(person.name)}" aria-expanded="${editing}" aria-controls="${p}-edit-${person.id}-${type.id}">Edit cap</button>`;
@@ -3276,9 +3290,10 @@ export function AccessRequests({ rows, onUpdate }) {
 
     function renderTable(focusSel) {
       const all = state.tab === "all", rows = pool();
-      pager.setTotal(rows.length);
-      const shown = pager.slice(rows);
-      const who = state.picked.size ? `${plural(rows.length, "selected person", "selected people")}` : `${rows.length} people, page ${pager.page} of ${Math.ceil(rows.length / pager.size)}`;
+      // The example shows the first 25; paging long lists is the Pagination pattern's job.
+      const shown = state.picked.size ? rows : rows.slice(0, SAMPLE);
+      const who = state.picked.size ? `${plural(rows.length, "selected person", "selected people")}` : `first ${shown.length} of ${rows.length} people`;
+      q(".js-sample-more").innerHTML = state.picked.size ? "" : `Showing the first ${shown.length} of ${rows.length} people. To page through the rest, use <a href="#pagination">pagination</a>; to find anyone, use Find people.`;
       q(".js-caption").innerHTML = all ? `Usage by person <span>${who}, every usage type</span>` : `${typeOf(state.tab).name} by person <span>${who}</span>`;
       table.querySelectorAll("tbody").forEach(b => b.remove());
       if (all) {
@@ -3351,7 +3366,6 @@ export function AccessRequests({ rows, onUpdate }) {
       clearBtn.hidden = !picked.length;
     }
     function selectionChanged(msg) {
-      pager.setTotal(pool().length, { reset: true });
       state.editing = null;
       renderChips();
       if (!list.hidden) renderList();
@@ -3434,7 +3448,6 @@ export function AccessRequests({ rows, onUpdate }) {
       });
       tabPanel.setAttribute("aria-labelledby", `${p}-tab-${id}`);
       tabPanel.querySelector(".tab-desc").textContent = DESCRIPTIONS[id];
-      pager.setTotal(pool().length, { reset: true });
       render();
       // If the bar is pinned, bring the new panel's top up under it.
       const top = anchor.getBoundingClientRect().top + window.scrollY - document.querySelector(".site-header").offsetHeight;
