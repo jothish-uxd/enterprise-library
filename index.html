@@ -583,7 +583,9 @@
   .person-toggle svg { margin-top: 3px; }
   .person { display: grid; line-height: 1.35; }
   .person small { display: block; font-size: 12.5px; font-weight: 400; color: var(--ink-soft); }
-  .person-meta { display: inline-flex; flex-wrap: wrap; gap: 4px 16px; margin-left: 18px; vertical-align: top; padding-top: 4px; font-size: 12.5px; font-weight: 400; color: var(--ink-soft); }
+  .person-meta { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; margin-left: 18px; vertical-align: top; padding-top: 3px; font-size: 12.5px; font-weight: 400; color: var(--ink-soft); }
+  .person-meta .status { font-size: 12.5px; color: var(--ink); gap: 6px; }
+  .person-meta .status svg { width: 12px; height: 12px; }
   .people-picker { display: grid; gap: 6px; margin-bottom: 18px; max-width: 640px; }
   .picker-label { font-size: 13.5px; font-weight: 500; }
   .picker-field { position: relative; }
@@ -2017,7 +2019,7 @@ export function AccessRequests({ rows, onUpdate }) {
 <section class="panel" id="panel-usage-caps" aria-labelledby="h-usage-caps" hidden>
   <p class="page-kicker">Admin · Live</p>
   <h1 class="page-title" id="h-usage-caps" tabindex="-1">Usage caps</h1>
-  <p class="page-lede">How much of each monthly allowance every person has used, such as AI tokens, document uploads, and storage, and the caps that limit them. Choose All to see every usage type for each person, or one type to compare everyone on it. With hundreds of people, Find people narrows the table to the people you pick. Paging through the rest is the <a href="#pagination">pagination</a> pattern’s job, so this example shows the first 25. Every number is written out, so the meters are never the only way to read them.</p>
+  <p class="page-lede">How much of each monthly allowance every person has used, such as AI tokens, document uploads, and storage, and the caps that limit them. Choose All to see every usage type for each person, or one type to compare everyone on it. Find people narrows the table to the people you pick, and Collapse all turns the table into a list of who needs attention. For long lists, add <a href="#pagination">pagination</a>. Every number is written out, so the meters are never the only way to read them.</p>
 
   <div class="preview" data-demo="usage">
     <div class="details">
@@ -2026,7 +2028,7 @@ export function AccessRequests({ rows, onUpdate }) {
         <table class="doc-table key-table"><caption class="sr-only">Keyboard support</caption><tbody>
           <tr><th scope="row"><kbd>Tab</kbd></th><td>The selected usage tab, then each person’s header and Edit cap buttons.</td></tr>
           <tr><th scope="row"><kbd>←</kbd> <kbd>→</kbd></th><td>Move between usage tabs. <kbd>Home</kbd> and <kbd>End</kbd> jump to the first or last.</td></tr>
-          <tr><th scope="row"><kbd>Space</kbd> <kbd>Enter</kbd></th><td>On a person, expand or collapse their usage.</td></tr>
+          <tr><th scope="row"><kbd>Space</kbd> <kbd>Enter</kbd></th><td>On a person, expand or collapse their usage. On Collapse all or Expand all, do it for everyone.</td></tr>
           <tr><th scope="row"><kbd>↑</kbd> <kbd>↓</kbd> <kbd>Enter</kbd></th><td>In Find people, move through the list and select or unselect a person. The list stays open, so you can pick several.</td></tr>
           <tr><th scope="row"><kbd>Backspace</kbd></th><td>In an empty Find people box, remove the last person picked.</td></tr>
           <tr><th scope="row"><kbd>Enter</kbd></th><td>On Edit cap, open the cap field. In the field, save.</td></tr>
@@ -2040,6 +2042,8 @@ export function AccessRequests({ rows, onUpdate }) {
           <li>All nests every usage type under each person. A single type shows one row per person, with their department.</li>
           <li>In All, each person is a row group. Its header button gives their name and email and says whether it’s expanded; their department and how many usages are near or at cap follow.</li>
           <li>Edit cap names the usage and the person: “Edit AI tokens cap for Leia Organa.”</li>
+          <li>Collapse all and Expand all is one button that says what it will do next. It announces “Collapsed all 10 people.”</li>
+          <li>Each person’s header names the usages at or near cap, such as “At cap: Storage. Near cap: AI tokens.” The expand button reads it as its description, so it’s heard even when the rows are collapsed.</li>
           <li>Find people is a combo box with a multi-select list. Each option says whether it’s selected, and picking announces “Leia Organa selected. 2 people selected.”</li>
           <li>Picked people show as chips named “Remove Leia Organa.” Removing one moves focus to the next chip, or back to the box.</li>
           <li>Meters are hidden from screen readers; used, cap, and percent say the same thing in words.</li>
@@ -2099,7 +2103,8 @@ export function AccessRequests({ rows, onUpdate }) {
       <tbody>
         <tr><th scope="row">All</th><td>Every usage type nested under each person, and a card per type.</td><td>The tab: “All, tab, selected, 1 of 6.”</td></tr>
         <tr><th scope="row">One usage type</th><td>One row per person with their department, and one card.</td><td>The tab: “AI tokens, tab, selected, 2 of 6.”</td></tr>
-        <tr><th scope="row">Hundreds of people</th><td>Pages from the <a href="#pagination">pagination</a> pattern; here, the first 25 and a note.</td><td>See Pagination.</td></tr>
+        <tr><th scope="row">All collapsed</th><td>One row per person with their department and which usages are at or near cap.</td><td>“Collapsed all 10 people.”</td></tr>
+        <tr><th scope="row">Hundreds of people</th><td>Pages from the <a href="#pagination">pagination</a> pattern.</td><td>See Pagination.</td></tr>
         <tr><th scope="row">People picked</th><td>Chips in Find people; the table shows only them.</td><td>“Leia Organa selected. 2 people selected.”</td></tr>
         <tr><th scope="row">No match</th><td>“No one matches” in the list.</td><td>“No one matches xyz,” after you pause typing.</td></tr>
         <tr><th scope="row">Near cap</th><td>A triangle and “Near cap,” and the person’s header counts it in All.</td><td>Nothing; admins can opt in to an email.</td></tr>
@@ -3137,7 +3142,7 @@ export function AccessRequests({ rows, onUpdate }) {
 
   // 200 sample people: the eight used across the site, plus generated names from a fixed seed,
   // so the sample is the same on every load.
-  const USAGE_PEOPLE = (() => {
+  const PEOPLE_200 = (() => {
     let seed = 20261025;
     const rand = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
     const pick = list => list[Math.floor(rand() * list.length)];
@@ -3174,9 +3179,25 @@ export function AccessRequests({ rows, onUpdate }) {
     }).sort(byName);
   })();
 
+  // Usage caps: ten people, enough to show nesting, collapsing, and search without a long page.
+  const USAGE_PEOPLE = [
+    ["Bodhi Rook", "Logistics", [42000, 100000], [1200, 10000], [95, 100], [12, 50], [4, 10]],
+    ["Cassian Andor", "Intelligence", [97000, 100000], [8800, 10000], [20, 100], [48, 50], [9, 10]],
+    ["Hera Syndulla", "Command", [61000, 100000], [10000, 10000], [44, 100], [20, 50], [3, 10]],
+    ["Jyn Erso", "Intelligence", [100000, 100000], [2400, 10000], [12, 100], [31, 50], [10, 10]],
+    ["Kaydel Ko Connix", "Logistics", [99000, 100000], [9900, 10000], [40, 100], [50, 50], [2, 10]],
+    ["Leia Organa", "Command", [78000, 150000], [5100, 20000], [130, 200], [44, 50], [6, 20]],
+    ["Mon Mothma", "Command", [55000, 100000], [7000, 10000], [91, 100], [18, 50], [5, 10]],
+    ["Poe Dameron", "Engineering", [23000, 100000], [600, 10000], [100, 100], [5, 50], [2, 10]],
+    ["Rose Tico", "Engineering", [91000, 100000], [9400, 10000], [88, 100], [50, 50], [7, 10]],
+    ["Wedge Antilles", "Logistics", [15000, 100000], [300, 10000], [8, 100], [9, 50], [1, 10]],
+  ].map(([name, dept, tokens, api, runs, uploads, storage]) => {
+    const slug = name.toLowerCase().replace(/[^a-z]+/g, ".");
+    return { name, dept, id: slug.replace(/\./g, "-"), email: `${slug}@rebellion.example`, use: { tokens, api, runs, uploads, storage } };
+  }).sort(byName);
   const PICK_CHECK = '<svg class="cs-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>';
   function createUsageDemo(root, n) {
-    const p = "usage" + n, SAMPLE = 25;
+    const p = "usage" + n;
     const people = USAGE_PEOPLE.map(u => ({ ...u, use: Object.fromEntries(Object.entries(u.use).map(([k, v]) => [k, { used: v[0], cap: v[1] }])) }));
     // "all" shows every usage type nested under each person; a single type flattens to one row per person.
     const TABS = [{ id: "all", name: "All" }].concat(USAGE_TYPES);
@@ -3194,7 +3215,7 @@ export function AccessRequests({ rows, onUpdate }) {
 
     root.insertAdjacentHTML("afterbegin", `
       <div class="preview-stage">
-        <p class="sample-note">Sample data: 200 people. Usage resets on November 1.</p>
+        <p class="sample-note">Sample data: 10 people. Usage resets on November 1.</p>
         <div class="js-content">
           <ul class="usage-tiles js-tiles"></ul>
           <ul class="meter-legend" aria-hidden="true" style="margin-bottom:24px">
@@ -3217,10 +3238,11 @@ export function AccessRequests({ rows, onUpdate }) {
             </div>
           </div>
           <p class="message is-success is-compact js-saved" hidden style="margin:0 0 12px">${SUCCESS_ICON}<span></span></p>
-          <div class="grid-frame"><div class="grid-scroll">
+          <div class="grid-frame">
+            <div class="table-toolbar js-tools"><button class="btn js-toggle-all" type="button">Collapse all</button><span class="field-hint">Collapsed rows keep each person’s summary.</span></div>
+            <div class="grid-scroll">
             <table class="data-table usage-table js-table"><caption class="js-caption"></caption><thead></thead></table>
           </div></div>
-          <p class="sample-more js-sample-more"></p>
         </div>
         <div class="sr-only js-live" role="status" aria-live="polite"></div>
       </div>${HEARS_HTML("Search for people, show more, or edit a cap.")}`);
@@ -3290,10 +3312,9 @@ export function AccessRequests({ rows, onUpdate }) {
 
     function renderTable(focusSel) {
       const all = state.tab === "all", rows = pool();
-      // The example shows the first 25; paging long lists is the Pagination pattern's job.
-      const shown = state.picked.size ? rows : rows.slice(0, SAMPLE);
-      const who = state.picked.size ? `${plural(rows.length, "selected person", "selected people")}` : `first ${shown.length} of ${rows.length} people`;
-      q(".js-sample-more").innerHTML = state.picked.size ? "" : `Showing the first ${shown.length} of ${rows.length} people. To page through the rest, use <a href="#pagination">pagination</a>; to find anyone, use Find people.`;
+      const shown = rows;
+      const who = state.picked.size ? `${plural(rows.length, "selected person", "selected people")} of ${people.length}` : `${plural(rows.length, "person", "people")}`;
+      syncToggleAll();
       q(".js-caption").innerHTML = all ? `Usage by person <span>${who}, every usage type</span>` : `${typeOf(state.tab).name} by person <span>${who}</span>`;
       table.querySelectorAll("tbody").forEach(b => b.remove());
       if (all) {
@@ -3301,11 +3322,17 @@ export function AccessRequests({ rows, onUpdate }) {
         // Each person is a row group: a header row that can collapse, then one nested row per usage type.
         table.insertAdjacentHTML("beforeend", shown.map(person => {
           const open = !state.closed.has(person.id);
-          const at = USAGE_TYPES.filter(t => statusOf(person.use[t.id]) === "at").length, near = USAGE_TYPES.filter(t => statusOf(person.use[t.id]) === "near").length;
-          const summary = at || near ? [at && `${at} at cap`, near && `${near} near cap`].filter(Boolean).join(", ") : "All under cap";
+          // The summary names the usages at or near cap, so collapsed rows still say what needs attention.
+          const atT = USAGE_TYPES.filter(t => statusOf(person.use[t.id]) === "at").map(t => t.name);
+          const nearT = USAGE_TYPES.filter(t => statusOf(person.use[t.id]) === "near").map(t => t.name);
+          const flag = (st, names) => `<span class="status"><svg viewBox="0 0 14 14" aria-hidden="true">${CAP_STATUS[st].icon}</svg>${st === "at" ? "At cap" : "Near cap"}: ${names.join(", ")}</span>`;
+          const summary = atT.length || nearT.length
+            ? [atT.length && flag("at", atT), nearT.length && flag("near", nearT)].filter(Boolean).join('<span class="sr-only">. </span>')
+            : `<span class="status"><svg viewBox="0 0 14 14" aria-hidden="true">${CAP_STATUS.under.icon}</svg>All under cap</span>`;
+          const metaId = `${p}-meta-${person.id}`;
           const head = `<tr class="group-row" data-head="${person.id}"><th scope="rowgroup" colspan="6">
-              <button class="group-toggle person-toggle" type="button" data-person="${person.id}" aria-expanded="${open}">${CHEVRON}<span class="person"><span>${esc(person.name)}</span><small>${esc(person.email)}</small></span></button>
-              <span class="person-meta"><span>${esc(person.dept)}</span><span>${summary}</span></span>
+              <button class="group-toggle person-toggle" type="button" data-person="${person.id}" aria-expanded="${open}" aria-describedby="${metaId}">${CHEVRON}<span class="person"><span>${esc(person.name)}</span><small>${esc(person.email)}</small></span></button>
+              <span class="person-meta" id="${metaId}"><span>${esc(person.dept)}<span class="sr-only">.</span></span> ${summary}</span>
             </th></tr>`;
           return `<tbody>${head}${USAGE_TYPES.map(type => {
             const u = person.use[type.id], key = `${person.id}:${type.id}`, editing = state.editing === key;
@@ -3471,13 +3498,29 @@ export function AccessRequests({ rows, onUpdate }) {
       capInput.setAttribute("aria-invalid", String(kind === "error"));
       announce(text);
     }
+    function setOpen(id, open) {
+      open ? state.closed.delete(id) : state.closed.add(id);
+      const g = table.querySelector(`.person-toggle[data-person="${id}"]`);
+      if (g) g.setAttribute("aria-expanded", String(open));
+      table.querySelectorAll(`tr[data-person="${id}"]`).forEach(tr => { tr.hidden = !open; });
+    }
+    // One button for everyone: it says what it will do next, and Collapse all wins while anyone is open.
+    function syncToggleAll() {
+      const allTab = state.tab === "all", anyOpen = pool().some(x => !state.closed.has(x.id));
+      q(".js-tools").hidden = !allTab;
+      q(".js-toggle-all").textContent = anyOpen ? "Collapse all" : "Expand all";
+    }
+    q(".js-toggle-all").addEventListener("click", () => {
+      const rows = pool(), anyOpen = rows.some(x => !state.closed.has(x.id));
+      rows.forEach(x => setOpen(x.id, !anyOpen));
+      syncToggleAll();
+      announce(`${anyOpen ? "Collapsed" : "Expanded"} all ${plural(rows.length, "person", "people")}.`);
+    });
     table.addEventListener("click", e => {
       const g = e.target.closest(".person-toggle");
       if (g) {
-        const id = g.dataset.person, open = state.closed.has(id);
-        open ? state.closed.delete(id) : state.closed.add(id);
-        g.setAttribute("aria-expanded", String(open));
-        table.querySelectorAll(`tr[data-person="${id}"]`).forEach(tr => { tr.hidden = !open; });
+        setOpen(g.dataset.person, state.closed.has(g.dataset.person));
+        syncToggleAll();
         return;
       }
       const edit = e.target.closest(".js-edit");
@@ -3609,7 +3652,7 @@ export function AccessRequests({ rows, onUpdate }) {
     const p = "pg" + n;
     const SYSTEMS = ["Budget ledger", "Cargo manifests", "Data vault", "Flight scheduler", "Hangar control"];
     const STATES = ["pending", "pending", "approved", "approved", "approved", "denied"];
-    const requests = USAGE_PEOPLE.map((person, i) => {
+    const requests = PEOPLE_200.map((person, i) => {
       const d = new Date(TODAY + "T12:00:00");
       d.setDate(d.getDate() - ((i * 7) % 60));
       return { id: i + 1, person, system: SYSTEMS[(i * 3) % SYSTEMS.length], status: STATES[(i * 5) % STATES.length], submitted: d.toISOString().slice(0, 10) };
