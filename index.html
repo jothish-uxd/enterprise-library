@@ -6,81 +6,47 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  /* Enterprise Library's own stylesheets, from the package build. They sit in a cascade layer,
+     so this page's unlayered docs styles always win; base.css is skipped because the page has its own. */
+  @import url("dist/css/tokens.css") layer(lib);
+  @import url("dist/css/type.css") layer(lib);
+  @import url("dist/css/forms.css") layer(lib);
+  @import url("dist/css/buttons.css") layer(lib);
+  @import url("dist/css/table.css") layer(lib);
+  @import url("dist/css/card.css") layer(lib);
+  @import url("dist/css/browser-frame.css") layer(lib);
+  @import url("dist/css/select.css") layer(lib);
+  @import url("dist/css/reset.css") layer(lib);
+  @import url("dist/css/hover-card.css") layer(lib);
+  @import url("dist/css/stat-filter.css") layer(lib);
+</style>
+<style>
   /* Layout: the Accessible Charts docs shell (sticky header, left nav, 860px reading column), ink on paper, patterns in place of color. */
   :root {
     color-scheme: light;
-    --bg: #ffffff;
-    --bg-subtle: #fafafa;
-    --bg-hover: #f2f2f2;
-    --ink: #171717;
-    --ink-soft: #666666;
-    --ink-faint: #737373;
-    --rule: #ebebeb;
-    --rule-strong: #d4d4d4;
-    --focus: #0068d6;
     --code-ink: #171717;
     --code-string: #107d32;
     --code-keyword: #c41562;
     --code-comment: #737373;
     --code-num: #0068d6;
-    /* Message colors: the only color in the library. Errors, warnings, and success, always with an icon and words. */
-    --error: #b42318;
-    --error-bg: #fdecea;
-    --warning: #8a5a00;
-    --warning-bg: #fdf3d7;
-    --success: #157032;
-    --success-bg: #e6f4ea;
-    --font: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-    --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    --header-h: 64px;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
-      --bg: #0a0a0a;
-      --bg-subtle: #111111;
-      --bg-hover: #1a1a1a;
-      --ink: #ededed;
-      --ink-soft: #a1a1a1;
-      --ink-faint: #8a8a8a;
-      --rule: #242424;
-      --rule-strong: #3a3a3a;
-      --focus: #52a8ff;
       --code-ink: #ededed;
       --code-string: #62c073;
       --code-keyword: #f75f8f;
       --code-comment: #8a8a8a;
       --code-num: #52a8ff;
-      --error: #ff8f85;
-      --error-bg: #3b1513;
-      --warning: #f2c14e;
-      --warning-bg: #352a0e;
-      --success: #6fd28c;
-      --success-bg: #11301c;
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #0a0a0a;
-    --bg-subtle: #111111;
-    --bg-hover: #1a1a1a;
-    --ink: #ededed;
-    --ink-soft: #a1a1a1;
-    --ink-faint: #8a8a8a;
-    --rule: #242424;
-    --rule-strong: #3a3a3a;
-    --focus: #52a8ff;
     --code-ink: #ededed;
     --code-string: #62c073;
     --code-keyword: #f75f8f;
     --code-comment: #8a8a8a;
     --code-num: #52a8ff;
-    --error: #ff8f85;
-    --error-bg: #3b1513;
-    --warning: #f2c14e;
-    --warning-bg: #352a0e;
-    --success: #6fd28c;
-    --success-bg: #11301c;
   }
 
   * { box-sizing: border-box; }
@@ -212,14 +178,14 @@
 
   /* ---------- Page typography ---------- */
   .page-kicker { margin: 0 0 14px; font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); }
-  .page-title { margin: 0; font-size: clamp(32px, 4vw, 44px); line-height: 1.1; font-weight: 600; letter-spacing: -.045em; }
+  .page-title { margin: 0; font-size: var(--text-title); line-height: var(--leading-tight); font-weight: 600; letter-spacing: var(--tracking-title); }
   /* Headings receive focus on navigation so screen readers start there; they aren't controls, so no ring. */
   .page-title:focus, .page-title:focus-visible { outline: none; }
   .hero { padding-top: 24px; }
   .hero .page-title {
-    font-size: clamp(42px, 7vw, 72px);
+    font-size: var(--text-display);
     line-height: 1;
-    letter-spacing: -.055em;
+    letter-spacing: var(--tracking-display);
     max-width: 13ch;
   }
   .page-lede { margin: 16px 0 0; max-width: 60ch; color: var(--ink-soft); font-size: 17px; line-height: 1.6; }
@@ -276,7 +242,7 @@
   .tab-panel:focus-visible { outline-offset: 12px; border-radius: 6px; }
   .doc-section > h2 { margin: 0 0 8px; font-size: 20px; font-weight: 600; letter-spacing: -.025em; }
   .doc-section > p { margin: 0 0 24px; max-width: 62ch; color: var(--ink-soft); }
-  .note { margin: 10px 0 0; font-size: 13px; color: var(--ink-faint); }
+  .note:where(:not(.lib *)) { margin: 10px 0 0; font-size: 13px; color: var(--ink-faint); }
 
   .install { margin-top: 40px; max-width: 440px; }
   .install-row {
@@ -307,8 +273,8 @@
 
   /* ---------- Tables (docs) ---------- */
   .table-scroll { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-  th, td { padding: 10px 8px; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }
+  table:where(:not(.lib *)) { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th:where(:not(.lib *)), td:where(:not(.lib *)) { padding: 10px 8px; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }
   .doc-table th:first-child, .doc-table td:first-child { padding-left: 0; }
   .doc-table th:last-child, .doc-table td:last-child { padding-right: 0; }
   thead th { color: var(--ink-faint); font-weight: 500; font-size: 12.5px; }
@@ -389,8 +355,8 @@
 
   /* ---------- Demo: filter bar ---------- */
   .filter-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 20px; margin-bottom: 16px; }
-  .field { display: grid; gap: 6px; flex: 1 1 220px; max-width: 320px; }
-  .field label, .group-label { font-size: 12.5px; font-weight: 500; color: var(--ink-soft); }
+  .field:where(:not(.lib *)) { display: grid; gap: 6px; flex: 1 1 220px; max-width: 320px; }
+  .field:where(:not(.lib *)) label, .group-label { font-size: 12.5px; font-weight: 500; color: var(--ink-soft); }
   .search-wrap { position: relative; }
   .search-wrap svg { position: absolute; left: 10px; top: 50%; width: 15px; height: 15px; transform: translateY(-50%); color: var(--ink-faint); pointer-events: none; }
   .search-input {
@@ -502,15 +468,15 @@
   .bulk-bar.is-top { border-top: 0; border-bottom: 1px solid var(--rule); }
   .bulk-count { margin: 0; font-size: 13.5px; font-weight: 500; margin-right: 4px; }
   .bulk-count:focus { outline: none; }
-  .btn {
+  .btn:where(:not(.lib *)) {
     appearance: none; display: inline-flex; align-items: center; gap: 6px;
     height: 32px; padding: 0 12px; border: 1px solid var(--rule-strong); border-radius: 6px;
     background: var(--bg); color: var(--ink); font: inherit; font-size: 13.5px; font-weight: 500; cursor: pointer;
   }
-  .btn:hover { background: var(--bg-hover); }
+  .btn:where(:not(.lib *)):hover { background: var(--bg-hover); }
   .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   .btn-primary:hover { background: color-mix(in srgb, var(--ink) 85%, var(--bg)); }
-  .btn[aria-disabled="true"] { background: var(--bg); color: var(--ink-faint); border-color: var(--rule); cursor: not-allowed; }
+  .btn:where(:not(.lib *))[aria-disabled="true"] { background: var(--bg); color: var(--ink-faint); border-color: var(--rule); cursor: not-allowed; }
   .btn-link { appearance: none; border: 0; background: none; padding: 2px 4px; color: var(--ink); font: inherit; font-size: 13.5px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
   .bulk-result { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 13.5px; color: var(--ink-soft); }
   .bulk-result[hidden] { display: none; }
@@ -666,7 +632,7 @@
   .radios { display: flex; flex-wrap: wrap; gap: 8px 20px; }
   .radio, .check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
   .radio input, .check input { width: 16px; height: 16px; margin: 0; accent-color: var(--ink); }
-  .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .form-actions:where(:not(.lib *)) { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
   .draft-status { margin-left: auto; font-size: 12.5px; color: var(--ink-soft); }
 
   /* ---------- Multi-step form ---------- */
@@ -772,7 +738,7 @@
   .state-frame .data-table { min-width: 480px; }
 
   /* ---------- Reports ---------- */
-  .row-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+  .row-actions:where(:not(.lib *)) { display: flex; flex-wrap: wrap; gap: 6px; }
   .row-actions .btn { white-space: nowrap; }
   .report-view { margin-top: 24px; padding: 20px; border: 1px solid var(--rule); border-radius: 8px; display: grid; gap: 16px; }
   .report-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; }
@@ -886,6 +852,65 @@
   .copy-button[data-copied] { color: var(--code-string); }
 
   /* ---------- Responsive ---------- */
+
+  /* ---------- Sections in the header ---------- */
+  .section-nav { margin-left: 12px; align-self: stretch; display: flex; }
+  .section-nav ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: stretch; gap: 4px; }
+  .section-nav li { display: flex; }
+  .section-link {
+    position: relative; display: flex; align-items: center; padding: 0 10px;
+    color: var(--ink-soft); text-decoration: none; font-size: 14px; font-weight: 500; white-space: nowrap;
+  }
+  .section-link:hover { color: var(--ink); }
+  .section-link[aria-current] { color: var(--ink); }
+  .section-link[aria-current]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; background: var(--ink); }
+  .section-link:focus-visible { outline-offset: -6px; }
+  .nav-group[data-section]:not(.is-current) { display: none; }
+  .nav-sections { display: none; }
+  .nav-sections .nav-link[aria-current] { font-weight: 600; }
+
+  /* ---------- Library demos ---------- */
+  /* The page skips the library's base.css, so library markup gets its margin resets here. */
+  .lib :where(h1, h2, h3, h4, p, dl, dd, figure) { margin: 0; }
+  .lib-demo { margin-top: 40px; padding: 24px; display: grid; gap: 20px; border: 1px solid var(--rule); border-radius: 12px; background: var(--bg); }
+  .doc-section .lib-demo { margin-top: 16px; }
+  .lib-demo:empty { min-height: 120px; }
+  .lib-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+  .lib-row--top { align-items: flex-start; }
+  .lib-scroll { max-height: 280px; overflow: auto; border-bottom: 1px solid var(--rule); }
+  .lib-fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 10px; min-width: 0; }
+  .lib-index { list-style: none; margin: 40px 0 0; padding: 0; }
+  .lib-index .card__title a { color: var(--ink); }
+  .install { max-width: 560px; }
+  .lib .table code { white-space: nowrap; }
+  .lib-ramp td:nth-child(3) { min-width: 260px; }
+  .lib-ramp th { white-space: nowrap; }
+  .lib-colors td, .lib-colors th { white-space: nowrap; }
+  .lib-colors td:last-child { white-space: normal; }
+  .lib-sw { display: inline-block; width: 18px; height: 18px; margin-right: 8px; vertical-align: -4px; border: 1px solid var(--rule-strong); border-radius: 4px; }
+  .lib-space { display: grid; gap: 6px; }
+  .lib-space__row { display: grid; grid-template-columns: 104px 44px 1fr; align-items: center; gap: 12px; }
+  .lib-space__bar { height: 12px; background: var(--ink); border-radius: 2px; }
+  .lib-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 24px 20px; }
+  .lib-swatch { display: grid; gap: 4px; align-content: start; }
+  .lib-swatch__box { width: 72px; height: 56px; margin-bottom: 8px; border: 1px solid var(--rule-strong); background: var(--bg-subtle); }
+  .lib-swatch__box--shadow { border-color: var(--rule); background: var(--bg); border-radius: var(--radius-md); }
+  .lib-frame { height: 320px; display: flex; }
+  .lib-frame .bframe { flex: 1; }
+  .lib-frame__app { padding: 20px 24px; overflow: auto; }
+  .lib-frame__tabs { list-style: none; margin: 0 0 16px; padding: 0; display: flex; gap: 4px; border-bottom: 1px solid var(--rule); }
+  .lib-frame__tabs button { margin-bottom: -1px; padding: 10px 10px 12px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--ink-soft); font: inherit; font-size: 14px; cursor: pointer; }
+  .lib-frame__tabs button[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .lib-avatar { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--bg-hover); font-family: var(--mono); font-size: 11px; }
+  @media (max-width: 960px) {
+    .section-nav { display: none; }
+    .nav-sections { display: block; }
+  }
+  @media (max-width: 520px) { .lib-demo { padding: 16px; } }
+  @media (forced-colors: active) {
+    .section-link[aria-current]::after { forced-color-adjust: none; background: Highlight; }
+  }
+
   @media (max-width: 960px) {
     .menu-button { display: inline-flex; }
     .app-shell { grid-template-columns: 1fr; }
@@ -909,7 +934,7 @@
     .feature-list { grid-template-columns: 1fr; gap: 24px; }
     .badge, .header-sep { display: none; }
     .bulk-result { margin-left: 0; width: 100%; }
-    .field { max-width: none; }
+    .field:where(:not(.lib *)) { max-width: none; }
   }
   @media (max-width: 520px) {
     .main { padding: 36px max(16px, env(safe-area-inset-right, 0px)) 80px max(16px, env(safe-area-inset-left, 0px)); }
@@ -926,7 +951,7 @@
     .chip[aria-pressed="true"], .btn-primary, .layers li.is-focus { forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight; }
     .data-table tbody tr.is-open > :first-child { box-shadow: none; border-left: 3px solid Highlight; }
     .timeline li::before { forced-color-adjust: none; background: CanvasText; }
-    .btn[aria-disabled="true"] { color: GrayText; border-color: GrayText; }
+    .btn:where(:not(.lib *))[aria-disabled="true"] { color: GrayText; border-color: GrayText; }
     .nav-link[aria-current] { text-decoration: underline; }
     .tab { border-bottom-color: Canvas; }
     .meter { forced-color-adjust: none; background: Canvas; box-shadow: inset 0 0 0 1px CanvasText; }
@@ -959,7 +984,15 @@
   <button class="icon-button menu-button" id="menuButton" type="button" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Menu</span></button>
   <a class="wordmark" href="#overview"><svg class="wordmark-glyph" viewBox="0 0 20 20" aria-hidden="true"><rect x="1" y="1" width="8" height="8" fill="currentColor"/><rect x="11" y="1" width="8" height="8" fill="currentColor" opacity=".7"/><rect x="1" y="11" width="8" height="8" fill="currentColor" opacity=".45"/><rect x="11.75" y="11.75" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Enterprise Library</a>
   <span class="header-sep" aria-hidden="true">/</span>
-  <span class="badge">v0.1 preview</span>
+  <span class="badge">v0.2</span>
+  <nav class="section-nav" aria-label="Sections">
+    <ul>
+      <li><a class="section-link" href="#overview" data-section="overview">Overview</a></li>
+      <li><a class="section-link" href="#foundations" data-section="foundations">Foundations</a></li>
+      <li><a class="section-link" href="#components" data-section="components">Components</a></li>
+      <li><a class="section-link" href="#patterns" data-section="patterns">Patterns</a></li>
+    </ul>
+  </nav>
   <div class="header-actions">
     <button class="icon-button" id="themeButton" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg><span class="sr-only">Dark theme</span></button>
   </div>
@@ -967,13 +1000,70 @@
 
 <div class="app-shell">
   <nav class="sidebar" id="sidebar" aria-label="Documentation">
-    <div class="nav-group">
-      <h2 class="nav-heading" id="nav-start">Getting started</h2>
-      <ul class="nav-list" aria-labelledby="nav-start">
-        <li><a class="nav-link" href="#overview">Overview</a></li>
+    <div class="nav-group nav-sections">
+      <h2 class="nav-heading" id="nav-sections">Sections</h2>
+      <ul class="nav-list" aria-labelledby="nav-sections">
+        <li><a class="nav-link" href="#overview" data-section="overview">Overview</a></li>
+        <li><a class="nav-link" href="#foundations" data-section="foundations">Foundations</a></li>
+        <li><a class="nav-link" href="#components" data-section="components">Components</a></li>
+        <li><a class="nav-link" href="#patterns" data-section="patterns">Patterns</a></li>
       </ul>
     </div>
-    <div class="nav-group">
+    <div class="nav-group" data-section="overview">
+      <h2 class="nav-heading" id="nav-ov">Overview</h2>
+      <ul class="nav-list" aria-labelledby="nav-ov">
+        <li><a class="nav-link" href="#overview">Introduction</a></li>
+        <li><a class="nav-link" href="#use-cases">Use cases</a></li>
+        <li><a class="nav-link" href="#getting-started">Getting started</a></li>
+      </ul>
+    </div>
+    <div class="nav-group" data-section="foundations">
+      <h2 class="nav-heading" id="nav-fd">Foundations</h2>
+      <ul class="nav-list" aria-labelledby="nav-fd">
+        <li><a class="nav-link" href="#foundations">All foundations</a></li>
+        <li><a class="nav-link" href="#colour">Colour</a></li>
+        <li><a class="nav-link" href="#type">Type</a></li>
+        <li><a class="nav-link" href="#spacing">Spacing</a></li>
+        <li><a class="nav-link" href="#radius-shadow">Radius, shadow and height</a></li>
+      </ul>
+    </div>
+    <div class="nav-group" data-section="components">
+      <h2 class="nav-heading" id="nav-cm">Components</h2>
+      <ul class="nav-list" aria-labelledby="nav-cm">
+        <li><a class="nav-link" href="#components">All components</a></li>
+      </ul>
+    </div>
+    <div class="nav-group" data-section="components">
+      <h2 class="nav-heading" id="nav-cm-act">Actions and inputs</h2>
+      <ul class="nav-list" aria-labelledby="nav-cm-act">
+        <li><a class="nav-link" href="#buttons">Buttons</a></li>
+        <li><a class="nav-link" href="#fields">Fields</a></li>
+        <li><a class="nav-link" href="#select">Select</a></li>
+      </ul>
+    </div>
+    <div class="nav-group" data-section="components">
+      <h2 class="nav-heading" id="nav-cm-data">Data and surfaces</h2>
+      <ul class="nav-list" aria-labelledby="nav-cm-data">
+        <li><a class="nav-link" href="#table">Table</a></li>
+        <li><a class="nav-link" href="#card">Card</a></li>
+        <li><a class="nav-link" href="#statfilter">StatFilter</a></li>
+        <li><a class="nav-link" href="#hovercard">HoverCard</a></li>
+      </ul>
+    </div>
+    <div class="nav-group" data-section="components">
+      <h2 class="nav-heading" id="nav-cm-frame">Presenting apps</h2>
+      <ul class="nav-list" aria-labelledby="nav-cm-frame">
+        <li><a class="nav-link" href="#browserframe">BrowserFrame</a></li>
+        <li><a class="nav-link" href="#resetbutton">ResetButton</a></li>
+      </ul>
+    </div>
+    <div class="nav-group" data-section="patterns">
+      <h2 class="nav-heading" id="nav-pt">Patterns</h2>
+      <ul class="nav-list" aria-labelledby="nav-pt">
+        <li><a class="nav-link" href="#patterns">All patterns</a></li>
+      </ul>
+    </div>
+    <div class="nav-group" data-section="patterns">
       <h2 class="nav-heading" id="nav-data"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-data-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 15h18M9.5 9.5V20"/></svg><span>Working with records</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
       <ul class="nav-list" id="nav-data-list" aria-labelledby="nav-data">
         <li><a class="nav-link" href="#bulk-actions">Bulk actions</a></li>
@@ -983,7 +1073,7 @@
         <li><a class="nav-link" href="#pagination">Pagination</a></li>
       </ul>
     </div>
-    <div class="nav-group">
+    <div class="nav-group" data-section="patterns">
       <h2 class="nav-heading" id="nav-flow"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-flow-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6.5h10M10 12h10M10 17.5h10"/><path d="M3.5 6.5l1.6 1.6 2.9-3M3.5 12l1.6 1.6 2.9-3"/><circle cx="5.5" cy="17.5" r="1.6"/></svg><span>Tasks and feedback</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
       <ul class="nav-list" id="nav-flow-list" aria-labelledby="nav-flow">
         <li><a class="nav-link" href="#command-palette">Command palette</a></li>
@@ -993,7 +1083,7 @@
         <li><a class="nav-link" href="#notifications">Notifications</a></li>
       </ul>
     </div>
-    <div class="nav-group">
+    <div class="nav-group" data-section="patterns">
       <h2 class="nav-heading" id="nav-admin"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-admin-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z"/><path d="M8.8 12.2l2.3 2.3 4.2-4.6"/></svg><span>Admin console</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
       <ul class="nav-list" id="nav-admin-list" aria-labelledby="nav-admin">
         <li><a class="nav-link" href="#assets">Asset inventory</a></li>
@@ -1013,13 +1103,13 @@
 <!-- =====================================================================
      Overview
      ===================================================================== -->
-<section class="panel" id="panel-overview" aria-labelledby="h-overview">
+<section class="panel" id="panel-overview" data-section="overview" aria-labelledby="h-overview">
   <div class="hero">
-    <h1 class="page-title" id="h-overview" tabindex="-1">Whole workflows, accessible by default.</h1>
-    <p class="page-lede">A React library of enterprise patterns: data tables, filters, bulk actions, and multi-step forms, plus admin screens like audit logs and usage caps. Each one decides where focus goes, what a screen reader hears, and how every state looks, so your team stops solving it again on every screen.</p>
+    <h1 class="page-title" id="h-overview" tabindex="-1">Enterprise software, accessible by default.</h1>
+    <p class="page-lede">Foundations, components and whole patterns for dense, task-heavy screens: data tables, filters, bulk actions and multi-step forms, plus admin screens like audit logs and usage caps. Each one decides where focus goes, what a screen reader hears, and how every state looks.</p>
     <div class="install">
-      <div class="install-row"><span class="prompt" aria-hidden="true">$</span><code>npm install enterprise-library</code><button class="copy-button" type="button" data-copy-text="npm install enterprise-library" data-copy-label="install command"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div>
-      <p class="note">Coming soon. The package isn't published yet, and the name may change before release.</p>
+      <div class="install-row"><span class="prompt" aria-hidden="true">$</span><code>npm install github:jothish-uxd/enterprise-library#v0.2.0</code><button class="copy-button" type="button" data-copy-text="npm install github:jothish-uxd/enterprise-library#v0.2.0" data-copy-label="install command"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div>
+      <p class="note">Version 0.2.0: tokens, styles and components. The patterns below are working examples, coming next as React components. <a href="#getting-started">Getting started</a></p>
     </div>
   </div>
 
@@ -1027,8 +1117,6 @@
   <div class="tabbar is-wide" id="overview-tabbar">
     <div class="tablist" role="tablist" aria-label="Overview sections">
       <button class="tab" type="button" role="tab" id="tab-example" aria-controls="example" aria-selected="true" tabindex="0">Live example</button>
-      <button class="tab" type="button" role="tab" id="tab-patterns" aria-controls="patterns" aria-selected="false" tabindex="-1">Patterns</button>
-      <button class="tab" type="button" role="tab" id="tab-quick-start" aria-controls="quick-start" aria-selected="false" tabindex="-1">Quick start</button>
       <button class="tab" type="button" role="tab" id="tab-support" aria-controls="support" aria-selected="false" tabindex="-1">Support targets</button>
       <button class="tab" type="button" role="tab" id="tab-includes" aria-controls="includes" aria-selected="false" tabindex="-1">What’s included</button>
       <button class="tab" type="button" role="tab" id="tab-layers" aria-controls="layers" aria-selected="false" tabindex="-1">Why patterns</button>
@@ -1069,8 +1157,8 @@
     <h2 class="sr-only" id="h-layers">Patterns, not parts</h2>
     <p>Most design systems stop at components: a checkbox, a button, a table cell. Most accessibility bugs show up in between, in how those parts behave together on a real screen. This library starts one level up.</p>
     <ol class="layers">
-      <li><span class="layer-tag">Layer 1</span><strong>Tokens</strong><span>Color, type, spacing, and the focus ring.</span></li>
-      <li><span class="layer-tag">Layer 2</span><strong>Components</strong><span>Button, Checkbox, Text field, Dialog. Bring your own or use ours.</span></li>
+      <li><span class="layer-tag">Layer 1 · <a href="#foundations">Foundations</a></span><strong>Tokens</strong><span>Color, type, spacing, radius, shadow, and the focus ring.</span></li>
+      <li><span class="layer-tag">Layer 2 · <a href="#components">Components</a></span><strong>Components</strong><span>Button, Select, Table, Card. Use ours, or bring your own.</span></li>
       <li class="is-focus"><span class="layer-tag">Layer 3 · this library</span><strong>Patterns</strong><span>Data table, Bulk actions, Multi-step form, Command palette.</span></li>
       <li><span class="layer-tag">Layer 4</span><strong>Templates</strong><span>Review queue, Settings page, Admin console.</span></li>
     </ol>
@@ -1089,8 +1177,567 @@
     </div>
   </section>
 
-  <section class="doc-section tab-panel" id="patterns" role="tabpanel" aria-labelledby="tab-patterns" tabindex="0" hidden>
-    <h2 class="sr-only" id="h-patterns">Patterns</h2>
+  <section class="doc-section tab-panel" id="includes" role="tabpanel" aria-labelledby="tab-includes" tabindex="0" hidden>
+    <h2 class="sr-only" id="h-includes">What every pattern includes</h2>
+    <dl class="feature-list">
+      <div><dt>A keyboard map</dt><dd>Every pattern documents its keys and follows the ARIA Authoring Practices, so it behaves the way people expect.</dd></div>
+      <div><dt>A focus plan</dt><dd>Each action has a set place for focus to land, including after deletes, dialogs, and route changes.</dd></div>
+      <div><dt>Written announcements</dt><dd>Status messages are part of the pattern, worded once and announced politely. Your screens stay quiet otherwise.</dd></div>
+      <div><dt>Every state designed</dt><dd>Loading, empty, no results, partial failure, and no permission all ship as part of the pattern.</dd></div>
+      <div><dt>HTML first</dt><dd>Real tables, buttons, and labels. ARIA only fills the gaps native elements leave.</dd></div>
+      <div><dt>Color means a message</dt><dd>Status and selection use shape, text, and weight. Color appears in one place only: red, yellow, and green messages for errors, warnings, and success, each with its own icon and words.</dd></div>
+      <div><dt>Light, dark, and high contrast</dt><dd>Surfaces follow your theme tokens, and Windows High Contrast gets system colors.</dd></div>
+      <div><dt>Content guidance</dt><dd>Recommended labels, verbs, and error messages for each pattern, written for the person using the screen.</dd></div>
+      <div><dt>Tests you can keep</dt><dd>Testing Library recipes that check names, roles, focus, and announcements in your own app.</dd></div>
+      <div><dt>Reduced motion</dt><dd>Transitions switch off when the operating system asks for less motion.</dd></div>
+    </dl>
+  </section>
+
+  <section class="doc-section tab-panel" id="support" role="tabpanel" aria-labelledby="tab-support" tabindex="0" hidden>
+    <h2 class="sr-only" id="h-support">Support targets</h2>
+    <p>These are the targets for v1. Each pattern page will publish its own results against them.</p>
+    <div class="table-scroll">
+      <table class="doc-table">
+        <caption class="sr-only">Screen reader and browser pairings targeted for version 1</caption>
+        <thead><tr><th scope="col">Screen reader</th><th scope="col">Browsers</th><th scope="col">Platform</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">NVDA</th><td>Firefox, Chrome</td><td>Windows</td></tr>
+          <tr><th scope="row">JAWS</th><td>Chrome, Edge</td><td>Windows</td></tr>
+          <tr><th scope="row">VoiceOver</th><td>Safari</td><td>macOS, iOS</td></tr>
+          <tr><th scope="row">TalkBack</th><td>Chrome</td><td>Android</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="a11y-list" style="margin-top:28px">
+      <li>WCAG 2.2 AA, including focus not obscured and 24px minimum targets.</li>
+      <li>Keyboard only, with no traps and a visible focus ring everywhere.</li>
+      <li>400% zoom and 320px reflow without sideways scrolling outside tables.</li>
+      <li>Windows forced colors and reduced motion.</li>
+    </ul>
+  </section>
+</section>
+
+<!-- =====================================================================
+     Use cases
+     ===================================================================== -->
+<section class="panel" id="panel-use-cases" data-section="overview" aria-labelledby="h-use-cases" hidden>
+  <p class="page-kicker">Overview</p>
+  <h1 class="page-title" id="h-use-cases" tabindex="-1">Use cases</h1>
+  <p class="page-lede">Enterprise Library is for dense, task-heavy software: the screens people spend their working day in, where getting focus, wording and state right matters more than brand colour.</p>
+  <ul class="lib card-grid lib-index"><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#patterns">Admin consoles</a></h2><p class="card__meta">Audit logs, roles, usage caps, configuration and reports, built from the admin patterns.</p></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#bulk-actions">Review queues</a></h2><p class="card__meta">Compliance review, approvals and triage: filter, choose many, act once, undo.</p></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#table">Hiring and assessment tools</a></h2><p class="card__meta">Candidate tables, pipelines that filter (StatFilter), choice cards for setup steps.</p></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#card">Data and ML workbenches</a></h2><p class="card__meta">Model cards with stats, run tables, selectable configurations.</p></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#browserframe">Product demos and case studies</a></h2><p class="card__meta">Present a working app inside a page with BrowserFrame; the page tells the story.</p></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#multi-step-form">Long tasks and setup flows</a></h2><p class="card__meta">Multi-step forms with saved drafts and one error summary per step.</p></div></div></li></ul>
+
+  <section class="doc-section" id="uc-layers" aria-labelledby="h-uc-layers">
+    <h2 id="h-uc-layers">Which layer to reach for</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Which layer of the library to use</caption><thead><tr><th scope="col">Layer</th><th scope="col">Reach for it when</th><th scope="col">Examples</th></tr></thead><tbody><tr><th scope="row"><a href="#foundations">Foundations</a></th><td>You’re styling anything at all: every value comes from a token.</td><td>Colour, type ramp, spacing, radius, shadow</td></tr><tr><th scope="row"><a href="#components">Components</a></th><td>You need one control or surface, and the screen around it is yours.</td><td>Button, Select, Table, Card, StatFilter</td></tr><tr><th scope="row"><a href="#patterns">Patterns</a></th><td>You’re building a whole workflow and want focus, announcements and states decided.</td><td>Data table with filters, bulk actions, destructive confirm</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="uc-not" aria-labelledby="h-uc-not">
+    <h2 id="h-uc-not">When it isn’t the right fit</h2>
+    <ul class="a11y-list"><li>Marketing and brand sites. The library is monochrome on purpose; colour only ever means an error, warning or success message.</li><li>Consumer apps that need playful motion or illustration. Motion here is minimal and switches off with reduced motion.</li><li>Data visualisation. Charts arrive in 0.4.0; until then, use Accessible Charts.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in overview" data-current="use-cases"></nav>
+</section>
+
+<!-- =====================================================================
+     Getting started
+     ===================================================================== -->
+<section class="panel" id="panel-getting-started" data-section="overview" aria-labelledby="h-getting-started" hidden>
+  <p class="page-kicker">Overview</p>
+  <h1 class="page-title" id="h-getting-started" tabindex="-1">Getting started</h1>
+  <p class="page-lede">Install from GitHub, import the stylesheet once, load Geist, and use the tokens, classes and components.</p>
+
+  <section class="doc-section" id="gs-install" aria-labelledby="h-gs-install">
+    <h2 id="h-gs-install">Install</h2>
+    <p>Each version is a GitHub Release. Pin the tag so an app only changes when you move it.</p><div class="code-block"><div class="code-block-bar"><span>Terminal</span><button class="copy-button" type="button" data-copy-label="Terminal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>npm install github:jothish-uxd/enterprise-library#v0.2.0</code></pre></div>
+  </section>
+  <section class="doc-section" id="gs-use" aria-labelledby="h-gs-use">
+    <h2 id="h-gs-use">Use it</h2>
+    <div class="code-block"><div class="code-block-bar"><span>main.tsx</span><button class="copy-button" type="button" data-copy-label="main.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>// Once, at the app&#x27;s entry
+import &#x27;@jothish-uxd/enterprise-library/styles.css&#x27;;
+
+// Anywhere
+import { Select, StatFilter, Card, ChoiceCard, SortHeader } from &#x27;@jothish-uxd/enterprise-library&#x27;;</code></pre></div><p class="note">Only need tokens? Import <code>@jothish-uxd/enterprise-library/tokens.css</code>. Each stylesheet also ships on its own under <code>css/</code>.</p>
+  </section>
+  <section class="doc-section" id="gs-fonts" aria-labelledby="h-gs-fonts">
+    <h2 id="h-gs-fonts">Fonts</h2>
+    <p>The app loads Geist and Geist Mono; the package doesn’t.</p><div class="code-block"><div class="code-block-bar"><span>index.html</span><button class="copy-button" type="button" data-copy-label="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot; /&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin /&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot; /&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="gs-theme" aria-labelledby="h-gs-theme">
+    <h2 id="h-gs-theme">Theme</h2>
+    <p>Dark mode follows the operating system. Set <code>data-theme="light"</code> or <code>"dark"</code> on <code>&lt;html&gt;</code> to override it, and store the person’s choice yourself.</p>
+  </section>
+  <section class="doc-section" id="gs-move" aria-labelledby="h-gs-move">
+    <h2 id="h-gs-move">Moving from @jothish-uxd/design-system</h2>
+    <ul class="a11y-list"><li>Install <code>github:jothish-uxd/enterprise-library#v0.2.0</code> in place of <code>github:jothish-uxd/design-system#v0.1.0</code>.</li><li>Change imports from <code>@jothish-uxd/design-system</code> to <code>@jothish-uxd/enterprise-library</code>, including <code>styles.css</code>.</li><li>Nothing is renamed. <code>--ok</code> still works, as an alias of <code>--success</code>.</li><li>Replace hand-typed sizes, gaps, radii and shadows with tokens as you touch each screen; sizes between ramp steps round to the nearest step.</li></ul>
+  </section>
+  <section class="doc-section" id="quick-start" aria-labelledby="h-quick-start">
+    <h2 id="h-quick-start">Patterns, as they’ll ship</h2>
+    <p>The patterns are being built as React components next. This is the intended API: describe your rows and columns, then name the filters and actions. Focus handling, announcements and empty states come with the pattern.</p><div class="code-block">
+      <div class="code-block-bar"><span>AccessRequests.jsx</span><button class="copy-button" type="button" data-copy-label="AccessRequests.jsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div>
+      <pre><code>import { DataTable, FilterBar, BulkActions, DetailsSheet } from "enterprise-library";
+import "enterprise-library/styles.css";
+
+export function AccessRequests({ rows, onUpdate }) {
+  return (
+    &lt;DataTable
+      caption="Access requests"
+      rows={rows}
+      rowKey="id"
+      itemName={{ one: "request", other: "requests" }}
+      columns={[
+        { key: "requester", header: "Requester", rowHeader: true, sortable: true },
+        { key: "system", header: "System", priority: "low" },
+        { key: "status", header: "Status", sortable: true },
+        { key: "submitted", header: "Submitted", sortable: true },
+      ]}
+      filters={&lt;FilterBar search={["requester", "system"]} facets={["status"]} /&gt;}
+      bulkActions={
+        &lt;BulkActions
+          actions={[
+            { label: "Approve", verb: "Approved", run: ids =&gt; onUpdate(ids, "approved") },
+            { label: "Deny", verb: "Denied", run: ids =&gt; onUpdate(ids, "denied") },
+          ]}
+        /&gt;
+      }
+      detail={row =&gt; &lt;DetailsSheet label="Request details" title={row.requester} /&gt;}
+    /&gt;
+  );
+}</code></pre>
+    </div>
+  </section>
+  <nav class="pager" aria-label="More in overview" data-current="getting-started"></nav>
+</section>
+
+<!-- =====================================================================
+     Foundations
+     ===================================================================== -->
+<section class="panel" id="panel-foundations" data-section="foundations" aria-labelledby="h-foundations" hidden>
+  <p class="page-kicker">Foundations</p>
+  <h1 class="page-title" id="h-foundations" tabindex="-1">Foundations</h1>
+  <p class="page-lede">The values everything else is built from. Use a token, never a raw value; if a value you need is missing, add the token first.</p>
+  <ul class="lib card-grid lib-index"><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#colour">Colour</a></h2><p class="card__meta">Ten monochrome tokens plus three message colours, each with a dark value.</p></div><div class="card__end"><span class="tag">16 tokens</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#type">Type</a></h2><p class="card__meta">An eight-step ramp: six fixed sizes and two that scale with the viewport.</p></div><div class="card__end"><span class="tag">8 steps</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#spacing">Spacing</a></h2><p class="card__meta">A 4px grid, with half steps for the inside of controls.</p></div><div class="card__end"><span class="tag">13 steps</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#radius-shadow">Radius, shadow and height</a></h2><p class="card__meta">Four radii plus full, three shadows for things that float, three control heights.</p></div><div class="card__end"><span class="tag">11 tokens</span></div></div></li></ul>
+
+</section>
+
+<!-- =====================================================================
+     Colour
+     ===================================================================== -->
+<section class="panel" id="panel-colour" data-section="foundations" aria-labelledby="h-colour" hidden>
+  <p class="page-kicker">Foundation</p>
+  <h1 class="page-title" id="h-colour" tabindex="-1">Colour</h1>
+  <p class="page-lede">Ink on white, true black in dark mode. State is carried by ink weight, rules and shape. The only hue is a message: an error, warning or success, always with its icon and words.</p>
+
+  <section class="doc-section" id="col-core" aria-labelledby="h-col-core">
+    <h2 id="h-col-core">Monochrome</h2>
+    <div class="table-scroll"><table class="doc-table wide-table lib-colors"><caption class="sr-only">Monochrome colour tokens</caption><thead><tr><th scope="col">Token</th><th scope="col">Light</th><th scope="col">Dark</th><th scope="col">Use</th></tr></thead><tbody><tr><th scope="row"><code>--bg</code></th><td><span class="lib-sw" style="background:#ffffff" aria-hidden="true"></span><code>#ffffff</code></td><td><span class="lib-sw" style="background:#0a0a0a" aria-hidden="true"></span><code>#0a0a0a</code></td><td>Page and panel background</td></tr><tr><th scope="row"><code>--bg-subtle</code></th><td><span class="lib-sw" style="background:#fafafa" aria-hidden="true"></span><code>#fafafa</code></td><td><span class="lib-sw" style="background:#111111" aria-hidden="true"></span><code>#111111</code></td><td>Bars, badges, chosen card fill</td></tr><tr><th scope="row"><code>--bg-hover</code></th><td><span class="lib-sw" style="background:#f2f2f2" aria-hidden="true"></span><code>#f2f2f2</code></td><td><span class="lib-sw" style="background:#1a1a1a" aria-hidden="true"></span><code>#1a1a1a</code></td><td>Hover and selected rows</td></tr><tr><th scope="row"><code>--ink</code></th><td><span class="lib-sw" style="background:#171717" aria-hidden="true"></span><code>#171717</code></td><td><span class="lib-sw" style="background:#ededed" aria-hidden="true"></span><code>#ededed</code></td><td>Text, primary button, active marks</td></tr><tr><th scope="row"><code>--ink-soft</code></th><td><span class="lib-sw" style="background:#666666" aria-hidden="true"></span><code>#666666</code></td><td><span class="lib-sw" style="background:#a1a1a1" aria-hidden="true"></span><code>#a1a1a1</code></td><td>Secondary text</td></tr><tr><th scope="row"><code>--ink-faint</code></th><td><span class="lib-sw" style="background:#737373" aria-hidden="true"></span><code>#737373</code></td><td><span class="lib-sw" style="background:#8a8a8a" aria-hidden="true"></span><code>#8a8a8a</code></td><td>Labels, table headers</td></tr><tr><th scope="row"><code>--rule</code></th><td><span class="lib-sw" style="background:#ebebeb" aria-hidden="true"></span><code>#ebebeb</code></td><td><span class="lib-sw" style="background:#242424" aria-hidden="true"></span><code>#242424</code></td><td>Hairlines</td></tr><tr><th scope="row"><code>--rule-strong</code></th><td><span class="lib-sw" style="background:#d4d4d4" aria-hidden="true"></span><code>#d4d4d4</code></td><td><span class="lib-sw" style="background:#3a3a3a" aria-hidden="true"></span><code>#3a3a3a</code></td><td>Control borders, frame edge</td></tr><tr><th scope="row"><code>--focus</code></th><td><span class="lib-sw" style="background:#0068d6" aria-hidden="true"></span><code>#0068d6</code></td><td><span class="lib-sw" style="background:#52a8ff" aria-hidden="true"></span><code>#52a8ff</code></td><td>Focus ring only</td></tr><tr><th scope="row"><code>--on-ink</code></th><td><span class="lib-sw" style="background:#ffffff" aria-hidden="true"></span><code>#ffffff</code></td><td><span class="lib-sw" style="background:#0a0a0a" aria-hidden="true"></span><code>#0a0a0a</code></td><td>Text on solid ink</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="col-msg" aria-labelledby="h-col-msg">
+    <h2 id="h-col-msg">Messages</h2>
+    <div class="table-scroll"><table class="doc-table wide-table lib-colors"><caption class="sr-only">Message colour tokens</caption><thead><tr><th scope="col">Token</th><th scope="col">Light</th><th scope="col">Dark</th><th scope="col">Use</th></tr></thead><tbody><tr><th scope="row"><code>--error</code></th><td><span class="lib-sw" style="background:#b42318" aria-hidden="true"></span><code>#b42318</code></td><td><span class="lib-sw" style="background:#ff8f85" aria-hidden="true"></span><code>#ff8f85</code></td><td>Error icon and text</td></tr><tr><th scope="row"><code>--error-bg</code></th><td><span class="lib-sw" style="background:#fdecea" aria-hidden="true"></span><code>#fdecea</code></td><td><span class="lib-sw" style="background:#3b1513" aria-hidden="true"></span><code>#3b1513</code></td><td>Error message fill</td></tr><tr><th scope="row"><code>--warning</code></th><td><span class="lib-sw" style="background:#8a5a00" aria-hidden="true"></span><code>#8a5a00</code></td><td><span class="lib-sw" style="background:#f2c14e" aria-hidden="true"></span><code>#f2c14e</code></td><td>Warning icon and text</td></tr><tr><th scope="row"><code>--warning-bg</code></th><td><span class="lib-sw" style="background:#fdf3d7" aria-hidden="true"></span><code>#fdf3d7</code></td><td><span class="lib-sw" style="background:#352a0e" aria-hidden="true"></span><code>#352a0e</code></td><td>Warning message fill</td></tr><tr><th scope="row"><code>--success</code></th><td><span class="lib-sw" style="background:#157032" aria-hidden="true"></span><code>#157032</code></td><td><span class="lib-sw" style="background:#6fd28c" aria-hidden="true"></span><code>#6fd28c</code></td><td>Success icon and text</td></tr><tr><th scope="row"><code>--success-bg</code></th><td><span class="lib-sw" style="background:#e6f4ea" aria-hidden="true"></span><code>#e6f4ea</code></td><td><span class="lib-sw" style="background:#11301c" aria-hidden="true"></span><code>#11301c</code></td><td>Success message fill</td></tr></tbody></table></div><p class="note"><code>--ok</code> is kept as an alias of <code>--success</code> for apps built on 0.1.</p>
+  </section>
+  <section class="doc-section" id="col-rules" aria-labelledby="h-col-rules">
+    <h2 id="h-col-rules">Rules</h2>
+    <ul class="a11y-list"><li>Never use colour alone. Selection is an ink border or bar, sort is weight and an arrow, a chosen card has a filled mark.</li><li>Message colours appear only in messages and their icons, and always beside words that say the same thing.</li><li><code>--focus</code> is for the focus ring and nothing else, so focus is always the one blue on the screen.</li><li>Dark mode follows the OS; <code>data-theme</code> on <code>&lt;html&gt;</code> overrides it. Windows High Contrast gets system colours.</li><li>Body text on every background passes 4.5:1; <code>--ink-faint</code> is the lightest text allowed.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in foundations" data-current="colour"></nav>
+</section>
+
+<!-- =====================================================================
+     Type
+     ===================================================================== -->
+<section class="panel" id="panel-type" data-section="foundations" aria-labelledby="h-type" hidden>
+  <p class="page-kicker">Foundation</p>
+  <h1 class="page-title" id="h-type" tabindex="-1">Type</h1>
+  <p class="page-lede">Geist 400, 500 and 600 for everything; Geist Mono for IDs, addresses, kickers and badges. Eight steps: six fixed, and title and display scale with the viewport.</p>
+  <div class="lib lib-demo is-wide"><table class="table lib-ramp"><caption class="visually-hidden">Type ramp</caption><thead><tr><th scope="col">Token and class</th><th scope="col">Size</th><th scope="col">Sample</th></tr></thead><tbody><tr><th scope="row"><code>--text-caption</code><br><code class="muted">.t-caption</code></th><td class="tabular">12px</td><td><p class="t-caption" style="color:var(--ink)">Last edited by Leia Organa</p><p class="t-caption muted">Labels, table headers, badges, mono IDs</p></td></tr><tr><th scope="row"><code>--text-small</code><br><code class="muted">.t-small</code></th><td class="tabular">13px</td><td><p class="t-small" style="color:var(--ink)">Applies to every module in this assessment.</p><p class="t-caption muted">Help text, metadata</p></td></tr><tr><th scope="row"><code>--text-body-sm</code><br><code class="muted">.t-body-sm</code></th><td class="tabular">14px</td><td><p class="t-body-sm" style="color:var(--ink)">Starfighter Pilot L4 · 18 in assessment</p><p class="t-caption muted">Controls, dense UI text, table cells</p></td></tr><tr><th scope="row"><code>--text-body</code><br><code class="muted">.t-body</code></th><td class="tabular">15px</td><td><p class="t-body" style="color:var(--ink)">Candidates take the assessment in one sitting.</p><p class="t-caption muted">Reading text</p></td></tr><tr><th scope="row"><code>--text-lead</code><br><code class="muted">.t-lead</code></th><td class="tabular">17px</td><td><p class="t-lead" style="color:var(--ink)">Build, proctor and score assessments in one place.</p><p class="t-caption muted">Intro paragraphs</p></td></tr><tr><th scope="row"><code>--text-title-sm</code><br><code class="muted">.t-title-sm</code></th><td class="tabular">20px</td><td><p class="t-title-sm" style="color:var(--ink)">Modules</p><p class="t-caption muted">Section titles, card stats</p></td></tr><tr><th scope="row"><code>--text-title</code><br><code class="muted">.t-title</code></th><td class="tabular">24–32px</td><td><p class="t-title" style="color:var(--ink)">Assessment content</p><p class="t-caption muted">Page titles, fluid</p></td></tr><tr><th scope="row"><code>--text-display</code><br><code class="muted">.t-display</code></th><td class="tabular">44–72px</td><td><p class="t-display" style="color:var(--ink)">Hire well</p><p class="t-caption muted">Hero, fluid</p></td></tr></tbody></table></div>
+
+  <section class="doc-section" id="type-detail" aria-labelledby="h-type-detail">
+    <h2 id="h-type-detail">Line height, tracking and weight</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Line height, tracking and weight tokens</caption><thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Use</th></tr></thead><tbody><tr><th scope="row"><code>--leading-tight</code></th><td>1.1</td><td>Title and display</td></tr><tr><th scope="row"><code>--leading-snug</code></th><td>1.4</td><td>Controls, card titles</td></tr><tr><th scope="row"><code>--leading-body</code></th><td>1.6</td><td>Reading text</td></tr><tr><th scope="row"><code>--tracking-title-sm</code></th><td>−0.025em</td><td>Section titles</td></tr><tr><th scope="row"><code>--tracking-title</code></th><td>−0.045em</td><td>Page titles</td></tr><tr><th scope="row"><code>--tracking-display</code></th><td>−0.055em</td><td>Hero</td></tr><tr><th scope="row"><code>--weight-regular</code> · <code>-medium</code> · <code>-semibold</code></th><td>400 · 500 · 600</td><td>Body · labels and buttons · titles</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="type-use" aria-labelledby="h-type-use">
+    <h2 id="h-type-use">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>styles.css</span><button class="copy-button" type="button" data-copy-label="styles.css"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>.panel-title {
+  font-size: var(--text-title-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-title-sm);
+}
+/* or use the class: &lt;h2 class=&quot;t-title-sm&quot;&gt; */</code></pre></div>
+  </section>
+  <section class="doc-section" id="type-rules" aria-labelledby="h-type-rules">
+    <h2 id="h-type-rules">Rules</h2>
+    <ul class="a11y-list"><li>Never type a raw font size. A size between two steps rounds to the nearer one.</li><li>Title and display use <code>clamp()</code>: title is 24px on a phone and 32px from about 850px; display is 44px to 72px.</li><li>Tracking tightens as size grows; small text keeps the default.</li><li>Use <code>tabular-nums</code> (<code>.tabular</code>) wherever numbers line up: tables, stats, counts.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in foundations" data-current="type"></nav>
+</section>
+
+<!-- =====================================================================
+     Spacing
+     ===================================================================== -->
+<section class="panel" id="panel-spacing" data-section="foundations" aria-labelledby="h-spacing" hidden>
+  <p class="page-kicker">Foundation</p>
+  <h1 class="page-title" id="h-spacing" tabindex="-1">Spacing</h1>
+  <p class="page-lede">A 4px grid. Half steps (6, 10, 14) exist for the inside of controls, where a full step is too coarse.</p>
+  <div class="lib lib-demo"><div class="lib-space"><div class="lib-space__row"><code>--space-1</code><span class="tabular muted t-small">4px</span><span class="lib-space__bar" style="width:var(--space-1)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-1-5</code><span class="tabular muted t-small">6px</span><span class="lib-space__bar" style="width:var(--space-1-5)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-2</code><span class="tabular muted t-small">8px</span><span class="lib-space__bar" style="width:var(--space-2)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-2-5</code><span class="tabular muted t-small">10px</span><span class="lib-space__bar" style="width:var(--space-2-5)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-3</code><span class="tabular muted t-small">12px</span><span class="lib-space__bar" style="width:var(--space-3)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-3-5</code><span class="tabular muted t-small">14px</span><span class="lib-space__bar" style="width:var(--space-3-5)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-4</code><span class="tabular muted t-small">16px</span><span class="lib-space__bar" style="width:var(--space-4)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-5</code><span class="tabular muted t-small">20px</span><span class="lib-space__bar" style="width:var(--space-5)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-6</code><span class="tabular muted t-small">24px</span><span class="lib-space__bar" style="width:var(--space-6)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-8</code><span class="tabular muted t-small">32px</span><span class="lib-space__bar" style="width:var(--space-8)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-10</code><span class="tabular muted t-small">40px</span><span class="lib-space__bar" style="width:var(--space-10)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-12</code><span class="tabular muted t-small">48px</span><span class="lib-space__bar" style="width:var(--space-12)" aria-hidden="true"></span></div><div class="lib-space__row"><code>--space-16</code><span class="tabular muted t-small">64px</span><span class="lib-space__bar" style="width:var(--space-16)" aria-hidden="true"></span></div></div></div>
+
+  <section class="doc-section" id="sp-rules" aria-labelledby="h-sp-rules">
+    <h2 id="h-sp-rules">Rules</h2>
+    <ul class="a11y-list"><li>Gaps between controls in a row: <code>--space-2</code>. Between fields in a form: <code>--space-5</code>.</li><li>Card padding: <code>--space-5</code>, or <code>--space-3-5</code> for compact cards.</li><li>Between sections of a page: <code>--space-10</code> to <code>--space-16</code>.</li><li>Half steps only inside controls (button and field padding, list options). Layout uses whole steps.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in foundations" data-current="spacing"></nav>
+</section>
+
+<!-- =====================================================================
+     Radius, shadow and height
+     ===================================================================== -->
+<section class="panel" id="panel-radius-shadow" data-section="foundations" aria-labelledby="h-radius-shadow" hidden>
+  <p class="page-kicker">Foundation</p>
+  <h1 class="page-title" id="h-radius-shadow" tabindex="-1">Radius, shadow and height</h1>
+  <p class="page-lede">Four radii plus full: nest a smaller radius inside a larger one. Shadows only for things that float above the page; flat surfaces use rules.</p>
+
+  <section class="doc-section" id="rs-radius" aria-labelledby="h-rs-radius">
+    <h2 id="h-rs-radius">Radius</h2>
+      <div class="lib lib-demo"><div class="lib-swatches"><div class="lib-swatch"><span class="lib-swatch__box" style="border-radius:var(--radius-xs)" aria-hidden="true"></span><code>--radius-xs</code><span class="tabular t-small muted">4px</span><span class="t-small muted">Items inside a list or menu, focus ring</span></div><div class="lib-swatch"><span class="lib-swatch__box" style="border-radius:var(--radius-sm)" aria-hidden="true"></span><code>--radius-sm</code><span class="tabular t-small muted">6px</span><span class="t-small muted">Buttons, fields, tags</span></div><div class="lib-swatch"><span class="lib-swatch__box" style="border-radius:var(--radius-md)" aria-hidden="true"></span><code>--radius-md</code><span class="tabular t-small muted">8px</span><span class="t-small muted">Popovers, compact cards, choice cards</span></div><div class="lib-swatch"><span class="lib-swatch__box" style="border-radius:var(--radius-lg)" aria-hidden="true"></span><code>--radius-lg</code><span class="tabular t-small muted">12px</span><span class="t-small muted">Cards, strips, frames</span></div><div class="lib-swatch"><span class="lib-swatch__box" style="border-radius:var(--radius-full)" aria-hidden="true"></span><code>--radius-full</code><span class="tabular t-small muted">999px</span><span class="t-small muted">Dots, avatars, pills</span></div></div></div>
+
+  </section>
+  <section class="doc-section" id="rs-shadow" aria-labelledby="h-rs-shadow">
+    <h2 id="h-rs-shadow">Shadow</h2>
+      <div class="lib lib-demo"><div class="lib-swatches"><div class="lib-swatch"><span class="lib-swatch__box lib-swatch__box--shadow" style="box-shadow:var(--shadow-frame)" aria-hidden="true"></span><code>--shadow-frame</code><span class="t-small muted">BrowserFrame</span></div><div class="lib-swatch"><span class="lib-swatch__box lib-swatch__box--shadow" style="box-shadow:var(--shadow-popover)" aria-hidden="true"></span><code>--shadow-popover</code><span class="t-small muted">Select list, confirms, menus</span></div><div class="lib-swatch"><span class="lib-swatch__box lib-swatch__box--shadow" style="box-shadow:var(--shadow-overlay)" aria-hidden="true"></span><code>--shadow-overlay</code><span class="t-small muted">HoverCard, dialogs</span></div></div></div>
+<p class="note">Dark mode deepens each shadow so it still reads on black.</p>
+  </section>
+  <section class="doc-section" id="rs-height" aria-labelledby="h-rs-height">
+    <h2 id="h-rs-height">Control height</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Control height tokens</caption><thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Use</th></tr></thead><tbody><tr><th scope="row"><code>--control-h-sm</code></th><td>30px</td><td>Small buttons, dense toolbars</td></tr><tr><th scope="row"><code>--control-h</code></th><td>36px</td><td>Buttons, fields, selects</td></tr><tr><th scope="row"><code>--control-h-lg</code></th><td>44px</td><td>Large buttons, touch-first screens</td></tr></tbody></table></div>
+  </section>
+  <nav class="pager" aria-label="More in foundations" data-current="radius-shadow"></nav>
+</section>
+
+<!-- =====================================================================
+     Components
+     ===================================================================== -->
+<section class="panel" id="panel-components" data-section="components" aria-labelledby="h-components" hidden>
+  <p class="page-kicker">Components</p>
+  <h1 class="page-title" id="h-components" tabindex="-1">Components</h1>
+  <p class="page-lede">Single controls and surfaces. Each one is a real HTML element first, follows the ARIA Authoring Practices where it needs ARIA, and documents its keys and what a screen reader hears.</p>
+  <ul class="lib card-grid lib-index"><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#buttons">Buttons</a></h2><p class="card__meta">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</p></div><div class="card__end"><span class="tag">CSS</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#fields">Fields</a></h2><p class="card__meta">Text fields, textareas, checkboxes, help and invalid states.</p></div><div class="card__end"><span class="tag">CSS</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#select">Select</a></h2><p class="card__meta">A dropdown that looks like a field and opens like a menu.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#table">Table</a></h2><p class="card__meta">Hairline rows, sorting, selectable rows, sticky header, empty state.</p></div><div class="card__end"><span class="tag">CSS + React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#card">Card</a></h2><p class="card__meta">Card with header, body and footer, and ChoiceCard for picking.</p></div><div class="card__end"><span class="tag">CSS + React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#statfilter">StatFilter</a></h2><p class="card__meta">Counts that also filter what’s below them.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#hovercard">HoverCard</a></h2><p class="card__meta">Details on hover or focus, dismissable and persistent.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#browserframe">BrowserFrame</a></h2><p class="card__meta">A plain browser window for presenting an app inside a page.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#resetbutton">ResetButton</a></h2><p class="card__meta">Clears a demo’s saved changes after a confirm.</p></div><div class="card__end"><span class="tag">React</span></div></div></li></ul>
+
+  <section class="doc-section" id="cmp-next" aria-labelledby="h-cmp-next">
+    <h2 id="h-cmp-next">Coming next</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Components planned for the next versions</caption><thead><tr><th scope="col">Version</th><th scope="col">Components</th></tr></thead><tbody><tr><th scope="row">0.3.0</th><td>Dialog, Menu, Tabs, Toggle, Breadcrumbs, Stepper, StatusMark, and the app shell: the sticky header and side navigation used across the apps</td></tr><tr><th scope="row">0.4.0</th><td>Charts, merged from Accessible Charts</td></tr></tbody></table></div>
+  </section>
+</section>
+
+<!-- =====================================================================
+     Buttons
+     ===================================================================== -->
+<section class="panel" id="panel-buttons" data-section="components" aria-labelledby="h-buttons" hidden>
+  <p class="page-kicker">Component · CSS</p>
+  <h1 class="page-title" id="h-buttons" tabindex="-1">Buttons</h1>
+  <p class="page-lede">Four kinds, three sizes, with or without an icon. One primary action per view.</p>
+  <div class="lib lib-demo"><div class="btn-row"><button type="button" class="btn btn--primary">Primary</button><button type="button" class="btn btn--secondary">Secondary</button><button type="button" class="btn btn--ghost">Ghost</button><button type="button" class="btn btn--danger"><svg class="btn__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4.5h11M6 4.5V3h4v1.5M4 4.5l.7 9h6.6l.7-9"/></svg> Delete 3 assets</button></div>
+<div class="btn-row"><button type="button" class="btn btn--primary btn--sm">Small</button><button type="button" class="btn btn--primary">Default</button><button type="button" class="btn btn--primary btn--lg">Large</button></div>
+<div class="btn-row"><button type="button" class="btn btn--secondary"><svg class="btn__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg> Add module</button><button type="button" class="btn btn--secondary btn--sm"><svg class="btn__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4.5h11M6 4.5V3h4v1.5M4 4.5l.7 9h6.6l.7-9"/></svg> Delete</button><button type="button" class="btn btn--secondary btn--icon" aria-label="More actions"><svg class="btn__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h.01M8 8h.01M12.5 8h.01" stroke-width="2.4"/></svg></button><button type="button" class="btn btn--ghost btn--icon btn--sm" aria-label="Close"><svg class="btn__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8"/></svg></button><button type="button" class="btn btn--secondary btn--sm js-press" aria-pressed="true">Show archived</button></div>
+<div class="btn-row"><button type="button" class="btn btn--primary" aria-disabled="true" aria-describedby="btn-why">Publish</button><span class="t-small muted" id="btn-why">Add a module before publishing.</span><button type="button" class="link-button">Link button</button><button type="button" class="link-button link-button--danger">Remove item</button></div></div>
+
+  <section class="doc-section" id="btn-classes" aria-labelledby="h-btn-classes">
+    <h2 id="h-btn-classes">Classes</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Button classes</caption><thead><tr><th scope="col">Class</th><th scope="col">What it does</th></tr></thead><tbody><tr><th scope="row"><code>.btn--primary</code></th><td>Solid ink. The one main action on a view.</td></tr><tr><th scope="row"><code>.btn--secondary</code></th><td>Hairline border. Everything else.</td></tr><tr><th scope="row"><code>.btn--ghost</code></th><td>No border until hover. Toolbars and quiet icon buttons.</td></tr><tr><th scope="row"><code>.btn--danger</code></th><td>Solid ink, only for the last step of a destructive confirm.</td></tr><tr><th scope="row"><code>.btn--sm</code> · <code>.btn--lg</code></th><td>30px and 44px; default is 36px.</td></tr><tr><th scope="row"><code>.btn__icon</code></th><td>A 16px leading icon (14px small, 18px large).</td></tr><tr><th scope="row"><code>.btn--icon</code></th><td>Square, icon only. Needs <code>aria-label</code>.</td></tr><tr><th scope="row"><code>aria-pressed</code></th><td>Toggle button: ink border and wash when on.</td></tr><tr><th scope="row"><code>.link-button</code></th><td>A button that looks like a quiet link; <code>--danger</code> makes it ink and medium weight.</td></tr><tr><th scope="row"><code>.btn-row</code></th><td>A wrapping row of buttons with an 8px gap.</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="btn-usage" aria-labelledby="h-btn-usage">
+    <h2 id="h-btn-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Buttons.tsx</span><button class="copy-button" type="button" data-copy-label="Buttons.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;button type=&quot;button&quot; className=&quot;btn btn--primary&quot;&gt;Save&lt;/button&gt;
+&lt;button type=&quot;button&quot; className=&quot;btn btn--secondary btn--sm&quot;&gt;
+  &lt;TrashIcon className=&quot;btn__icon&quot; /&gt; Delete
+&lt;/button&gt;
+&lt;button type=&quot;button&quot; className=&quot;btn btn--ghost btn--icon&quot; aria-label=&quot;Close&quot;&gt;
+  &lt;CloseIcon className=&quot;btn__icon&quot; /&gt;
+&lt;/button&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="btn-rules" aria-labelledby="h-btn-rules">
+    <h2 id="h-btn-rules">Rules</h2>
+    <ul class="a11y-list"><li>Label with a verb and its object: “Delete 3 assets”, “Add module”. Never “OK”.</li><li>Danger looks like primary on purpose. The verb and the trash icon say it’s destructive; colour never does.</li><li>Prefer <code>aria-disabled="true"</code> to <code>disabled</code>, so the button stays focusable and can point at why it’s unavailable.</li><li>Icon-only buttons need a name: <code>aria-label</code> or visually hidden text.</li><li>High contrast: every button gets a ButtonText border; pressed gets a Highlight border.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="buttons"></nav>
+</section>
+
+<!-- =====================================================================
+     Fields
+     ===================================================================== -->
+<section class="panel" id="panel-fields" data-section="components" aria-labelledby="h-fields" hidden>
+  <p class="page-kicker">Component · CSS</p>
+  <h1 class="page-title" id="h-fields" tabindex="-1">Fields</h1>
+  <p class="page-lede">Text fields, textareas and checkboxes. Fields match the Select: same height, border and radius. Labels sit above, help text below.</p>
+  <div class="lib lib-demo"><div class="lib-row lib-row--top"><div class="field" style="width:260px"><label class="field__label" for="lf1">Job title</label><input id="lf1" value="Starfighter Pilot L4" aria-describedby="lf1-h"><span class="field-help" id="lf1-h">As candidates will see it.</span></div>
+<div class="field" style="width:260px"><label class="field__label" for="lf2">Minutes allowed</label><input id="lf2" value="" aria-invalid="true" aria-describedby="lf2-h"><span class="field-help" id="lf2-h">Enter a number of minutes, such as 45.</span></div></div>
+<div class="field field--wide"><label class="field__label" for="lf3">Instructions</label><textarea id="lf3">Answer every item. You can go back before you submit.</textarea></div>
+<fieldset class="checks"><legend class="field__label">Notify</legend><label class="check"><input type="checkbox" checked> Hiring manager</label><label class="check"><input type="checkbox"> Recruiter</label></fieldset></div>
+
+  <section class="doc-section" id="fld-classes" aria-labelledby="h-fld-classes">
+    <h2 id="h-fld-classes">Classes</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Field classes</caption><thead><tr><th scope="col">Class</th><th scope="col">What it does</th></tr></thead><tbody><tr><th scope="row"><code>.field</code></th><td>Label, control and help stacked with a 6px gap.</td></tr><tr><th scope="row"><code>.field__label</code></th><td>12px medium label in <code>--ink-faint</code>.</td></tr><tr><th scope="row"><code>.field-help</code></th><td>Help or error text under the control; link it with <code>aria-describedby</code>.</td></tr><tr><th scope="row"><code>aria-invalid="true"</code></th><td>A 2px ink border, plus the help text saying what to fix.</td></tr><tr><th scope="row"><code>.field--wide</code> · <code>--narrow</code></th><td>720px and 120px maximum widths.</td></tr><tr><th scope="row"><code>.check</code> · <code>.checks</code></th><td>Checkbox with its label; a fieldset of them.</td></tr><tr><th scope="row"><code>.form</code> · <code>.form-grid</code> · <code>.form-actions</code></th><td>Form layout: stacked, a responsive grid, and the button row.</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="fld-rules" aria-labelledby="h-fld-rules">
+    <h2 id="h-fld-rules">Rules</h2>
+    <ul class="a11y-list"><li>Every control has a visible label. Placeholders are examples, not labels.</li><li>Invalid is shown by a heavier border and words, never red alone. Say how to fix it.</li><li>Group checkboxes and radios in a <code>fieldset</code> with a <code>legend</code>.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="fields"></nav>
+</section>
+
+<!-- =====================================================================
+     Select
+     ===================================================================== -->
+<section class="panel" id="panel-select" data-section="components" aria-labelledby="h-select" hidden>
+  <p class="page-kicker">Component · React</p>
+  <h1 class="page-title" id="h-select" tabindex="-1">Select</h1>
+  <p class="page-lede">A custom dropdown that replaces the native select, following the WAI-ARIA select-only combobox pattern. It looks like a field and opens like a menu.</p>
+  <div class="lib lib-demo" data-react="select"></div>
+
+  <section class="doc-section" id="sel-keys" aria-labelledby="h-sel-keys">
+    <h2 id="h-sel-keys">Keyboard</h2>
+    <table class="doc-table key-table"><caption class="sr-only">Select keyboard support</caption><tbody><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd> <kbd>↓</kbd> <kbd>↑</kbd></th><td>Open the list.</td></tr><tr><th scope="row"><kbd>↑</kbd> <kbd>↓</kbd> <kbd>Home</kbd> <kbd>End</kbd> <kbd>Page Up</kbd> <kbd>Page Down</kbd></th><td>Move through options.</td></tr><tr><th scope="row">Letters</th><td>Jump to a matching option.</td></tr><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd></th><td>Choose and close.</td></tr><tr><th scope="row"><kbd>Esc</kbd></th><td>Close without changing.</td></tr><tr><th scope="row"><kbd>Tab</kbd></th><td>Choose and move on.</td></tr></tbody></table>
+  </section>
+  <section class="doc-section" id="sel-sr" aria-labelledby="h-sel-sr">
+    <h2 id="h-sel-sr">Screen reader</h2>
+    <ul class="a11y-list"><li>Focus stays on the button; the open list is announced through <code>aria-activedescendant</code>, so people hear “Metric, Recall” and each option as they move.</li><li>In high contrast, the active option gets a Highlight outline.</li></ul>
+  </section>
+  <section class="doc-section" id="sel-usage" aria-labelledby="h-sel-usage">
+    <h2 id="h-sel-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>JobPicker.tsx</span><button class="copy-button" type="button" data-copy-label="JobPicker.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;Select
+  label=&quot;Job&quot;
+  value={job}
+  onChange={setJob}
+  placeholder=&quot;Choose a job&quot;
+  options={jobs.map((j) =&gt; ({ value: j.id, label: j.title }))}
+  describedBy=&quot;job-help&quot;
+/&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="sel-props" aria-labelledby="h-sel-props">
+    <h2 id="h-sel-props">Props</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">Select props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>label</code></td><td><code class="type">string</code></td><td>Visible label and accessible name</td></tr><tr><td><code>value, onChange</code></td><td><code class="type">string | number</code></td><td>Controlled value</td></tr><tr><td><code>options</code></td><td><code class="type">{ value, label }[]</code></td><td>The choices</td></tr><tr><td><code>describedBy</code></td><td><code class="type">string</code></td><td>id of help text</td></tr><tr><td><code>inline</code></td><td><code class="type">boolean</code></td><td>Label beside the button</td></tr><tr><td><code>hideLabel</code></td><td><code class="type">boolean</code></td><td>Label for screen readers only</td></tr><tr><td><code>placeholder</code></td><td><code class="type">string</code></td><td>Shown when the value isn’t an option</td></tr><tr><td><code>invalid</code></td><td><code class="type">boolean</code></td><td>aria-invalid and a heavier border</td></tr><tr><td><code>buttonId</code></td><td><code class="type">string</code></td><td>So an error summary can link to it</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="sel-rules" aria-labelledby="h-sel-rules">
+    <h2 id="h-sel-rules">Rules</h2>
+    <ul class="a11y-list"><li>Near the bottom of its scrolling area (the nearest <code>[data-scroll]</code>), the list opens upward. Long lists scroll at 280px.</li><li>Use it for 4 to 30 options. Fewer: radios or ChoiceCards. More: a searchable picker.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="select"></nav>
+</section>
+
+<!-- =====================================================================
+     Table
+     ===================================================================== -->
+<section class="panel" id="panel-table" data-section="components" aria-labelledby="h-table" hidden>
+  <p class="page-kicker">Component · CSS + React</p>
+  <h1 class="page-title" id="h-table" tabindex="-1">Table</h1>
+  <p class="page-lede">Hairline rows, no boxes. Modifiers add selection, hover, density and a sticky header; three small React helpers handle sorting, row checkboxes and the empty state.</p>
+  <div class="lib lib-demo is-wide" data-react="table"></div>
+
+  <section class="doc-section" id="tbl-classes" aria-labelledby="h-tbl-classes">
+    <h2 id="h-tbl-classes">Classes</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Table classes</caption><thead><tr><th scope="col">Class</th><th scope="col">What it does</th></tr></thead><tbody><tr><th scope="row"><code>.table</code></th><td>Hairline rows; 12px faint headers; 14px cells.</td></tr><tr><th scope="row"><code>.table--selectable</code></th><td>Checkbox column; chosen rows get a wash and a 3px ink bar.</td></tr><tr><th scope="row"><code>.table--hover</code></th><td>A wash on hover, for rows that open something.</td></tr><tr><th scope="row"><code>.table--compact</code></th><td>8px rows for dense lists.</td></tr><tr><th scope="row"><code>.table--sticky</code></th><td>Header stays put inside a scrolling region; set <code>--table-sticky-top</code> if something else is pinned.</td></tr><tr><th scope="row"><code>.num</code> · <code>.center</code></th><td>Right-aligned tabular numbers; centred cells.</td></tr><tr><th scope="row"><code>.row-link</code> · <code>.row-actions</code></th><td>The row’s main link; the action cell at the end.</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="tbl-helpers" aria-labelledby="h-tbl-helpers">
+    <h2 id="h-tbl-helpers">React helpers</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">Table helpers</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>SortHeader</code></td><td><code class="type">sort, onSort, numeric</code></td><td>A header that sorts. The th carries aria-sort; the button inside carries the name.</td></tr><tr><td><code>TableCheck</code></td><td><code class="type">checked, indeterminate, label, header</code></td><td>Row checkbox, or select-all with the mixed state.</td></tr><tr><td><code>TableEmpty</code></td><td><code class="type">colSpan, title, action</code></td><td>The one row a table shows when nothing matches.</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="tbl-usage" aria-labelledby="h-tbl-usage">
+    <h2 id="h-tbl-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Candidates.tsx</span><button class="copy-button" type="button" data-copy-label="Candidates.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;table className=&quot;table table--selectable&quot;&gt;
+  &lt;caption className=&quot;visually-hidden&quot;&gt;Candidates&lt;/caption&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;TableCheck header checked={all} indeterminate={some &amp;&amp; !all} label=&quot;Choose all candidates&quot; onChange={chooseAll} /&gt;
+      &lt;SortHeader sort={sortBy === &#x27;name&#x27; ? dir : undefined} onSort={(d) =&gt; sort(&#x27;name&#x27;, d)}&gt;Name&lt;/SortHeader&gt;
+      &lt;SortHeader numeric sort={sortBy === &#x27;score&#x27; ? dir : undefined} onSort={(d) =&gt; sort(&#x27;score&#x27;, d)}&gt;Score&lt;/SortHeader&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    {rows.map((r) =&gt; (
+      &lt;tr key={r.id} className={chosen.has(r.id) ? &#x27;is-selected&#x27; : undefined}&gt;
+        &lt;TableCheck checked={chosen.has(r.id)} label={`Choose ${r.name}`} onChange={(c) =&gt; choose(r.id, c)} /&gt;
+        &lt;th scope=&quot;row&quot;&gt;{r.name}&lt;/th&gt;
+        &lt;td className=&quot;num&quot;&gt;{r.score}&lt;/td&gt;
+      &lt;/tr&gt;
+    ))}
+    {rows.length === 0 &amp;&amp; &lt;TableEmpty colSpan={3} title=&quot;No candidates match&quot; /&gt;}
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="tbl-rules" aria-labelledby="h-tbl-rules">
+    <h2 id="h-tbl-rules">Rules</h2>
+    <ul class="a11y-list"><li>Every table has a caption, even if it’s visually hidden. Each row has a row header (<code>th scope="row"</code>).</li><li>Screen readers hear “Score, sorted descending, button” on a sorted column.</li><li>Selection is the checkbox, the wash and the ink bar together, never the wash alone.</li><li>An empty table says why it’s empty and offers the next step, such as clearing the filter.</li><li>For whole workflows with filters, bulk actions and paging, use the <a href="#data-table">Data table</a> pattern.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="table"></nav>
+</section>
+
+<!-- =====================================================================
+     Card
+     ===================================================================== -->
+<section class="panel" id="panel-card" data-section="components" aria-labelledby="h-card" hidden>
+  <p class="page-kicker">Component · CSS + React</p>
+  <h1 class="page-title" id="h-card" tabindex="-1">Card</h1>
+  <p class="page-lede">For things people compare or pick between: a header with title, meta and an end slot, a body, and a footer under a full-width rule. ChoiceCard is a card that is a real radio or checkbox.</p>
+  <div class="lib lib-demo is-wide"><div class="card-grid">
+<div class="card"><div class="card__header"><div class="card__heading"><h3 class="card__title">Pilot screening v3</h3><p class="card__meta">Edited 2 days ago by Leia Organa</p></div><div class="card__end"><span class="tag">Live</span></div></div><div class="card__body"><dl class="card__stats"><div><dt>Pass rate</dt><dd>64%</dd></div><div><dt>Median</dt><dd>38 min</dd></div></dl></div><div class="card__footer"><span>132 candidates</span><button type="button" class="btn btn--secondary btn--sm">Open</button></div></div>
+<div class="card card--emphasis"><div class="card__header"><div class="card__heading"><h3 class="card__title">Model R2-7</h3><p class="card__meta">Passed every threshold</p></div><div class="card__end"><span class="tag">Best</span></div></div><div class="card__body"><dl class="card__stats"><div><dt>Precision</dt><dd>0.94</dd></div><div><dt>Recall</dt><dd>0.89</dd></div></dl></div></div>
+<div class="card card--subtle card--compact"><div class="card__header"><div class="card__heading"><h3 class="card__title">Summary</h3></div></div><div class="card__body"><p>3 flags, 1 open. Reviewed by Mon Mothma.</p></div></div>
+</div></div>
+
+  <section class="doc-section" id="card-choice" aria-labelledby="h-card-choice">
+    <h2 id="h-card-choice">ChoiceCard</h2>
+    <p>A radio or checkbox the size of a card. The real input covers the card, invisible, so the keyboard, forms and screen readers get the native control.</p>  <div class="lib lib-demo is-wide" data-react="choicecard"></div>
+
+  </section>
+  <section class="doc-section" id="card-classes" aria-labelledby="h-card-classes">
+    <h2 id="h-card-classes">Classes</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Card classes</caption><thead><tr><th scope="col">Class</th><th scope="col">What it does</th></tr></thead><tbody><tr><th scope="row"><code>.card</code></th><td>1px rule, 12px radius, 20px padding.</td></tr><tr><th scope="row"><code>.card__header</code> · <code>__title</code> · <code>__meta</code> · <code>__end</code></th><td>Title and one quiet line, with a slot at the right.</td></tr><tr><th scope="row"><code>.card__body</code> · <code>.card__footer</code></th><td>Content; a footer under a full-width rule.</td></tr><tr><th scope="row"><code>.card__stats</code></th><td>Label over a big tabular number.</td></tr><tr><th scope="row"><code>--subtle</code> · <code>--strong</code> · <code>--emphasis</code> · <code>--compact</code></th><td>Quiet fill; stronger rule; ink border for the one that matters; 14px padding.</td></tr><tr><th scope="row"><code>.card-grid</code> · <code>.card-list</code></th><td>Responsive grid (set <code>--card-min</code>, default 260px); a tight stack.</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="card-usage" aria-labelledby="h-card-usage">
+    <h2 id="h-card-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Plans.tsx</span><button class="copy-button" type="button" data-copy-label="Plans.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;Card title=&quot;Pilot screening v3&quot; meta=&quot;Edited 2 days ago&quot; end={&lt;span className=&quot;tag&quot;&gt;Live&lt;/span&gt;}
+  footer={&lt;button className=&quot;btn btn--secondary btn--sm&quot;&gt;Open&lt;/button&gt;}&gt;
+  …
+&lt;/Card&gt;
+
+&lt;fieldset&gt;
+  &lt;legend&gt;Proctoring&lt;/legend&gt;
+  {plans.map((p) =&gt; (
+    &lt;ChoiceCard key={p.value} name=&quot;plan&quot; value={p.value} checked={plan === p.value}
+      onChange={() =&gt; setPlan(p.value)} title={p.title} description={p.desc} /&gt;
+  ))}
+&lt;/fieldset&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="card-rules" aria-labelledby="h-card-rules">
+    <h2 id="h-card-rules">Rules</h2>
+    <ul class="a11y-list"><li>A single block of content is a section with a heading, not a card.</li><li>A chosen ChoiceCard has a 2px ink edge and a filled mark: a ring for radio, a box for checkbox.</li><li>The title is the input’s name and the description its description, so people hear “Live proctor, radio button, 2 of 3, A proctor watches the whole session.”</li><li>An unavailable choice stays readable and says why in its description.</li><li>Never put a second control inside a ChoiceCard.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="card"></nav>
+</section>
+
+<!-- =====================================================================
+     StatFilter
+     ===================================================================== -->
+<section class="panel" id="panel-statfilter" data-section="components" aria-labelledby="h-statfilter" hidden>
+  <p class="page-kicker">Component · React</p>
+  <h1 class="page-title" id="h-statfilter" tabindex="-1">StatFilter</h1>
+  <p class="page-lede">A strip of counts that also filters what’s below it. Use it when a page would otherwise show KPI cards and a separate set of filter chips with the same numbers.</p>
+  <div class="lib lib-demo is-wide" data-react="statfilter"></div>
+
+  <section class="doc-section" id="sf-sr" aria-labelledby="h-sf-sr">
+    <h2 id="h-sf-sr">Screen reader</h2>
+    <ul class="a11y-list"><li>Each card is a toggle button in a labelled group: “18 Assessment, toggle button, pressed”.</li><li>Each points at the region it filters with <code>aria-controls</code>; exactly one is pressed.</li></ul>
+  </section>
+  <section class="doc-section" id="sf-usage" aria-labelledby="h-sf-usage">
+    <h2 id="h-sf-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Pipeline.tsx</span><button class="copy-button" type="button" data-copy-label="Pipeline.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;StatFilter
+  label=&quot;Pipeline. Choose a stage to list its candidates&quot;
+  controls=&quot;candidates&quot;
+  value={stage}
+  onChange={setStage}
+  items={stages.map((s) =&gt; ({ value: s.id, label: s.name, count: s.count }))}
+/&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="sf-props" aria-labelledby="h-sf-props">
+    <h2 id="h-sf-props">Props</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">StatFilter props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>label</code></td><td><code class="type">string</code></td><td>Group name; say that choosing filters</td></tr><tr><td><code>items</code></td><td><code class="type">{ value, label, count }[]</code></td><td>In display order</td></tr><tr><td><code>value, onChange</code></td><td><code class="type">string</code></td><td>The chosen card</td></tr><tr><td><code>controls</code></td><td><code class="type">string</code></td><td>id of the filtered region</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="sf-rules" aria-labelledby="h-sf-rules">
+    <h2 id="h-sf-rules">Rules</h2>
+    <ul class="a11y-list"><li>The chosen card uses the tab marker: a 3px ink underline, quiet fill and semibold label. Never an inverted block.</li><li>Offer “All” first when seeing everything is useful, and update the filtered region’s heading to match.</li><li>If the numbers don’t filter anything, use a plain <code>&lt;dl&gt;</code> of stats instead.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="statfilter"></nav>
+</section>
+
+<!-- =====================================================================
+     HoverCard
+     ===================================================================== -->
+<section class="panel" id="panel-hovercard" data-section="components" aria-labelledby="h-hovercard" hidden>
+  <p class="page-kicker">Component · React</p>
+  <h1 class="page-title" id="h-hovercard" tabindex="-1">HoverCard</h1>
+  <p class="page-lede">Details that appear on hover or keyboard focus, following WCAG 1.4.13: hoverable, dismissable and persistent.</p>
+  <div class="lib lib-demo" data-react="hovercard"></div>
+
+  <section class="doc-section" id="hc-keys" aria-labelledby="h-hc-keys">
+    <h2 id="h-hc-keys">Keyboard</h2>
+    <table class="doc-table key-table"><caption class="sr-only">HoverCard keyboard support</caption><tbody><tr><th scope="row"><kbd>Tab</kbd></th><td>Focus the trigger; the card opens.</td></tr><tr><th scope="row"><kbd>Esc</kbd></th><td>Close the card.</td></tr></tbody></table>
+  </section>
+  <section class="doc-section" id="hc-usage" aria-labelledby="h-hc-usage">
+    <h2 id="h-hc-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Flags.tsx</span><button class="copy-button" type="button" data-copy-label="Flags.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;HoverCard label=&quot;3 policy matches, 2 open&quot; card={&lt;PolicyMatches matches={m} /&gt;}&gt;
+  &lt;FlagIcon /&gt; 2
+&lt;/HoverCard&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="hc-rules" aria-labelledby="h-hc-rules">
+    <h2 id="h-hc-rules">Rules</h2>
+    <ul class="a11y-list"><li>The trigger is a real button with its own name; the card is linked with <code>aria-describedby</code>.</li><li>The pointer can move onto the card; it stays until pointer or focus leaves.</li><li>Text only. Never put links or buttons in a card; actions go in the page.</li><li>It renders at the end of <code>&lt;body&gt;</code> and flips above when there’s no room below.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="hovercard"></nav>
+</section>
+
+<!-- =====================================================================
+     BrowserFrame
+     ===================================================================== -->
+<section class="panel" id="panel-browserframe" data-section="components" aria-labelledby="h-browserframe" hidden>
+  <p class="page-kicker">Component · React</p>
+  <h1 class="page-title" id="h-browserframe" tabindex="-1">BrowserFrame</h1>
+  <p class="page-lede">A plain browser window for presenting an app inside a page: a product demo, a prototype, a case study. The app inside reads as the product, the page around it as the story.</p>
+  <div class="lib lib-demo is-wide" data-react="browserframe"></div>
+
+  <section class="doc-section" id="bf-usage" aria-labelledby="h-bf-usage">
+    <h2 id="h-bf-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Demo.tsx</span><button class="copy-button" type="button" data-copy-label="Demo.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>const { pathname, nav, menuOpen, setMenuOpen, scrollRef } = useFrameHistory();
+
+&lt;BrowserFrame.Stage&gt;
+  &lt;BrowserFrame host=&quot;myapp.example&quot; path={pathname} nav={nav}
+    menu={{ open: menuOpen, onToggle: () =&gt; setMenuOpen((o) =&gt; !o), controls: &#x27;sidebar&#x27; }}&gt;
+    &lt;MyApp /&gt;
+  &lt;/BrowserFrame&gt;
+&lt;/BrowserFrame.Stage&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="bf-props" aria-labelledby="h-bf-props">
+    <h2 id="h-bf-props">Props</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">BrowserFrame props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>path</code></td><td><code class="type">string</code></td><td>Shown after the host</td></tr><tr><td><code>host</code></td><td><code class="type">string</code></td><td>Default example.app</td></tr><tr><td><code>nav</code></td><td><code class="type">FrameNav</code></td><td>Back and Forward; useFrameHistory() supplies it</td></tr><tr><td><code>menu</code></td><td><code class="type">FrameMenu</code></td><td>Small-screen menu button and the panel it opens</td></tr><tr><td><code>end</code></td><td><code class="type">ReactNode</code></td><td>Right end of the bar, such as an avatar</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="bf-rules" aria-labelledby="h-bf-rules">
+    <h2 id="h-bf-rules">Rules</h2>
+    <ul class="a11y-list"><li><code>BrowserFrame.Stage</code> fills the height under the header; the page never scrolls, the app’s regions scroll inside.</li><li>From 1280px the frame is 90% of the width and height, centred. Below that it fills the space with a 16px gutter (8px under 520px).</li><li>Back and Forward only move through pages visited in the frame, so Back never leaves it.</li><li>The window dots are decoration, hidden from assistive tech; the address is read-only text.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="browserframe"></nav>
+</section>
+
+<!-- =====================================================================
+     ResetButton
+     ===================================================================== -->
+<section class="panel" id="panel-resetbutton" data-section="components" aria-labelledby="h-resetbutton" hidden>
+  <p class="page-kicker">Component · React</p>
+  <h1 class="page-title" id="h-resetbutton" tabindex="-1">ResetButton</h1>
+  <p class="page-lede">An icon button for a BrowserFrame’s bar that clears a demo’s saved changes after a confirm. Each app in a frame gets its own, scoped to its own data.</p>
+  <div class="lib lib-demo" data-react="resetbutton"></div>
+
+  <section class="doc-section" id="rb-keys" aria-labelledby="h-rb-keys">
+    <h2 id="h-rb-keys">Keyboard</h2>
+    <table class="doc-table key-table"><caption class="sr-only">ResetButton keyboard support</caption><tbody><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd></th><td>Open the confirm; focus starts on Cancel.</td></tr><tr><th scope="row"><kbd>Esc</kbd></th><td>Close it and return focus to the button.</td></tr></tbody></table>
+  </section>
+  <section class="doc-section" id="rb-usage" aria-labelledby="h-rb-usage">
+    <h2 id="h-rb-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Bar.tsx</span><button class="copy-button" type="button" data-copy-label="Bar.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;ResetButton what=&quot;jobs&quot; description=&quot;Clears jobs you added or edited. Candidates are kept.&quot;
+  done=&quot;Jobs reset.&quot; to=&quot;/jobs&quot; onReset={() =&gt; resetStore((k) =&gt; k.startsWith(&#x27;jobs:&#x27;))} /&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="rb-rules" aria-labelledby="h-rb-rules">
+    <h2 id="h-rb-rules">Rules</h2>
+    <ul class="a11y-list"><li>The confirm is a small <code>alertdialog</code> under the button; the result is announced in a polite live region.</li><li>Say what is cleared and what is kept.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="resetbutton"></nav>
+</section>
+
+<!-- =====================================================================
+     Patterns
+     ===================================================================== -->
+<section class="panel" id="panel-patterns" data-section="patterns" aria-labelledby="h-patterns" hidden>
+  <p class="page-kicker">Patterns</p>
+  <h1 class="page-title" id="h-patterns" tabindex="-1">Patterns</h1>
+  <p class="page-lede">Whole workflows, built from the components. Each pattern page has a working example with a “Screen reader hears” strip, a keyboard map, focus and announcement notes, usage, props and states.</p>
+  <div class="doc-section is-wide" style="margin-top:48px">
     <p>The first set covers the screens enterprise teams build most: finding records, acting on many at once, and moving through long tasks.</p>
     <ul class="gallery">
       <li data-thumb="bulk-actions"><a class="gallery-item" href="#bulk-actions">
@@ -1183,89 +1830,14 @@
         <p>AI tokens, uploads, storage, and more against monthly caps, per person.</p>
       </a></li>
     </ul>
-  </section>
-
-  <section class="doc-section tab-panel" id="quick-start" role="tabpanel" aria-labelledby="tab-quick-start" tabindex="0" hidden>
-    <h2 class="sr-only" id="h-quick">Quick start</h2>
-    <p>Describe your rows and columns, then name the filters and actions you need. Focus handling, announcements, and empty states come with the pattern.</p>
-    <div class="code-block">
-      <div class="code-block-bar"><span>AccessRequests.jsx</span><button class="copy-button" type="button" data-copy-label="AccessRequests.jsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div>
-      <pre><code>import { DataTable, FilterBar, BulkActions, DetailsSheet } from "enterprise-library";
-import "enterprise-library/styles.css";
-
-export function AccessRequests({ rows, onUpdate }) {
-  return (
-    &lt;DataTable
-      caption="Access requests"
-      rows={rows}
-      rowKey="id"
-      itemName={{ one: "request", other: "requests" }}
-      columns={[
-        { key: "requester", header: "Requester", rowHeader: true, sortable: true },
-        { key: "system", header: "System", priority: "low" },
-        { key: "status", header: "Status", sortable: true },
-        { key: "submitted", header: "Submitted", sortable: true },
-      ]}
-      filters={&lt;FilterBar search={["requester", "system"]} facets={["status"]} /&gt;}
-      bulkActions={
-        &lt;BulkActions
-          actions={[
-            { label: "Approve", verb: "Approved", run: ids =&gt; onUpdate(ids, "approved") },
-            { label: "Deny", verb: "Denied", run: ids =&gt; onUpdate(ids, "denied") },
-          ]}
-        /&gt;
-      }
-      detail={row =&gt; &lt;DetailsSheet label="Request details" title={row.requester} /&gt;}
-    /&gt;
-  );
-}</code></pre>
-    </div>
-  </section>
-
-  <section class="doc-section tab-panel" id="includes" role="tabpanel" aria-labelledby="tab-includes" tabindex="0" hidden>
-    <h2 class="sr-only" id="h-includes">What every pattern includes</h2>
-    <dl class="feature-list">
-      <div><dt>A keyboard map</dt><dd>Every pattern documents its keys and follows the ARIA Authoring Practices, so it behaves the way people expect.</dd></div>
-      <div><dt>A focus plan</dt><dd>Each action has a set place for focus to land, including after deletes, dialogs, and route changes.</dd></div>
-      <div><dt>Written announcements</dt><dd>Status messages are part of the pattern, worded once and announced politely. Your screens stay quiet otherwise.</dd></div>
-      <div><dt>Every state designed</dt><dd>Loading, empty, no results, partial failure, and no permission all ship as part of the pattern.</dd></div>
-      <div><dt>HTML first</dt><dd>Real tables, buttons, and labels. ARIA only fills the gaps native elements leave.</dd></div>
-      <div><dt>Color means a message</dt><dd>Status and selection use shape, text, and weight. Color appears in one place only: red, yellow, and green messages for errors, warnings, and success, each with its own icon and words.</dd></div>
-      <div><dt>Light, dark, and high contrast</dt><dd>Surfaces follow your theme tokens, and Windows High Contrast gets system colors.</dd></div>
-      <div><dt>Content guidance</dt><dd>Recommended labels, verbs, and error messages for each pattern, written for the person using the screen.</dd></div>
-      <div><dt>Tests you can keep</dt><dd>Testing Library recipes that check names, roles, focus, and announcements in your own app.</dd></div>
-      <div><dt>Reduced motion</dt><dd>Transitions switch off when the operating system asks for less motion.</dd></div>
-    </dl>
-  </section>
-
-  <section class="doc-section tab-panel" id="support" role="tabpanel" aria-labelledby="tab-support" tabindex="0" hidden>
-    <h2 class="sr-only" id="h-support">Support targets</h2>
-    <p>These are the targets for v1. Each pattern page will publish its own results against them.</p>
-    <div class="table-scroll">
-      <table class="doc-table">
-        <caption class="sr-only">Screen reader and browser pairings targeted for version 1</caption>
-        <thead><tr><th scope="col">Screen reader</th><th scope="col">Browsers</th><th scope="col">Platform</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">NVDA</th><td>Firefox, Chrome</td><td>Windows</td></tr>
-          <tr><th scope="row">JAWS</th><td>Chrome, Edge</td><td>Windows</td></tr>
-          <tr><th scope="row">VoiceOver</th><td>Safari</td><td>macOS, iOS</td></tr>
-          <tr><th scope="row">TalkBack</th><td>Chrome</td><td>Android</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <ul class="a11y-list" style="margin-top:28px">
-      <li>WCAG 2.2 AA, including focus not obscured and 24px minimum targets.</li>
-      <li>Keyboard only, with no traps and a visible focus ring everywhere.</li>
-      <li>400% zoom and 320px reflow without sideways scrolling outside tables.</li>
-      <li>Windows forced colors and reduced motion.</li>
-    </ul>
-  </section>
+  </div>
 </section>
+
 
 <!-- =====================================================================
      Data table
      ===================================================================== -->
-<section class="panel" id="panel-data-table" aria-labelledby="h-data-table" hidden>
+<section class="panel" id="panel-data-table" data-section="patterns" aria-labelledby="h-data-table" hidden>
   <p class="page-kicker">Pattern · Live</p>
   <h1 class="page-title" id="h-data-table" tabindex="-1">Data table</h1>
   <p class="page-lede">Records in rows, sortable by column. It’s a real <code>&lt;table&gt;</code>, so screen readers can move cell by cell and hear the column header and the row’s name with every value.</p>
@@ -1361,13 +1933,13 @@ export function AccessRequests({ rows, onUpdate }) {
       </tbody>
     </table></div>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="data-table"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="data-table"></nav>
 </section>
 
 <!-- =====================================================================
      Filter bar
      ===================================================================== -->
-<section class="panel" id="panel-filter-bar" aria-labelledby="h-filter-bar" hidden>
+<section class="panel" id="panel-filter-bar" data-section="patterns" aria-labelledby="h-filter-bar" hidden>
   <p class="page-kicker">Pattern · Live</p>
   <h1 class="page-title" id="h-filter-bar" tabindex="-1">Filter bar</h1>
   <p class="page-lede">Search and facet filters for a table or list. The results update as you type, and the new count is announced once you pause, so screen reader users aren’t interrupted on every key.</p>
@@ -1452,13 +2024,13 @@ export function AccessRequests({ rows, onUpdate }) {
       </tbody>
     </table></div>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="filter-bar"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="filter-bar"></nav>
 </section>
 
 <!-- =====================================================================
      Bulk actions
      ===================================================================== -->
-<section class="panel" id="panel-bulk-actions" aria-labelledby="h-bulk-actions" hidden>
+<section class="panel" id="panel-bulk-actions" data-section="patterns" aria-labelledby="h-bulk-actions" hidden>
   <p class="page-kicker">Pattern · Live</p>
   <h1 class="page-title" id="h-bulk-actions" tabindex="-1">Bulk actions</h1>
   <p class="page-lede">Select several rows and act on them at once. Focus stays where you were, the result is announced in words, and every action can be undone or has to be confirmed.</p>
@@ -1548,13 +2120,13 @@ export function AccessRequests({ rows, onUpdate }) {
     </table></div>
     <p class="note">The example above shows the first and third states. Running and partial failure are part of the design but not in the example yet.</p>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="bulk-actions"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="bulk-actions"></nav>
 </section>
 
 <!-- =====================================================================
      Details sheet
      ===================================================================== -->
-<section class="panel" id="panel-details-sheet" aria-labelledby="h-details-sheet" hidden>
+<section class="panel" id="panel-details-sheet" data-section="patterns" aria-labelledby="h-details-sheet" hidden>
   <p class="page-kicker">Pattern · Live</p>
   <h1 class="page-title" id="h-details-sheet" tabindex="-1">Details sheet</h1>
   <p class="page-lede">Choose a row and its details open in a sheet on the right. The table narrows to make room and stays usable, so people can compare records without losing their place.</p>
@@ -1637,13 +2209,13 @@ export function AccessRequests({ rows, onUpdate }) {
       </tbody>
     </table></div>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="details-sheet"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="details-sheet"></nav>
 </section>
 
 <!-- =====================================================================
      Pagination
      ===================================================================== -->
-<section class="panel" id="panel-pagination" aria-labelledby="h-pagination" hidden>
+<section class="panel" id="panel-pagination" data-section="patterns" aria-labelledby="h-pagination" hidden>
   <p class="page-kicker">Pattern · Live</p>
   <h1 class="page-title" id="h-pagination" tabindex="-1">Pagination</h1>
   <p class="page-lede">For tables with a lot of records. The table opens with 25 rows; people can show 50, 75, or 100 at a time and move between pages. The range is always written out, and focus stays where it is, so keyboard users can step through page after page.</p>
@@ -1725,13 +2297,13 @@ export function AccessRequests({ rows, onUpdate }) {
       </tbody>
     </table></div>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="pagination"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="pagination"></nav>
 </section>
 
 <!-- =====================================================================
      Multi-step form (in design)
      ===================================================================== -->
-<section class="panel" id="panel-multi-step-form" aria-labelledby="h-multi-step-form" hidden>
+<section class="panel" id="panel-multi-step-form" data-section="patterns" aria-labelledby="h-multi-step-form" hidden>
   <p class="page-kicker">Pattern · Live</p>
   <h1 class="page-title" id="h-multi-step-form" tabindex="-1">Multi-step form</h1>
   <p class="page-lede">Long tasks, such as onboarding a vendor or setting up a system, split into short steps with clear progress, saved drafts, and one error summary per step.</p>
@@ -1770,13 +2342,13 @@ export function AccessRequests({ rows, onUpdate }) {
       <li>Leaving with unsaved changes asks in the page, never in a browser pop-up.</li>
     </ul>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="multi-step-form"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="multi-step-form"></nav>
 </section>
 
 <!-- =====================================================================
      Command palette (in design)
      ===================================================================== -->
-<section class="panel" id="panel-command-palette" aria-labelledby="h-command-palette" hidden>
+<section class="panel" id="panel-command-palette" data-section="patterns" aria-labelledby="h-command-palette" hidden>
   <p class="page-kicker">Pattern · Live</p>
   <h1 class="page-title" id="h-command-palette" tabindex="-1">Command palette</h1>
   <p class="page-lede">One search box for every action and page in the app. It opens with a shortcut, filters as you type, and puts you back where you were when it closes.</p>
@@ -1814,13 +2386,13 @@ export function AccessRequests({ rows, onUpdate }) {
       <li>Actions you can’t use right now stay listed as unavailable, with the reason, so they’re never a mystery.</li>
     </ul>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="command-palette"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="command-palette"></nav>
 </section>
 
 <!-- =====================================================================
      Destructive confirm (in design)
      ===================================================================== -->
-<section class="panel" id="panel-destructive-confirm" aria-labelledby="h-destructive-confirm" hidden>
+<section class="panel" id="panel-destructive-confirm" data-section="patterns" aria-labelledby="h-destructive-confirm" hidden>
   <p class="page-kicker">Pattern · Live</p>
   <h1 class="page-title" id="h-destructive-confirm" tabindex="-1">Destructive confirm</h1>
   <p class="page-lede">A confirmation step for actions that can’t be undone. It names exactly what will be lost, starts on the safe choice, and puts focus somewhere sensible afterwards.</p>
@@ -1858,13 +2430,13 @@ export function AccessRequests({ rows, onUpdate }) {
       <li>If the action can be undone, use Undo instead of a confirmation.</li>
     </ul>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="destructive-confirm"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="destructive-confirm"></nav>
 </section>
 
 <!-- =====================================================================
      Notifications (in design)
      ===================================================================== -->
-<section class="panel" id="panel-notifications" aria-labelledby="h-notifications" hidden>
+<section class="panel" id="panel-notifications" data-section="patterns" aria-labelledby="h-notifications" hidden>
   <p class="page-kicker">Pattern · Live</p>
   <h1 class="page-title" id="h-notifications" tabindex="-1">Notifications</h1>
   <p class="page-lede">Toasts for quick results and banners for problems that need attention. Each one is announced once, and none disappears before a slow reader is done with it.</p>
@@ -1893,13 +2465,13 @@ export function AccessRequests({ rows, onUpdate }) {
       <li>A notification history keeps everything that was shown.</li>
     </ul>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="notifications"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="notifications"></nav>
 </section>
 
 <!-- =====================================================================
      Empty, loading, error (in design)
      ===================================================================== -->
-<section class="panel" id="panel-states" aria-labelledby="h-states" hidden>
+<section class="panel" id="panel-states" data-section="patterns" aria-labelledby="h-states" hidden>
   <p class="page-kicker">Pattern · Live</p>
   <h1 class="page-title" id="h-states" tabindex="-1">Empty, loading, error</h1>
   <p class="page-lede">Every region of an app has more states than its happy path. This pattern gives each one a heading, a plain reason, and a next step, and decides which ones are worth announcing.</p>
@@ -1930,14 +2502,14 @@ export function AccessRequests({ rows, onUpdate }) {
       <li>Placeholder rows are hidden from screen readers; the busy region speaks for them.</li>
     </ul>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="states"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="states"></nav>
 </section>
 
 
 <!-- =====================================================================
      Admin: Audit log
      ===================================================================== -->
-<section class="panel" id="panel-audit-log" aria-labelledby="h-audit-log" hidden>
+<section class="panel" id="panel-audit-log" data-section="patterns" aria-labelledby="h-audit-log" hidden>
   <p class="page-kicker">Admin · Live</p>
   <h1 class="page-title" id="h-audit-log" tabindex="-1">Audit log</h1>
   <p class="page-lede">A permanent record of who did what, and when. Filter by person, action, or result, and expand any event to see exactly what changed. Events can’t be edited or deleted.</p>
@@ -2010,13 +2582,13 @@ export function AccessRequests({ rows, onUpdate }) {
       </tbody>
     </table></div>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="audit-log"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="audit-log"></nav>
 </section>
 
 <!-- =====================================================================
      Admin: Usage caps
      ===================================================================== -->
-<section class="panel" id="panel-usage-caps" aria-labelledby="h-usage-caps" hidden>
+<section class="panel" id="panel-usage-caps" data-section="patterns" aria-labelledby="h-usage-caps" hidden>
   <p class="page-kicker">Admin · Live</p>
   <h1 class="page-title" id="h-usage-caps" tabindex="-1">Usage caps</h1>
   <p class="page-lede">How much of each monthly allowance every person has used, such as AI tokens, document uploads, and storage, and the caps that limit them. Choose All to see every usage type for each person, or one type to compare everyone on it. Find people narrows the table to the people you pick, and Collapse all turns the table into a list of who needs attention. For long lists, add <a href="#pagination">pagination</a>. Every number is written out, so the meters are never the only way to read them.</p>
@@ -2115,13 +2687,13 @@ export function AccessRequests({ rows, onUpdate }) {
       </tbody>
     </table></div>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="usage-caps"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="usage-caps"></nav>
 </section>
 
 <!-- =====================================================================
      Admin: Compliance overview (in design)
      ===================================================================== -->
-<section class="panel" id="panel-compliance" aria-labelledby="h-compliance" hidden>
+<section class="panel" id="panel-compliance" data-section="patterns" aria-labelledby="h-compliance" hidden>
   <p class="page-kicker">Admin · Live</p>
   <h1 class="page-title" id="h-compliance" tabindex="-1">Compliance overview</h1>
   <p class="page-lede">Where the organization stands against each framework, such as SOC 2 or ISO 27001: which controls pass, which fail, and what evidence is due next.</p>
@@ -2149,13 +2721,13 @@ export function AccessRequests({ rows, onUpdate }) {
       <li>Every chart comes from Accessible Charts, with a summary and data table.</li>
     </ul>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="compliance"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="compliance"></nav>
 </section>
 
 <!-- =====================================================================
      Admin: Reports (in design)
      ===================================================================== -->
-<section class="panel" id="panel-reports" aria-labelledby="h-reports" hidden>
+<section class="panel" id="panel-reports" data-section="patterns" aria-labelledby="h-reports" hidden>
   <p class="page-kicker">Admin · Live</p>
   <h1 class="page-title" id="h-reports" tabindex="-1">Reports</h1>
   <p class="page-lede">Scheduled and on-demand reports on access, spend, and usage. Charts come from Accessible Charts, so every report ships with a written summary and a data table.</p>
@@ -2184,13 +2756,13 @@ export function AccessRequests({ rows, onUpdate }) {
       <li>Long reports open with a list of their sections, linked to each heading.</li>
     </ul>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="reports"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="reports"></nav>
 </section>
 
 <!-- =====================================================================
      Admin: Asset inventory (in design)
      ===================================================================== -->
-<section class="panel" id="panel-assets" aria-labelledby="h-assets" hidden>
+<section class="panel" id="panel-assets" data-section="patterns" aria-labelledby="h-assets" hidden>
   <p class="page-kicker">Admin · Live</p>
   <h1 class="page-title" id="h-assets" tabindex="-1">Asset inventory</h1>
   <p class="page-lede">Every device, license, and integration the organization owns, grouped by type, with owners and when each was last seen.</p>
@@ -2218,13 +2790,13 @@ export function AccessRequests({ rows, onUpdate }) {
       <li>Selecting assets uses the same <a href="#bulk-actions">bulk actions</a> as everywhere else.</li>
     </ul>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="assets"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="assets"></nav>
 </section>
 
 <!-- =====================================================================
      Admin: Configuration (in design)
      ===================================================================== -->
-<section class="panel" id="panel-configuration" aria-labelledby="h-configuration" hidden>
+<section class="panel" id="panel-configuration" data-section="patterns" aria-labelledby="h-configuration" hidden>
   <p class="page-kicker">Admin · Live</p>
   <h1 class="page-title" id="h-configuration" tabindex="-1">Configuration</h1>
   <p class="page-lede">Organization settings in sections, such as sign-in, data retention, and AI features. Every setting says who it affects, and every change is recorded in the <a href="#audit-log">audit log</a>.</p>
@@ -2252,13 +2824,13 @@ export function AccessRequests({ rows, onUpdate }) {
       <li>Each section saves on its own, so a mistake in one doesn’t block another. Discard puts the section back to its saved values.</li>
     </ul>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="configuration"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="configuration"></nav>
 </section>
 
 <!-- =====================================================================
      Admin: Roles and permissions (in design)
      ===================================================================== -->
-<section class="panel" id="panel-roles" aria-labelledby="h-roles" hidden>
+<section class="panel" id="panel-roles" data-section="patterns" aria-labelledby="h-roles" hidden>
   <p class="page-kicker">Admin · Live</p>
   <h1 class="page-title" id="h-roles" tabindex="-1">Roles and permissions</h1>
   <p class="page-lede">Who can do what. Roles group permissions, and people get roles per team. The matrix is a real table, so it reads as “Editor, Approve access requests, checked” rather than a grid of dots.</p>
@@ -2285,7 +2857,7 @@ export function AccessRequests({ rows, onUpdate }) {
       <li>Saving a change lists how many people it affects before it applies.</li>
     </ul>
   </section>
-  <nav class="pager" aria-label="More patterns" data-current="roles"></nav>
+  <nav class="pager" aria-label="More in patterns" data-current="roles"></nav>
 </section>
 
   </main>
@@ -4898,8 +5470,12 @@ export function AccessRequests({ rows, onUpdate }) {
     const src = document.querySelector(`[data-thumb="${fig.dataset.sketch}"] svg`);
     if (src) fig.prepend(src.cloneNode(true));
   });
-  const ORDER = [...document.querySelectorAll(".gallery-item")].map(a => [a.getAttribute("href").slice(1), a.querySelector("strong").textContent]);
+  // Previous and Next follow the sidebar order within the page's own section, skipping its index page.
+  const orderFor = section => [...document.querySelectorAll(`.nav-group[data-section="${section}"] .nav-link`)]
+    .map(a => [a.getAttribute("href").slice(1), a.textContent.trim()])
+    .filter(([id]) => id !== section);
   document.querySelectorAll(".pager").forEach(nav => {
+    const ORDER = orderFor(nav.closest(".panel").dataset.section);
     const i = ORDER.findIndex(([id]) => id === nav.dataset.current);
     const prev = ORDER[i - 1], next = ORDER[i + 1];
     nav.innerHTML = (prev ? `<a class="pager-link" href="#${prev[0]}"><span>Previous</span>${esc(prev[1])}</a>` : "")
@@ -5020,17 +5596,25 @@ export function AccessRequests({ rows, onUpdate }) {
   });
 
   function show(route, { focus = true } = {}) {
-    let tab = null;
+    let tab = null, target = null;
     if (!routes.includes(route)) {
       const el = route && $(route);
-      const panel = el && el.closest('[role="tabpanel"]');
-      if (panel) { tab = panel.id; route = "overview"; }
+      const tabPanel = el && el.closest('[role="tabpanel"]');
+      const page = el && el.closest(".panel");
+      if (tabPanel) { tab = tabPanel.id; route = "overview"; }
+      else if (page) { target = el; route = page.id.replace("panel-", ""); }
       else route = "overview";
     }
     panels.forEach(p => { p.hidden = p.id !== "panel-" + route; });
+    // The header shows the section; the sidebar shows only that section's pages.
+    const section = $("panel-" + route).dataset.section || "overview";
+    document.querySelectorAll(".section-link, .nav-sections .nav-link").forEach(a => {
+      a.dataset.section === section ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current");
+    });
+    document.querySelectorAll(".nav-group[data-section]").forEach(g => g.classList.toggle("is-current", g.dataset.section === section));
     const h1 = $("panel-" + route).querySelector("h1");
     document.title = route === "overview" ? "Enterprise Library" : `${h1.textContent} · Enterprise Library`;
-    document.querySelectorAll(".nav-link").forEach(a => {
+    document.querySelectorAll(".nav-group[data-section] .nav-link").forEach(a => {
       a.getAttribute("href") === "#" + route ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current");
     });
     // Never leave the current page's link hidden inside a closed section.
@@ -5038,10 +5622,13 @@ export function AccessRequests({ rows, onUpdate }) {
     if (hiddenList) setNavGroup(document.querySelector(`[aria-controls="${hiddenList.id}"]`), true);
     window.scrollTo(0, 0);
     if (tab) selectTab(tab);
+    if (target) { target.scrollIntoView(); if (focus) { target.tabIndex = -1; target.focus({ preventScroll: true }); } return; }
     // Move focus to the new page's heading so screen readers start reading there.
     if (focus) h1.focus({ preventScroll: true });
   }
+  document.querySelectorAll(".lib .js-press").forEach(b => b.addEventListener("click", () => b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true"))));
   window.addEventListener("hashchange", () => show(location.hash.slice(1)));
   show(location.hash.slice(1), { focus: false });
 })();
 </script>
+<script type="module" src="docs/demos.js"></script>

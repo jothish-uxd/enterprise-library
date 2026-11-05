@@ -6,7 +6,6 @@
 .idea/
 .claude/
 
-# Dependencies and builds, for when the React package arrives
+# Dependencies. dist/ and docs/demos.js are committed: apps install from GitHub and Pages serves the page as is.
 node_modules/
-dist/
 .env

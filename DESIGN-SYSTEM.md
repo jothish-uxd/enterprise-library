@@ -1,0 +1,251 @@
+# Enterprise Library — rules
+
+Foundations, components and patterns for Sleepy's apps. Geist, monochrome ink on white, true black in dark mode. State is shown with ink weight, rules and shape, never colour alone; the only hue is an error, warning or success message. This repo is the single source; apps install it and don't keep copies. The docs page (`index.html`) shows every rule here live.
+
+## Foundations (`src/styles/tokens.css`, shipped as `tokens.css`)
+
+### Colour
+
+| Token | Light | Dark | Use |
+| --- | --- | --- | --- |
+| `--bg` | #ffffff | #0a0a0a | Page and panel background |
+| `--bg-subtle` | #fafafa | #111111 | Bars, badges, chosen card fill |
+| `--bg-hover` | #f2f2f2 | #1a1a1a | Hover and selected rows |
+| `--ink` | #171717 | #ededed | Text, primary button, active marks |
+| `--ink-soft` | #666666 | #a1a1a1 | Secondary text |
+| `--ink-faint` | #737373 | #8a8a8a | Labels, table headers |
+| `--rule` | #ebebeb | #242424 | Hairlines |
+| `--rule-strong` | #d4d4d4 | #3a3a3a | Control borders, frame edge |
+| `--focus` | #0068d6 | #52a8ff | Focus ring only |
+| `--on-ink` | #ffffff | #0a0a0a | Text on solid ink |
+| `--error`, `--error-bg` | #b42318, #fdecea | #ff8f85, #3b1513 | Error messages |
+| `--warning`, `--warning-bg` | #8a5a00, #fdf3d7 | #f2c14e, #352a0e | Warning messages |
+| `--success`, `--success-bg` | #157032, #e6f4ea | #6fd28c, #11301c | Success messages |
+
+`--ok` is a deprecated alias of `--success`. Message colours appear only in messages and their icons, always beside words.
+
+### Type
+
+| Token | Size | Class | Use |
+| --- | --- | --- | --- |
+| `--text-caption` | 12px | `.t-caption` | Labels, table headers, badges, mono IDs |
+| `--text-small` | 13px | `.t-small` | Help text, metadata |
+| `--text-body-sm` | 14px | `.t-body-sm` | Controls, dense UI text, table cells |
+| `--text-body` | 15px | `.t-body` | Reading text |
+| `--text-lead` | 17px | `.t-lead` | Intro paragraphs |
+| `--text-title-sm` | 20px | `.t-title-sm` | Section titles, card stats |
+| `--text-title` | 24–32px, fluid | `.t-title`, `.page-title` | Page titles |
+| `--text-display` | 44–72px, fluid | `.t-display` | Hero |
+
+Line height `--leading-tight` 1.1, `--leading-snug` 1.4, `--leading-body` 1.6. Tracking `--tracking-title-sm` −0.025em, `--tracking-title` −0.045em, `--tracking-display` −0.055em. Weights `--weight-regular` 400, `--weight-medium` 500, `--weight-semibold` 600. Never type a raw size; a size between steps rounds to the nearer step.
+
+### Spacing, radius, shadow, height
+
+- Spacing, a 4px grid: `--space-1` 4, `-1-5` 6, `-2` 8, `-2-5` 10, `-3` 12, `-3-5` 14, `-4` 16, `-5` 20, `-6` 24, `-8` 32, `-10` 40, `-12` 48, `-16` 64. Half steps only inside controls.
+- Radius: `--radius-xs` 4 (items in a list, focus ring), `-sm` 6 (buttons, fields, tags), `-md` 8 (popovers, choice cards), `-lg` 12 (cards, strips, frames), `-full`. Nest smaller inside larger.
+- Shadow, only for things that float: `--shadow-frame`, `--shadow-popover`, `--shadow-overlay`. Each is deeper in dark mode.
+- Control height: `--control-h-sm` 30, `--control-h` 36, `--control-h-lg` 44.
+
+Theme follows the OS. Set `data-theme="light"` or `"dark"` on `<html>` to override it.
+
+Fonts are loaded by the app, not the package:
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+```
+
+Stylesheets: `styles.css` has everything. Each file also ships under `css/`: `tokens`, `base` (element resets, skip it if the page has its own), `type`, `forms`, `buttons`, `table`, `card`, and one per component.
+
+## Components
+
+### Buttons (`buttons.css`)
+
+`.btn` with a kind (`--primary`, `--secondary`, `--ghost`, `--danger`), a size (`--sm` 30px, default 36px, `--lg` 44px), an optional leading `.btn__icon`, and `--icon` for square icon-only buttons. `aria-pressed="true"` gives a toggle its ink border and wash. `.link-button` (and `--danger`) and `.btn-row`.
+
+- One primary action per view. Label with a verb and object: “Delete 3 assets”.
+- Danger looks like primary; the verb and trash icon say it’s destructive, never colour. Only on the last step of a confirm.
+- Prefer `aria-disabled="true"`, so the button stays focusable and can point at why. Icon-only buttons need `aria-label`.
+- High contrast: ButtonText borders; pressed gets a Highlight border.
+
+### Fields (`forms.css`)
+
+`.field` with `.field__label`, the control and `.field-help`; `aria-invalid="true"` gives a 2px ink border. `.check`, `.checks`, `.form`, `.form-grid`, `.form-actions`. Every control has a visible label; invalid is said in words, never colour alone.
+
+### Table (`table.css`, `components/Table.tsx`)
+
+`.table` with modifiers `--selectable` (checkbox column; chosen rows `.is-selected` or `aria-selected` get a wash and a 3px ink bar), `--hover`, `--compact`, `--sticky` (`--table-sticky-top`). Helpers: `SortHeader` (th carries `aria-sort`, the button the name: “Score, sorted descending, button”), `TableCheck` (row checkbox or select-all with the mixed state), `TableEmpty` (one row saying why it’s empty, with a next step). Every table has a caption and row headers.
+
+### Card and ChoiceCard (`card.css`, `components/Card.tsx`)
+
+`.card` with `__header` (`__heading`, `__title`, `__meta`, `__end`), `__body`, `__footer` (full-width rule), `__stats`; variants `--subtle`, `--strong`, `--emphasis` (ink border), `--compact`; `.card-grid` (`--card-min`) and `.card-list`. `Card` renders the same markup.
+
+`ChoiceCard` is a card that is a real radio or checkbox: the input covers the card, invisible; the title is its name, the description its description. Chosen: a 2px ink edge and a filled mark (ring for radio, box for checkbox). Disabled stays readable and says why. Never a second control inside.
+
+
+### BrowserFrame
+
+`src/components/BrowserFrame.tsx` and `src/styles/browser-frame.css`.
+
+A plain browser window for presenting an app inside a page: a product demo, a prototype, a case study. The app inside reads as the product, the page around it as the story.
+
+```tsx
+import { BrowserFrame, useFrameHistory } from '@jothish-uxd/enterprise-library';
+
+function Demo() {
+  const { pathname, nav, menuOpen, setMenuOpen, scrollRef } = useFrameHistory();
+  return (
+    <BrowserFrame.Stage>
+      <BrowserFrame
+        host="myapp.example"
+        path={pathname}
+        nav={nav}
+        menu={{ open: menuOpen, onToggle: () => setMenuOpen((o) => !o), controls: 'sidebar' }}
+        end={<Avatar />}
+      >
+        <div className="my-app">…</div>
+      </BrowserFrame>
+    </BrowserFrame.Stage>
+  );
+}
+```
+
+| Prop | What it does |
+| --- | --- |
+| `path` | Shown after the host in the address bar |
+| `host` | Address host, default `example.app` |
+| `nav` | Back / Forward buttons; `useFrameHistory()` supplies one |
+| `menu` | Menu button for small screens; `controls` is the id of the panel it opens |
+| `end` | Right end of the bar, such as an avatar |
+
+Rules:
+
+- **Fill the viewport.** `BrowserFrame.Stage` sizes the frame to the height under the site header. The page itself never scrolls; the app's own regions scroll inside the frame.
+- **90% on wide screens.** From 1280px up, the frame takes 90% of the width and 90% of the height under the header, centered, so it reads as a framed product with even space around it. Below 1280px it fills the space with a 16px gutter (8px under 520px), because room inside matters more there.
+- **Everything stays inside.** Back and Forward only move through pages visited in the frame, so Back never leaves it. Panels opened from the bar (like the small-screen menu) render inside the frame body, which is the positioning context.
+- **Keep the bar quiet.** The window dots are decoration and hidden from assistive tech. Back, Forward and Menu are real buttons with names; the address is read-only text.
+- **Small screens.** Below 960px the menu button appears; below 520px the dots and host hide so the path keeps its room.
+
+Tunables: `--bframe-gutter` (below 1280px), `--bframe-radius`, `--bframe-bar-h`. The component reads only the shared tokens above, so it drops into any project that uses them.
+
+### Select
+
+`src/components/Select.tsx` and `src/styles/select.css`.
+
+A custom dropdown that replaces the native `<select>`, following the WAI-ARIA select-only combobox pattern. It matches the other fields: same height, border and radius.
+
+```tsx
+import { Select } from '@jothish-uxd/enterprise-library';
+
+<Select
+  label="Metric"
+  value={metric}
+  onChange={setMetric}
+  options={[
+    { value: 'Precision', label: 'Precision' },
+    { value: 'Recall', label: 'Recall' },
+  ]}
+  describedBy="metric-help"
+/>
+```
+
+| Prop | What it does |
+| --- | --- |
+| `label` | Visible label; also the accessible name |
+| `value`, `onChange` | Controlled value (string or number) |
+| `options` | `{ value, label }` list |
+| `describedBy` | id of help text that describes the field |
+| `inline` | Label beside the button instead of above it |
+| `hideLabel` | Keep the label for screen readers only, for compact fields whose context already names them (a status inside a policy match) |
+| `placeholder` | Shown when the value isn't one of the options, e.g. "Choose a job" |
+| `invalid` | Marks the field invalid (`aria-invalid`, heavier border) |
+| `buttonId` | id for the button, so an error summary can link to it |
+| `className` | Extra classes, e.g. `select--wide` for a 240px minimum |
+
+Rules:
+
+- **Looks like a field, opens like a menu.** Chevron sits 14px from the right edge and flips when open. The list floats 6px below with an 8px radius and soft shadow; the active option has a `--bg-hover` wash, the chosen one is weight 500 with a check.
+- **Never clipped.** Near the bottom of its scrolling area (the nearest `[data-scroll]` element; put it on each app region that scrolls), the list opens upward. Long lists scroll at 280px.
+- **Focus stays on the button.** The open list is announced through `aria-activedescendant`, so screen readers hear "Metric, Precision" and each option as you move.
+- **Keyboard.** Enter, Space or the arrow keys open it. Up/Down, Home/End and Page Up/Down move. Typing jumps to a matching option. Enter or Space chooses, Escape closes without changing, Tab chooses and moves on.
+- **High contrast.** In forced-colors mode the active option gets a system Highlight outline.
+
+### ResetButton
+
+`src/components/ResetButton.tsx` and `src/styles/reset.css`.
+
+An icon button for the BrowserFrame bar (`end` slot) that clears saved changes after a confirm. Each app in a frame gets its own, scoped to its own data, so one app's reset never touches another's.
+
+```tsx
+<ResetButton what="jobs" description="…what it clears…" done="Jobs reset." to="/jobs"
+  onReset={() => resetStore((key) => key.startsWith("jobs:"))} />
+```
+
+Rules: the confirm is a small `alertdialog` under the button; focus starts on **Cancel**; Escape or a click outside closes it and returns focus to the button; the result is announced in a polite live region. Say what is cleared and what is kept.
+
+### HoverCard
+
+`src/components/HoverCard.tsx` and `src/styles/hover-card.css` (with `.card-title`, `.card-dl` and `.card-note` for card content).
+
+Details that appear on hover or keyboard focus. First used in Cipher Lab's Vault: the policy matches and AI predictions on a message row.
+
+```tsx
+import { HoverCard } from '@jothish-uxd/enterprise-library';
+
+<HoverCard label="3 policy matches, 2 open" card={<PolicyMatchesCard m={m} r={r} />}>
+  <FlagIcon filled /> 2
+</HoverCard>
+```
+
+| Prop | What it does |
+| --- | --- |
+| `label` | Accessible name of the trigger button |
+| `card` | Card content, text only |
+| `children` | What the trigger shows |
+| `onClick` | Optional click handler on the trigger |
+
+Rules (WCAG 1.4.13, content on hover or focus):
+
+- **The trigger is a real button** with its own name. The card is linked with `aria-describedby`, so screen readers hear it on focus.
+- **Hoverable, dismissable, persistent.** The pointer can move onto the card; Escape closes it; it stays until pointer or focus leaves. Scrolling closes it.
+- **Text only.** Never put links or buttons in a card. Actions go in the page.
+- **Never clipped.** It renders at the end of `<body>`, positions against the trigger and flips above when there's no room below. The arrow follows the trigger.
+
+### StatFilter
+
+`src/components/StatFilter.tsx` and `src/styles/stat-filter.css`.
+
+A row of counts that also filters what's below it. Use it when a page would otherwise show KPI cards and a separate set of filter chips with the same numbers. First used for a job's pipeline in the Online Assessments hiring system (All, Applied, Screening, Assessment, Interview, Offer, Hired).
+
+```tsx
+import { StatFilter } from '@jothish-uxd/enterprise-library';
+
+<StatFilter
+  label="Pipeline. Choose a stage to list its candidates"
+  controls="job-cands-list"
+  value={stage}
+  onChange={setStage}
+  items={[
+    { value: 'All', label: 'All', count: 132 },
+    { value: 'Assessment', label: 'Assessment', count: 18 },
+  ]}
+/>
+```
+
+| Prop | What it does |
+| --- | --- |
+| `label` | Accessible name of the group; say that choosing a card filters |
+| `items` | `{ value, label, count }` list, in display order |
+| `value`, `onChange` | The chosen card (controlled) |
+| `controls` | id of the region the cards filter |
+| `className` | Extra classes, usually for spacing |
+
+Rules:
+
+- **Counts first, filter second.** Each card is a big tabular number over a short label. If the numbers don't filter anything, use a plain `<dl>` of KPI tiles instead.
+- **The chosen card uses the tab marker:** a 3px ink underline, the `--bg-subtle` fill and a semibold label. Never an inverted block; it competes with the content it filters. Hover is the `--bg-hover` wash.
+- **One strip, hairline dividers.** One 1px `--rule` border and 12px radius around the strip, with hairlines between cards. Cards wrap on narrow screens (minimum 112px each) and the dividers follow.
+- **Toggle buttons in a group.** Each card is a `<button aria-pressed>` with `aria-controls` pointing at what it filters; exactly one is pressed. Screen readers hear "18 Assessment, toggle button, pressed".
+- **Offer "All" first** when seeing everything is a useful state. Update the filtered region's heading to match ("Assessment 18"), and reset any paging when the choice changes.
+- **High contrast.** In forced-colors mode the underline becomes a system Highlight border.

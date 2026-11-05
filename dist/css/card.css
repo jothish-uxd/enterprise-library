@@ -1,0 +1,89 @@
+/* Card: a bordered surface with optional header, body and footer.
+   ChoiceCard: a card that is a radio or checkbox. */
+
+.card {
+  --card-pad: var(--space-5);
+  display: grid; gap: var(--space-4); align-content: start; min-width: 0;
+  padding: var(--card-pad);
+  border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--bg); color: var(--ink);
+}
+.card--compact { --card-pad: var(--space-3-5); gap: var(--space-3); border-radius: var(--radius-md); }
+.card--subtle { background: var(--bg-subtle); }
+.card--strong { border-color: var(--rule-strong); }
+/* Emphasis: the one card that passed, the current plan. Ink border, never a colour. */
+.card--emphasis { border-color: var(--ink); }
+
+.card__header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); min-width: 0; }
+.card__heading { flex: 1; display: grid; gap: 2px; min-width: 0; }
+.card__title { font-size: var(--text-body); font-weight: var(--weight-semibold); line-height: var(--leading-snug); }
+.card__title a { text-decoration: none; }
+.card__title a:hover { text-decoration: underline; text-decoration-color: var(--rule-strong); }
+.card__meta { font-size: var(--text-small); color: var(--ink-faint); }
+.card__end { flex: none; display: flex; align-items: center; gap: var(--space-2); }
+.card__body { display: grid; gap: var(--space-3); font-size: var(--text-body-sm); color: var(--ink-soft); min-width: 0; }
+
+/* Footer: a rule across the full width, actions or totals below it. */
+.card__footer {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3);
+  margin: 0 calc(-1 * var(--card-pad)) calc(-1 * var(--card-pad));
+  padding: var(--space-3) var(--card-pad);
+  border-top: 1px solid var(--rule); font-size: var(--text-small); color: var(--ink-soft);
+}
+
+/* Stats inside a card: label over a big tabular number. */
+.card__stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: var(--space-3); }
+.card__stats dt { font-size: var(--text-caption); color: var(--ink-faint); }
+.card__stats dd { margin: 0; font-size: var(--text-title-sm); font-weight: var(--weight-semibold); letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--ink); }
+
+/* Grid of cards */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--card-min, 260px), 1fr)); gap: var(--space-4); }
+.card-list { display: grid; gap: var(--space-1-5); }
+
+/* ---------- ChoiceCard ---------- */
+.choice-card {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-1) var(--space-3);
+  align-items: start; padding: var(--space-4);
+  border: 1px solid var(--rule); border-radius: var(--radius-md); background: var(--bg); color: var(--ink);
+  cursor: pointer;
+}
+.choice-card:hover { background: var(--bg-subtle); }
+.choice-card__input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: inherit; }
+.choice-card__head { display: flex; align-items: center; gap: var(--space-2-5); min-width: 0; font-weight: var(--weight-medium); line-height: var(--leading-snug); }
+.choice-card__icon {
+  display: inline-grid; place-items: center; flex: none; width: 26px; height: 26px;
+  border: 1px solid var(--rule); border-radius: var(--radius-sm); color: var(--ink-soft);
+}
+.choice-card__icon svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.choice-card__desc { grid-column: 1; font-size: var(--text-small); color: var(--ink-soft); line-height: 1.5; }
+.choice-card__meta { grid-column: 1; margin-top: var(--space-1); font-family: var(--mono); font-size: var(--text-caption); color: var(--ink-faint); }
+
+/* The mark: an empty ring or box that fills when chosen. State by shape, not colour. */
+.choice-card__mark {
+  grid-column: 2; grid-row: 1; display: inline-grid; place-items: center; width: 18px; height: 18px; margin-top: 1px;
+  border: 1.5px solid var(--rule-strong); border-radius: var(--radius-full); background: var(--bg); color: var(--on-ink);
+}
+.choice-card--checkbox .choice-card__mark { border-radius: var(--radius-xs); }
+.choice-card__mark svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; visibility: hidden; }
+.choice-card--radio .choice-card__mark::after { content: ""; width: 8px; height: 8px; border-radius: var(--radius-full); background: var(--on-ink); visibility: hidden; }
+
+/* Chosen: 2px ink edge and a filled mark. */
+.choice-card.is-checked, .choice-card:has(.choice-card__input:checked) { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.choice-card.is-checked .choice-card__mark, .choice-card:has(.choice-card__input:checked) .choice-card__mark { border-color: var(--ink); background: var(--ink); }
+.choice-card.is-checked .choice-card__mark svg, .choice-card:has(.choice-card__input:checked) .choice-card__mark svg,
+.choice-card.is-checked .choice-card__mark::after, .choice-card:has(.choice-card__input:checked) .choice-card__mark::after { visibility: visible; }
+.choice-card:has(.choice-card__input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Unavailable: stays readable, says why in its description. */
+.choice-card.is-disabled, .choice-card:has(.choice-card__input:disabled) { cursor: not-allowed; background: var(--bg-subtle); }
+.choice-card.is-disabled .choice-card__head, .choice-card.is-disabled .choice-card__desc,
+.choice-card:has(.choice-card__input:disabled) .choice-card__head,
+.choice-card:has(.choice-card__input:disabled) .choice-card__desc { color: var(--ink-faint); }
+
+/* Compact: a short list of options in a panel (was radio-card). */
+.choice-card--compact { padding: var(--space-2-5) var(--space-3); border-radius: var(--radius-md); font-size: var(--text-body-sm); }
+
+@media (forced-colors: active) {
+  .choice-card.is-checked, .choice-card:has(.choice-card__input:checked) { border: 2px solid Highlight; box-shadow: none; }
+  .choice-card.is-checked .choice-card__mark, .choice-card:has(.choice-card__input:checked) .choice-card__mark { background: Highlight; border-color: Highlight; }
+  .card--emphasis { border-width: 2px; }
+}

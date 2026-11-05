@@ -1,0 +1,70 @@
+/* Buttons: .btn with a kind (primary, secondary, ghost, danger), a size (sm, default, lg),
+   an optional leading icon (.btn__icon), and a square icon-only form (.btn--icon). */
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  height: var(--control-h); padding: 0 var(--space-3-5); border-radius: var(--radius-sm); border: 1px solid transparent;
+  background: none; color: var(--ink);
+  font-size: var(--text-body-sm); font-weight: var(--weight-medium); line-height: 1;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+}
+
+/* Kinds */
+.btn--primary { background: var(--ink); color: var(--on-ink); }
+.btn--primary:hover { opacity: .88; }
+.btn--secondary { background: var(--bg); color: var(--ink); border-color: var(--rule); }
+.btn--secondary:hover { background: var(--bg-hover); }
+.btn--ghost { background: none; color: var(--ink-soft); }
+.btn--ghost:hover { background: var(--bg-hover); color: var(--ink); }
+/* Danger: only for the final step of a destructive confirm. Same ink as primary;
+   the verb ("Delete 3 assets") and the trash icon say it's destructive, never colour. */
+.btn--danger { background: var(--ink); color: var(--on-ink); }
+.btn--danger:hover { opacity: .88; }
+
+/* Sizes */
+.btn--sm { height: var(--control-h-sm); padding: 0 var(--space-2-5); font-size: var(--text-small); }
+.btn--lg { height: var(--control-h-lg); padding: 0 var(--space-5); font-size: var(--text-body); border-radius: var(--radius-md); }
+
+/* Leading icon: the label stays; the icon only supports it. */
+.btn__icon, .btn .icon {
+  width: 16px; height: 16px; flex: none; margin-left: -2px;
+  fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+.btn--sm .btn__icon, .btn--sm .icon { width: 14px; height: 14px; }
+.btn--lg .btn__icon, .btn--lg .icon { width: 18px; height: 18px; }
+
+/* Icon-only: square, needs aria-label (or visually-hidden text). */
+.btn--icon { width: var(--control-h); padding: 0; }
+.btn--icon.btn--sm { width: var(--control-h-sm); }
+.btn--icon.btn--lg { width: var(--control-h-lg); }
+.btn--icon .btn__icon, .btn--icon .icon { margin: 0; }
+
+/* Pressed (toggle buttons): ink border and fill wash, not a colour. */
+.btn[aria-pressed="true"] { background: var(--bg-hover); border-color: var(--ink); color: var(--ink); }
+
+/* Unavailable. Prefer aria-disabled so the button stays focusable and can explain why. */
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.btn:disabled:hover, .btn[aria-disabled="true"]:hover { opacity: .45; }
+.btn--secondary[aria-disabled="true"]:hover, .btn--ghost[aria-disabled="true"]:hover { background: none; }
+
+/* Group of buttons */
+.btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+
+/* Link button: a button that looks like a quiet link (inline actions, table rows). */
+.link-button {
+  appearance: none; border: 0; background: none; padding: 0; cursor: pointer;
+  display: inline-flex; align-items: center; gap: var(--space-1-5);
+  color: var(--ink-soft); font-size: var(--text-small);
+  text-decoration: underline; text-decoration-color: var(--rule-strong); text-underline-offset: 3px;
+}
+.link-button:hover { color: var(--ink); text-decoration-color: currentColor; }
+.link-button--danger { color: var(--ink); font-weight: var(--weight-medium); }
+
+@media (forced-colors: active) {
+  .btn { border-color: ButtonText; }
+  .btn[aria-pressed="true"] { border-width: 2px; border-color: Highlight; }
+  .btn:disabled, .btn[aria-disabled="true"] { border-color: GrayText; color: GrayText; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn { transition: background-color .12s ease, opacity .12s ease; }
+}

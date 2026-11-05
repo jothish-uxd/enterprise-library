@@ -1,0 +1,27 @@
+/* Type ramp classes and text utilities. */
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.muted { color: var(--ink-soft); }
+.note { font-size: var(--text-small); color: var(--ink-faint); }
+.ok { color: var(--ok); }
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* ---------- Type ramp ---------- */
+.t-caption  { font-size: var(--text-caption); line-height: var(--leading-snug); }
+.t-small    { font-size: var(--text-small); line-height: 1.5; }
+.t-body-sm  { font-size: var(--text-body-sm); line-height: 1.5; }
+.t-body     { font-size: var(--text-body); line-height: var(--leading-body); }
+.t-lead     { font-size: var(--text-lead); line-height: var(--leading-body); color: var(--ink-soft); }
+.t-title-sm { font-size: var(--text-title-sm); line-height: 1.3; font-weight: var(--weight-semibold); letter-spacing: var(--tracking-title-sm); }
+.t-title    { font-size: var(--text-title); line-height: var(--leading-tight); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-title); }
+.t-display  { font-size: var(--text-display); line-height: 1.05; font-weight: var(--weight-semibold); letter-spacing: var(--tracking-display); }
+.t-label    { font-size: var(--text-caption); font-weight: var(--weight-medium); color: var(--ink-faint); }
+.t-kicker   { font-family: var(--mono); font-size: var(--text-caption); color: var(--ink-soft); }
+.page-title { font-size: var(--text-title); line-height: var(--leading-tight); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-title); }
+
+.tag {
+  white-space: nowrap; font-family: var(--mono); font-size: var(--text-caption); color: var(--ink-soft);
+  border: 1px solid var(--rule); border-radius: var(--radius-sm); padding: 1px 7px; background: var(--bg-subtle);
+}

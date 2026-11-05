@@ -1,0 +1,51 @@
+{
+  "name": "@jothish-uxd/enterprise-library",
+  "version": "0.2.0",
+  "description": "Enterprise Library: tokens, components and accessible patterns shared by Sleepy's apps.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jothish-uxd/enterprise-library.git"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./css/*": "./dist/css/*"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "DESIGN-SYSTEM.md",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json && node scripts/build-css.mjs",
+    "build:docs": "esbuild docs/demos.tsx --bundle --minify --format=esm --target=es2020 --jsx=automatic --outfile=docs/demos.js",
+    "check": "tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-router-dom": "^6.20.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "typescript": "^5.6.3",
+    "esbuild": "^0.24.0"
+  },
+  "homepage": "https://jothish-uxd.github.io/enterprise-library/"
+}

@@ -1,0 +1,31 @@
+/* Base: element resets and body. Apps load this; a page with its own base can skip it. */
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+html { scroll-padding-top: calc(var(--header-h) + var(--space-6)); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4, p, dl, dd, ol, ul, figure { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+a { color: var(--ink); text-underline-offset: 3px; text-decoration-color: var(--rule-strong); }
+a:hover { text-decoration-color: currentColor; }
+button, input, textarea { font: inherit; color: inherit; }
+code, .id { font-family: var(--mono); font-size: var(--text-caption); }
+
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: var(--radius-xs); }
+.page-title:focus, .page-title:focus-visible { outline: none; }
+
+.skip-link {
+  position: absolute; left: var(--space-4); top: -60px; z-index: 50;
+  padding: var(--space-2) var(--space-3-5); background: var(--ink); color: var(--bg);
+  border-radius: var(--radius-sm); font-weight: var(--weight-medium); text-decoration: none;
+}
+.skip-link:focus { top: var(--space-3-5); }

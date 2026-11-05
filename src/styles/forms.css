@@ -1,0 +1,24 @@
+/* Fields, checkboxes and form layout. */
+.field { display: grid; gap: var(--space-1-5); min-width: 0; }
+.field__label { font-size: var(--text-caption); font-weight: var(--weight-medium); color: var(--ink-faint); }
+.field input, .field textarea {
+  width: 100%; min-height: var(--control-h); padding: var(--space-1-5) var(--space-2-5);
+  border: 1px solid var(--rule-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink);
+  font-size: var(--text-body-sm); line-height: var(--leading-snug);
+}
+.field textarea { resize: vertical; min-height: 72px; }
+.field input:hover, .field textarea:hover { border-color: var(--ink-faint); }
+.field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border: 2px solid var(--ink); padding: 5px 9px; }
+.field--wide { max-width: 720px; }
+.field--narrow { max-width: 120px; }
+.field-help { flex-basis: 100%; font-size: var(--text-small); color: var(--ink-faint); max-width: 62ch; }
+.form { display: grid; gap: var(--space-5); }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-4) var(--space-5); max-width: 960px; }
+.form-actions { display: flex; gap: var(--space-2); }
+.inline-form { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-3) var(--space-4); margin-top: var(--space-5); }
+.inline-form .field { width: 200px; }
+.inline-form .field--narrow { width: 120px; }
+.checks { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2-5) var(--space-6); }
+.checks legend { margin-bottom: var(--space-2-5); padding: 0; }
+.check { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-body-sm); cursor: pointer; }
+.check input { width: 16px; height: 16px; margin: 0; accent-color: var(--ink); }

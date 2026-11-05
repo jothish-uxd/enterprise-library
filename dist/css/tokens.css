@@ -1,0 +1,135 @@
+/*
+  Tokens — Enterprise Library.
+  Geist, monochrome ink on white, true black in dark mode.
+  State is shown with ink weight, rules and shape, never a brand colour.
+  Dark mode follows the OS, and [data-theme="light"|"dark"] on <html> overrides it.
+*/
+
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --bg-subtle: #fafafa;
+  --bg-hover: #f2f2f2;
+  --ink: #171717;
+  --ink-soft: #666666;
+  --ink-faint: #737373;
+  --rule: #ebebeb;
+  --rule-strong: #d4d4d4;
+  --focus: #0068d6;
+  --on-ink: #ffffff;      /* text on solid ink (primary button, filled switch) */
+  /* Message colours: the only hue in the library. Errors, warnings and success,
+     always with their icon and words, never colour alone. */
+  --error: #b42318;
+  --error-bg: #fdecea;
+  --warning: #8a5a00;
+  --warning-bg: #fdf3d7;
+  --success: #157032;
+  --success-bg: #e6f4ea;
+  --ok: var(--success);   /* deprecated alias, kept for 0.1 apps */
+
+  /* Shadows: overlays only. Flat surfaces use rules, not shadows. */
+  --shadow-frame: 0 1px 2px rgba(0, 0, 0, .04), 0 12px 32px -12px rgba(0, 0, 0, .12);
+  --shadow-popover: 0 12px 32px -8px rgba(0, 0, 0, .18), 0 2px 6px rgba(0, 0, 0, .06);
+  --shadow-overlay: 0 16px 40px -12px rgba(0, 0, 0, .28), 0 2px 6px rgba(0, 0, 0, .06);
+
+  --font: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Type ramp. Fixed steps for UI text; title and display scale with the viewport. */
+  --text-caption: 12px;   /* labels, table headers, badges, mono IDs */
+  --text-small: 13px;     /* help text, metadata */
+  --text-body-sm: 14px;   /* controls, dense UI text, table cells */
+  --text-body: 15px;      /* reading text */
+  --text-lead: 17px;      /* intro paragraphs */
+  --text-title-sm: 20px;  /* section titles, card stats */
+  --text-title: clamp(24px, 1.2rem + 1.5vw, 32px);      /* page titles: 24px phone, 32px from ~850px */
+  --text-display: clamp(44px, 1.6rem + 4.5vw, 72px);    /* hero: 44px phone, 72px from ~1030px */
+  --leading-tight: 1.1;   /* title, display */
+  --leading-snug: 1.4;    /* controls, card titles */
+  --leading-body: 1.6;    /* reading text */
+  --tracking-title-sm: -.025em;
+  --tracking-title: -.045em;
+  --tracking-display: -.055em;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Spacing: a 4px grid, with half steps for control insides. */
+  --space-1: 4px;
+  --space-1-5: 6px;
+  --space-2: 8px;
+  --space-2-5: 10px;
+  --space-3: 12px;
+  --space-3-5: 14px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Radius: four steps plus full. Nest smaller inside larger. */
+  --radius-xs: 4px;       /* items inside a list or menu, focus ring */
+  --radius-sm: 6px;       /* buttons, fields, tags */
+  --radius-md: 8px;       /* popovers, small choice cards */
+  --radius-lg: 12px;      /* cards, strips, frames */
+  --radius-full: 999px;   /* dots, avatars, pills */
+
+  /* Control heights */
+  --control-h-sm: 30px;
+  --control-h: 36px;
+  --control-h-lg: 44px;
+
+  --header-h: 64px;
+  --sidebar-w: 240px;
+  --shell-max: 1320px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0a0a0a;
+    --bg-subtle: #111111;
+    --bg-hover: #1a1a1a;
+    --ink: #ededed;
+    --ink-soft: #a1a1a1;
+    --ink-faint: #8a8a8a;
+    --rule: #242424;
+    --rule-strong: #3a3a3a;
+    --focus: #52a8ff;
+    --on-ink: #0a0a0a;
+    --error: #ff8f85;
+    --error-bg: #3b1513;
+    --warning: #f2c14e;
+    --warning-bg: #352a0e;
+    --success: #6fd28c;
+    --success-bg: #11301c;
+    --shadow-frame: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 32px -12px rgba(0, 0, 0, .7);
+    --shadow-popover: 0 12px 32px -8px rgba(0, 0, 0, .7), 0 2px 6px rgba(0, 0, 0, .5);
+    --shadow-overlay: 0 16px 40px -12px rgba(0, 0, 0, .8), 0 2px 6px rgba(0, 0, 0, .5);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0a0a0a;
+  --bg-subtle: #111111;
+  --bg-hover: #1a1a1a;
+  --ink: #ededed;
+  --ink-soft: #a1a1a1;
+  --ink-faint: #8a8a8a;
+  --rule: #242424;
+  --rule-strong: #3a3a3a;
+  --focus: #52a8ff;
+  --on-ink: #0a0a0a;
+  --error: #ff8f85;
+  --error-bg: #3b1513;
+  --warning: #f2c14e;
+  --warning-bg: #352a0e;
+  --success: #6fd28c;
+  --success-bg: #11301c;
+  --shadow-frame: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 32px -12px rgba(0, 0, 0, .7);
+  --shadow-popover: 0 12px 32px -8px rgba(0, 0, 0, .7), 0 2px 6px rgba(0, 0, 0, .5);
+  --shadow-overlay: 0 16px 40px -12px rgba(0, 0, 0, .8), 0 2px 6px rgba(0, 0, 0, .5);
+}
