@@ -4,9 +4,10 @@ import { useTooltip } from './Tooltip';
 /**
  * Button — the `.btn` classes as a component, with the accessible parts built in.
  *
- * - kind: primary (the one main action on a view), secondary, ghost, danger
- *   (only the last step of a destructive confirm; same ink as primary).
- * - icon: a 16px outlined icon before the label. iconOnly hides the label
+ * - variant: primary (default; the one main action on a view), secondary,
+ *   ghost, danger (red; only the last step of a destructive action).
+ * - icon: a 16px outlined icon, before the label or after it (iconPosition).
+ *   iconOnly hides the label
  *   visually; it stays the button's name and shows as a tooltip on hover/focus.
  * - pressed: makes it a toggle button (aria-pressed), e.g. "Show archived".
  * - disabled: uses aria-disabled, so the button stays in the Tab order and
@@ -17,10 +18,12 @@ import { useTooltip } from './Tooltip';
  * Plain HTML still works: <button class="btn btn--primary">.
  */
 interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'> {
-  kind?: 'primary' | 'secondary' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg';
-  /** Icon before the label, usually an inline SVG drawn with currentColor */
+  /** An icon, usually an inline SVG drawn with currentColor */
   icon?: ReactNode;
+  /** Where the icon sits: 'start' (left, default) or 'end' (right) */
+  iconPosition?: 'start' | 'end';
   /** Show only the icon; the label is still its name, and shows as a tooltip */
   iconOnly?: boolean;
   /** A toggle button: true when on, false when off. Leave out for ordinary buttons. */
@@ -34,14 +37,14 @@ interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'dis
 }
 
 export function Button({
-  kind = 'secondary', size = 'md', icon, iconOnly, pressed, disabled, disabledReason, children,
+  variant = 'primary', size = 'md', icon, iconPosition = 'start', iconOnly, pressed, disabled, disabledReason, children,
   className = '', type = 'button', onClick, ...rest
 }: ButtonProps) {
   const reason = disabled && disabledReason ? disabledReason : null;
   // One tooltip: the reason when unavailable, otherwise the label for icon-only buttons.
   const tip = useTooltip(reason ?? (iconOnly ? children : null));
   const describedBy = [rest['aria-describedby'], reason ? tip.describedBy : null].filter(Boolean).join(' ') || undefined;
-  const cls = ['btn', `btn--${kind}`, size !== 'md' && `btn--${size}`, iconOnly && 'btn--icon', className].filter(Boolean).join(' ');
+  const cls = ['btn', `btn--${variant}`, size !== 'md' && `btn--${size}`, iconOnly && 'btn--icon', className].filter(Boolean).join(' ');
   return (
     <>
       <button
@@ -56,8 +59,9 @@ export function Button({
         {...tip.hoverProps}
         {...tip.focusProps}
       >
-        {icon && <span className="btn__icon" aria-hidden="true">{icon}</span>}
+        {icon && (iconOnly || iconPosition === 'start') && <span className="btn__icon" aria-hidden="true">{icon}</span>}
         {iconOnly ? <span className="visually-hidden">{children}</span> : children}
+        {icon && !iconOnly && iconPosition === 'end' && <span className="btn__icon btn__icon--end" aria-hidden="true">{icon}</span>}
       </button>
       {tip.tooltip}
     </>

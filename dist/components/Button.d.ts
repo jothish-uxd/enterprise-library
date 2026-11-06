@@ -2,9 +2,10 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 /**
  * Button — the `.btn` classes as a component, with the accessible parts built in.
  *
- * - kind: primary (the one main action on a view), secondary, ghost, danger
- *   (only the last step of a destructive confirm; same ink as primary).
- * - icon: a 16px outlined icon before the label. iconOnly hides the label
+ * - variant: primary (default; the one main action on a view), secondary,
+ *   ghost, danger (red; only the last step of a destructive action).
+ * - icon: a 16px outlined icon, before the label or after it (iconPosition).
+ *   iconOnly hides the label
  *   visually; it stays the button's name and shows as a tooltip on hover/focus.
  * - pressed: makes it a toggle button (aria-pressed), e.g. "Show archived".
  * - disabled: uses aria-disabled, so the button stays in the Tab order and
@@ -15,10 +16,12 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
  * Plain HTML still works: <button class="btn btn--primary">.
  */
 interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'> {
-    kind?: 'primary' | 'secondary' | 'ghost' | 'danger';
+    variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
     size?: 'sm' | 'md' | 'lg';
-    /** Icon before the label, usually an inline SVG drawn with currentColor */
+    /** An icon, usually an inline SVG drawn with currentColor */
     icon?: ReactNode;
+    /** Where the icon sits: 'start' (left, default) or 'end' (right) */
+    iconPosition?: 'start' | 'end';
     /** Show only the icon; the label is still its name, and shows as a tooltip */
     iconOnly?: boolean;
     /** A toggle button: true when on, false when off. Leave out for ordinary buttons. */
@@ -30,5 +33,5 @@ interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'dis
     /** The label */
     children: ReactNode;
 }
-export declare function Button({ kind, size, icon, iconOnly, pressed, disabled, disabledReason, children, className, type, onClick, ...rest }: ButtonProps): import("react").JSX.Element;
+export declare function Button({ variant, size, icon, iconPosition, iconOnly, pressed, disabled, disabledReason, children, className, type, onClick, ...rest }: ButtonProps): import("react").JSX.Element;
 export {};

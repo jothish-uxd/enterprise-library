@@ -21,8 +21,9 @@ Foundations, components and patterns for Sleepy's apps. Geist, monochrome ink on
 | `--error`, `--error-bg` | #b42318, #fdecea | #ff8f85, #3b1513 | Error messages |
 | `--warning`, `--warning-bg` | #8a5a00, #fdf3d7 | #f2c14e, #352a0e | Warning messages |
 | `--success`, `--success-bg` | #157032, #e6f4ea | #6fd28c, #11301c | Success messages |
+| `--danger`, `--on-danger` | #b42318, #ffffff | #ff8f85, #0a0a0a | Danger button fill and its text |
 
-`--ok` is a deprecated alias of `--success`. Message colours appear only in messages and their icons, always beside words.
+`--ok` is a deprecated alias of `--success`. Message colours appear only in messages and their icons, always beside words. The one exception is the danger button: `--danger` (same as `--error`) with `--on-danger` text (white in light mode, near-black in dark).
 
 ### Type
 
@@ -62,13 +63,14 @@ Stylesheets: `styles.css` has everything. Each file also ships under `css/`: `to
 
 ### Buttons (`buttons.css`, `components/Button.tsx`)
 
-`.btn` with a kind (`--primary`, `--secondary`, `--ghost`, `--danger`), a size (`--sm` 30px, default 36px, `--lg` 44px), an optional leading `.btn__icon`, and `--icon` for square icon-only buttons. `aria-pressed="true"` gives a toggle its ink border and wash. `.link-button` (and `--danger`) and `.btn-row`.
+`.btn` with a variant (`--primary`, `--secondary`, `--ghost`, `--danger`), a size (`--sm` 30px, default 36px, `--lg` 44px), an optional leading `.btn__icon`, and `--icon` for square icon-only buttons. `aria-pressed="true"` gives a toggle its ink border and wash. `.link-button` (and `--danger`) and `.btn-row`.
 
 - One primary action per view. Label with a verb and object: “Delete 3 assets”.
-- Danger looks like primary; the verb and trash icon say it’s destructive, never colour. Only on the last step of a confirm.
+- Danger is red (`--danger`): the one button with a colour, only for the last step of a destructive action. The verb and the trash icon say it too, so it never relies on colour alone.
 - Prefer `aria-disabled="true"`, so the button stays focusable and can point at why. Icon-only buttons need `aria-label`.
 - High contrast: ButtonText borders; pressed gets a Highlight border.
-- React: `<Button kind size icon iconOnly pressed disabled disabledReason>` renders the same classes. `iconOnly` keeps the label as the name and shows it as a tooltip; `disabled` uses `aria-disabled` (stays focusable, clicks do nothing) and `disabledReason` shows in a tooltip on hover and focus and is read as the description. `span.btn__icon` wraps the icon so any SVG fits.
+- Icons sit before the label, or after it with `.btn__icon--end` (`iconPosition="end"`), e.g. a download icon after “Export”.
+- React: `<Button variant size icon iconPosition iconOnly pressed disabled disabledReason>` renders the same classes; `variant` defaults to primary. `iconOnly` keeps the label as the name and shows it as a tooltip; `disabled` uses `aria-disabled` (stays focusable, clicks do nothing) and `disabledReason` shows in a tooltip on hover and focus and is read as the description. `span.btn__icon` wraps the icon so any SVG fits.
 
 ### Forms (`forms.css`, `select.css`, `components/Select.tsx`, `components/MultiSelect.tsx`)
 

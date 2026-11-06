@@ -26,6 +26,9 @@
   --success: #157032;
   --success-bg: #e6f4ea;
   --ok: var(--success);   /* deprecated alias, kept for 0.1 apps */
+  /* Danger buttons: the one place colour appears outside a message. */
+  --danger: var(--error);
+  --on-danger: #ffffff;
 
   /* Shadows: overlays only. Flat surfaces use rules, not shadows. */
   --shadow-frame: 0 1px 2px rgba(0, 0, 0, .04), 0 12px 32px -12px rgba(0, 0, 0, .12);
@@ -106,6 +109,7 @@
     --warning-bg: #352a0e;
     --success: #6fd28c;
     --success-bg: #11301c;
+    --on-danger: #0a0a0a;
     --shadow-frame: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 32px -12px rgba(0, 0, 0, .7);
     --shadow-popover: 0 12px 32px -8px rgba(0, 0, 0, .7), 0 2px 6px rgba(0, 0, 0, .5);
     --shadow-overlay: 0 16px 40px -12px rgba(0, 0, 0, .8), 0 2px 6px rgba(0, 0, 0, .5);
@@ -130,6 +134,7 @@
   --warning-bg: #352a0e;
   --success: #6fd28c;
   --success-bg: #11301c;
+  --on-danger: #0a0a0a;
   --shadow-frame: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 32px -12px rgba(0, 0, 0, .7);
   --shadow-popover: 0 12px 32px -8px rgba(0, 0, 0, .7), 0 2px 6px rgba(0, 0, 0, .5);
   --shadow-overlay: 0 16px 40px -12px rgba(0, 0, 0, .8), 0 2px 6px rgba(0, 0, 0, .5);

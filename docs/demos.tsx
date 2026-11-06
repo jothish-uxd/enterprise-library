@@ -406,18 +406,19 @@ const BTN_ICONS: Record<string, { name: string; node: ReactNode }> = {
 };
 function ButtonDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
-    label: 'Add module', kind: 'secondary', size: 'md', icon: 'plus', iconOnly: false, toggle: false,
+    label: 'Add module', variant: 'primary', size: 'md', icon: 'plus', iconPos: 'start', toggle: false,
     disabled: false, disabledReason: 'Add an item to this module first.',
   });
   const [on, setOn] = useState(false);
   const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
   const icon = v.icon !== 'none' ? BTN_ICONS[String(v.icon)] : null;
-  const iconOnly = !!v.iconOnly && !!icon;
+  const iconOnly = v.iconPos === 'only' && !!icon;
   const label = String(v.label) || 'Untitled';
   const attrs: PgCodeLine[] = [
-    ...(v.kind !== 'secondary' ? [{ attr: 'kind', value: String(v.kind) }] : []),
+    ...(v.variant !== 'primary' ? [{ attr: 'variant', value: String(v.variant) }] : []),
     ...(v.size !== 'md' ? [{ attr: 'size', value: String(v.size) }] : []),
     ...(icon ? [{ attr: 'icon', value: `<${icon.name} />`, expr: true }] : []),
+    ...(icon && v.iconPos === 'end' ? [{ attr: 'iconPosition', value: 'end' }] : []),
     ...(iconOnly ? [{ attr: 'iconOnly', value: true as const }] : []),
     ...(v.toggle ? [{ attr: 'pressed', value: 'isOn', expr: true }, { attr: 'onClick', value: '() => setIsOn(!isOn)', expr: true }] : []),
     ...(v.disabled ? [{ attr: 'disabled', value: true as const }] : []),
@@ -435,19 +436,20 @@ function ButtonDemo() {
       codeChildren={[label]}
       controls={[
         { kind: 'text', key: 'label', label: 'Label' },
-        { kind: 'select', key: 'kind', label: 'Kind', options: [{ value: 'primary', label: 'Primary' }, { value: 'secondary', label: 'Secondary' }, { value: 'ghost', label: 'Ghost' }, { value: 'danger', label: 'Danger' }] },
+        { kind: 'select', key: 'variant', label: 'Variant', options: [{ value: 'primary', label: 'Primary' }, { value: 'secondary', label: 'Secondary' }, { value: 'ghost', label: 'Ghost' }, { value: 'danger', label: 'Danger' }] },
         { kind: 'select', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }, { value: 'lg', label: 'Large' }] },
         { kind: 'select', key: 'icon', label: 'Icon', options: [{ value: 'none', label: 'None' }, { value: 'plus', label: 'Plus' }, { value: 'trash', label: 'Trash' }, { value: 'download', label: 'Download' }] },
-        { kind: 'boolean', key: 'iconOnly', label: 'Icon only', help: 'Needs an icon. The label becomes its name and tooltip.' },
+        { kind: 'segmented', key: 'iconPos', label: 'Icon position', options: [{ value: 'start', label: 'Left' }, { value: 'end', label: 'Right' }, { value: 'only', label: 'Icon only' }] },
         { kind: 'boolean', key: 'toggle', label: 'Toggle button', help: 'Press it to turn it on and off (aria-pressed).' },
         { kind: 'boolean', key: 'disabled', label: 'Disabled' },
         { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in a tooltip when Disabled is on.' },
       ]}
       preview={
         <Button
-          kind={v.kind as 'primary' | 'secondary' | 'ghost' | 'danger'}
+          variant={v.variant as 'primary' | 'secondary' | 'ghost' | 'danger'}
           size={v.size as 'sm' | 'md' | 'lg'}
           icon={icon?.node}
+          iconPosition={v.iconPos === 'end' ? 'end' : 'start'}
           iconOnly={iconOnly}
           pressed={v.toggle ? on : undefined}
           onClick={() => { if (v.toggle) setOn(!on); }}
