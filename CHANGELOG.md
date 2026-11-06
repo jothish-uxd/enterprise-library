@@ -27,7 +27,7 @@ The design system moves into Enterprise Library: one repo for foundations, compo
 - Segmented control (`.segmented`, `SegmentedControl`): choose one of a few options in a tray; a radio group, with counts, icon-only, small and full-width versions. From Online Assessments' asset and module filters and grid/list switch.
 - Chips (`.chip`, `ChipGroup`): pill toggle buttons that filter, single- or multi-select (with a check when on). The docs page's own chips now use them.
 - Docs: Segmented control, Chips and StatFilter form a "Filters and views" group, each page with the same guide to choosing between them. New token `--space-0-5` (2px), for the segmented tray.
-- Tiles: a grid of links into other pages, tiled (shared hairlines) or as cards; `Tiles` and `Tile`. The docs' Patterns, Components and Foundations index pages use it.
+- Tiles: a grid of links into other pages, joined (no gap, shared hairlines) or separate (a gap, each tile its own box); `Tiles` and `Tile`. `layout="tiled"`/`"cards"` and `.tiles--cards` still work as the old names. Docs: the Tiles page is a playground; playground previews scroll inside their 420px when the component is taller. The docs' Patterns, Components and Foundations index pages use it.
 - Fields: `aria-invalid` styling. Stylesheets split into `base`, `type`, `forms`, `buttons`, `table` and `card`.
 
 ## 0.1.0 — 2026-11-04

@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Checkbox, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
+  BrowserFrame, Button, Checkbox, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -375,6 +375,72 @@ function SegmentedDemo() {
           size={v.size as 'sm' | 'md'}
           fill={!!v.fill}
         />
+      }
+    />
+  );
+}
+
+/* ---------- Tiles playground ---------- */
+const TILE_SAMPLES = [
+  { href: '#bulk-actions', title: 'Bulk actions', tag: 'Live', strong: true, desc: 'Select many, act once, undo.', sketch: 'BulkActionsSketch',
+    media: <svg viewBox="0 0 180 72" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><rect x="20" y="10" width="140" height="52" rx="4" /><rect x="30" y="20" width="8" height="8" rx="1.5" /><path d="M46 24h70" /><rect x="30" y="34" width="8" height="8" rx="1.5" /><path d="M46 38h56" /><rect x="30" y="48" width="8" height="8" rx="1.5" /><path d="M46 52h64" /><rect x="122" y="18" width="30" height="12" rx="3" /></svg> },
+  { href: '#data-table', title: 'Data table', tag: 'Live', strong: true, desc: 'Sort, select and page through rows.', sketch: 'DataTableSketch',
+    media: <svg viewBox="0 0 180 72" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><rect x="20" y="10" width="140" height="52" rx="4" /><path d="M20 23h140M20 36h140M20 49h140M66 10v52M112 10v52" /></svg> },
+  { href: '#filter-bar', title: 'Filter bar', tag: 'Soon', strong: false, desc: 'Narrow a list without losing your place.', sketch: 'FilterBarSketch',
+    media: <svg viewBox="0 0 180 72" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><rect x="20" y="10" width="34" height="12" rx="6" /><rect x="60" y="10" width="42" height="12" rx="6" /><rect x="108" y="10" width="30" height="12" rx="6" /><path d="M20 36h140M20 48h120M20 60h132" /></svg> },
+  { href: '#pagination', title: 'Pagination', tag: 'Soon', strong: false, desc: 'Move between pages and say where you are.', sketch: 'PaginationSketch',
+    media: <svg viewBox="0 0 180 72" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M20 16h140M20 28h120M20 40h132" /><rect x="44" y="52" width="16" height="14" rx="3" /><rect x="66" y="52" width="16" height="14" rx="3" /><rect x="88" y="52" width="16" height="14" rx="3" /><rect x="110" y="52" width="16" height="14" rx="3" /></svg> },
+];
+function TilesDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    layout: 'joined', media: true, tags: true, descriptions: true, count: '3', columns: '3', minWidth: '140',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const items = TILE_SAMPLES.slice(0, Number(v.count));
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: 'Patterns' },
+    ...(v.layout === 'separate' ? [{ attr: 'layout', value: 'separate' }] : []),
+    ...(v.columns !== '3' ? [{ attr: 'columns', value: String(v.columns), expr: true }] : []),
+    { attr: 'minWidth', value: String(v.minWidth), expr: true },
+  ];
+  const children = items.flatMap((t) => [
+    '<Tile',
+    `  href="${t.href}"`,
+    `  title="${t.title}"`,
+    ...(v.tags ? [`  tag="${t.tag}"${t.strong ? '\n    tagStrong' : ''}`.replace('\n    ', '\n  ')] : []),
+    ...(v.descriptions ? [`  description="${t.desc}"`] : []),
+    ...(v.media ? [`  media={<${t.sketch} />}`] : []),
+    '/>',
+  ].join('\n').split('\n'));
+  return (
+    <Playground
+      name="Tiles"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="Patterns.tsx"
+      tag="Tiles"
+      attrs={attrs}
+      codeChildren={children}
+      controls={[
+        { kind: 'segmented', key: 'layout', label: 'Layout', options: [{ value: 'joined', label: 'Joined' }, { value: 'separate', label: 'Separate' }] },
+        { kind: 'boolean', key: 'media', label: 'Include image', help: 'A decorative picture above the title.' },
+        { kind: 'boolean', key: 'tags', label: 'Tags', help: 'A short mono label beside the title; “Live” in full ink.' },
+        { kind: 'boolean', key: 'descriptions', label: 'Descriptions' },
+        { kind: 'select', key: 'count', label: 'Tiles', options: [{ value: '2', label: '2' }, { value: '3', label: '3' }, { value: '4', label: '4' }] },
+        { kind: 'select', key: 'columns', label: 'Most columns', options: [{ value: '2', label: '2' }, { value: '3', label: '3' }, { value: '4', label: '4' }] },
+        { kind: 'select', key: 'minWidth', label: 'Narrowest column', options: [{ value: '140', label: '140px' }, { value: '220', label: '220px' }, { value: '280', label: '280px' }] },
+      ]}
+      preview={
+        <Tiles label="Patterns" layout={v.layout as 'joined' | 'separate'} columns={Number(v.columns)} minWidth={Number(v.minWidth)}>
+          {items.map((t) => (
+            <Tile key={t.href} href={t.href} title={t.title}
+              tag={v.tags ? t.tag : undefined} tagStrong={t.strong}
+              description={v.descriptions ? t.desc : undefined}
+              media={v.media ? t.media : undefined} />
+          ))}
+        </Tiles>
       }
     />
   );
@@ -1047,6 +1113,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   checkbox: () => <CheckboxDemo />,
   'checkbox-group': () => <CheckboxGroupDemo />,
   input: () => <InputDemo />,
+  tiles: () => <TilesDemo />,
   textarea: () => <TextAreaDemo />,
   radio: () => <RadioDemo />,
   'radio-group': () => <RadioGroupDemo />,

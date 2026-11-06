@@ -528,8 +528,9 @@ th[aria-sort="ascending"] .table__sort-icon, th[aria-sort="descending"] .table__
 /* ---- tiles.css ---- */
 /* Tiles: a grid of links into other pages, such as a section's index.
    Two layouts:
-   - .tiles          tiled: cells share 1px hairlines, square corners, no gaps
-   - .tiles--cards   cards: separate bordered boxes with a gap and rounded corners
+   - .tiles             joined: no gap; tiles share 1px hairlines with square corners
+   - .tiles--separate   separate: a gap; each tile has its own border and rounded corners
+   (.tiles--cards is the old name for .tiles--separate and still works)
    Each .tile is one link (.tile__link) holding an optional picture (.tile__media),
    a title with an optional tag (.tile__head, .tile__title, .tile__tag) and a description (.tile__desc).
    Columns: as many as fit at --tiles-min wide, never more than --tiles-columns. */
@@ -564,23 +565,23 @@ a.tile__link:hover { background: var(--bg-subtle); }
 .tile__tag--strong { color: var(--ink); }
 .tile__desc { font-size: var(--text-small); line-height: 1.5; color: var(--ink-soft); }
 
-/* ---------- Cards layout ---------- */
-.tiles--cards { --tiles-gap: var(--space-4); --tiles-min: 240px; border: 0; }
-.tiles--cards .tile { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--bg); overflow: hidden; }
-.tiles--cards .tile__link { padding: var(--space-5); }
-.tiles--cards .tile:has(a.tile__link:hover) { border-color: var(--rule-strong); }
-.tiles--cards .tile__link:focus-visible { border-radius: var(--radius-lg); }
+/* ---------- Separate layout (.tiles--cards is its old name) ---------- */
+:is(.tiles--separate, .tiles--cards) { --tiles-gap: var(--space-4); --tiles-min: 240px; border: 0; }
+:is(.tiles--separate, .tiles--cards) .tile { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--bg); overflow: hidden; }
+:is(.tiles--separate, .tiles--cards) .tile__link { padding: var(--space-5); }
+:is(.tiles--separate, .tiles--cards) .tile:has(a.tile__link:hover) { border-color: var(--rule-strong); }
+:is(.tiles--separate, .tiles--cards) .tile__link:focus-visible { border-radius: var(--radius-lg); }
 
 /* Two columns at most, for short lists or narrow areas. */
 .tiles--two { --tiles-columns: 2; }
 
 @media (forced-colors: active) {
-  .tiles, .tile, .tiles--cards .tile { border-color: CanvasText; }
+  .tiles, .tile, :is(.tiles--separate, .tiles--cards) .tile { border-color: CanvasText; }
   a.tile__link:hover { outline: 1px solid LinkText; outline-offset: -3px; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .tile__link { transition: background-color .12s ease; }
-  .tiles--cards .tile { transition: border-color .12s ease; }
+  :is(.tiles--separate, .tiles--cards) .tile { transition: border-color .12s ease; }
 }
 
 /* ---- segmented.css ---- */

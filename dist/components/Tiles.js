@@ -1,11 +1,12 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-export function Tiles({ layout = 'tiled', columns, minWidth, label, id, className = '', children }) {
+export function Tiles({ layout = 'joined', columns, minWidth, label, id, className = '', children }) {
     const style = {};
     if (columns)
         style['--tiles-columns'] = String(columns);
     if (minWidth)
         style['--tiles-min'] = `${minWidth}px`;
-    const cls = ['tiles', layout === 'cards' && 'tiles--cards', className].filter(Boolean).join(' ');
+    const separate = layout === 'separate' || layout === 'cards';
+    const cls = ['tiles', separate && 'tiles--separate', className].filter(Boolean).join(' ');
     return _jsx("ul", { className: cls, id: id, "aria-label": label, style: style, children: children });
 }
 export function Tile({ title, description, tag, tagStrong, media, href, as: Link = 'a', hidden, linkProps, className = '' }) {

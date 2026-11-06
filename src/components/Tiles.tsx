@@ -6,10 +6,13 @@ import type { ElementType, ReactNode } from 'react';
  * the classes directly when that's simpler.
  *
  * Two layouts:
- * - 'tiled' (default): cells share 1px hairlines with square corners, like a
- *   table. Best for many items and for items with a picture.
- * - 'cards': separate bordered boxes with a gap and rounded corners. Best for
- *   a handful of items, or next to Card content.
+ * - 'joined' (default): no gap. Tiles share 1px hairlines with square corners
+ *   and read as one index, like a table of contents. Best for many short items
+ *   people scan.
+ * - 'separate': a gap between tiles; each has its own border and rounded
+ *   corners and reads as its own object. Best for a handful of richer items,
+ *   especially with pictures.
+ * 'tiled' and 'cards' still work as old names for 'joined' and 'separate'.
  *
  * Design-system rules
  * - Each tile is one link: the whole tile is the target, and its title is the
@@ -19,11 +22,12 @@ import type { ElementType, ReactNode } from 'react';
  *   the meaning.
  */
 
-interface TilesProps {
-  layout?: 'tiled' | 'cards';
+export interface TilesProps {
+  /** 'joined' (default, no gap) or 'separate' (a gap, each tile its own box). 'tiled' and 'cards' are old names. */
+  layout?: 'joined' | 'separate' | 'tiled' | 'cards';
   /** Most columns to show (default 3); fewer appear when the space is narrow */
   columns?: number;
-  /** Narrowest a column may get before the grid drops a column (default 220px tiled, 240px cards) */
+  /** Narrowest a column may get before the grid drops a column (default 220px joined, 240px separate) */
   minWidth?: number;
   /** Name for the list, when the heading above it doesn't already say what it is */
   label?: string;
@@ -32,15 +36,16 @@ interface TilesProps {
   children: ReactNode;
 }
 
-export function Tiles({ layout = 'tiled', columns, minWidth, label, id, className = '', children }: TilesProps) {
+export function Tiles({ layout = 'joined', columns, minWidth, label, id, className = '', children }: TilesProps) {
   const style: Record<string, string> = {};
   if (columns) style['--tiles-columns'] = String(columns);
   if (minWidth) style['--tiles-min'] = `${minWidth}px`;
-  const cls = ['tiles', layout === 'cards' && 'tiles--cards', className].filter(Boolean).join(' ');
+  const separate = layout === 'separate' || layout === 'cards';
+  const cls = ['tiles', separate && 'tiles--separate', className].filter(Boolean).join(' ');
   return <ul className={cls} id={id} aria-label={label} style={style}>{children}</ul>;
 }
 
-interface TileProps {
+export interface TileProps {
   title: ReactNode;
   description?: ReactNode;
   /** Short mono label at the right of the title, e.g. "Live", "React" */

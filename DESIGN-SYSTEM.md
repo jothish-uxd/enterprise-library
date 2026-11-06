@@ -135,10 +135,12 @@ All three narrow or switch what's shown below them. Pick by how many options the
 
 A grid of links into other pages: a section's index, a gallery of patterns or templates. Two layouts:
 
-- **Tiled** (`.tiles`, default): cells share 1px hairlines with square corners and no gaps, like a table. For many items, and items with a picture.
-- **Cards** (`.tiles--cards`): separate boxes with 12px corners, 16px apart. For a handful of items, a section index, or next to Card content.
+- **Joined** (`.tiles`, default, `layout="joined"`): no gap. Tiles share 1px hairlines with square corners and read as one index, like a table of contents. For many short items people scan.
+- **Separate** (`.tiles--separate`, `layout="separate"`): a 16px gap; each tile has its own border and 12px corners and reads as its own object. For a handful of richer items, especially with pictures.
 
-Each `.tile` holds one `.tile__link`: an optional `.tile__media` picture (72px, `aria-hidden`), a `.tile__head` with `.tile__title` and a mono `.tile__tag` (`--strong` for full ink), and a `.tile__desc`. Columns: as many as fit at `--tiles-min` (220px tiled, 240px cards), never more than `--tiles-columns` (3; `.tiles--two` caps at 2). React: `<Tiles layout columns minWidth label>` with `<Tile title description tag tagStrong media href | as + linkProps hidden>`.
+The old names still work: `layout="tiled"` / `"cards"` and the `.tiles--cards` class. Not a bento grid: every tile is the same size, so reading order follows the rows and nothing breaks on a phone. A separate tile looks like a Card but is still a link; content people compare or act on is a Card.
+
+Each `.tile` holds one `.tile__link`: an optional `.tile__media` picture (72px, `aria-hidden`), a `.tile__head` with `.tile__title` and a mono `.tile__tag` (`--strong` for full ink), and a `.tile__desc`. Columns: as many as fit at `--tiles-min` (220px joined, 240px separate), never more than `--tiles-columns` (3; `.tiles--two` caps at 2). React: `<Tiles layout columns minWidth label>` with `<Tile title description tag tagStrong media href | as + linkProps hidden>`.
 
 - Tiles are navigation; content people compare, choose or act on is a Card.
 - The whole tile is one link and its title is read first. Never a second control in a tile.
