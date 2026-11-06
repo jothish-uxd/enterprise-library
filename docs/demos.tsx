@@ -425,7 +425,7 @@ function SwitchDemo() {
   return (
     <Playground
       name="Switch"
-      compact={500}
+      compact
       values={v}
       set={set}
       file="Settings.tsx"
