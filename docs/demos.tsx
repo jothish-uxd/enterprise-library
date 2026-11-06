@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Checkbox, CheckboxGroup, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
+  BrowserFrame, Button, Checkbox, CheckboxGroup, Input, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -518,6 +518,82 @@ function CheckboxDemo() {
   );
 }
 
+/* ---------- Input playground ---------- */
+const SearchIcon = () => <svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5" /><path d="m10.5 10.5 3 3" /></svg>;
+const INPUT_TYPES: Record<string, { attrs: PgCodeLine[]; props: Record<string, string> }> = {
+  text: { attrs: [], props: {} },
+  email: { attrs: [{ attr: 'type', value: 'email' }, { attr: 'autoComplete', value: 'email' }], props: { type: 'email', autoComplete: 'email' } },
+  search: { attrs: [{ attr: 'type', value: 'search' }], props: { type: 'search' } },
+  numeric: { attrs: [{ attr: 'inputMode', value: 'numeric' }], props: { inputMode: 'numeric' } },
+};
+function InputDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Work email', placeholder: 'name@company.com', help: 'We’ll send the results here.', type: 'email',
+    optional: false, icon: false, error: false, errorMessage: 'Enter an email address, such as name@company.com.',
+    readOnly: false, disabled: false, disabledReason: 'Set by your organisation’s single sign-on.',
+  });
+  const [text, setText] = useState('');
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const name = camel(String(v.label)) || 'value';
+  const setter = `set${name[0].toUpperCase()}${name.slice(1)}`;
+  const t = INPUT_TYPES[String(v.type)] ?? INPUT_TYPES.text;
+  const showError = !!v.error && !!v.errorMessage;
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) },
+    ...t.attrs,
+    ...(v.placeholder ? [{ attr: 'placeholder', value: String(v.placeholder) }] : []),
+    ...(v.help && !showError ? [{ attr: 'help', value: String(v.help) }] : []),
+    ...(v.optional ? [{ attr: 'optional', value: true as const }] : []),
+    ...(v.icon ? [{ attr: 'icon', value: '<SearchIcon />', expr: true }] : []),
+    ...(showError ? [{ attr: 'error', value: String(v.errorMessage) }] : []),
+    ...(v.readOnly ? [{ attr: 'readOnly', value: true as const }] : []),
+    ...(v.disabled ? [{ attr: 'disabled', value: true as const }] : []),
+    ...(v.disabled && v.disabledReason ? [{ attr: 'disabledReason', value: String(v.disabledReason) }] : []),
+    { attr: 'value', value: name, expr: true },
+    { attr: 'onChange', value: `(e) => ${setter}(e.target.value)`, expr: true },
+  ];
+  return (
+    <Playground
+      name="Input"
+      compact
+      values={v}
+      set={set}
+      file="Form.tsx"
+      tag="Input"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label' },
+        { kind: 'select', key: 'type', label: 'Type', options: [{ value: 'text', label: 'Text' }, { value: 'email', label: 'Email' }, { value: 'search', label: 'Search' }, { value: 'numeric', label: 'Numeric' }] },
+        { kind: 'text', key: 'placeholder', label: 'Placeholder', help: 'An example, never the only label. Leave empty for none.' },
+        { kind: 'text', key: 'help', label: 'Help text', help: 'Leave empty for none.' },
+        { kind: 'boolean', key: 'optional', label: 'Optional', help: 'Adds “(optional)” to the label.' },
+        { kind: 'boolean', key: 'icon', label: 'Search icon' },
+        { kind: 'boolean', key: 'error', label: 'Error' },
+        { kind: 'text', key: 'errorMessage', label: 'Error message', help: 'Replaces the help text when Error is on. Say how to fix it.' },
+        { kind: 'boolean', key: 'readOnly', label: 'Read only', help: 'Can be selected and copied, not changed.' },
+        { kind: 'boolean', key: 'disabled', label: 'Disabled' },
+        { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in a tooltip when Disabled is on.' },
+      ]}
+      preview={
+        <Input
+          label={String(v.label) || 'Untitled'}
+          {...t.props}
+          placeholder={v.placeholder ? String(v.placeholder) : undefined}
+          help={v.help ? String(v.help) : undefined}
+          optional={!!v.optional}
+          icon={v.icon ? <SearchIcon /> : undefined}
+          error={showError ? String(v.errorMessage) : undefined}
+          readOnly={!!v.readOnly}
+          disabled={!!v.disabled}
+          disabledReason={v.disabled && v.disabledReason ? String(v.disabledReason) : undefined}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+      }
+    />
+  );
+}
+
 /* ---------- CheckboxGroup playground ---------- */
 function CheckboxGroupDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
@@ -653,6 +729,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   button: () => <ButtonDemo />,
   checkbox: () => <CheckboxDemo />,
   'checkbox-group': () => <CheckboxGroupDemo />,
+  input: () => <InputDemo />,
 };
 
 document.querySelectorAll<HTMLElement>('[data-react]').forEach((el) => {

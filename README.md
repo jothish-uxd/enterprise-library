@@ -12,7 +12,7 @@ npm install github:jothish-uxd/enterprise-library#v0.2.0
 
 ```tsx
 import '@jothish-uxd/enterprise-library/styles.css';
-import { Select, StatFilter, Card, ChoiceCard, SortHeader } from '@jothish-uxd/enterprise-library';
+import { Input, Select, StatFilter, Card, ChoiceCard, SortHeader } from '@jothish-uxd/enterprise-library';
 ```
 
 Load Geist and Geist Mono in the app (see Getting started on the docs page).

@@ -10,6 +10,7 @@ The design system moves into Enterprise Library: one repo for foundations, compo
 - Buttons: `--ghost`, `--danger`, `--lg`, `--icon`, `.btn__icon`, the pressed state, `.btn-row`, `.link-button--danger`, forced-colors borders.
 - Table: `--selectable`, `--hover`, `--sticky`, `.center`, and `SortHeader`, `TableCheck`, `TableEmpty`.
 - Card: `.card` with header, body, footer and stats; `Card` and `ChoiceCard`.
+- Input component (`Input`): label, help, "(optional)", a decorative leading icon, an error that replaces the help, read only, and disabled with a reason (`aria-disabled`, still focusable, as on Checkbox and Button); other input attributes pass through. Docs: the Input page is a playground.
 - CheckboxGroup component: legend, options, vertical or horizontal, an optional "select all" with the mixed state, help and error. Docs: the Checkbox group page is one playground.
 - Checkbox component (`Checkbox`): label, description, mixed state, an error message under the label (`error`), and disabled with a reason, as on Button and Switch. Docs: the Checkbox page is a playground.
 - Danger buttons are red: new `--danger` and `--on-danger` tokens, the one place colour appears outside a message.

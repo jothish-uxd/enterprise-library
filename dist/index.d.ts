@@ -13,6 +13,8 @@ export { Tooltip, HoverCard, useTooltip } from './components/Tooltip';
 export { Switch } from './components/Switch';
 export { Button } from './components/Button';
 export { Checkbox } from './components/Checkbox';
+export { Input } from './components/Input';
+export type { InputProps } from './components/Input';
 export { CheckboxGroup } from './components/CheckboxGroup';
 export type { CheckboxGroupOption } from './components/CheckboxGroup';
 export { default as StatFilter } from './components/StatFilter';
