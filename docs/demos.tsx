@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, ChipGroup, ChoiceCard, HoverCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, TableCheck, TableEmpty,
+  BrowserFrame, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, TableCheck, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -142,18 +142,39 @@ function StatFilterDemo() {
   );
 }
 
-/* ---------- HoverCard ---------- */
-function HoverCardDemo() {
+/* ---------- Tooltip ---------- */
+const FlagIcon = () => <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 14V2.5h8l-1.5 3 1.5 3h-8" fill="currentColor" /></svg>;
+const InfoIcon = () => <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6.2" /><path d="M8 7.2v3.8M8 5h.01" /></svg>;
+function TooltipHoverDemo() {
   return (
-    <p className="t-body-sm">Hover or focus the flag:&nbsp;
-      <HoverCard label="2 policy matches, 1 open" card={<>
-        <p className="card-title">Policy matches</p>
-        <dl className="card-dl"><div><dt>Insider trading</dt><dd>Open</dd></div><div><dt>Gifts and entertainment</dt><dd>Closed</dd></div></dl>
-        <p className="card-note">From the nightly scan.</p>
-      </>}>
-        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3.5 14V2.5h8l-1.5 3 1.5 3h-8" fill="currentColor" /></svg> 2
-      </HoverCard>
-    </p>
+    <div className="lib-row">
+      <p className="t-body-sm">Message from San Hill, flagged&nbsp;
+        <Tooltip label="2 policy matches, 1 open" content={<>
+          <p className="tooltip__title">Policy matches</p>
+          <dl className="tooltip__dl"><div><dt>Bribery</dt><dd>Open</dd></div><div><dt>Gifts and entertainment</dt><dd>Cleared</dd></div></dl>
+          <p className="tooltip__note">From the nightly scan.</p>
+        </>}>
+          <FlagIcon /> 2
+        </Tooltip>
+      </p>
+    </div>
+  );
+}
+function TooltipClickDemo() {
+  return (
+    <div className="lib-row">
+      <span className="field__label" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+        Proctoring
+        <Tooltip trigger="click" label="About proctoring" className="tooltip-trigger--info" content={<>
+          <p className="tooltip__title">Proctoring</p>
+          <p>A webcam check at the start and end of the assessment. Candidates are told before they begin.</p>
+          <p className="tooltip__links"><a href="#radio-group">Proctoring options</a><a href="#compliance">Data retention</a></p>
+        </>}>
+          <InfoIcon />
+        </Tooltip>
+      </span>
+      <button type="button" className="btn btn--secondary btn--sm">Next thing in the Tab order</button>
+    </div>
   );
 }
 
@@ -280,7 +301,8 @@ const DEMOS: Record<string, () => ReactNode> = {
   table: () => <TableDemo />,
   choicecard: () => <ChoiceDemo />,
   statfilter: () => <StatFilterDemo />,
-  hovercard: () => <HoverCardDemo />,
+  'tooltip-hover': () => <TooltipHoverDemo />,
+  'tooltip-click': () => <TooltipClickDemo />,
   browserframe: () => <FrameApp />,
   resetbutton: () => <ResetDemo />,
   segmented: () => <SegmentedDemo />,

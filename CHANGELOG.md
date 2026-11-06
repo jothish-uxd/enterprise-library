@@ -10,6 +10,7 @@ The design system moves into Enterprise Library: one repo for foundations, compo
 - Buttons: `--ghost`, `--danger`, `--lg`, `--icon`, `.btn__icon`, the pressed state, `.btn-row`, `.link-button--danger`, forced-colors borders.
 - Table: `--selectable`, `--hover`, `--sticky`, `.center`, and `SortHeader`, `TableCheck`, `TableEmpty`.
 - Card: `.card` with header, body, footer and stats; `Card` and `ChoiceCard`.
+- Tooltip replaces HoverCard: `trigger="hover"` (text only, as before) or `trigger="click"` (a native popover that can hold links; Tab reaches them, Escape returns to the button). `tooltip.css` replaces `hover-card.css`; `HoverCard` and the old class names still work as deprecated aliases.
 - Forms: "Fields" becomes Forms, an accordion in the docs with a page each for Input, Text area, Select, Checkbox, Checkbox group, Radio button and Radio group. New `MultiSelect` (Select's look and keyboard, for several options). New classes: `.field__optional`, `.field__control` and `.field__icon`, `.field__foot` and `.field__counter`, `.field-error`, `.checks--stack`, `.checks--nested`, `.check--desc` with `.check__label` and `.check__desc`; read-only and disabled field states.
 - Segmented control (`.segmented`, `SegmentedControl`): choose one of a few options in a tray; a radio group, with counts, icon-only, small and full-width versions. From Online Assessments' asset and module filters and grid/list switch.
 - Chips (`.chip`, `ChipGroup`): pill toggle buttons that filter, single- or multi-select (with a check when on). The docs page's own chips now use them.

@@ -231,33 +231,24 @@ An icon button for the BrowserFrame bar (`end` slot) that clears saved changes a
 
 Rules: the confirm is a small `alertdialog` under the button; focus starts on **Cancel**; Escape or a click outside closes it and returns focus to the button; the result is announced in a polite live region. Say what is cleared and what is kept.
 
-### HoverCard
+### Tooltip (`tooltip.css`, `components/Tooltip.tsx`)
 
-`src/components/HoverCard.tsx` and `src/styles/hover-card.css` (with `.card-title`, `.card-dl` and `.card-note` for card content).
+Extra detail beside something on the page, in two versions:
 
-Details that appear on hover or keyboard focus. First used in Cipher Lab's Vault: the policy matches and AI predictions on a message row.
+| | On hover (`trigger="hover"`, default) | On click (`trigger="click"`) |
+| --- | --- | --- |
+| Opens | Hover, or keyboard focus | Pressing the button |
+| Closes | Pointer or focus leaves; Escape | The button again, Escape, or clicking outside |
+| Holds | Text only, never links or buttons | Text, links and buttons |
+| Built as | A button described by `role="tooltip"` | A disclosure button (`aria-expanded`) and a native popover |
 
-```tsx
-import { HoverCard } from '@jothish-uxd/enterprise-library';
-
-<HoverCard label="3 policy matches, 2 open" card={<PolicyMatchesCard m={m} r={r} />}>
-  <FlagIcon filled /> 2
-</HoverCard>
-```
-
-| Prop | What it does |
-| --- | --- |
-| `label` | Accessible name of the trigger button |
-| `card` | Card content, text only |
-| `children` | What the trigger shows |
-| `onClick` | Optional click handler on the trigger |
-
-Rules (WCAG 1.4.13, content on hover or focus):
-
-- **The trigger is a real button** with its own name. The card is linked with `aria-describedby`, so screen readers hear it on focus.
-- **Hoverable, dismissable, persistent.** The pointer can move onto the card; Escape closes it; it stays until pointer or focus leaves. Scrolling closes it.
-- **Text only.** Never put links or buttons in a card. Actions go in the page.
-- **Never clipped.** It renders at the end of `<body>`, positions against the trigger and flips above when there's no room below. The arrow follows the trigger.
+- The trigger is a real button with its own name: an icon-only trigger names what it explains ("About proctoring", not "Info").
+- Hover: hoverable, dismissable, persistent (WCAG 1.4.13). It closes when focus moves, so a link in it could never be reached by keyboard or screen reader: if there's a link, use the click version.
+- Click: Tab goes from the open button straight into its links, then on through the page; Escape closes it and returns focus to the button.
+- Both render above everything (no clipping in scrolling areas) and flip above the trigger when there's no room below.
+- Keep it short. Nothing people need to finish the task should live only in a tooltip.
+- Content: `.tooltip__title` (`--rule`), `.tooltip__dl`, `.tooltip__note`, and for click `.tooltip__links`. Trigger: `.tooltip-trigger`, `--info` for a quiet info icon.
+- `HoverCard` (with `card`) and the `.hovercard`, `.card-title`, `.card-dl`, `.card-note` classes are deprecated aliases kept for 0.1 apps.
 
 ### StatFilter
 

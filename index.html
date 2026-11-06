@@ -20,7 +20,7 @@
   @import url("dist/css/browser-frame.css") layer(lib);
   @import url("dist/css/select.css") layer(lib);
   @import url("dist/css/reset.css") layer(lib);
-  @import url("dist/css/hover-card.css") layer(lib);
+  @import url("dist/css/tooltip.css") layer(lib);
   @import url("dist/css/stat-filter.css") layer(lib);
 </style>
 <style>
@@ -1029,12 +1029,12 @@
             <li><a class="nav-link" href="#textarea">Text area</a></li>
           </ul>
         </li>
-        <li><a class="nav-link" href="#hovercard">HoverCard</a></li>
         <li><a class="nav-link" href="#resetbutton">ResetButton</a></li>
         <li><a class="nav-link" href="#segmented">Segmented control</a></li>
         <li><a class="nav-link" href="#statfilter">StatFilter</a></li>
         <li><a class="nav-link" href="#table">Table</a></li>
         <li><a class="nav-link" href="#tiles">Tiles</a></li>
+        <li><a class="nav-link" href="#tooltip">Tooltip</a></li>
       </ul>
     </div>
     <div class="nav-group" data-section="patterns">
@@ -1382,7 +1382,7 @@ export function AccessRequests({ rows, onUpdate }) {
   </section>
   <section class="doc-section" id="rs-shadow" aria-labelledby="h-rs-shadow">
     <h2 id="h-rs-shadow">Shadow</h2>
-      <div class="lib lib-demo"><div class="lib-swatches"><div class="lib-swatch"><span class="lib-swatch__box lib-swatch__box--shadow" style="box-shadow:var(--shadow-frame)" aria-hidden="true"></span><code>--shadow-frame</code><span class="t-small muted">BrowserFrame</span></div><div class="lib-swatch"><span class="lib-swatch__box lib-swatch__box--shadow" style="box-shadow:var(--shadow-popover)" aria-hidden="true"></span><code>--shadow-popover</code><span class="t-small muted">Select list, confirms, menus</span></div><div class="lib-swatch"><span class="lib-swatch__box lib-swatch__box--shadow" style="box-shadow:var(--shadow-overlay)" aria-hidden="true"></span><code>--shadow-overlay</code><span class="t-small muted">HoverCard, dialogs</span></div></div></div>
+      <div class="lib lib-demo"><div class="lib-swatches"><div class="lib-swatch"><span class="lib-swatch__box lib-swatch__box--shadow" style="box-shadow:var(--shadow-frame)" aria-hidden="true"></span><code>--shadow-frame</code><span class="t-small muted">BrowserFrame</span></div><div class="lib-swatch"><span class="lib-swatch__box lib-swatch__box--shadow" style="box-shadow:var(--shadow-popover)" aria-hidden="true"></span><code>--shadow-popover</code><span class="t-small muted">Select list, confirms, menus</span></div><div class="lib-swatch"><span class="lib-swatch__box lib-swatch__box--shadow" style="box-shadow:var(--shadow-overlay)" aria-hidden="true"></span><code>--shadow-overlay</code><span class="t-small muted">Tooltip, dialogs</span></div></div></div>
 <p class="note">Dark mode deepens each shadow so it still reads on black.</p>
   </section>
   <section class="doc-section" id="rs-height" aria-labelledby="h-rs-height">
@@ -1400,7 +1400,7 @@ export function AccessRequests({ rows, onUpdate }) {
   <p class="page-lede">Single controls and surfaces. Each one is a real HTML element first, follows the ARIA Authoring Practices where it needs ARIA, and documents its keys and what a screen reader hears.</p>
   <div class="chips lib-filter" role="group" aria-label="Filter components by group"><button class="chip" type="button" aria-pressed="true" data-group="">All <span class="count">11</span></button><button class="chip" type="button" aria-pressed="false" data-group="Actions and inputs">Actions and inputs <span class="count">2</span></button><button class="chip" type="button" aria-pressed="false" data-group="Data and surfaces">Data and surfaces <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Filters and views">Filters and views <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Navigation">Navigation <span class="count">1</span></button><button class="chip" type="button" aria-pressed="false" data-group="Presenting apps">Presenting apps <span class="count">2</span></button></div>
   <p class="sr-only" id="cmp-filter-status" role="status" aria-live="polite"></p>
-  <ul class="lib tiles tiles--cards lib-index" id="cmp-cards"><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#browserframe"><span class="tile__head"><span class="tile__title">BrowserFrame</span><span class="tile__tag">React</span></span><span class="tile__desc">A plain browser window for presenting an app inside a page.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#buttons"><span class="tile__head"><span class="tile__title">Buttons</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#card"><span class="tile__head"><span class="tile__title">Card</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Card with header, body and footer, and ChoiceCard for picking.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#chips"><span class="tile__head"><span class="tile__title">Chips</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Pill buttons that filter; they wrap, and several can be on.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#forms"><span class="tile__head"><span class="tile__title">Forms</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Input, text area, select and multi-select, checkboxes and radios.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#hovercard"><span class="tile__head"><span class="tile__title">HoverCard</span><span class="tile__tag">React</span></span><span class="tile__desc">Details on hover or focus, dismissable and persistent.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#resetbutton"><span class="tile__head"><span class="tile__title">ResetButton</span><span class="tile__tag">React</span></span><span class="tile__desc">Clears a demo’s saved changes after a confirm.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#segmented"><span class="tile__head"><span class="tile__title">Segmented control</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Choose one of a few options in a tray: a filter, or grid or list.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#statfilter"><span class="tile__head"><span class="tile__title">StatFilter</span><span class="tile__tag">React</span></span><span class="tile__desc">Counts that also filter what’s below them.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#table"><span class="tile__head"><span class="tile__title">Table</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Hairline rows, sorting, selectable rows, sticky header, empty state.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tiles"><span class="tile__head"><span class="tile__title">Tiles</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A grid of links into other pages, tiled or as cards.</span></a></li></ul>
+  <ul class="lib tiles tiles--cards lib-index" id="cmp-cards"><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#browserframe"><span class="tile__head"><span class="tile__title">BrowserFrame</span><span class="tile__tag">React</span></span><span class="tile__desc">A plain browser window for presenting an app inside a page.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#buttons"><span class="tile__head"><span class="tile__title">Buttons</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#card"><span class="tile__head"><span class="tile__title">Card</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Card with header, body and footer, and ChoiceCard for picking.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#chips"><span class="tile__head"><span class="tile__title">Chips</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Pill buttons that filter; they wrap, and several can be on.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#forms"><span class="tile__head"><span class="tile__title">Forms</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Input, text area, select and multi-select, checkboxes and radios.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#resetbutton"><span class="tile__head"><span class="tile__title">ResetButton</span><span class="tile__tag">React</span></span><span class="tile__desc">Clears a demo’s saved changes after a confirm.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#segmented"><span class="tile__head"><span class="tile__title">Segmented control</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Choose one of a few options in a tray: a filter, or grid or list.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#statfilter"><span class="tile__head"><span class="tile__title">StatFilter</span><span class="tile__tag">React</span></span><span class="tile__desc">Counts that also filter what’s below them.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#table"><span class="tile__head"><span class="tile__title">Table</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Hairline rows, sorting, selectable rows, sticky header, empty state.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tiles"><span class="tile__head"><span class="tile__title">Tiles</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A grid of links into other pages, tiled or as cards.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#tooltip"><span class="tile__head"><span class="tile__title">Tooltip</span><span class="tile__tag">React</span></span><span class="tile__desc">Detail on hover, text only; or on click, with links.</span></a></li></ul>
 
   <section class="doc-section" id="cmp-next" aria-labelledby="h-cmp-next">
     <h2 id="h-cmp-next">Coming next</h2>
@@ -1577,6 +1577,64 @@ export function AccessRequests({ rows, onUpdate }) {
     <ul class="a11y-list"><li>Tiles are navigation. Content people compare, choose or act on is a <a href="#card">Card</a>.</li><li>Each tile is one link, so the whole tile is the target and its title is what a screen reader reads first. Never put a second control in a tile.</li><li>The picture is decoration. The title and description must make sense without it.</li><li>Keep descriptions to one or two lines so the grid stays even.</li><li>Filtered tiles get <code>hidden</code>; say how many are showing in a polite live region, as the Components index does.</li><li>High contrast: hairlines and borders become CanvasText.</li></ul>
   </section>
   <nav class="pager" aria-label="More in components" data-current="tiles"></nav>
+</section>
+
+<!-- =====================================================================
+     Tooltip
+     ===================================================================== -->
+<section class="panel" id="panel-tooltip" data-section="components" aria-labelledby="h-tooltip" hidden>
+  <p class="page-kicker">Component · React</p>
+  <h1 class="page-title" id="h-tooltip" tabindex="-1">Tooltip</h1>
+  <p class="page-lede">Extra detail beside something on the page. Two versions: one opens on hover or focus and holds text only; the other opens when the button is pressed and can hold links.</p>
+
+  <section class="doc-section" id="tt-hover" aria-labelledby="h-tt-hover">
+    <h2 id="h-tt-hover">On hover</h2>
+    <p>Opens when the pointer rests on the trigger or keyboard focus reaches it, and closes when they leave. For a few words or a short list that explain what’s there: what a flag means, the full text of a shortened label.</p>  <div class="lib lib-demo" data-react="tooltip-hover"></div>
+
+  </section>
+  <section class="doc-section" id="tt-click" aria-labelledby="h-tt-click">
+    <h2 id="h-tt-click">On click</h2>
+    <p>Opens and closes when the button is pressed, and stays open while people read and use it. For a short explanation with somewhere to go next: a policy, a help article, the record behind a number.</p>  <div class="lib lib-demo" data-react="tooltip-click"></div>
+
+  </section>
+  <section class="doc-section" id="tt-which" aria-labelledby="h-tt-which">
+    <h2 id="h-tt-which">Which version</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Which tooltip version to use</caption><thead><tr><th scope="col"></th><th scope="col">On hover</th><th scope="col">On click</th></tr></thead><tbody><tr><th scope="row">Opens</th><td>Hover, or keyboard focus</td><td>Pressing the button (click, Enter or Space)</td></tr><tr><th scope="row">Closes</th><td>Pointer or focus leaves; Escape</td><td>Pressing the button again, Escape, or clicking outside</td></tr><tr><th scope="row">Holds</th><td>Text only: never links or buttons</td><td>Text, links and buttons</td></tr><tr><th scope="row">Built as</th><td>A button described by a <code>role="tooltip"</code></td><td>A disclosure button (<code>aria-expanded</code>) and a native popover</td></tr><tr><th scope="row">Screen reader hears</th><td>“2 policy matches, 1 open, button. Policy matches: Bribery, open…”</td><td>“About proctoring, button, collapsed”, then “expanded” and the content as they Tab into it</td></tr><tr><th scope="row">On touch screens</th><td>Opens when tapped (the button takes focus)</td><td>Opens and closes when tapped</td></tr></tbody></table></div><ul class="a11y-list"><li>Hover tooltips close the moment focus moves, so a link in one could never be reached by keyboard or screen reader. If there’s a link, it’s the click version.</li><li>Neither is the only place for something people need to finish the task. Put that on the page.</li><li>For a set of actions, use a menu (coming in 0.3.0). For content that needs a decision, use a dialog.</li></ul>
+  </section>
+  <section class="doc-section" id="tt-keys" aria-labelledby="h-tt-keys">
+    <h2 id="h-tt-keys">Keyboard</h2>
+    <table class="doc-table key-table"><caption class="sr-only">Tooltip keyboard support</caption><tbody><tr><th scope="row"><kbd>Tab</kbd></th><td>Hover: focusing the trigger opens it; moving on closes it. Click: from the open button, Tab moves into the tooltip’s links, then on to the rest of the page.</td></tr><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd></th><td>Click: open or close.</td></tr><tr><th scope="row"><kbd>Esc</kbd></th><td>Close. Hover: focus stays where it is. Click: focus returns to the button.</td></tr></tbody></table>
+  </section>
+  <section class="doc-section" id="tt-usage" aria-labelledby="h-tt-usage">
+    <h2 id="h-tt-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Flags.tsx</span><button class="copy-button" type="button" data-copy-label="Flags.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>// On hover: text only
+&lt;Tooltip label=&quot;3 policy matches, 2 open&quot; content={&lt;PolicyMatches matches={m} /&gt;}&gt;
+  &lt;FlagIcon /&gt; 2
+&lt;/Tooltip&gt;
+
+// On click: may hold links
+&lt;Tooltip trigger=&quot;click&quot; label=&quot;About proctoring&quot; className=&quot;tooltip-trigger--info&quot;
+  content={&lt;&gt;
+    &lt;p className=&quot;tooltip__title&quot;&gt;Proctoring&lt;/p&gt;
+    &lt;p&gt;A webcam check at the start and end.&lt;/p&gt;
+    &lt;p className=&quot;tooltip__links&quot;&gt;&lt;a href=&quot;/help/proctoring&quot;&gt;Proctoring options&lt;/a&gt;&lt;/p&gt;
+  &lt;/&gt;}&gt;
+  &lt;InfoIcon /&gt;
+&lt;/Tooltip&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="tt-props" aria-labelledby="h-tt-props">
+    <h2 id="h-tt-props">Props</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">Tooltip props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>label</code></td><td><code class="type">string</code></td><td>The trigger’s accessible name, e.g. “3 policy matches” or “About proctoring”</td></tr><tr><td><code>children</code></td><td><code class="type">ReactNode</code></td><td>What the trigger shows: an icon, a count</td></tr><tr><td><code>content</code></td><td><code class="type">ReactNode</code></td><td>Hover: text only. Click: may include links and buttons.</td></tr><tr><td><code>trigger</code></td><td><code class="type">&#x27;hover&#x27; | &#x27;click&#x27;</code></td><td>Default hover</td></tr><tr><td><code>className</code></td><td><code class="type">string</code></td><td>On the trigger; <code>tooltip-trigger--info</code> for a quiet info icon</td></tr><tr><td><code>onClick</code></td><td><code class="type">() =&gt; void</code></td><td>Hover only: pass clicks on to a parent, such as a table row</td></tr></tbody></table></div><p class="note"><code>HoverCard</code> (with <code>card</code>) still works as an alias of the hover version, so apps built on 0.1 keep working.</p>
+  </section>
+  <section class="doc-section" id="tt-classes" aria-labelledby="h-tt-classes">
+    <h2 id="h-tt-classes">Classes</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Tooltip classes</caption><thead><tr><th scope="col">Class</th><th scope="col">What it does</th></tr></thead><tbody><tr><th scope="row"><code>.tooltip</code></th><td>The panel: 360px at most, 8px corners, an arrow toward the trigger; <code>.is-above</code> flips it.</td></tr><tr><th scope="row"><code>.tooltip--click</code></th><td>The click version, placed against its trigger instead of the popover’s default centre.</td></tr><tr><th scope="row"><code>.tooltip__title</code> · <code>__dl</code> · <code>__note</code></th><td>A bold title; label-and-value lines; a small closing note.</td></tr><tr><th scope="row"><code>.tooltip__links</code></th><td>Click version: links under a rule at the end.</td></tr><tr><th scope="row"><code>.tooltip-trigger</code> · <code>--info</code></th><td>The button; a quiet info-icon version.</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="tt-rules" aria-labelledby="h-tt-rules">
+    <h2 id="h-tt-rules">Rules</h2>
+    <ul class="a11y-list"><li>The trigger is a real button with its own name. An icon-only trigger names what it explains: “About proctoring”, not “Info”.</li><li>Keep it short: a title and a few lines. If it needs scrolling, it belongs on the page or in a dialog.</li><li>Hover: hoverable, dismissable and persistent (WCAG 1.4.13). The pointer can move onto it, Escape closes it, and it stays until the pointer or focus leaves.</li><li>Both render above everything, so scrolling areas never cut them off, and flip above the trigger when there’s no room below.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="tooltip"></nav>
 </section>
 
 <!-- =====================================================================
@@ -1983,31 +2041,6 @@ export function AccessRequests({ rows, onUpdate }) {
 &lt;/div&gt;</code></pre></div>
   </section>
   <nav class="pager" aria-label="More in components" data-current="textarea"></nav>
-</section>
-<!-- =====================================================================
-     HoverCard
-     ===================================================================== -->
-<section class="panel" id="panel-hovercard" data-section="components" aria-labelledby="h-hovercard" hidden>
-  <p class="page-kicker">Component · React</p>
-  <h1 class="page-title" id="h-hovercard" tabindex="-1">HoverCard</h1>
-  <p class="page-lede">Details that appear on hover or keyboard focus, following WCAG 1.4.13: hoverable, dismissable and persistent.</p>
-  <div class="lib lib-demo" data-react="hovercard"></div>
-
-  <section class="doc-section" id="hc-keys" aria-labelledby="h-hc-keys">
-    <h2 id="h-hc-keys">Keyboard</h2>
-    <table class="doc-table key-table"><caption class="sr-only">HoverCard keyboard support</caption><tbody><tr><th scope="row"><kbd>Tab</kbd></th><td>Focus the trigger; the card opens.</td></tr><tr><th scope="row"><kbd>Esc</kbd></th><td>Close the card.</td></tr></tbody></table>
-  </section>
-  <section class="doc-section" id="hc-usage" aria-labelledby="h-hc-usage">
-    <h2 id="h-hc-usage">Usage</h2>
-    <div class="code-block"><div class="code-block-bar"><span>Flags.tsx</span><button class="copy-button" type="button" data-copy-label="Flags.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;HoverCard label=&quot;3 policy matches, 2 open&quot; card={&lt;PolicyMatches matches={m} /&gt;}&gt;
-  &lt;FlagIcon /&gt; 2
-&lt;/HoverCard&gt;</code></pre></div>
-  </section>
-  <section class="doc-section" id="hc-rules" aria-labelledby="h-hc-rules">
-    <h2 id="h-hc-rules">Rules</h2>
-    <ul class="a11y-list"><li>The trigger is a real button with its own name; the card is linked with <code>aria-describedby</code>.</li><li>The pointer can move onto the card; it stays until pointer or focus leaves.</li><li>Text only. Never put links or buttons in a card; actions go in the page.</li><li>It renders at the end of <code>&lt;body&gt;</code> and flips above when there’s no room below.</li></ul>
-  </section>
-  <nav class="pager" aria-label="More in components" data-current="hovercard"></nav>
 </section>
 
 <!-- =====================================================================
@@ -5894,6 +5927,7 @@ export function AccessRequests({ rows, onUpdate }) {
 
   function show(route, { focus = true } = {}) {
     if (route === "fields") route = "forms"; // the old Fields page
+    if (route === "hovercard") route = "tooltip"; // the old HoverCard page
     let tab = null, target = null;
     if (!routes.includes(route)) {
       const el = route && $(route);

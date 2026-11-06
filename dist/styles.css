@@ -803,34 +803,64 @@ a.tile__link:hover { background: var(--bg-subtle); }
 
 .reset__box { z-index: 60; text-align: left; white-space: normal; }
 
-/* ---- hover-card.css ---- */
-/* HoverCard — details on hover or focus. Card content helpers: .card-title, .card-dl, .card-note. */
-.hovercard {
+/* ---- tooltip.css ---- */
+/* Tooltip — extra detail beside something on the page.
+   .tooltip (hover, role="tooltip"): text only. .tooltip--click (a native popover): may hold links.
+   Content helpers: .tooltip__title, .tooltip__dl, .tooltip__note, .tooltip__links. */
+.tooltip {
   position: fixed; top: 0; left: 0; z-index: 100; width: max-content; max-width: min(360px, calc(100vw - 16px));
   padding: var(--space-3) var(--space-3-5); border: 1px solid var(--rule-strong); border-radius: var(--radius-md); background: var(--bg); color: var(--ink);
   box-shadow: var(--shadow-overlay);
   font-family: var(--font); font-size: var(--text-small); line-height: 1.5; text-align: left; white-space: normal;
+  overflow: visible;
 }
-.hovercard[hidden] { display: none; }
-.hovercard::before {
+.tooltip[hidden] { display: none; }
+/* The native popover is centred by default; place it against the trigger instead. */
+.tooltip--click { inset: auto; margin: 0; }
+.tooltip--click:not(:popover-open) { display: none; }
+.tooltip::before {
   content: ""; position: absolute; top: -6px; left: calc(var(--arrow-x, 50%) - 5px); width: 10px; height: 10px;
   background: var(--bg); border-left: 1px solid var(--rule-strong); border-top: 1px solid var(--rule-strong); transform: rotate(45deg);
 }
-.hovercard.is-above::before { top: auto; bottom: -6px; transform: rotate(225deg); }
-.card-title { font-size: var(--text-body-sm); font-weight: var(--weight-semibold); margin-bottom: var(--space-2); }
-.card-title--rule { font-weight: var(--weight-regular); padding-bottom: var(--space-2); border-bottom: 1px solid var(--rule); }
-.card-title--rule strong { font-weight: var(--weight-semibold); }
-.card-dl { display: grid; gap: 2px; }
-.card-dl > div { display: flex; gap: var(--space-1-5); }
-.card-dl dt { font-weight: var(--weight-semibold); white-space: nowrap; }
-.card-dl dt::after { content: ":"; }
-.card-dl dd { margin: 0; color: var(--ink-soft); }
-.card-note { margin-top: var(--space-1); font-size: var(--text-caption); color: var(--ink-faint); }
-.hovercard-trigger {
+.tooltip.is-above::before { top: auto; bottom: -6px; transform: rotate(225deg); }
+
+.tooltip__title, .card-title { font-size: var(--text-body-sm); font-weight: var(--weight-semibold); margin: 0 0 var(--space-2); }
+.tooltip__title--rule, .card-title--rule { font-weight: var(--weight-regular); padding-bottom: var(--space-2); border-bottom: 1px solid var(--rule); }
+.tooltip__title--rule strong, .card-title--rule strong { font-weight: var(--weight-semibold); }
+.tooltip__dl, .card-dl { display: grid; gap: 2px; margin: 0; }
+.tooltip__dl > div, .card-dl > div { display: flex; gap: var(--space-1-5); }
+.tooltip__dl dt, .card-dl dt { font-weight: var(--weight-semibold); white-space: nowrap; }
+.tooltip__dl dt::after, .card-dl dt::after { content: ":"; }
+.tooltip__dl dd, .card-dl dd { margin: 0; color: var(--ink-soft); }
+.tooltip__note, .card-note { margin: var(--space-1) 0 0; font-size: var(--text-caption); color: var(--ink-faint); }
+.tooltip p { margin: 0; }
+/* Click version only: links or actions at the end */
+.tooltip__links { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); margin-top: var(--space-2-5); padding-top: var(--space-2-5); border-top: 1px solid var(--rule); }
+.tooltip__links a { color: var(--ink); font-weight: var(--weight-medium); }
+
+.tooltip-trigger {
   appearance: none; display: inline-flex; align-items: center; gap: 2px;
   padding: var(--space-1); border: 0; border-radius: var(--radius-sm); background: none; color: var(--ink); cursor: pointer;
+  font: inherit;
 }
+.tooltip-trigger:hover, .tooltip-trigger[aria-expanded="true"] { background: var(--bg-hover); }
+.tooltip-trigger svg { width: 16px; height: 16px; flex: none; }
+/* Info icon trigger, e.g. beside a label */
+.tooltip-trigger--info { padding: 2px; color: var(--ink-soft); vertical-align: middle; }
+.tooltip-trigger--info:hover, .tooltip-trigger--info[aria-expanded="true"] { color: var(--ink); }
+
+/* Deprecated 0.1 names, kept so apps keep working: .hovercard and .hovercard-trigger */
+.hovercard { position: fixed; top: 0; left: 0; z-index: 100; width: max-content; max-width: min(360px, calc(100vw - 16px));
+  padding: var(--space-3) var(--space-3-5); border: 1px solid var(--rule-strong); border-radius: var(--radius-md); background: var(--bg); color: var(--ink);
+  box-shadow: var(--shadow-overlay); font-family: var(--font); font-size: var(--text-small); line-height: 1.5; }
+.hovercard[hidden] { display: none; }
+.hovercard-trigger { appearance: none; display: inline-flex; align-items: center; gap: 2px; padding: var(--space-1); border: 0; border-radius: var(--radius-sm); background: none; color: var(--ink); cursor: pointer; }
 .hovercard-trigger:hover { background: var(--bg-hover); }
+
+@media (forced-colors: active) {
+  .tooltip, .hovercard { border-color: CanvasText; }
+  .tooltip::before { border-color: CanvasText; }
+}
 
 /* ---- stat-filter.css ---- */
 /* StatFilter: counts that filter. Cards sit in one bordered strip and wrap on narrow screens;
