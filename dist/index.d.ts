@@ -11,6 +11,7 @@ export type { SelectOption } from './components/Select';
 export { default as ResetButton } from './components/ResetButton';
 export { Tooltip, HoverCard, useTooltip } from './components/Tooltip';
 export { Switch } from './components/Switch';
+export { Button } from './components/Button';
 export { default as StatFilter } from './components/StatFilter';
 export type { StatFilterItem } from './components/StatFilter';
 export { SortHeader, TableCheck, TableEmpty } from './components/Table';

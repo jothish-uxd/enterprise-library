@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
+  BrowserFrame, Button, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -270,9 +270,10 @@ type PgControl =
   | { kind: 'segmented'; key: string; label: string; options: { value: string; label: string }[] };
 type PgCodeLine = { attr: string; value: string | true; expr?: boolean };
 
-function PgCode({ file, tag, attrs }: { file: string; tag: string; attrs: PgCodeLine[] }) {
+function PgCode({ file, tag, attrs, children }: { file: string; tag: string; attrs: PgCodeLine[]; children?: string[] }) {
   const [copied, setCopied] = useState<'' | 'ok' | 'fail'>('');
-  const text = `<${tag}\n${attrs.map((a) => `  ${a.value === true ? a.attr : a.expr ? `${a.attr}={${a.value}}` : `${a.attr}="${a.value}"`}`).join('\n')}\n/>`;
+  const open = `<${tag}\n${attrs.map((a) => `  ${a.value === true ? a.attr : a.expr ? `${a.attr}={${a.value}}` : `${a.attr}="${a.value}"`}`).join('\n')}`;
+  const text = children?.length ? `${open}\n>\n${children.map((c) => `  ${c}`).join('\n')}\n</${tag}>` : `${open}\n/>`;
   const copy = () => {
     const done = (ok: boolean) => { setCopied(ok ? 'ok' : 'fail'); window.setTimeout(() => setCopied(''), 2000); };
     try { navigator.clipboard.writeText(text).then(() => done(true), () => done(false)); } catch { done(false); }
@@ -291,15 +292,15 @@ function PgCode({ file, tag, attrs }: { file: string; tag: string; attrs: PgCode
         {attrs.map((a) => (
           <span key={a.attr}>{'  '}{a.attr}{a.value === true ? null : a.expr ? <>{'={'}{String(a.value).split(/('[^']*')/).map((part, i) => (i % 2 ? <span key={i} className="tok-s">{part}</span> : part))}{'}'}</> : <>=<span className="tok-s">"{a.value}"</span></>}{'\n'}</span>
         ))}
-        {'/>'}
+        {children?.length ? <>{'>'}{'\n'}{children.map((c) => <span key={c}>{'  '}{c.startsWith('<') ? <>{'<'}<span className="tok-k">{c.slice(1).split(/[\s/>]/)[0]}</span>{c.slice(1 + c.slice(1).split(/[\s/>]/)[0].length)}</> : c}{'\n'}</span>)}{'</'}<span className="tok-k">{tag}</span>{'>'}</> : '/>'}
       </code></pre>
       <p className="visually-hidden" role="status" aria-live="polite">{copied === 'ok' ? `Copied ${file} to clipboard.` : copied === 'fail' ? `Couldn't copy ${file}. Select the text and copy it manually.` : ''}</p>
     </div>
   );
 }
 
-function Playground({ name, controls, values, set, preview, file, tag, attrs, wide, compact }: {
-  wide?: boolean; compact?: boolean | number; name: string; controls: PgControl[]; values: Record<string, PgValue>; set: (key: string, v: PgValue) => void;
+function Playground({ name, controls, values, set, preview, file, tag, attrs, wide, compact, codeChildren }: {
+  wide?: boolean; compact?: boolean | number; codeChildren?: string[]; name: string; controls: PgControl[]; values: Record<string, PgValue>; set: (key: string, v: PgValue) => void;
   preview: ReactNode; file: string; tag: string; attrs: PgCodeLine[];
 }) {
   const id = React.useId();
@@ -336,7 +337,7 @@ function Playground({ name, controls, values, set, preview, file, tag, attrs, wi
           );
         })}
       </div>
-      <PgCode file={file} tag={tag} attrs={attrs} />
+      <PgCode file={file} tag={tag} attrs={attrs} children={codeChildren} />
     </div>
   );
 }
@@ -393,6 +394,69 @@ function ChipsDemo() {
       preview={v.multiple
         ? <ChipGroup multiple label={String(v.label) || 'Filter'} size={v.size as 'sm' | 'md'} value={multi} onChange={setMulti} options={options} />
         : <ChipGroup label={String(v.label) || 'Filter'} size={v.size as 'sm' | 'md'} value={singleValue} onChange={setSingle} options={options} />}
+    />
+  );
+}
+
+/* ---------- Button playground ---------- */
+const BTN_ICONS: Record<string, { name: string; node: ReactNode }> = {
+  plus: { name: 'PlusIcon', node: <svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" /></svg> },
+  trash: { name: 'TrashIcon', node: <svg viewBox="0 0 16 16"><path d="M2.5 4.5h11M6 4.5V3h4v1.5M4 4.5l.7 9h6.6l.7-9" /></svg> },
+  download: { name: 'DownloadIcon', node: <svg viewBox="0 0 16 16"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10" /></svg> },
+};
+function ButtonDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Add module', kind: 'secondary', size: 'md', icon: 'plus', iconOnly: false, toggle: false,
+    disabled: false, disabledReason: 'Add an item to this module first.',
+  });
+  const [on, setOn] = useState(false);
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const icon = v.icon !== 'none' ? BTN_ICONS[String(v.icon)] : null;
+  const iconOnly = !!v.iconOnly && !!icon;
+  const label = String(v.label) || 'Untitled';
+  const attrs: PgCodeLine[] = [
+    ...(v.kind !== 'secondary' ? [{ attr: 'kind', value: String(v.kind) }] : []),
+    ...(v.size !== 'md' ? [{ attr: 'size', value: String(v.size) }] : []),
+    ...(icon ? [{ attr: 'icon', value: `<${icon.name} />`, expr: true }] : []),
+    ...(iconOnly ? [{ attr: 'iconOnly', value: true as const }] : []),
+    ...(v.toggle ? [{ attr: 'pressed', value: 'isOn', expr: true }, { attr: 'onClick', value: '() => setIsOn(!isOn)', expr: true }] : []),
+    ...(v.disabled ? [{ attr: 'disabled', value: true as const }] : []),
+    ...(v.disabled && v.disabledReason ? [{ attr: 'disabledReason', value: String(v.disabledReason) }] : []),
+  ];
+  return (
+    <Playground
+      name="Button"
+      compact
+      values={v}
+      set={set}
+      file="Toolbar.tsx"
+      tag="Button"
+      attrs={attrs}
+      codeChildren={[label]}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label' },
+        { kind: 'select', key: 'kind', label: 'Kind', options: [{ value: 'primary', label: 'Primary' }, { value: 'secondary', label: 'Secondary' }, { value: 'ghost', label: 'Ghost' }, { value: 'danger', label: 'Danger' }] },
+        { kind: 'select', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }, { value: 'lg', label: 'Large' }] },
+        { kind: 'select', key: 'icon', label: 'Icon', options: [{ value: 'none', label: 'None' }, { value: 'plus', label: 'Plus' }, { value: 'trash', label: 'Trash' }, { value: 'download', label: 'Download' }] },
+        { kind: 'boolean', key: 'iconOnly', label: 'Icon only', help: 'Needs an icon. The label becomes its name and tooltip.' },
+        { kind: 'boolean', key: 'toggle', label: 'Toggle button', help: 'Press it to turn it on and off (aria-pressed).' },
+        { kind: 'boolean', key: 'disabled', label: 'Disabled' },
+        { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in a tooltip when Disabled is on.' },
+      ]}
+      preview={
+        <Button
+          kind={v.kind as 'primary' | 'secondary' | 'ghost' | 'danger'}
+          size={v.size as 'sm' | 'md' | 'lg'}
+          icon={icon?.node}
+          iconOnly={iconOnly}
+          pressed={v.toggle ? on : undefined}
+          onClick={() => { if (v.toggle) setOn(!on); }}
+          disabled={!!v.disabled}
+          disabledReason={v.disabled && v.disabledReason ? String(v.disabledReason) : undefined}
+        >
+          {label}
+        </Button>
+      }
     />
   );
 }
@@ -471,6 +535,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   chips: () => <ChipsDemo />,
   multiselect: () => <MultiSelectDemo />,
   switch: () => <SwitchDemo />,
+  button: () => <ButtonDemo />,
 };
 
 document.querySelectorAll<HTMLElement>('[data-react]').forEach((el) => {

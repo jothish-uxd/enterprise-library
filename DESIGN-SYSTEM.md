@@ -60,7 +60,7 @@ Stylesheets: `styles.css` has everything. Each file also ships under `css/`: `to
 
 ## Components
 
-### Buttons (`buttons.css`)
+### Buttons (`buttons.css`, `components/Button.tsx`)
 
 `.btn` with a kind (`--primary`, `--secondary`, `--ghost`, `--danger`), a size (`--sm` 30px, default 36px, `--lg` 44px), an optional leading `.btn__icon`, and `--icon` for square icon-only buttons. `aria-pressed="true"` gives a toggle its ink border and wash. `.link-button` (and `--danger`) and `.btn-row`.
 
@@ -68,6 +68,7 @@ Stylesheets: `styles.css` has everything. Each file also ships under `css/`: `to
 - Danger looks like primary; the verb and trash icon say it’s destructive, never colour. Only on the last step of a confirm.
 - Prefer `aria-disabled="true"`, so the button stays focusable and can point at why. Icon-only buttons need `aria-label`.
 - High contrast: ButtonText borders; pressed gets a Highlight border.
+- React: `<Button kind size icon iconOnly pressed disabled disabledReason>` renders the same classes. `iconOnly` keeps the label as the name and shows it as a tooltip; `disabled` uses `aria-disabled` (stays focusable, clicks do nothing) and `disabledReason` shows in a tooltip on hover and focus and is read as the description. `span.btn__icon` wraps the icon so any SVG fits.
 
 ### Forms (`forms.css`, `select.css`, `components/Select.tsx`, `components/MultiSelect.tsx`)
 
