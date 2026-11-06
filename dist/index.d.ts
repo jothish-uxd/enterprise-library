@@ -19,6 +19,8 @@ export type { RadioProps } from './components/Radio';
 export { RadioGroup } from './components/RadioGroup';
 export type { RadioGroupOption, RadioGroupProps } from './components/RadioGroup';
 export type { InputProps } from './components/Input';
+export { TextArea } from './components/TextArea';
+export type { TextAreaProps } from './components/TextArea';
 export { CheckboxGroup } from './components/CheckboxGroup';
 export type { CheckboxGroupOption } from './components/CheckboxGroup';
 export { default as StatFilter } from './components/StatFilter';

@@ -14,6 +14,7 @@ export { Checkbox } from './components/Checkbox';
 export { Input } from './components/Input';
 export { Radio } from './components/Radio';
 export { RadioGroup } from './components/RadioGroup';
+export { TextArea } from './components/TextArea';
 export { CheckboxGroup } from './components/CheckboxGroup';
 export { default as StatFilter } from './components/StatFilter';
 export { SortHeader, TableCheck, TableEmpty } from './components/Table';

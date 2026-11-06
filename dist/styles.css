@@ -212,7 +212,7 @@ code, .id { font-family: var(--mono); font-size: var(--text-caption); }
 .field input, .field textarea {
   width: 100%; min-height: var(--control-h); padding: var(--space-1-5) var(--space-2-5);
   border: 1px solid var(--rule-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink);
-  font-size: var(--text-body-sm); line-height: var(--leading-snug);
+  font-family: inherit; font-size: var(--text-body-sm); line-height: var(--leading-snug);
 }
 .field textarea { resize: vertical; min-height: 88px; line-height: var(--leading-body); }
 .field input::placeholder, .field textarea::placeholder { color: var(--ink-faint); }

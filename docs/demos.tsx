@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Checkbox, CheckboxGroup, Input, Radio, RadioGroup, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
+  BrowserFrame, Button, Checkbox, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -631,6 +631,77 @@ function InputDemo() {
   );
 }
 
+/* ---------- TextArea playground ---------- */
+function TextAreaDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Reason for escalating', required: true, hasDescription: true, description: 'The reviewer sees this first.',
+    placeholder: 'What should the reviewer look at?', rows: '3', limit: '140',
+    error: false, errorMessage: 'Say why this message needs a second look.',
+    readOnly: false, disabled: false, disabledReason: 'Escalations can’t be edited once a reviewer opens them.',
+  });
+  const [text, setText] = useState('Mentions a gift above the policy limit.');
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const name = camel(String(v.label)) || 'value';
+  const setter = `set${name[0].toUpperCase()}${name.slice(1)}`;
+  const showError = !!v.error && !!v.errorMessage;
+  const limit = v.limit === 'none' ? undefined : Number(v.limit);
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) },
+    ...(v.required ? [{ attr: 'required', value: true as const }] : []),
+    ...(v.placeholder ? [{ attr: 'placeholder', value: String(v.placeholder) }] : []),
+    ...(v.rows !== '3' ? [{ attr: 'rows', value: String(v.rows), expr: true }] : []),
+    ...(limit ? [{ attr: 'limit', value: String(limit), expr: true }] : []),
+    ...(v.hasDescription && v.description && !showError ? [{ attr: 'description', value: String(v.description) }] : []),
+    ...(showError ? [{ attr: 'error', value: String(v.errorMessage) }] : []),
+    ...(v.readOnly ? [{ attr: 'readOnly', value: true as const }] : []),
+    ...(v.disabled ? [{ attr: 'disabled', value: true as const }] : []),
+    ...(v.disabled && v.disabledReason ? [{ attr: 'disabledReason', value: String(v.disabledReason) }] : []),
+    { attr: 'value', value: name, expr: true },
+    { attr: 'onChange', value: `(e) => ${setter}(e.target.value)`, expr: true },
+  ];
+  return (
+    <Playground
+      name="Text area"
+      compact
+      values={v}
+      set={set}
+      file="Escalate.tsx"
+      tag="TextArea"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label' },
+        { kind: 'boolean', key: 'required', label: 'Required', help: 'An asterisk after the label.' },
+        { kind: 'boolean', key: 'hasDescription', label: 'Description' },
+        { kind: 'text', key: 'description', label: 'Description text', help: 'Shown when Description is on.' },
+        { kind: 'text', key: 'placeholder', label: 'Placeholder', help: 'An example, never the only label. Leave empty for none.' },
+        { kind: 'select', key: 'rows', label: 'Rows', options: [{ value: '2', label: '2' }, { value: '3', label: '3' }, { value: '4', label: '4' }, { value: '6', label: '6' }] },
+        { kind: 'select', key: 'limit', label: 'Character limit', options: [{ value: 'none', label: 'None' }, { value: '40', label: '40' }, { value: '140', label: '140' }, { value: '280', label: '280' }] },
+        { kind: 'boolean', key: 'error', label: 'Error' },
+        { kind: 'text', key: 'errorMessage', label: 'Error message', help: 'Replaces the description when Error is on. Say how to fix it.' },
+        { kind: 'boolean', key: 'readOnly', label: 'Read only', help: 'Can be selected and copied, not changed.' },
+        { kind: 'boolean', key: 'disabled', label: 'Disabled' },
+        { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in a tooltip when Disabled is on.' },
+      ]}
+      preview={
+        <TextArea
+          label={String(v.label) || 'Untitled'}
+          required={!!v.required}
+          placeholder={v.placeholder ? String(v.placeholder) : undefined}
+          rows={Number(v.rows)}
+          limit={limit}
+          description={v.hasDescription && v.description ? String(v.description) : undefined}
+          error={showError ? String(v.errorMessage) : undefined}
+          readOnly={!!v.readOnly}
+          disabled={!!v.disabled}
+          disabledReason={v.disabled && v.disabledReason ? String(v.disabledReason) : undefined}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+      }
+    />
+  );
+}
+
 /* ---------- CheckboxGroup playground ---------- */
 function CheckboxGroupDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
@@ -889,6 +960,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   checkbox: () => <CheckboxDemo />,
   'checkbox-group': () => <CheckboxGroupDemo />,
   input: () => <InputDemo />,
+  textarea: () => <TextAreaDemo />,
   radio: () => <RadioDemo />,
   'radio-group': () => <RadioGroupDemo />,
 };
