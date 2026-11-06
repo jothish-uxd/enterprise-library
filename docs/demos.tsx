@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, ChipGroup, ChoiceCard, HoverCard, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, TableCheck, TableEmpty,
+  BrowserFrame, ChipGroup, ChoiceCard, HoverCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, TableCheck, TableEmpty,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -256,6 +256,25 @@ function ChipsDemo() {
   );
 }
 
+/* ---------- MultiSelect ---------- */
+const CHANNEL_OPTS = ['Email', 'Teams', 'Bloomberg Chat', 'WhatsApp', 'Text message', 'Slack', 'Zoom chat', 'LinkedIn messages', 'Voice'].map((l) => ({ value: l.toLowerCase().replace(/ /g, '-'), label: l }));
+function MultiSelectDemo() {
+  const [chosen, setChosen] = useState<string[]>(['email', 'teams', 'whatsapp']);
+  const [none, setNone] = useState<string[]>([]);
+  return (
+    <div className="lib-row lib-row--top">
+      <div style={{ width: 280 }}>
+        <MultiSelect label="Channels to review" value={chosen} onChange={setChosen} options={CHANNEL_OPTS} describedBy="ms-help" placeholder="Choose channels" />
+        <p className="field-help" id="ms-help" style={{ marginTop: 6 }}>Messages from these channels go to review.</p>
+      </div>
+      <div style={{ width: 220 }}>
+        <MultiSelect label="Channel" value={none} onChange={setNone} options={CHANNEL_OPTS} placeholder="Any channel" />
+      </div>
+      <p className="t-small muted" aria-live="polite">{chosen.length} channels chosen.</p>
+    </div>
+  );
+}
+
 const DEMOS: Record<string, () => ReactNode> = {
   select: () => <SelectDemo />,
   table: () => <TableDemo />,
@@ -266,6 +285,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   resetbutton: () => <ResetDemo />,
   segmented: () => <SegmentedDemo />,
   chips: () => <ChipsDemo />,
+  multiselect: () => <MultiSelectDemo />,
 };
 
 document.querySelectorAll<HTMLElement>('[data-react]').forEach((el) => {

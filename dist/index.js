@@ -5,6 +5,7 @@
  */
 export { default as BrowserFrame, useFrameHistory } from './components/BrowserFrame';
 export { default as Select } from './components/Select';
+export { default as MultiSelect } from './components/MultiSelect';
 export { default as ResetButton } from './components/ResetButton';
 export { default as HoverCard } from './components/HoverCard';
 export { default as StatFilter } from './components/StatFilter';

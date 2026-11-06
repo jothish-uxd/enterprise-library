@@ -69,9 +69,20 @@ Stylesheets: `styles.css` has everything. Each file also ships under `css/`: `to
 - Prefer `aria-disabled="true"`, so the button stays focusable and can point at why. Icon-only buttons need `aria-label`.
 - High contrast: ButtonText borders; pressed gets a Highlight border.
 
-### Fields (`forms.css`)
+### Forms (`forms.css`, `select.css`, `components/Select.tsx`, `components/MultiSelect.tsx`)
 
-`.field` with `.field__label`, the control and `.field-help`; `aria-invalid="true"` gives a 2px ink border. `.check`, `.checks`, `.form`, `.form-grid`, `.form-actions`. Every control has a visible label; invalid is said in words, never colour alone.
+Native elements, styled, so browsers and screen readers already know how they work. One docs page each: Input, Text area, Select (single and multi), Checkbox, Checkbox group, Radio button, Radio group, plus a Forms overview.
+
+Shared anatomy: `.field` stacks a `.field__label` (joined with `for`/`id`), the control, and `.field-help` (joined with `aria-describedby`). Mark the few optional fields with `.field__optional` "(optional)" rather than starring required ones. Errors replace the help: `.field-error` is ink words with an icon in `--error`, the control gets `aria-invalid="true"` and a 2px ink border. Placeholders are examples, never labels.
+
+- **Input**: 36px, hairline border, 6px corners. States: hover, focus ring, invalid, read only (quiet fill, still focusable; prefer it to disabled), disabled. Leading icon: `.field__control` + `.field__icon`. Use the right `type`, `inputmode` and `autocomplete`; IDs are text with `inputmode="numeric"`, not `type="number"`.
+- **Text area**: resizes vertically; `.field__foot` holds the help and a `.field__counter` ("102 characters left", semibold "6 characters too many" with `.is-over`). Never cut off what people typed; announce the counter only when they reach or pass the limit.
+- **Select**: WAI-ARIA select-only combobox (see Select below). **MultiSelect**: same field, `aria-multiselectable` list with a box before each option; Enter or Space toggles and keeps the list open; the field shows "Email, Teams +2" and its name includes "4 chosen". For about 7+ options; fewer is a checkbox group.
+- **Checkbox**: `.check` around a native checkbox; `.check--desc` with `.check__label` and `.check__desc` for a description. Mixed state via `indeterminate` for "select all". Word it as what's true when checked. Settings that apply instantly are a switch (0.3.0).
+- **Checkbox group / Radio group**: a `fieldset.checks` with a `legend.field__label`; `.checks--stack` stacks them (do this unless there are two or three short options); `.checks--nested` indents options under a "select all". A group error goes under the last option, and the fieldset points at it with `aria-describedby`.
+- **Radio button**: always in a group sharing a `name`; Tab reaches the chosen one, arrows move and choose. Never a lone radio. Choose a sensible default when there is one.
+- Check on submit, then move focus to an error summary that links to each field; re-check a field as it's fixed. Never disable submit to show a form is incomplete. Keep what people typed.
+- Layout: `.form`, `.form-grid`, `.form-actions`, `.inline-form`, `.field--wide` / `--narrow`. One column; size fields to their content.
 
 ### Table (`table.css`, `components/Table.tsx`)
 

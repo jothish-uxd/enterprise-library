@@ -843,6 +843,14 @@
   .nav-sections { display: none; }
   .nav-sections .nav-link[aria-current] { font-weight: 600; }
 
+
+  /* Forms: an accordion inside the Components list */
+  .nav-subtoggle { margin: 0 -10px; padding: 6px 10px; width: calc(100% + 20px); border-radius: 6px; font-size: 14px; font-weight: 400; color: var(--ink-soft); }
+  .nav-subtoggle:hover { background: var(--bg-hover); color: var(--ink); }
+  .nav-sub:has(.nav-link[aria-current="page"]) > .nav-subtoggle { color: var(--ink); font-weight: 500; }
+  .nav-sublist { margin: 2px 0 6px 10px; padding-left: 10px; border-left: 1px solid var(--rule); }
+  .nav-sublist .nav-link { font-size: 14px; }
+
   /* ---------- Library demos ---------- */
   /* The page skips the library's base.css, so library markup gets its margin resets here. */
   .lib :where(h1, h2, h3, h4, p, dl, dd, figure) { margin: 0; }
@@ -1009,11 +1017,21 @@
         <li><a class="nav-link" href="#buttons">Buttons</a></li>
         <li><a class="nav-link" href="#card">Card</a></li>
         <li><a class="nav-link" href="#chips">Chips</a></li>
-        <li><a class="nav-link" href="#fields">Fields</a></li>
+        <li class="nav-sub"><button class="nav-toggle nav-subtoggle" type="button" aria-expanded="true" aria-controls="nav-forms-list"><span>Forms</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button>
+          <ul class="nav-list nav-sublist" id="nav-forms-list" aria-label="Forms">
+            <li><a class="nav-link" href="#forms">Overview</a></li>
+            <li><a class="nav-link" href="#checkbox">Checkbox</a></li>
+            <li><a class="nav-link" href="#checkbox-group">Checkbox group</a></li>
+            <li><a class="nav-link" href="#input">Input</a></li>
+            <li><a class="nav-link" href="#radio">Radio button</a></li>
+            <li><a class="nav-link" href="#radio-group">Radio group</a></li>
+            <li><a class="nav-link" href="#select">Select</a></li>
+            <li><a class="nav-link" href="#textarea">Text area</a></li>
+          </ul>
+        </li>
         <li><a class="nav-link" href="#hovercard">HoverCard</a></li>
         <li><a class="nav-link" href="#resetbutton">ResetButton</a></li>
         <li><a class="nav-link" href="#segmented">Segmented control</a></li>
-        <li><a class="nav-link" href="#select">Select</a></li>
         <li><a class="nav-link" href="#statfilter">StatFilter</a></li>
         <li><a class="nav-link" href="#table">Table</a></li>
         <li><a class="nav-link" href="#tiles">Tiles</a></li>
@@ -1380,9 +1398,9 @@ export function AccessRequests({ rows, onUpdate }) {
 <section class="panel" id="panel-components" data-section="components" aria-labelledby="h-components" hidden>
   <h1 class="page-title" id="h-components" tabindex="-1">Components</h1>
   <p class="page-lede">Single controls and surfaces. Each one is a real HTML element first, follows the ARIA Authoring Practices where it needs ARIA, and documents its keys and what a screen reader hears.</p>
-  <div class="chips lib-filter" role="group" aria-label="Filter components by group"><button class="chip" type="button" aria-pressed="true" data-group="">All <span class="count">12</span></button><button class="chip" type="button" aria-pressed="false" data-group="Actions and inputs">Actions and inputs <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Data and surfaces">Data and surfaces <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Filters and views">Filters and views <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Navigation">Navigation <span class="count">1</span></button><button class="chip" type="button" aria-pressed="false" data-group="Presenting apps">Presenting apps <span class="count">2</span></button></div>
+  <div class="chips lib-filter" role="group" aria-label="Filter components by group"><button class="chip" type="button" aria-pressed="true" data-group="">All <span class="count">11</span></button><button class="chip" type="button" aria-pressed="false" data-group="Actions and inputs">Actions and inputs <span class="count">2</span></button><button class="chip" type="button" aria-pressed="false" data-group="Data and surfaces">Data and surfaces <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Filters and views">Filters and views <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Navigation">Navigation <span class="count">1</span></button><button class="chip" type="button" aria-pressed="false" data-group="Presenting apps">Presenting apps <span class="count">2</span></button></div>
   <p class="sr-only" id="cmp-filter-status" role="status" aria-live="polite"></p>
-  <ul class="lib tiles tiles--cards lib-index" id="cmp-cards"><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#browserframe"><span class="tile__head"><span class="tile__title">BrowserFrame</span><span class="tile__tag">React</span></span><span class="tile__desc">A plain browser window for presenting an app inside a page.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#buttons"><span class="tile__head"><span class="tile__title">Buttons</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#card"><span class="tile__head"><span class="tile__title">Card</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Card with header, body and footer, and ChoiceCard for picking.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#chips"><span class="tile__head"><span class="tile__title">Chips</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Pill buttons that filter; they wrap, and several can be on.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#fields"><span class="tile__head"><span class="tile__title">Fields</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Text fields, textareas, checkboxes, help and invalid states.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#hovercard"><span class="tile__head"><span class="tile__title">HoverCard</span><span class="tile__tag">React</span></span><span class="tile__desc">Details on hover or focus, dismissable and persistent.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#resetbutton"><span class="tile__head"><span class="tile__title">ResetButton</span><span class="tile__tag">React</span></span><span class="tile__desc">Clears a demo’s saved changes after a confirm.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#segmented"><span class="tile__head"><span class="tile__title">Segmented control</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Choose one of a few options in a tray: a filter, or grid or list.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#select"><span class="tile__head"><span class="tile__title">Select</span><span class="tile__tag">React</span></span><span class="tile__desc">A dropdown that looks like a field and opens like a menu.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#statfilter"><span class="tile__head"><span class="tile__title">StatFilter</span><span class="tile__tag">React</span></span><span class="tile__desc">Counts that also filter what’s below them.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#table"><span class="tile__head"><span class="tile__title">Table</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Hairline rows, sorting, selectable rows, sticky header, empty state.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tiles"><span class="tile__head"><span class="tile__title">Tiles</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A grid of links into other pages, tiled or as cards.</span></a></li></ul>
+  <ul class="lib tiles tiles--cards lib-index" id="cmp-cards"><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#browserframe"><span class="tile__head"><span class="tile__title">BrowserFrame</span><span class="tile__tag">React</span></span><span class="tile__desc">A plain browser window for presenting an app inside a page.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#buttons"><span class="tile__head"><span class="tile__title">Buttons</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#card"><span class="tile__head"><span class="tile__title">Card</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Card with header, body and footer, and ChoiceCard for picking.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#chips"><span class="tile__head"><span class="tile__title">Chips</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Pill buttons that filter; they wrap, and several can be on.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#forms"><span class="tile__head"><span class="tile__title">Forms</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Input, text area, select and multi-select, checkboxes and radios.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#hovercard"><span class="tile__head"><span class="tile__title">HoverCard</span><span class="tile__tag">React</span></span><span class="tile__desc">Details on hover or focus, dismissable and persistent.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#resetbutton"><span class="tile__head"><span class="tile__title">ResetButton</span><span class="tile__tag">React</span></span><span class="tile__desc">Clears a demo’s saved changes after a confirm.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#segmented"><span class="tile__head"><span class="tile__title">Segmented control</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Choose one of a few options in a tray: a filter, or grid or list.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#statfilter"><span class="tile__head"><span class="tile__title">StatFilter</span><span class="tile__tag">React</span></span><span class="tile__desc">Counts that also filter what’s below them.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#table"><span class="tile__head"><span class="tile__title">Table</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Hairline rows, sorting, selectable rows, sticky header, empty state.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tiles"><span class="tile__head"><span class="tile__title">Tiles</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A grid of links into other pages, tiled or as cards.</span></a></li></ul>
 
   <section class="doc-section" id="cmp-next" aria-labelledby="h-cmp-next">
     <h2 id="h-cmp-next">Coming next</h2>
@@ -1423,28 +1441,6 @@ export function AccessRequests({ rows, onUpdate }) {
   <nav class="pager" aria-label="More in components" data-current="buttons"></nav>
 </section>
 
-<!-- =====================================================================
-     Fields
-     ===================================================================== -->
-<section class="panel" id="panel-fields" data-section="components" aria-labelledby="h-fields" hidden>
-  <p class="page-kicker">Component · CSS</p>
-  <h1 class="page-title" id="h-fields" tabindex="-1">Fields</h1>
-  <p class="page-lede">Text fields, textareas and checkboxes. Fields match the Select: same height, border and radius. Labels sit above, help text below.</p>
-  <div class="lib lib-demo"><div class="lib-row lib-row--top"><div class="field" style="width:260px"><label class="field__label" for="lf1">Job title</label><input id="lf1" value="Starfighter Pilot L4" aria-describedby="lf1-h"><span class="field-help" id="lf1-h">As candidates will see it.</span></div>
-<div class="field" style="width:260px"><label class="field__label" for="lf2">Minutes allowed</label><input id="lf2" value="" aria-invalid="true" aria-describedby="lf2-h"><span class="field-help" id="lf2-h">Enter a number of minutes, such as 45.</span></div></div>
-<div class="field field--wide"><label class="field__label" for="lf3">Instructions</label><textarea id="lf3">Answer every item. You can go back before you submit.</textarea></div>
-<fieldset class="checks"><legend class="field__label">Notify</legend><label class="check"><input type="checkbox" checked> Hiring manager</label><label class="check"><input type="checkbox"> Recruiter</label></fieldset></div>
-
-  <section class="doc-section" id="fld-classes" aria-labelledby="h-fld-classes">
-    <h2 id="h-fld-classes">Classes</h2>
-    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Field classes</caption><thead><tr><th scope="col">Class</th><th scope="col">What it does</th></tr></thead><tbody><tr><th scope="row"><code>.field</code></th><td>Label, control and help stacked with a 6px gap.</td></tr><tr><th scope="row"><code>.field__label</code></th><td>12px medium label in <code>--ink-faint</code>.</td></tr><tr><th scope="row"><code>.field-help</code></th><td>Help or error text under the control; link it with <code>aria-describedby</code>.</td></tr><tr><th scope="row"><code>aria-invalid="true"</code></th><td>A 2px ink border, plus the help text saying what to fix.</td></tr><tr><th scope="row"><code>.field--wide</code> · <code>--narrow</code></th><td>720px and 120px maximum widths.</td></tr><tr><th scope="row"><code>.check</code> · <code>.checks</code></th><td>Checkbox with its label; a fieldset of them.</td></tr><tr><th scope="row"><code>.form</code> · <code>.form-grid</code> · <code>.form-actions</code></th><td>Form layout: stacked, a responsive grid, and the button row.</td></tr></tbody></table></div>
-  </section>
-  <section class="doc-section" id="fld-rules" aria-labelledby="h-fld-rules">
-    <h2 id="h-fld-rules">Rules</h2>
-    <ul class="a11y-list"><li>Every control has a visible label. Placeholders are examples, not labels.</li><li>Invalid is shown by a heavier border and words, never red alone. Say how to fix it.</li><li>Group checkboxes and radios in a <code>fieldset</code> with a <code>legend</code>.</li></ul>
-  </section>
-  <nav class="pager" aria-label="More in components" data-current="fields"></nav>
-</section>
 
 <!-- =====================================================================
      Select
@@ -1492,41 +1488,6 @@ export function AccessRequests({ rows, onUpdate }) {
     <p>All three narrow or switch what’s shown below them. Pick by how many options there are, whether people choose one or several, and whether the counts are the point.</p><div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Which filter control to use</caption><thead><tr><th scope="col"></th><th scope="col"><a href="#segmented">Segmented control</a></th><th scope="col"><a href="#chips">Chips</a></th><th scope="col"><a href="#statfilter">StatFilter</a></th></tr></thead><tbody><tr><th scope="row">Choose</th><td>One</td><td>One, or several</td><td>One</td></tr><tr><th scope="row">Options</th><td>2 to 6, short, fixed</td><td>Any number; they wrap</td><td>3 to 8 states</td></tr><tr><th scope="row">Best for</th><td>Filtering by one property; switching view or mode (grid or list)</td><td>Multi-select filters; long or changing option lists</td><td>Queues and pipelines where the counts are the headline</td></tr><tr><th scope="row">Looks</th><td>A tray; the choice is lifted out of it</td><td>Separate pills; chosen is solid ink, with a check when several can be on</td><td>A strip of counts; chosen has a 3px ink underline</td></tr><tr><th scope="row">Keyboard</th><td>One Tab stop; arrow keys move and choose</td><td>Each chip is a Tab stop; Enter or Space toggles</td><td>Each card is a Tab stop; Enter or Space chooses</td></tr><tr><th scope="row">Built as</th><td>Radio group</td><td>Toggle buttons in a group</td><td>Toggle buttons in a group</td></tr></tbody></table></div><ul class="a11y-list"><li>Moving between pages, or between panels of different content, is navigation: use Tabs (coming in 0.3.0), not any of these.</li><li>More than 6 options, or labels too long for one line: chips that wrap, or a <a href="#select">Select</a>.</li><li>Whichever you use, say how many results are showing in a polite live region, and keep “All” first.</li></ul>
   </section>
   <nav class="pager" aria-label="More in components" data-current="segmented"></nav>
-</section>
-<section class="panel" id="panel-select" data-section="components" aria-labelledby="h-select" hidden>
-  <p class="page-kicker">Component · React</p>
-  <h1 class="page-title" id="h-select" tabindex="-1">Select</h1>
-  <p class="page-lede">A custom dropdown that replaces the native select, following the WAI-ARIA select-only combobox pattern. It looks like a field and opens like a menu.</p>
-  <div class="lib lib-demo" data-react="select"></div>
-
-  <section class="doc-section" id="sel-keys" aria-labelledby="h-sel-keys">
-    <h2 id="h-sel-keys">Keyboard</h2>
-    <table class="doc-table key-table"><caption class="sr-only">Select keyboard support</caption><tbody><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd> <kbd>↓</kbd> <kbd>↑</kbd></th><td>Open the list.</td></tr><tr><th scope="row"><kbd>↑</kbd> <kbd>↓</kbd> <kbd>Home</kbd> <kbd>End</kbd> <kbd>Page Up</kbd> <kbd>Page Down</kbd></th><td>Move through options.</td></tr><tr><th scope="row">Letters</th><td>Jump to a matching option.</td></tr><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd></th><td>Choose and close.</td></tr><tr><th scope="row"><kbd>Esc</kbd></th><td>Close without changing.</td></tr><tr><th scope="row"><kbd>Tab</kbd></th><td>Choose and move on.</td></tr></tbody></table>
-  </section>
-  <section class="doc-section" id="sel-sr" aria-labelledby="h-sel-sr">
-    <h2 id="h-sel-sr">Screen reader</h2>
-    <ul class="a11y-list"><li>Focus stays on the button; the open list is announced through <code>aria-activedescendant</code>, so people hear “Metric, Recall” and each option as they move.</li><li>In high contrast, the active option gets a Highlight outline.</li></ul>
-  </section>
-  <section class="doc-section" id="sel-usage" aria-labelledby="h-sel-usage">
-    <h2 id="h-sel-usage">Usage</h2>
-    <div class="code-block"><div class="code-block-bar"><span>JobPicker.tsx</span><button class="copy-button" type="button" data-copy-label="JobPicker.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;Select
-  label=&quot;Job&quot;
-  value={job}
-  onChange={setJob}
-  placeholder=&quot;Choose a job&quot;
-  options={jobs.map((j) =&gt; ({ value: j.id, label: j.title }))}
-  describedBy=&quot;job-help&quot;
-/&gt;</code></pre></div>
-  </section>
-  <section class="doc-section" id="sel-props" aria-labelledby="h-sel-props">
-    <h2 id="h-sel-props">Props</h2>
-    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">Select props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>label</code></td><td><code class="type">string</code></td><td>Visible label and accessible name</td></tr><tr><td><code>value, onChange</code></td><td><code class="type">string | number</code></td><td>Controlled value</td></tr><tr><td><code>options</code></td><td><code class="type">{ value, label }[]</code></td><td>The choices</td></tr><tr><td><code>describedBy</code></td><td><code class="type">string</code></td><td>id of help text</td></tr><tr><td><code>inline</code></td><td><code class="type">boolean</code></td><td>Label beside the button</td></tr><tr><td><code>hideLabel</code></td><td><code class="type">boolean</code></td><td>Label for screen readers only</td></tr><tr><td><code>placeholder</code></td><td><code class="type">string</code></td><td>Shown when the value isn’t an option</td></tr><tr><td><code>invalid</code></td><td><code class="type">boolean</code></td><td>aria-invalid and a heavier border</td></tr><tr><td><code>buttonId</code></td><td><code class="type">string</code></td><td>So an error summary can link to it</td></tr></tbody></table></div>
-  </section>
-  <section class="doc-section" id="sel-rules" aria-labelledby="h-sel-rules">
-    <h2 id="h-sel-rules">Rules</h2>
-    <ul class="a11y-list"><li>Near the bottom of its scrolling area (the nearest <code>[data-scroll]</code>), the list opens upward. Long lists scroll at 280px.</li><li>Use it for 4 to 30 options. Fewer: radios or ChoiceCards. More: a searchable picker.</li></ul>
-  </section>
-  <nav class="pager" aria-label="More in components" data-current="select"></nav>
 </section>
 
 <!-- =====================================================================
@@ -1747,6 +1708,282 @@ export function AccessRequests({ rows, onUpdate }) {
   <nav class="pager" aria-label="More in components" data-current="statfilter"></nav>
 </section>
 
+
+<!-- =====================================================================
+     Forms
+     ===================================================================== -->
+<section class="panel" id="panel-forms" data-section="components" aria-labelledby="h-forms" hidden>
+  <p class="page-kicker">Component · Forms</p>
+  <h1 class="page-title" id="h-forms" tabindex="-1">Forms</h1>
+  <p class="page-lede">Everything people type into or choose from. Each control is the native HTML element, styled, so the browser and screen readers already know how it works. This page covers what they share; each control has its own page.</p>
+  <ul class="lib tiles tiles--cards lib-index"><li class="tile"><a class="tile__link" href="#checkbox"><span class="tile__head"><span class="tile__title">Checkbox</span><span class="tile__tag">CSS</span></span><span class="tile__desc">One yes-or-no choice, such as agreeing to terms.</span></a></li><li class="tile"><a class="tile__link" href="#checkbox-group"><span class="tile__head"><span class="tile__title">Checkbox group</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Choose any number from a short list.</span></a></li><li class="tile"><a class="tile__link" href="#input"><span class="tile__head"><span class="tile__title">Input</span><span class="tile__tag">CSS</span></span><span class="tile__desc">One line of text: names, emails, numbers, search.</span></a></li><li class="tile"><a class="tile__link" href="#radio"><span class="tile__head"><span class="tile__title">Radio button</span><span class="tile__tag">CSS</span></span><span class="tile__desc">One option in a radio group, and how it looks.</span></a></li><li class="tile"><a class="tile__link" href="#radio-group"><span class="tile__head"><span class="tile__title">Radio group</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Choose exactly one from a short list.</span></a></li><li class="tile"><a class="tile__link" href="#select"><span class="tile__head"><span class="tile__title">Select</span><span class="tile__tag">React</span></span><span class="tile__desc">Choose one, or several, from a dropdown list.</span></a></li><li class="tile"><a class="tile__link" href="#textarea"><span class="tile__head"><span class="tile__title">Text area</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Several lines of text, with an optional counter.</span></a></li></ul>
+
+  <section class="doc-section" id="frm-anatomy" aria-labelledby="h-frm-anatomy">
+    <h2 id="h-frm-anatomy">What every field has</h2>
+      <div class="lib lib-demo"><div class="field" style="max-width:360px"><label class="field__label" for="fa-1">Job title</label><input id="fa-1" value="Starfighter Pilot L4" aria-describedby="fa-1-h"><span class="field-help" id="fa-1-h">As candidates will see it.</span></div>
+<div class="field" style="max-width:360px"><label class="field__label" for="fa-2">Team <span class="field__optional">(optional)</span></label><input id="fa-2"></div>
+<div class="field" style="max-width:360px"><label class="field__label" for="fa-3">Minutes allowed</label><input id="fa-3" inputmode="numeric" aria-invalid="true" aria-describedby="fa-3-e"><span class="field-error" id="fa-3-e"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M8 4.8v3.6M8 11h.01"/></svg>Enter a number of minutes, such as 45.</span></div></div>
+<ul class="a11y-list"><li><strong>A visible label</strong> above the control, joined to it with <code>for</code> and <code>id</code>. Placeholders are examples, never labels: they vanish as people type.</li><li><strong>Help text</strong> under the control, joined with <code>aria-describedby</code> so it’s read with the label.</li><li><strong>Optional, not required.</strong> Most fields in a good form are needed, so mark the few that aren’t with “(optional)”, rather than starring the rest.</li><li><strong>Errors</strong> replace the help text: an icon and words that say how to fix it, a 2px ink border, and <code>aria-invalid="true"</code>. Never colour alone.</li></ul>
+  </section>
+  <section class="doc-section" id="frm-validate" aria-labelledby="h-frm-validate">
+    <h2 id="h-frm-validate">When to check</h2>
+    <ul class="a11y-list"><li>Check when people submit, not while they type. Then move focus to an error summary at the top that links to each field, as in the <a href="#multi-step-form">Multi-step form</a> pattern.</li><li>After a field has shown an error, re-check it as they fix it, so the error clears as soon as it’s right.</li><li>Never disable the submit button to show the form is incomplete; people can’t find out why.</li><li>Keep what people typed when something fails. Never clear a field to show it was wrong.</li></ul>
+  </section>
+  <section class="doc-section" id="frm-layout" aria-labelledby="h-frm-layout">
+    <h2 id="h-frm-layout">Layout</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Form layout classes</caption><thead><tr><th scope="col">Class</th><th scope="col">What it does</th></tr></thead><tbody><tr><th scope="row"><code>.form</code></th><td>Fields stacked 20px apart.</td></tr><tr><th scope="row"><code>.form-grid</code></th><td>A responsive grid of short fields.</td></tr><tr><th scope="row"><code>.form-actions</code></th><td>The button row at the end: primary action first.</td></tr><tr><th scope="row"><code>.field--wide</code> · <code>--narrow</code></th><td>720px and 120px maximum widths: size a field to what it holds.</td></tr><tr><th scope="row"><code>.inline-form</code></th><td>A row of fields and a button, such as adding a row to a table.</td></tr></tbody></table></div><ul class="a11y-list"><li>One column. Two fields side by side only when they belong together, such as first and last name.</li><li>Make each field as wide as what goes in it: a postcode field is short, an address field long.</li><li>Group related fields under a heading, or in a <code>fieldset</code> with a <code>legend</code>.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="forms"></nav>
+</section>
+
+<!-- =====================================================================
+     Checkbox
+     ===================================================================== -->
+<section class="panel" id="panel-checkbox" data-section="components" aria-labelledby="h-checkbox" hidden>
+  <p class="page-kicker">Component · Forms</p>
+  <h1 class="page-title" id="h-checkbox" tabindex="-1">Checkbox</h1>
+  <p class="page-lede">One yes-or-no choice that takes effect when the form is submitted: agreeing to terms, sending a copy, including archived items. The native checkbox, drawn in ink.</p>
+  <div class="lib lib-demo"><label class="check"><input type="checkbox" checked> Send me a copy</label>
+<label class="check"><input type="checkbox"> Include archived assets</label>
+<label class="check check--desc"><input type="checkbox" aria-describedby="cb-d"><span class="check__text"><span class="check__label">Lock the assessment after the deadline</span><span class="check__desc" id="cb-d">Candidates who haven’t submitted can’t start or continue.</span></span></label>
+<label class="check"><input type="checkbox" class="js-mixed"> Select all (some are chosen)</label>
+<label class="check"><input type="checkbox" checked disabled> Proctoring (required for evaluated modules)</label></div>
+
+  <section class="doc-section" id="cb-states" aria-labelledby="h-cb-states">
+    <h2 id="h-cb-states">States</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Checkbox states</caption><thead><tr><th scope="col">State</th><th scope="col">Screen reader hears</th></tr></thead><tbody><tr><th scope="row">Not checked</th><td>“Send me a copy, checkbox, not checked”</td></tr><tr><th scope="row">Checked</th><td>“…checkbox, checked”</td></tr><tr><th scope="row">Mixed, for “select all” when some are chosen</th><td>“…checkbox, half checked” (set <code>indeterminate</code> in script)</td></tr><tr><th scope="row">With a description</th><td>The label, then the description through <code>aria-describedby</code></td></tr><tr><th scope="row">Disabled</th><td>“…dimmed” or “unavailable”, and it’s skipped by Tab</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="cb-keys" aria-labelledby="h-cb-keys">
+    <h2 id="h-cb-keys">Keyboard</h2>
+    <table class="doc-table key-table"><caption class="sr-only">Checkbox keyboard support</caption><tbody><tr><th scope="row"><kbd>Tab</kbd></th><td>Move to the checkbox.</td></tr><tr><th scope="row"><kbd>Space</kbd></th><td>Check or uncheck it.</td></tr></tbody></table>
+  </section>
+  <section class="doc-section" id="cb-rules" aria-labelledby="h-cb-rules">
+    <h2 id="h-cb-rules">Rules</h2>
+    <ul class="a11y-list"><li>The label is the whole <code>label</code>, so clicking the text toggles the box too.</li><li>Word it as the thing that will be true when it’s checked: “Send me a copy”, not “Don’t send me a copy”.</li><li>For a setting that applies the moment it changes, use a switch (coming in 0.3.0), not a checkbox.</li><li>Several related checkboxes are a <a href="#checkbox-group">Checkbox group</a>.</li></ul>
+  </section>
+  <section class="doc-section" id="cb-usage" aria-labelledby="h-cb-usage">
+    <h2 id="h-cb-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Checkbox.html</span><button class="copy-button" type="button" data-copy-label="Checkbox.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;label class=&quot;check&quot;&gt;
+  &lt;input type=&quot;checkbox&quot; name=&quot;copy&quot;&gt; Send me a copy
+&lt;/label&gt;</code></pre></div>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="checkbox"></nav>
+</section>
+
+<!-- =====================================================================
+     Checkbox group
+     ===================================================================== -->
+<section class="panel" id="panel-checkbox-group" data-section="components" aria-labelledby="h-checkbox-group" hidden>
+  <p class="page-kicker">Component · Forms</p>
+  <h1 class="page-title" id="h-checkbox-group" tabindex="-1">Checkbox group</h1>
+  <p class="page-lede">Choose any number from a short list. A <code>fieldset</code> whose <code>legend</code> names the group, so each checkbox is read with it: “Notify, group. Hiring manager, checkbox, checked”.</p>
+  <div class="lib lib-demo"><fieldset class="checks checks--stack" aria-describedby="cg-1-h"><legend class="field__label">Notify when a candidate submits</legend>
+<label class="check"><input type="checkbox" checked> Hiring manager</label><label class="check"><input type="checkbox" checked> Recruiter</label><label class="check"><input type="checkbox"> Proctor</label>
+<span class="field-help" id="cg-1-h">Each person gets one email per candidate.</span></fieldset>
+<fieldset class="checks checks--stack js-all-group"><legend class="field__label">Channels to review</legend>
+<label class="check"><input type="checkbox" class="js-all"> All channels</label>
+<div class="checks checks--stack checks--nested"><label class="check"><input type="checkbox" checked> Email</label><label class="check"><input type="checkbox"> Teams</label><label class="check"><input type="checkbox" checked> WhatsApp</label></div></fieldset>
+<fieldset class="checks checks--stack is-invalid" aria-describedby="cg-3-e"><legend class="field__label">Allowed tools</legend>
+<label class="check check--desc"><input type="checkbox"><span class="check__text"><span class="check__label">Calculator</span><span class="check__desc">A basic four-function calculator.</span></span></label>
+<label class="check check--desc"><input type="checkbox"><span class="check__text"><span class="check__label">Scratch notes</span><span class="check__desc">Cleared when the candidate submits.</span></span></label>
+<span class="field-error" id="cg-3-e"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M8 4.8v3.6M8 11h.01"/></svg>Choose at least one tool, or turn off “Tools allowed”.</span></fieldset>
+<fieldset class="checks"><legend class="field__label">Days</legend><label class="check"><input type="checkbox" checked> Weekdays</label><label class="check"><input type="checkbox"> Weekends</label></fieldset></div>
+
+  <section class="doc-section" id="cg-rules" aria-labelledby="h-cg-rules">
+    <h2 id="h-cg-rules">Rules</h2>
+    <ul class="a11y-list"><li>Stack the options (<code>.checks--stack</code>). Put them in a row only for two or three short ones, such as Weekdays and Weekends.</li><li>A “select all” checkbox goes first and shows the mixed state when some are chosen; its options sit indented below it.</li><li>A group error goes under the last option, and the <code>fieldset</code> points at it with <code>aria-describedby</code>.</li><li>More than about 7 options, or not enough room: a <a href="#select">multi-select</a>. Options people pick from often, or that filter what’s below: <a href="#chips">Chips</a>.</li></ul>
+  </section>
+  <section class="doc-section" id="cg-usage" aria-labelledby="h-cg-usage">
+    <h2 id="h-cg-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Notify.html</span><button class="copy-button" type="button" data-copy-label="Notify.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;fieldset class=&quot;checks checks--stack&quot; aria-describedby=&quot;notify-help&quot;&gt;
+  &lt;legend class=&quot;field__label&quot;&gt;Notify when a candidate submits&lt;/legend&gt;
+  &lt;label class=&quot;check&quot;&gt;&lt;input type=&quot;checkbox&quot; name=&quot;notify&quot; value=&quot;hm&quot;&gt; Hiring manager&lt;/label&gt;
+  &lt;label class=&quot;check&quot;&gt;&lt;input type=&quot;checkbox&quot; name=&quot;notify&quot; value=&quot;rec&quot;&gt; Recruiter&lt;/label&gt;
+  &lt;span class=&quot;field-help&quot; id=&quot;notify-help&quot;&gt;Each person gets one email per candidate.&lt;/span&gt;
+&lt;/fieldset&gt;</code></pre></div>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="checkbox-group"></nav>
+</section>
+
+<!-- =====================================================================
+     Input
+     ===================================================================== -->
+<section class="panel" id="panel-input" data-section="components" aria-labelledby="h-input" hidden>
+  <p class="page-kicker">Component · Forms</p>
+  <h1 class="page-title" id="h-input" tabindex="-1">Input</h1>
+  <p class="page-lede">One line of text: a name, an email, a number, a search. The native <code>input</code>, styled to match Select: 36px tall, a hairline border, 6px corners.</p>
+  <div class="lib lib-demo is-wide"><div class="form-grid">
+<div class="field"><label class="field__label" for="in-1">Name</label><input id="in-1" autocomplete="name" value="Leia Organa"></div>
+<div class="field"><label class="field__label" for="in-2">Work email</label><input id="in-2" type="email" autocomplete="email" placeholder="name@company.com"></div>
+<div class="field"><label class="field__label" for="in-3">Search</label><div class="field__control"><svg class="field__icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><input id="in-3" type="search" placeholder="Search by name, file or tag"></div></div>
+<div class="field field--narrow"><label class="field__label" for="in-4">Points</label><input id="in-4" inputmode="numeric" value="5"></div>
+<div class="field"><label class="field__label" for="in-5">Candidate ID</label><input id="in-5" value="C-1138" readonly aria-describedby="in-5-h"><span class="field-help" id="in-5-h">Read only: set by the hiring system.</span></div>
+<div class="field"><label class="field__label" for="in-6">Proctor</label><input id="in-6" value="Not needed" disabled></div>
+<div class="field"><label class="field__label" for="in-7">Minutes allowed</label><input id="in-7" inputmode="numeric" value="forty" aria-invalid="true" aria-describedby="in-7-e"><span class="field-error" id="in-7-e"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M8 4.8v3.6M8 11h.01"/></svg>Enter a number of minutes, such as 45.</span></div>
+</div></div>
+
+  <section class="doc-section" id="in-states" aria-labelledby="h-in-states">
+    <h2 id="h-in-states">States</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Input states</caption><thead><tr><th scope="col">State</th><th scope="col">Looks</th><th scope="col">Built with</th></tr></thead><tbody><tr><th scope="row">Default</th><td>Hairline border, page background</td><td><code>input</code></td></tr><tr><th scope="row">Hover</th><td>Border darkens</td><td></td></tr><tr><th scope="row">Focus</th><td>The blue focus ring</td><td>:focus-visible</td></tr><tr><th scope="row">Invalid</th><td>2px ink border and an error with an icon</td><td><code>aria-invalid="true"</code> + <code>.field-error</code></td></tr><tr><th scope="row">Read only</th><td>Quiet fill, can be selected and copied, stays in the Tab order</td><td><code>readonly</code></td></tr><tr><th scope="row">Disabled</th><td>Quiet fill, faint text, skipped by Tab</td><td><code>disabled</code>: prefer read only, or leave it out</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="in-rules" aria-labelledby="h-in-rules">
+    <h2 id="h-in-rules">Rules</h2>
+    <ul class="a11y-list"><li>Use the right <code>type</code>, <code>inputmode</code> and <code>autocomplete</code>, so phones show the right keyboard and browsers can fill it in. For numbers people don’t do maths on, such as IDs, use text with <code>inputmode="numeric"</code>, not <code>type="number"</code>.</li><li>Search inputs keep a visible or visually hidden label; the icon is decoration.</li><li>Prefer read only to disabled: disabled fields can’t be focused, so screen reader users may never find them, or learn why.</li></ul>
+  </section>
+  <section class="doc-section" id="in-usage" aria-labelledby="h-in-usage">
+    <h2 id="h-in-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Field.html</span><button class="copy-button" type="button" data-copy-label="Field.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;div class=&quot;field&quot;&gt;
+  &lt;label class=&quot;field__label&quot; for=&quot;minutes&quot;&gt;Minutes allowed&lt;/label&gt;
+  &lt;input id=&quot;minutes&quot; inputmode=&quot;numeric&quot; aria-describedby=&quot;minutes-help&quot;&gt;
+  &lt;span class=&quot;field-help&quot; id=&quot;minutes-help&quot;&gt;Leave blank for no time limit.&lt;/span&gt;
+&lt;/div&gt;</code></pre></div>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="input"></nav>
+</section>
+
+<!-- =====================================================================
+     Radio button
+     ===================================================================== -->
+<section class="panel" id="panel-radio" data-section="components" aria-labelledby="h-radio" hidden>
+  <p class="page-kicker">Component · Forms</p>
+  <h1 class="page-title" id="h-radio" tabindex="-1">Radio button</h1>
+  <p class="page-lede">One option among several, where choosing it un-chooses the others. Radio buttons always come in a <a href="#radio-group">radio group</a>; this page covers how a single one looks and behaves.</p>
+  <div class="lib lib-demo"><fieldset class="checks checks--stack"><legend class="field__label">Item type</legend>
+<label class="check"><input type="radio" name="rb-1" checked> Single choice</label>
+<label class="check"><input type="radio" name="rb-1"> Multiple choice</label>
+<label class="check check--desc"><input type="radio" name="rb-1" aria-describedby="rb-d"><span class="check__text"><span class="check__label">Paragraph</span><span class="check__desc" id="rb-d">Scored by a reviewer, not automatically.</span></span></label>
+<label class="check"><input type="radio" name="rb-1" disabled> Audio response (turn on recording first)</label></fieldset></div>
+
+  <section class="doc-section" id="rb-anatomy" aria-labelledby="h-rb-anatomy">
+    <h2 id="h-rb-anatomy">Anatomy and states</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Radio button anatomy and states</caption><thead><tr><th scope="col">Part or state</th><th scope="col">Looks</th><th scope="col">Screen reader hears</th></tr></thead><tbody><tr><th scope="row">Not chosen</th><td>An empty ring</td><td>“Multiple choice, radio button, not checked, 2 of 4”</td></tr><tr><th scope="row">Chosen</th><td>A ring with an ink dot</td><td>“Single choice, radio button, checked, 1 of 4”</td></tr><tr><th scope="row">With a description</th><td>Smaller grey line under the label</td><td>The label, then the description</td></tr><tr><th scope="row">Disabled</th><td>Faint, skipped by the arrow keys</td><td>“…unavailable”</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="rb-rules" aria-labelledby="h-rb-rules">
+    <h2 id="h-rb-rules">Rules</h2>
+    <ul class="a11y-list"><li>Never use one radio button alone: it can’t be un-chosen. For a single yes-or-no, use a <a href="#checkbox">Checkbox</a>.</li><li>Radios that share a <code>name</code> are one group: Tab reaches the chosen one, the arrow keys move and choose.</li><li>Word options so they don’t overlap, and so exactly one is true.</li></ul>
+  </section>
+  <section class="doc-section" id="rb-usage" aria-labelledby="h-rb-usage">
+    <h2 id="h-rb-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Radio.html</span><button class="copy-button" type="button" data-copy-label="Radio.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;label class=&quot;check&quot;&gt;
+  &lt;input type=&quot;radio&quot; name=&quot;item-type&quot; value=&quot;single&quot; checked&gt; Single choice
+&lt;/label&gt;</code></pre></div>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="radio"></nav>
+</section>
+
+<!-- =====================================================================
+     Radio group
+     ===================================================================== -->
+<section class="panel" id="panel-radio-group" data-section="components" aria-labelledby="h-radio-group" hidden>
+  <p class="page-kicker">Component · Forms</p>
+  <h1 class="page-title" id="h-radio-group" tabindex="-1">Radio group</h1>
+  <p class="page-lede">Choose exactly one from a short list where people should see every option at once. A <code>fieldset</code> and <code>legend</code> around radios that share a <code>name</code>.</p>
+  <div class="lib lib-demo"><fieldset class="checks checks--stack"><legend class="field__label">When results are shared</legend>
+<label class="check check--desc"><input type="radio" name="rg-1" checked aria-describedby="rg-1a"><span class="check__text"><span class="check__label">After review</span><span class="check__desc" id="rg-1a">A recruiter checks scores before candidates see them.</span></span></label>
+<label class="check check--desc"><input type="radio" name="rg-1" aria-describedby="rg-1b"><span class="check__text"><span class="check__label">Straight away</span><span class="check__desc" id="rg-1b">Candidates see their score when they submit.</span></span></label>
+<label class="check check--desc"><input type="radio" name="rg-1" aria-describedby="rg-1c"><span class="check__text"><span class="check__label">Never</span><span class="check__desc" id="rg-1c">Only the hiring team sees scores.</span></span></label></fieldset>
+<fieldset class="checks"><legend class="field__label">Difficulty</legend><label class="check"><input type="radio" name="rg-2"> Easy</label><label class="check"><input type="radio" name="rg-2" checked> Medium</label><label class="check"><input type="radio" name="rg-2"> Hard</label></fieldset>
+<fieldset class="checks checks--stack is-invalid" aria-describedby="rg-3-e"><legend class="field__label">Proctoring</legend>
+<label class="check"><input type="radio" name="rg-3"> Webcam check at start and end</label><label class="check"><input type="radio" name="rg-3"> Live proctor</label>
+<span class="field-error" id="rg-3-e"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M8 4.8v3.6M8 11h.01"/></svg>Choose how this assessment is proctored.</span></fieldset></div>
+
+  <section class="doc-section" id="rg-keys" aria-labelledby="h-rg-keys">
+    <h2 id="h-rg-keys">Keyboard</h2>
+    <table class="doc-table key-table"><caption class="sr-only">Radio group keyboard support</caption><tbody><tr><th scope="row"><kbd>Tab</kbd></th><td>Move into the group, onto the chosen option (or the first, if none is chosen), and out again.</td></tr><tr><th scope="row"><kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd></th><td>Move to the next or previous option and choose it.</td></tr><tr><th scope="row"><kbd>Space</kbd></th><td>Choose the focused option, if none is chosen yet.</td></tr></tbody></table>
+  </section>
+  <section class="doc-section" id="rg-rules" aria-labelledby="h-rg-rules">
+    <h2 id="h-rg-rules">Rules</h2>
+    <ul class="a11y-list"><li>Stack the options; a row only for two or three short ones, such as Easy, Medium, Hard.</li><li>Choose a sensible default when there is one, so people only change it if they need to. Leave none chosen when picking one should be a real decision, and say so in an error if they skip it.</li><li>A group error goes under the last option; the <code>fieldset</code> points at it with <code>aria-describedby</code>.</li><li>More than about 7 options: a <a href="#select">Select</a>. Bigger options with a description and an icon: a <a href="#card">ChoiceCard</a>. Filtering or switching the view of what’s below: a <a href="#segmented">Segmented control</a>.</li></ul>
+  </section>
+  <section class="doc-section" id="rg-usage" aria-labelledby="h-rg-usage">
+    <h2 id="h-rg-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Sharing.html</span><button class="copy-button" type="button" data-copy-label="Sharing.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;fieldset class=&quot;checks checks--stack&quot;&gt;
+  &lt;legend class=&quot;field__label&quot;&gt;When results are shared&lt;/legend&gt;
+  &lt;label class=&quot;check&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;share&quot; value=&quot;review&quot; checked&gt; After review&lt;/label&gt;
+  &lt;label class=&quot;check&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;share&quot; value=&quot;now&quot;&gt; Straight away&lt;/label&gt;
+  &lt;label class=&quot;check&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;share&quot; value=&quot;never&quot;&gt; Never&lt;/label&gt;
+&lt;/fieldset&gt;</code></pre></div>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="radio-group"></nav>
+</section>
+<section class="panel" id="panel-select" data-section="components" aria-labelledby="h-select" hidden>
+  <p class="page-kicker">Component · Forms · React</p>
+  <h1 class="page-title" id="h-select" tabindex="-1">Select</h1>
+  <p class="page-lede">Choose one option, or several, from a list that opens below a field. A custom dropdown that looks like a field and works like the native one: WAI-ARIA’s select-only combobox. <code>Select</code> chooses one; <code>MultiSelect</code> chooses several.</p>
+  <div class="lib lib-demo" data-react="select"></div>
+
+  <section class="doc-section" id="sel-multi" aria-labelledby="h-sel-multi">
+    <h2 id="h-sel-multi">Several at once: MultiSelect</h2>
+    <p>The same field, with a box before each option. Enter or Space turns an option on or off and the list stays open, so people can choose several in a row; Escape or Tab closes it. The field shows what’s chosen: “Email, Teams +1”.</p>  <div class="lib lib-demo" data-react="multiselect"></div>
+<div class="code-block"><div class="code-block-bar"><span>Channels.tsx</span><button class="copy-button" type="button" data-copy-label="Channels.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;MultiSelect
+  label=&quot;Channels to review&quot;
+  value={channels}
+  onChange={setChannels}
+  options={channelOptions}
+  placeholder=&quot;Choose channels&quot;
+/&gt;</code></pre></div><ul class="a11y-list"><li>The list is <code>aria-multiselectable</code>; each option is announced as “selected” or “not selected”.</li><li>Use it for about 7 or more options, or when there isn’t room. With fewer, a <a href="#checkbox-group">checkbox group</a> shows every option without opening anything.</li><li>Nothing chosen shows the placeholder; say what that means, such as “Any channel”.</li></ul>
+  </section>
+  <section class="doc-section" id="sel-keys" aria-labelledby="h-sel-keys">
+    <h2 id="h-sel-keys">Keyboard</h2>
+    <table class="doc-table key-table"><caption class="sr-only">Select keyboard support</caption><tbody><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd> <kbd>↓</kbd> <kbd>↑</kbd></th><td>Open the list.</td></tr><tr><th scope="row"><kbd>↑</kbd> <kbd>↓</kbd> <kbd>Home</kbd> <kbd>End</kbd> <kbd>Page Up</kbd> <kbd>Page Down</kbd></th><td>Move through options.</td></tr><tr><th scope="row">Letters</th><td>Jump to a matching option.</td></tr><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd></th><td>Choose and close.</td></tr><tr><th scope="row"><kbd>Esc</kbd></th><td>Close without changing.</td></tr><tr><th scope="row"><kbd>Tab</kbd></th><td>Choose and move on.</td></tr></tbody></table>
+  </section>
+  <section class="doc-section" id="sel-sr" aria-labelledby="h-sel-sr">
+    <h2 id="h-sel-sr">Screen reader</h2>
+    <ul class="a11y-list"><li>Focus stays on the button; the open list is announced through <code>aria-activedescendant</code>, so people hear “Metric, Recall” and each option as they move.</li><li>In high contrast, the active option gets a Highlight outline.</li></ul>
+  </section>
+  <section class="doc-section" id="sel-usage" aria-labelledby="h-sel-usage">
+    <h2 id="h-sel-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>JobPicker.tsx</span><button class="copy-button" type="button" data-copy-label="JobPicker.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;Select
+  label=&quot;Job&quot;
+  value={job}
+  onChange={setJob}
+  placeholder=&quot;Choose a job&quot;
+  options={jobs.map((j) =&gt; ({ value: j.id, label: j.title }))}
+  describedBy=&quot;job-help&quot;
+/&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="sel-props" aria-labelledby="h-sel-props">
+    <h2 id="h-sel-props">Props</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">Select props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>label</code></td><td><code class="type">string</code></td><td>Visible label and accessible name</td></tr><tr><td><code>value, onChange</code></td><td><code class="type">string | number</code></td><td>Controlled value</td></tr><tr><td><code>options</code></td><td><code class="type">{ value, label }[]</code></td><td>The choices</td></tr><tr><td><code>describedBy</code></td><td><code class="type">string</code></td><td>id of help text</td></tr><tr><td><code>inline</code></td><td><code class="type">boolean</code></td><td>Label beside the button</td></tr><tr><td><code>hideLabel</code></td><td><code class="type">boolean</code></td><td>Label for screen readers only</td></tr><tr><td><code>placeholder</code></td><td><code class="type">string</code></td><td>Shown when the value isn’t an option</td></tr><tr><td><code>invalid</code></td><td><code class="type">boolean</code></td><td>aria-invalid and a heavier border</td></tr><tr><td><code>buttonId</code></td><td><code class="type">string</code></td><td>So an error summary can link to it</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="sel-rules" aria-labelledby="h-sel-rules">
+    <h2 id="h-sel-rules">Rules</h2>
+    <ul class="a11y-list"><li>Near the bottom of its scrolling area (the nearest <code>[data-scroll]</code>), the list opens upward. Long lists scroll at 280px.</li><li>Use it for 4 to 30 options. Fewer: radios or ChoiceCards. More: a searchable picker.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="select"></nav>
+</section>
+
+<!-- =====================================================================
+     Text area
+     ===================================================================== -->
+<section class="panel" id="panel-textarea" data-section="components" aria-labelledby="h-textarea" hidden>
+  <p class="page-kicker">Component · Forms</p>
+  <h1 class="page-title" id="h-textarea" tabindex="-1">Text area</h1>
+  <p class="page-lede">Several lines of text: instructions, notes, a reason. It grows downward when people drag its corner, and can count characters against a limit.</p>
+  <div class="lib lib-demo"><div class="field field--wide"><label class="field__label" for="ta-1">Instructions for candidates</label><textarea id="ta-1" rows="4" aria-describedby="ta-1-h">Answer every item. You can go back before you submit.</textarea><span class="field-help" id="ta-1-h">Shown before the first item.</span></div>
+<div class="field field--wide"><label class="field__label" for="ta-2">Reason for escalating</label><textarea id="ta-2" rows="3" class="js-count" data-max="140" aria-describedby="ta-2-h ta-2-c">Mentions a gift above the policy limit.</textarea><div class="field__foot"><span class="field-help" id="ta-2-h">The reviewer sees this first.</span><span class="field__counter" id="ta-2-c"></span></div><span class="visually-hidden" id="ta-2-live" role="status" aria-live="polite"></span></div></div>
+
+  <section class="doc-section" id="ta-counter" aria-labelledby="h-ta-counter">
+    <h2 id="h-ta-counter">Character counter</h2>
+    <ul class="a11y-list"><li>Show what’s left (“102 characters left”), and when people go over, say by how much (“6 characters too many”) in semibold ink. Never cut off what they typed.</li><li>The counter is read with the field’s description. Announce it from a polite live region only at the moment people reach the limit or go over, not on every key.</li><li>Use a limit only when there is a real one, such as a column in a database or a message length.</li></ul>
+  </section>
+  <section class="doc-section" id="ta-rules" aria-labelledby="h-ta-rules">
+    <h2 id="h-ta-rules">Rules</h2>
+    <ul class="a11y-list"><li>Size it to the answer you expect: <code>rows="3"</code> for a sentence or two, more for instructions.</li><li>Let people resize it vertically (the default here); don’t let it widen past its column.</li><li>States match <a href="#input">Input</a>: hover, focus, invalid, read only, disabled.</li></ul>
+  </section>
+  <section class="doc-section" id="ta-usage" aria-labelledby="h-ta-usage">
+    <h2 id="h-ta-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Reason.html</span><button class="copy-button" type="button" data-copy-label="Reason.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;div class=&quot;field&quot;&gt;
+  &lt;label class=&quot;field__label&quot; for=&quot;reason&quot;&gt;Reason for escalating&lt;/label&gt;
+  &lt;textarea id=&quot;reason&quot; rows=&quot;3&quot; aria-describedby=&quot;reason-help reason-count&quot;&gt;&lt;/textarea&gt;
+  &lt;div class=&quot;field__foot&quot;&gt;
+    &lt;span class=&quot;field-help&quot; id=&quot;reason-help&quot;&gt;The reviewer sees this first.&lt;/span&gt;
+    &lt;span class=&quot;field__counter&quot; id=&quot;reason-count&quot;&gt;140 characters left&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="textarea"></nav>
+</section>
 <!-- =====================================================================
      HoverCard
      ===================================================================== -->
@@ -5484,7 +5721,7 @@ export function AccessRequests({ rows, onUpdate }) {
   });
   // Previous and Next follow the sidebar order within the page's own section, skipping its index page.
   const orderFor = section => [...document.querySelectorAll(`.nav-group[data-section="${section}"] .nav-link`)]
-    .map(a => [a.getAttribute("href").slice(1), a.textContent.trim()])
+    .map(a => [a.getAttribute("href").slice(1), (document.getElementById("h-" + a.getAttribute("href").slice(1)) || a).textContent.trim()])
     .filter(([id]) => id !== section);
   document.querySelectorAll(".pager").forEach(nav => {
     const ORDER = orderFor(nav.closest(".panel").dataset.section);
@@ -5574,6 +5811,29 @@ export function AccessRequests({ rows, onUpdate }) {
     });
   });
 
+  /* ---------------- Forms demos: counter, select all, mixed ---------------- */
+  document.querySelectorAll("textarea.js-count").forEach(ta => {
+    const max = +ta.dataset.max, out = $(ta.getAttribute("aria-describedby").split(" ").pop());
+    const live = $(ta.id + "-live"); let was = null;
+    const update = () => {
+      const left = max - ta.value.length, over = left < 0;
+      out.textContent = over ? `${-left} ${-left === 1 ? "character" : "characters"} too many` : `${left} ${left === 1 ? "character" : "characters"} left`;
+      out.classList.toggle("is-over", over);
+      ta.setAttribute("aria-invalid", String(over));
+      const state = over ? "over" : left === 0 ? "at" : "under";
+      if (was !== null && state !== was && state !== "under") live.textContent = out.textContent;
+      was = state;
+    };
+    ta.addEventListener("input", update); update();
+  });
+  document.querySelectorAll(".js-all-group").forEach(g => {
+    const all = g.querySelector(".js-all"), items = [...g.querySelectorAll(".checks--nested input")];
+    const sync = () => { const n = items.filter(i => i.checked).length; all.checked = n === items.length; all.indeterminate = n > 0 && n < items.length; };
+    all.addEventListener("change", () => { items.forEach(i => { i.checked = all.checked; }); sync(); });
+    items.forEach(i => i.addEventListener("change", sync)); sync();
+  });
+  document.querySelectorAll(".js-mixed").forEach(c => { c.indeterminate = true; });
+
   /* ---------------- Tiles demo: switch layout and pictures ---------------- */
   const tilesDemo = $("tiles-demo");
   document.querySelectorAll(".js-tiles-layout").forEach(b => b.addEventListener("click", () => {
@@ -5633,6 +5893,7 @@ export function AccessRequests({ rows, onUpdate }) {
   });
 
   function show(route, { focus = true } = {}) {
+    if (route === "fields") route = "forms"; // the old Fields page
     let tab = null, target = null;
     if (!routes.includes(route)) {
       const el = route && $(route);

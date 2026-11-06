@@ -1,4 +1,5 @@
-/* Fields, checkboxes and form layout. */
+/* Forms: fields (input, textarea), checkboxes, radios and form layout.
+   Labels sit above controls, help and errors below. Mark optional fields, not required ones. */
 .field { display: grid; gap: var(--space-1-5); min-width: 0; }
 .field__label { font-size: var(--text-caption); font-weight: var(--weight-medium); color: var(--ink-faint); }
 .field input, .field textarea {
@@ -6,9 +7,31 @@
   border: 1px solid var(--rule-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink);
   font-size: var(--text-body-sm); line-height: var(--leading-snug);
 }
-.field textarea { resize: vertical; min-height: 72px; }
+.field textarea { resize: vertical; min-height: 88px; line-height: var(--leading-body); }
+.field input::placeholder, .field textarea::placeholder { color: var(--ink-faint); }
 .field input:hover, .field textarea:hover { border-color: var(--ink-faint); }
 .field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border: 2px solid var(--ink); padding: 5px 9px; }
+.field input:disabled, .field textarea:disabled { background: var(--bg-subtle); color: var(--ink-faint); border-color: var(--rule); cursor: not-allowed; }
+.field input:read-only:not(:disabled), .field textarea:read-only:not(:disabled) { background: var(--bg-subtle); border-color: var(--rule); }
+.field input:read-only:hover, .field textarea:read-only:hover { border-color: var(--rule); }
+.field__optional { font-weight: var(--weight-regular); color: var(--ink-faint); }
+
+/* Input with a leading icon (search) */
+.field__control { position: relative; display: grid; }
+.field__icon { position: absolute; left: var(--space-2-5); top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--ink-faint); pointer-events: none;
+  fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.field__control input { padding-left: calc(var(--space-2-5) + 16px + var(--space-2)); }
+.field__control input[aria-invalid="true"] { padding-left: calc(var(--space-2-5) + 16px + var(--space-2) - 1px); }
+
+/* Help row: help or error on the left, a counter on the right */
+.field__foot { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+.field__counter { flex: none; margin-left: auto; font-size: var(--text-small); color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+.field__counter.is-over { color: var(--ink); font-weight: var(--weight-semibold); }
+
+/* Error text: ink words with an icon in the error colour. The words carry it; the colour only supports. */
+.field-error { display: flex; align-items: flex-start; gap: var(--space-1-5); font-size: var(--text-small); font-weight: var(--weight-medium); color: var(--ink); max-width: 62ch; }
+.field-error svg { flex: none; width: 14px; height: 14px; margin-top: 2px; color: var(--error); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
 .field--wide { max-width: 720px; }
 .field--narrow { max-width: 120px; }
 .field-help { flex-basis: 100%; font-size: var(--text-small); color: var(--ink-faint); max-width: 62ch; }
@@ -18,7 +41,26 @@
 .inline-form { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-3) var(--space-4); margin-top: var(--space-5); }
 .inline-form .field { width: 200px; }
 .inline-form .field--narrow { width: 120px; }
-.checks { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2-5) var(--space-6); }
+/* Checkbox and radio groups: a fieldset whose legend names the group.
+   Stack them (.checks--stack) unless there are two or three short options. */
+.checks { border: 0; padding: 0; margin: 0; min-width: 0; display: flex; flex-wrap: wrap; gap: var(--space-2-5) var(--space-6); }
 .checks legend { margin-bottom: var(--space-2-5); padding: 0; }
+.checks--stack { flex-direction: column; flex-wrap: nowrap; gap: var(--space-3); }
+.checks > .field-help, .checks > .field-error { margin-top: var(--space-1); }
+.checks--nested { margin-left: calc(16px + var(--space-2)); }
+
+/* One checkbox or radio with its label. Native inputs, drawn in ink. */
 .check { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-body-sm); cursor: pointer; }
-.check input { width: 16px; height: 16px; margin: 0; accent-color: var(--ink); }
+.check input { flex: none; width: 16px; height: 16px; margin: 0; accent-color: var(--ink); cursor: inherit; }
+.check:has(input:disabled) { color: var(--ink-faint); cursor: not-allowed; }
+/* With a description under the label */
+.check--desc { align-items: flex-start; }
+.check--desc input { margin-top: 2px; }
+.check__text { display: grid; gap: 2px; }
+.check__label { color: var(--ink); }
+.check__desc { font-size: var(--text-small); color: var(--ink-soft); line-height: 1.5; }
+.check:has(input:disabled) .check__label, .check:has(input:disabled) .check__desc { color: var(--ink-faint); }
+
+@media (forced-colors: active) {
+  .field-error svg { color: CanvasText; }
+}
