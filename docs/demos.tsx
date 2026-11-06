@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, ChoiceCard, HoverCard, ResetButton, Select, SortHeader, StatFilter, TableCheck, TableEmpty,
+  BrowserFrame, ChipGroup, ChoiceCard, HoverCard, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, TableCheck, TableEmpty,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -188,6 +188,74 @@ function ResetDemo() {
   );
 }
 
+/* ---------- SegmentedControl ---------- */
+const ASSETS = [
+  { name: 'X-wing schematic', kind: 'images' }, { name: 'Cantina sign', kind: 'images' }, { name: 'Shipment chart', kind: 'charts' },
+  { name: 'Briefing', kind: 'video' }, { name: 'Intercept', kind: 'audio' }, { name: 'Customer call', kind: 'audio' },
+  { name: 'Astromech manual', kind: 'documents' }, { name: 'Fuel chart', kind: 'charts' }, { name: 'Hangar walk-through', kind: 'video' },
+];
+type Kind = 'all' | 'images' | 'video' | 'audio' | 'documents' | 'charts';
+const GridIcon = () => <svg viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1" /><rect x="9" y="2.5" width="4.5" height="4.5" rx="1" /><rect x="2.5" y="9" width="4.5" height="4.5" rx="1" /><rect x="9" y="9" width="4.5" height="4.5" rx="1" /></svg>;
+const ListIcon = () => <svg viewBox="0 0 16 16"><path d="M6 4h7.5M6 8h7.5M6 12h7.5M2.5 4h.01M2.5 8h.01M2.5 12h.01" /></svg>;
+function SegmentedDemo() {
+  const [kind, setKind] = useState<Kind>('video');
+  const [view, setView] = useState<'grid' | 'list'>('grid');
+  const [range, setRange] = useState<'7' | '30' | '90'>('30');
+  const kinds: Kind[] = ['all', 'images', 'video', 'audio', 'documents', 'charts'];
+  const count = (k: Kind) => (k === 'all' ? ASSETS.length : ASSETS.filter((a) => a.kind === k).length);
+  const shown = ASSETS.filter((a) => kind === 'all' || a.kind === kind);
+  return (
+    <>
+      <div className="lib-row">
+        <SegmentedControl label="Type" value={kind} onChange={setKind}
+          options={kinds.map((k) => ({ value: k, label: k[0].toUpperCase() + k.slice(1), count: count(k) }))} />
+        <SegmentedControl label="View" iconOnly value={view} onChange={setView}
+          options={[{ value: 'grid', label: 'Grid', icon: <GridIcon /> }, { value: 'list', label: 'List', icon: <ListIcon /> }]} />
+      </div>
+      <p className="t-small muted" aria-live="polite">{shown.length} {shown.length === 1 ? 'asset' : 'assets'}, as a {view}: {shown.map((a) => a.name).join(', ')}.</p>
+      <div className="lib-row">
+        <SegmentedControl label="Period" showLabel size="sm" value={range} onChange={setRange}
+          options={[{ value: '7', label: '7 days' }, { value: '30', label: '30 days' }, { value: '90', label: '90 days' }]} />
+      </div>
+    </>
+  );
+}
+
+/* ---------- ChipGroup ---------- */
+const MESSAGES = [
+  { s: 'open', ch: ['email'] }, { s: 'open', ch: ['teams'] }, { s: 'escalated', ch: ['whatsapp'] }, { s: 'cleared', ch: ['email'] },
+  { s: 'open', ch: ['bloomberg'] }, { s: 'escalated', ch: ['email'] }, { s: 'cleared', ch: ['teams'] }, { s: 'open', ch: ['sms'] },
+];
+type Status = 'all' | 'open' | 'escalated' | 'cleared';
+const CHANNELS = ['email', 'teams', 'bloomberg', 'whatsapp', 'sms'] as const;
+type Channel = typeof CHANNELS[number];
+const CH_LABEL: Record<Channel, string> = { email: 'Email', teams: 'Teams', bloomberg: 'Bloomberg Chat', whatsapp: 'WhatsApp', sms: 'Text message' };
+function ChipsDemo() {
+  const [status, setStatus] = useState<Status>('all');
+  const [channels, setChannels] = useState<Channel[]>(['email', 'teams']);
+  const statuses: Status[] = ['all', 'open', 'escalated', 'cleared'];
+  const byStatus = (s: Status) => MESSAGES.filter((m) => s === 'all' || m.s === s);
+  const shown = byStatus(status).filter((m) => channels.length === 0 || m.ch.some((c) => channels.includes(c as Channel)));
+  return (
+    <>
+      <div className="lib-fieldset">
+        <p className="t-label" id="chips-ch-l">Channels (choose any)</p>
+        <ChipGroup multiple label="Filter by channel" controls="chips-out" value={channels} onChange={setChannels}
+          options={CHANNELS.map((c) => ({ value: c, label: CH_LABEL[c], count: MESSAGES.filter((m) => m.ch.includes(c)).length }))} />
+      </div>
+      <div className="lib-fieldset">
+        <p className="t-label">Status (choose one)</p>
+        <ChipGroup label="Filter by status" size="sm" controls="chips-out" value={status} onChange={setStatus}
+          options={statuses.map((s) => ({ value: s, label: s[0].toUpperCase() + s.slice(1), count: byStatus(s).length }))} />
+      </div>
+      <p id="chips-out" className="t-small muted" aria-live="polite">
+        {shown.length} {shown.length === 1 ? 'message' : 'messages'}{channels.length ? ` in ${channels.map((c) => CH_LABEL[c]).join(', ')}` : ' in every channel'}.
+        {channels.length > 0 && <> <button type="button" className="link-button" onClick={() => setChannels([])}>Clear channels</button></>}
+      </p>
+    </>
+  );
+}
+
 const DEMOS: Record<string, () => ReactNode> = {
   select: () => <SelectDemo />,
   table: () => <TableDemo />,
@@ -196,6 +264,8 @@ const DEMOS: Record<string, () => ReactNode> = {
   hovercard: () => <HoverCardDemo />,
   browserframe: () => <FrameApp />,
   resetbutton: () => <ResetDemo />,
+  segmented: () => <SegmentedDemo />,
+  chips: () => <ChipsDemo />,
 };
 
 document.querySelectorAll<HTMLElement>('[data-react]').forEach((el) => {

@@ -1,0 +1,34 @@
+/* Chips: separate pill buttons that filter what's below. They wrap, so they suit many options,
+   and they can be multi-select. Toggle buttons: each chip is a Tab stop with aria-pressed.
+   Chosen: solid ink. Multi-select chips also show a check, so the state is a shape too. */
+
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1-5); }
+
+.chip {
+  appearance: none; display: inline-flex; align-items: center; gap: var(--space-1-5);
+  height: var(--control-h); padding: 0 var(--space-3);
+  border: 1px solid var(--rule-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink);
+  font: inherit; font-size: var(--text-body-sm); font-weight: var(--weight-medium); line-height: 1; white-space: nowrap;
+  cursor: pointer;
+}
+.chip:hover { background: var(--bg-hover); }
+.chip .count, .chip__count { font-family: var(--mono); font-size: var(--text-caption); font-weight: var(--weight-regular); color: var(--ink-soft); }
+.chip--sm { height: var(--control-h-sm); padding: 0 var(--space-2-5); font-size: var(--text-small); }
+
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+.chip[aria-pressed="true"]:hover { opacity: .88; }
+.chip[aria-pressed="true"] .count, .chip[aria-pressed="true"] .chip__count { color: color-mix(in srgb, var(--on-ink) 75%, var(--ink)); }
+
+.chip__check { width: 14px; height: 14px; flex: none; margin-left: -2px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chip:not([aria-pressed="true"]) .chip__check { display: none; }
+
+.chip:disabled, .chip[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+
+@media (forced-colors: active) {
+  .chip { border-color: ButtonText; }
+  .chip[aria-pressed="true"] { forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight; }
+  .chip[aria-pressed="true"] .count, .chip[aria-pressed="true"] .chip__count { color: HighlightText; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .chip { transition: background-color .12s ease, opacity .12s ease; }
+}

@@ -10,6 +10,9 @@ The design system moves into Enterprise Library: one repo for foundations, compo
 - Buttons: `--ghost`, `--danger`, `--lg`, `--icon`, `.btn__icon`, the pressed state, `.btn-row`, `.link-button--danger`, forced-colors borders.
 - Table: `--selectable`, `--hover`, `--sticky`, `.center`, and `SortHeader`, `TableCheck`, `TableEmpty`.
 - Card: `.card` with header, body, footer and stats; `Card` and `ChoiceCard`.
+- Segmented control (`.segmented`, `SegmentedControl`): choose one of a few options in a tray; a radio group, with counts, icon-only, small and full-width versions. From Online Assessments' asset and module filters and grid/list switch.
+- Chips (`.chip`, `ChipGroup`): pill toggle buttons that filter, single- or multi-select (with a check when on). The docs page's own chips now use them.
+- Docs: Segmented control, Chips and StatFilter form a "Filters and views" group, each page with the same guide to choosing between them. New token `--space-0-5` (2px), for the segmented tray.
 - Tiles: a grid of links into other pages, tiled (shared hairlines) or as cards; `Tiles` and `Tile`. The docs' Patterns, Components and Foundations index pages use it.
 - Fields: `aria-invalid` styling. Stylesheets split into `base`, `type`, `forms`, `buttons`, `table` and `card`.
 

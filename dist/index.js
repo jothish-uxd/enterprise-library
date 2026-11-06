@@ -11,3 +11,5 @@ export { default as StatFilter } from './components/StatFilter';
 export { SortHeader, TableCheck, TableEmpty } from './components/Table';
 export { Card, ChoiceCard } from './components/Card';
 export { Tiles, Tile } from './components/Tiles';
+export { SegmentedControl } from './components/SegmentedControl';
+export { ChipGroup } from './components/ChipGroup';

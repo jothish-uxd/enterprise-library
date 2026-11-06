@@ -84,6 +84,27 @@ Stylesheets: `styles.css` has everything. Each file also ships under `css/`: `to
 `ChoiceCard` is a card that is a real radio or checkbox: the input covers the card, invisible; the title is its name, the description its description. Chosen: a 2px ink edge and a filled mark (ring for radio, box for checkbox). Disabled stays readable and says why. Never a second control inside. A grid of links to other pages is Tiles, not cards.
 
 
+### Filters and views: Segmented control, Chips, StatFilter
+
+All three narrow or switch what's shown below them. Pick by how many options there are, whether people choose one or several, and whether the counts are the point.
+
+| | Segmented control | Chips | StatFilter |
+| --- | --- | --- | --- |
+| Choose | One | One, or several | One |
+| Options | 2–6, short, fixed | Any number; they wrap | 3–8 states |
+| Best for | Filtering by one property; switching view or mode (grid / list) | Multi-select filters; long or changing option lists | Queues and pipelines where the counts are the headline |
+| Looks | A tray; the choice is lifted out of it | Separate pills; chosen is solid ink, with a check when several can be on | A strip of counts; chosen has a 3px ink underline |
+| Keyboard | One Tab stop; arrows move and choose | Each chip a Tab stop; Enter/Space toggles | Each card a Tab stop |
+| Built as | Radio group (real radios) | Toggle buttons in a group | Toggle buttons in a group |
+
+- Moving between pages, or panels of different content, is navigation: Tabs (0.3.0), not any of these.
+- More than 6 options, or long labels: chips that wrap, or a Select.
+- Keep "All" first, and announce how many results are showing in a polite live region.
+
+**Segmented control** (`segmented.css`, `components/SegmentedControl.tsx`). `.segmented` tray, 36px like fields (`--sm` 30px), `--icons` for square icon-only options, `--fill` for full width; `.segmented__opt` with an invisible `.segmented__input` radio over it; chosen is `.is-on` or a checked input: page background and a rule-strong outline. `.segmented__icon`, `.segmented__count`; `.segmented-field` for a visible label. React: `<SegmentedControl label options value onChange showLabel iconOnly size fill name>`. Screen readers hear "Type, Video 4, radio button, checked, 3 of 6"; icon-only options keep their text label as the name. High contrast: the chosen option is Highlight. Overflows by scrolling sideways; at phone width with many options, use a Select instead.
+
+**Chips** (`chips.css`, `components/ChipGroup.tsx`). `.chips` wrapping row; `.chip` 36px toggle button (`--sm` 30px) with `aria-pressed`; chosen is solid ink; `.chip__count` (or `.count`); `.chip__check` shows when a multi-select chip is on. React: `<ChipGroup label options value onChange multiple size controls>`. Single-select always has one chip on and pressing it again doesn't turn it off; multi-select with nothing on means no filter, so offer a way to clear.
+
 ### Tiles (`tiles.css`, `components/Tiles.tsx`)
 
 A grid of links into other pages: a section's index, a gallery of patterns or templates. Two layouts:

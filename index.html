@@ -15,6 +15,8 @@
   @import url("dist/css/table.css") layer(lib);
   @import url("dist/css/card.css") layer(lib);
   @import url("dist/css/tiles.css") layer(lib);
+  @import url("dist/css/segmented.css") layer(lib);
+  @import url("dist/css/chips.css") layer(lib);
   @import url("dist/css/browser-frame.css") layer(lib);
   @import url("dist/css/select.css") layer(lib);
   @import url("dist/css/reset.css") layer(lib);
@@ -349,16 +351,6 @@
   .search-input::placeholder { color: var(--ink-faint); }
   .search-input:focus-visible { outline-offset: 0; border-color: var(--focus); }
   .chip-group { display: grid; gap: 6px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chip {
-    appearance: none; display: inline-flex; align-items: center; gap: 6px;
-    height: 36px; padding: 0 12px; border: 1px solid var(--rule-strong); border-radius: 6px;
-    background: var(--bg); color: var(--ink); font: inherit; font-size: 13.5px; font-weight: 500; cursor: pointer;
-  }
-  .chip:hover { background: var(--bg-hover); }
-  .chip .count { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); font-weight: 400; }
-  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-  .chip[aria-pressed="true"] .count { color: color-mix(in srgb, var(--bg) 75%, var(--ink)); }
 
   /* ---------- Demo: table ---------- */
   .grid-frame { border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
@@ -854,7 +846,7 @@
   /* ---------- Library demos ---------- */
   /* The page skips the library's base.css, so library markup gets its margin resets here. */
   .lib :where(h1, h2, h3, h4, p, dl, dd, figure) { margin: 0; }
-  .lib-demo { margin-top: 40px; padding: 24px; display: grid; gap: 20px; border: 1px solid var(--rule); border-radius: 12px; background: var(--bg); }
+  .lib-demo { margin-top: 40px; padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; border: 1px solid var(--rule); border-radius: 12px; background: var(--bg); }
   .doc-section .lib-demo { margin-top: 16px; }
   .lib-demo:empty { min-height: 120px; }
   .lib-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
@@ -868,6 +860,7 @@
   .install { max-width: 560px; }
   .lib .table code { white-space: nowrap; }
   .lib-ramp td:nth-child(3) { min-width: 260px; }
+  .lib-demo:has(> .lib-ramp) { overflow-x: auto; }
   .lib-ramp th { white-space: nowrap; }
   .lib-colors td, .lib-colors th { white-space: nowrap; }
   .lib-colors td:last-child { white-space: normal; }
@@ -931,7 +924,7 @@
     *, *::before, *::after { transition: none !important; }
   }
   @media (forced-colors: active) {
-    .chip[aria-pressed="true"], .btn-primary, .layers li.is-focus { forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight; }
+    .btn-primary, .layers li.is-focus { forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight; }
     .data-table tbody tr.is-open > :first-child { box-shadow: none; border-left: 3px solid Highlight; }
     .timeline li::before { forced-color-adjust: none; background: CanvasText; }
     .btn:where(:not(.lib *))[aria-disabled="true"] { color: GrayText; border-color: GrayText; }
@@ -1015,9 +1008,11 @@
         <li><a class="nav-link" href="#browserframe">BrowserFrame</a></li>
         <li><a class="nav-link" href="#buttons">Buttons</a></li>
         <li><a class="nav-link" href="#card">Card</a></li>
+        <li><a class="nav-link" href="#chips">Chips</a></li>
         <li><a class="nav-link" href="#fields">Fields</a></li>
         <li><a class="nav-link" href="#hovercard">HoverCard</a></li>
         <li><a class="nav-link" href="#resetbutton">ResetButton</a></li>
+        <li><a class="nav-link" href="#segmented">Segmented control</a></li>
         <li><a class="nav-link" href="#select">Select</a></li>
         <li><a class="nav-link" href="#statfilter">StatFilter</a></li>
         <li><a class="nav-link" href="#table">Table</a></li>
@@ -1385,9 +1380,9 @@ export function AccessRequests({ rows, onUpdate }) {
 <section class="panel" id="panel-components" data-section="components" aria-labelledby="h-components" hidden>
   <h1 class="page-title" id="h-components" tabindex="-1">Components</h1>
   <p class="page-lede">Single controls and surfaces. Each one is a real HTML element first, follows the ARIA Authoring Practices where it needs ARIA, and documents its keys and what a screen reader hears.</p>
-  <div class="chips lib-filter" role="group" aria-label="Filter components by group"><button class="chip" type="button" aria-pressed="true" data-group="">All <span class="count">10</span></button><button class="chip" type="button" aria-pressed="false" data-group="Actions and inputs">Actions and inputs <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Data and surfaces">Data and surfaces <span class="count">4</span></button><button class="chip" type="button" aria-pressed="false" data-group="Navigation">Navigation <span class="count">1</span></button><button class="chip" type="button" aria-pressed="false" data-group="Presenting apps">Presenting apps <span class="count">2</span></button></div>
+  <div class="chips lib-filter" role="group" aria-label="Filter components by group"><button class="chip" type="button" aria-pressed="true" data-group="">All <span class="count">12</span></button><button class="chip" type="button" aria-pressed="false" data-group="Actions and inputs">Actions and inputs <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Data and surfaces">Data and surfaces <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Filters and views">Filters and views <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Navigation">Navigation <span class="count">1</span></button><button class="chip" type="button" aria-pressed="false" data-group="Presenting apps">Presenting apps <span class="count">2</span></button></div>
   <p class="sr-only" id="cmp-filter-status" role="status" aria-live="polite"></p>
-  <ul class="lib tiles tiles--cards lib-index" id="cmp-cards"><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#browserframe"><span class="tile__head"><span class="tile__title">BrowserFrame</span><span class="tile__tag">React</span></span><span class="tile__desc">A plain browser window for presenting an app inside a page.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#buttons"><span class="tile__head"><span class="tile__title">Buttons</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#card"><span class="tile__head"><span class="tile__title">Card</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Card with header, body and footer, and ChoiceCard for picking.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#fields"><span class="tile__head"><span class="tile__title">Fields</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Text fields, textareas, checkboxes, help and invalid states.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#hovercard"><span class="tile__head"><span class="tile__title">HoverCard</span><span class="tile__tag">React</span></span><span class="tile__desc">Details on hover or focus, dismissable and persistent.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#resetbutton"><span class="tile__head"><span class="tile__title">ResetButton</span><span class="tile__tag">React</span></span><span class="tile__desc">Clears a demo’s saved changes after a confirm.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#select"><span class="tile__head"><span class="tile__title">Select</span><span class="tile__tag">React</span></span><span class="tile__desc">A dropdown that looks like a field and opens like a menu.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#statfilter"><span class="tile__head"><span class="tile__title">StatFilter</span><span class="tile__tag">React</span></span><span class="tile__desc">Counts that also filter what’s below them.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#table"><span class="tile__head"><span class="tile__title">Table</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Hairline rows, sorting, selectable rows, sticky header, empty state.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tiles"><span class="tile__head"><span class="tile__title">Tiles</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A grid of links into other pages, tiled or as cards.</span></a></li></ul>
+  <ul class="lib tiles tiles--cards lib-index" id="cmp-cards"><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#browserframe"><span class="tile__head"><span class="tile__title">BrowserFrame</span><span class="tile__tag">React</span></span><span class="tile__desc">A plain browser window for presenting an app inside a page.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#buttons"><span class="tile__head"><span class="tile__title">Buttons</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#card"><span class="tile__head"><span class="tile__title">Card</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Card with header, body and footer, and ChoiceCard for picking.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#chips"><span class="tile__head"><span class="tile__title">Chips</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Pill buttons that filter; they wrap, and several can be on.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#fields"><span class="tile__head"><span class="tile__title">Fields</span><span class="tile__tag">CSS</span></span><span class="tile__desc">Text fields, textareas, checkboxes, help and invalid states.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#hovercard"><span class="tile__head"><span class="tile__title">HoverCard</span><span class="tile__tag">React</span></span><span class="tile__desc">Details on hover or focus, dismissable and persistent.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#resetbutton"><span class="tile__head"><span class="tile__title">ResetButton</span><span class="tile__tag">React</span></span><span class="tile__desc">Clears a demo’s saved changes after a confirm.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#segmented"><span class="tile__head"><span class="tile__title">Segmented control</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Choose one of a few options in a tray: a filter, or grid or list.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#select"><span class="tile__head"><span class="tile__title">Select</span><span class="tile__tag">React</span></span><span class="tile__desc">A dropdown that looks like a field and opens like a menu.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#statfilter"><span class="tile__head"><span class="tile__title">StatFilter</span><span class="tile__tag">React</span></span><span class="tile__desc">Counts that also filter what’s below them.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#table"><span class="tile__head"><span class="tile__title">Table</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Hairline rows, sorting, selectable rows, sticky header, empty state.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tiles"><span class="tile__head"><span class="tile__title">Tiles</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A grid of links into other pages, tiled or as cards.</span></a></li></ul>
 
   <section class="doc-section" id="cmp-next" aria-labelledby="h-cmp-next">
     <h2 id="h-cmp-next">Coming next</h2>
@@ -1454,6 +1449,50 @@ export function AccessRequests({ rows, onUpdate }) {
 <!-- =====================================================================
      Select
      ===================================================================== -->
+
+<!-- =====================================================================
+     Segmented control
+     ===================================================================== -->
+<section class="panel" id="panel-segmented" data-section="components" aria-labelledby="h-segmented" hidden>
+  <p class="page-kicker">Component · CSS + React</p>
+  <h1 class="page-title" id="h-segmented" tabindex="-1">Segmented control</h1>
+  <p class="page-lede">Choose one of a few short options, inside one tray. Use it to filter content by one property, or to switch the view or mode of what’s below, such as grid or list.</p>
+  <div class="lib lib-demo is-wide" data-react="segmented"></div>
+
+  <section class="doc-section" id="seg-keys" aria-labelledby="h-seg-keys">
+    <h2 id="h-seg-keys">Keyboard</h2>
+    <table class="doc-table key-table"><caption class="sr-only">Segmented control keyboard support</caption><tbody><tr><th scope="row"><kbd>Tab</kbd></th><td>Move into the group, onto the chosen option, and out again. The group is one Tab stop.</td></tr><tr><th scope="row"><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></th><td>Move to the next or previous option and choose it.</td></tr><tr><th scope="row"><kbd>Space</kbd></th><td>Choose the focused option.</td></tr></tbody></table>
+  </section>
+  <section class="doc-section" id="seg-sr" aria-labelledby="h-seg-sr">
+    <h2 id="h-seg-sr">Screen reader</h2>
+    <ul class="a11y-list"><li>Built from real radio inputs in a <code>radiogroup</code>, so people hear “Type, Video 4, radio button, checked, 3 of 6”.</li><li>Icon-only options keep their text label as the radio’s name, and show it as a tooltip.</li><li>High contrast: the chosen option is filled with Highlight.</li></ul>
+  </section>
+  <section class="doc-section" id="seg-usage" aria-labelledby="h-seg-usage">
+    <h2 id="h-seg-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>AssetsToolbar.tsx</span><button class="copy-button" type="button" data-copy-label="AssetsToolbar.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;SegmentedControl
+  label=&quot;Type&quot;
+  value={kind}
+  onChange={setKind}
+  options={kinds.map((k) =&gt; ({ value: k.id, label: k.name, count: k.count }))}
+/&gt;
+
+&lt;SegmentedControl label=&quot;View&quot; iconOnly value={view} onChange={setView}
+  options={[{ value: &#x27;grid&#x27;, label: &#x27;Grid&#x27;, icon: &lt;GridIcon /&gt; }, { value: &#x27;list&#x27;, label: &#x27;List&#x27;, icon: &lt;ListIcon /&gt; }]} /&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="seg-props" aria-labelledby="h-seg-props">
+    <h2 id="h-seg-props">Props</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">SegmentedControl props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>label</code></td><td><code class="type">string</code></td><td>Names the group, e.g. “Type”, “View”</td></tr><tr><td><code>showLabel</code></td><td><code class="type">boolean</code></td><td>Show the label beside the control; hidden by default</td></tr><tr><td><code>options</code></td><td><code class="type">{ value, label, count?, icon?, disabled? }[]</code></td><td>2 to 6 short options</td></tr><tr><td><code>value, onChange</code></td><td><code class="type">string</code></td><td>The chosen option</td></tr><tr><td><code>iconOnly</code></td><td><code class="type">boolean</code></td><td>Square icon options; labels become hidden names</td></tr><tr><td><code>size</code></td><td><code class="type">&#x27;sm&#x27; | &#x27;md&#x27;</code></td><td>30px or 36px tall, to sit beside small or default buttons and fields</td></tr><tr><td><code>fill</code></td><td><code class="type">boolean</code></td><td>Stretch to the full width, options sharing it equally</td></tr><tr><td><code>name</code></td><td><code class="type">string</code></td><td>Radio group name; made up if you leave it out</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="seg-classes" aria-labelledby="h-seg-classes">
+    <h2 id="h-seg-classes">Classes</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Segmented control classes</caption><thead><tr><th scope="col">Class</th><th scope="col">What it does</th></tr></thead><tbody><tr><th scope="row"><code>.segmented</code></th><td>The tray: 36px tall, matching fields and Select.</td></tr><tr><th scope="row"><code>.segmented__opt</code> · <code>__input</code></th><td>An option and its invisible radio, covering it.</td></tr><tr><th scope="row"><code>.is-on</code> or a checked input</th><td>Chosen: page background and a rule-strong outline.</td></tr><tr><th scope="row"><code>.segmented__icon</code> · <code>__count</code></th><td>A 16px icon; a mono count.</td></tr><tr><th scope="row"><code>--sm</code> · <code>--icons</code> · <code>--fill</code></th><td>Small; icon-only; full width.</td></tr><tr><th scope="row"><code>.segmented-field</code></th><td>Visible label beside the control.</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="seg-which" aria-labelledby="h-seg-which">
+    <h2 id="h-seg-which">Segmented control, chips or StatFilter</h2>
+    <p>All three narrow or switch what’s shown below them. Pick by how many options there are, whether people choose one or several, and whether the counts are the point.</p><div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Which filter control to use</caption><thead><tr><th scope="col"></th><th scope="col"><a href="#segmented">Segmented control</a></th><th scope="col"><a href="#chips">Chips</a></th><th scope="col"><a href="#statfilter">StatFilter</a></th></tr></thead><tbody><tr><th scope="row">Choose</th><td>One</td><td>One, or several</td><td>One</td></tr><tr><th scope="row">Options</th><td>2 to 6, short, fixed</td><td>Any number; they wrap</td><td>3 to 8 states</td></tr><tr><th scope="row">Best for</th><td>Filtering by one property; switching view or mode (grid or list)</td><td>Multi-select filters; long or changing option lists</td><td>Queues and pipelines where the counts are the headline</td></tr><tr><th scope="row">Looks</th><td>A tray; the choice is lifted out of it</td><td>Separate pills; chosen is solid ink, with a check when several can be on</td><td>A strip of counts; chosen has a 3px ink underline</td></tr><tr><th scope="row">Keyboard</th><td>One Tab stop; arrow keys move and choose</td><td>Each chip is a Tab stop; Enter or Space toggles</td><td>Each card is a Tab stop; Enter or Space chooses</td></tr><tr><th scope="row">Built as</th><td>Radio group</td><td>Toggle buttons in a group</td><td>Toggle buttons in a group</td></tr></tbody></table></div><ul class="a11y-list"><li>Moving between pages, or between panels of different content, is navigation: use Tabs (coming in 0.3.0), not any of these.</li><li>More than 6 options, or labels too long for one line: chips that wrap, or a <a href="#select">Select</a>.</li><li>Whichever you use, say how many results are showing in a polite live region, and keep “All” first.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="segmented"></nav>
+</section>
 <section class="panel" id="panel-select" data-section="components" aria-labelledby="h-select" hidden>
   <p class="page-kicker">Component · React</p>
   <h1 class="page-title" id="h-select" tabindex="-1">Select</h1>
@@ -1582,6 +1621,53 @@ export function AccessRequests({ rows, onUpdate }) {
 <!-- =====================================================================
      Card
      ===================================================================== -->
+
+<!-- =====================================================================
+     Chips
+     ===================================================================== -->
+<section class="panel" id="panel-chips" data-section="components" aria-labelledby="h-chips" hidden>
+  <p class="page-kicker">Component · CSS + React</p>
+  <h1 class="page-title" id="h-chips" tabindex="-1">Chips</h1>
+  <p class="page-lede">Separate pill buttons that filter what’s below. They wrap onto more lines, so they suit many options, and several can be on at once.</p>
+  <div class="lib lib-demo is-wide" data-react="chips"></div>
+
+  <section class="doc-section" id="chip-keys" aria-labelledby="h-chip-keys">
+    <h2 id="h-chip-keys">Keyboard</h2>
+    <table class="doc-table key-table"><caption class="sr-only">Chips keyboard support</caption><tbody><tr><th scope="row"><kbd>Tab</kbd></th><td>Move from chip to chip. Each chip is a Tab stop.</td></tr><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd></th><td>Turn the focused chip on or off. In a single-select group, turn it on and the others off.</td></tr></tbody></table>
+  </section>
+  <section class="doc-section" id="chip-sr" aria-labelledby="h-chip-sr">
+    <h2 id="h-chip-sr">Screen reader</h2>
+    <ul class="a11y-list"><li>Each chip is a toggle button in a labelled group: “Filter by channel, group. Email 3, toggle button, pressed”.</li><li>Chips point at what they filter with <code>aria-controls</code>; the result count is announced from a polite live region.</li><li>Multi-select chips show a check when on, so the state is a shape as well as a fill.</li></ul>
+  </section>
+  <section class="doc-section" id="chip-usage" aria-labelledby="h-chip-usage">
+    <h2 id="h-chip-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>ChannelFilter.tsx</span><button class="copy-button" type="button" data-copy-label="ChannelFilter.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>// Several at once
+&lt;ChipGroup multiple label=&quot;Filter by channel&quot; controls=&quot;messages&quot;
+  value={channels} onChange={setChannels}
+  options={channels.map((c) =&gt; ({ value: c.id, label: c.name, count: c.count }))} /&gt;
+
+// One at a time, with &quot;All&quot; first
+&lt;ChipGroup label=&quot;Filter by status&quot; controls=&quot;messages&quot; value={status} onChange={setStatus}
+  options={[{ value: &#x27;all&#x27;, label: &#x27;All&#x27;, count: 8 }, { value: &#x27;open&#x27;, label: &#x27;Open&#x27;, count: 4 }]} /&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="chip-props" aria-labelledby="h-chip-props">
+    <h2 id="h-chip-props">Props</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">ChipGroup props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>label</code></td><td><code class="type">string</code></td><td>Names the group, e.g. “Filter by status”</td></tr><tr><td><code>options</code></td><td><code class="type">{ value, label, count?, disabled? }[]</code></td><td>In display order; “All” first for single-select</td></tr><tr><td><code>multiple</code></td><td><code class="type">boolean</code></td><td>Several chips can be on; value is then an array</td></tr><tr><td><code>value, onChange</code></td><td><code class="type">string | string[]</code></td><td>What’s on</td></tr><tr><td><code>size</code></td><td><code class="type">&#x27;sm&#x27; | &#x27;md&#x27;</code></td><td>30px or 36px tall</td></tr><tr><td><code>controls</code></td><td><code class="type">string</code></td><td>id of the region the chips filter</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="chip-classes" aria-labelledby="h-chip-classes">
+    <h2 id="h-chip-classes">Classes</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Chips classes</caption><thead><tr><th scope="col">Class</th><th scope="col">What it does</th></tr></thead><tbody><tr><th scope="row"><code>.chips</code></th><td>A wrapping row of chips, 6px apart.</td></tr><tr><th scope="row"><code>.chip</code></th><td>A 36px toggle button; <code>aria-pressed="true"</code> makes it solid ink.</td></tr><tr><th scope="row"><code>.chip__count</code> (or <code>.count</code>)</th><td>A mono count.</td></tr><tr><th scope="row"><code>.chip__check</code></th><td>The check shown when a multi-select chip is on.</td></tr><tr><th scope="row"><code>.chip--sm</code></th><td>30px tall.</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="chip-rules" aria-labelledby="h-chip-rules">
+    <h2 id="h-chip-rules">Rules</h2>
+    <ul class="a11y-list"><li>Single-select always has one chip on; pressing the chosen chip again doesn’t turn it off. Offer “All” first.</li><li>Multi-select with nothing on means no filter. Offer a way to clear them all.</li><li>For 2 to 6 fixed options where people choose one, a <a href="#segmented">segmented control</a> is quieter and is one Tab stop.</li></ul>
+  </section>
+  <section class="doc-section" id="chip-which" aria-labelledby="h-chip-which">
+    <h2 id="h-chip-which">Segmented control, chips or StatFilter</h2>
+    <p>All three narrow or switch what’s shown below them. Pick by how many options there are, whether people choose one or several, and whether the counts are the point.</p><div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Which filter control to use</caption><thead><tr><th scope="col"></th><th scope="col"><a href="#segmented">Segmented control</a></th><th scope="col"><a href="#chips">Chips</a></th><th scope="col"><a href="#statfilter">StatFilter</a></th></tr></thead><tbody><tr><th scope="row">Choose</th><td>One</td><td>One, or several</td><td>One</td></tr><tr><th scope="row">Options</th><td>2 to 6, short, fixed</td><td>Any number; they wrap</td><td>3 to 8 states</td></tr><tr><th scope="row">Best for</th><td>Filtering by one property; switching view or mode (grid or list)</td><td>Multi-select filters; long or changing option lists</td><td>Queues and pipelines where the counts are the headline</td></tr><tr><th scope="row">Looks</th><td>A tray; the choice is lifted out of it</td><td>Separate pills; chosen is solid ink, with a check when several can be on</td><td>A strip of counts; chosen has a 3px ink underline</td></tr><tr><th scope="row">Keyboard</th><td>One Tab stop; arrow keys move and choose</td><td>Each chip is a Tab stop; Enter or Space toggles</td><td>Each card is a Tab stop; Enter or Space chooses</td></tr><tr><th scope="row">Built as</th><td>Radio group</td><td>Toggle buttons in a group</td><td>Toggle buttons in a group</td></tr></tbody></table></div><ul class="a11y-list"><li>Moving between pages, or between panels of different content, is navigation: use Tabs (coming in 0.3.0), not any of these.</li><li>More than 6 options, or labels too long for one line: chips that wrap, or a <a href="#select">Select</a>.</li><li>Whichever you use, say how many results are showing in a polite live region, and keep “All” first.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="chips"></nav>
+</section>
 <section class="panel" id="panel-card" data-section="components" aria-labelledby="h-card" hidden>
   <p class="page-kicker">Component · CSS + React</p>
   <h1 class="page-title" id="h-card" tabindex="-1">Card</h1>
@@ -1653,6 +1739,10 @@ export function AccessRequests({ rows, onUpdate }) {
   <section class="doc-section" id="sf-rules" aria-labelledby="h-sf-rules">
     <h2 id="h-sf-rules">Rules</h2>
     <ul class="a11y-list"><li>The chosen card uses the tab marker: a 3px ink underline, quiet fill and semibold label. Never an inverted block.</li><li>Offer “All” first when seeing everything is useful, and update the filtered region’s heading to match.</li><li>If the numbers don’t filter anything, use a plain <code>&lt;dl&gt;</code> of stats instead.</li></ul>
+  </section>
+  <section class="doc-section" id="sf-which" aria-labelledby="h-sf-which">
+    <h2 id="h-sf-which">Segmented control, chips or StatFilter</h2>
+    <p>All three narrow or switch what’s shown below them. Pick by how many options there are, whether people choose one or several, and whether the counts are the point.</p><div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Which filter control to use</caption><thead><tr><th scope="col"></th><th scope="col"><a href="#segmented">Segmented control</a></th><th scope="col"><a href="#chips">Chips</a></th><th scope="col"><a href="#statfilter">StatFilter</a></th></tr></thead><tbody><tr><th scope="row">Choose</th><td>One</td><td>One, or several</td><td>One</td></tr><tr><th scope="row">Options</th><td>2 to 6, short, fixed</td><td>Any number; they wrap</td><td>3 to 8 states</td></tr><tr><th scope="row">Best for</th><td>Filtering by one property; switching view or mode (grid or list)</td><td>Multi-select filters; long or changing option lists</td><td>Queues and pipelines where the counts are the headline</td></tr><tr><th scope="row">Looks</th><td>A tray; the choice is lifted out of it</td><td>Separate pills; chosen is solid ink, with a check when several can be on</td><td>A strip of counts; chosen has a 3px ink underline</td></tr><tr><th scope="row">Keyboard</th><td>One Tab stop; arrow keys move and choose</td><td>Each chip is a Tab stop; Enter or Space toggles</td><td>Each card is a Tab stop; Enter or Space chooses</td></tr><tr><th scope="row">Built as</th><td>Radio group</td><td>Toggle buttons in a group</td><td>Toggle buttons in a group</td></tr></tbody></table></div><ul class="a11y-list"><li>Moving between pages, or between panels of different content, is navigation: use Tabs (coming in 0.3.0), not any of these.</li><li>More than 6 options, or labels too long for one line: chips that wrap, or a <a href="#select">Select</a>.</li><li>Whichever you use, say how many results are showing in a polite live region, and keep “All” first.</li></ul>
   </section>
   <nav class="pager" aria-label="More in components" data-current="statfilter"></nav>
 </section>
