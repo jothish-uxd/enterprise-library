@@ -299,12 +299,12 @@ function PgCode({ file, tag, attrs }: { file: string; tag: string; attrs: PgCode
 }
 
 function Playground({ name, controls, values, set, preview, file, tag, attrs, wide, compact }: {
-  wide?: boolean; compact?: boolean; name: string; controls: PgControl[]; values: Record<string, PgValue>; set: (key: string, v: PgValue) => void;
+  wide?: boolean; compact?: boolean | number; name: string; controls: PgControl[]; values: Record<string, PgValue>; set: (key: string, v: PgValue) => void;
   preview: ReactNode; file: string; tag: string; attrs: PgCodeLine[];
 }) {
   const id = React.useId();
   return (
-    <div className={`pg${compact ? ' pg--compact' : ''}`}>
+    <div className={`pg${compact ? ' pg--compact' : ''}`} style={typeof compact === 'number' ? { ['--pg-h' as string]: `${compact}px` } : undefined}>
       <div className="pg__stage" role="region" aria-label={`${name} preview`}>
         <div className={`pg__stage-inner${wide ? ' pg__stage-inner--wide' : ''}`}>{preview}</div>
       </div>
@@ -425,6 +425,7 @@ function SwitchDemo() {
   return (
     <Playground
       name="Switch"
+      compact={500}
       values={v}
       set={set}
       file="Settings.tsx"
