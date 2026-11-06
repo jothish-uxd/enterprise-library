@@ -12,6 +12,8 @@ export { Switch } from './components/Switch';
 export { Button } from './components/Button';
 export { Checkbox } from './components/Checkbox';
 export { Input } from './components/Input';
+export { Radio } from './components/Radio';
+export { RadioGroup } from './components/RadioGroup';
 export { CheckboxGroup } from './components/CheckboxGroup';
 export { default as StatFilter } from './components/StatFilter';
 export { SortHeader, TableCheck, TableEmpty } from './components/Table';

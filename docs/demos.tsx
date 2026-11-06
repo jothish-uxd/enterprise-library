@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Checkbox, CheckboxGroup, Input, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
+  BrowserFrame, Button, Checkbox, CheckboxGroup, Input, Radio, RadioGroup, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -661,6 +661,124 @@ function CheckboxGroupDemo() {
   );
 }
 
+/* ---------- Radio playground ---------- */
+function RadioDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'After review', hasDescription: true, description: 'A recruiter checks scores before candidates see them.',
+    checked: true, disabled: false, disabledReason: 'Only admins can change when results are shared.',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const value = slug(String(v.label)) || 'option';
+  const attrs: PgCodeLine[] = [
+    { attr: 'name', value: 'share' },
+    { attr: 'value', value },
+    { attr: 'label', value: String(v.label) },
+    ...(v.hasDescription && v.description ? [{ attr: 'description', value: String(v.description) }] : []),
+    { attr: 'checked', value: `share === '${value}'`, expr: true },
+    { attr: 'onChange', value: 'setShare', expr: true },
+    ...(v.disabled ? [{ attr: 'disabled', value: true as const }] : []),
+    ...(v.disabled && v.disabledReason ? [{ attr: 'disabledReason', value: String(v.disabledReason) }] : []),
+  ];
+  return (
+    <Playground
+      name="Radio button"
+      compact
+      values={v}
+      set={set}
+      file="Sharing.tsx"
+      tag="Radio"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label' },
+        { kind: 'boolean', key: 'hasDescription', label: 'Description' },
+        { kind: 'text', key: 'description', label: 'Description text', help: 'Shown when Description is on.' },
+        { kind: 'boolean', key: 'checked', label: 'Checked', help: 'People can’t un-choose a radio; choosing another option does that.' },
+        { kind: 'boolean', key: 'disabled', label: 'Disabled' },
+        { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in a tooltip when Disabled is on.' },
+      ]}
+      preview={
+        <Radio
+          name="pg-radio"
+          value={value}
+          label={String(v.label) || 'Untitled option'}
+          description={v.hasDescription && v.description ? String(v.description) : undefined}
+          checked={!!v.checked}
+          onChange={() => set('checked', true)}
+          disabled={!!v.disabled}
+          disabledReason={v.disabled && v.disabledReason ? String(v.disabledReason) : undefined}
+        />
+      }
+    />
+  );
+}
+
+/* ---------- RadioGroup playground ---------- */
+function RadioGroupDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    legend: 'When results are shared', required: true, hasDescription: true, description: 'Candidates are told when they submit.',
+    options: 'After review, Straight away, Never', orientation: 'vertical', preselect: true,
+    error: false, errorMessage: 'Choose when candidates see their results.', disableLast: false,
+  });
+  const [chosen, setChosen] = useState('after-review');
+  const set = (key: string, value: PgValue) => {
+    setV((old) => ({ ...old, [key]: value }));
+    if (key === 'preselect') setChosen(value ? slug(String(v.options).split(',')[0].trim()) : '');
+  };
+  const names = String(v.options).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
+  const reason = 'Your organisation shares results with every candidate.';
+  const options = names.map((n, i) => {
+    const off = !!v.disableLast && i === names.length - 1 && names.length > 1;
+    return { value: slug(n), label: n, disabled: off, disabledReason: off ? reason : undefined };
+  });
+  const optLines = options.map((o) => `    { value: '${o.value}', label: '${o.label}'${o.disabled ? `, disabled: true, disabledReason: '${reason}'` : ''} },`).join('\n');
+  const showError = !!v.error && !!v.errorMessage;
+  const attrs: PgCodeLine[] = [
+    { attr: 'legend', value: String(v.legend) },
+    ...(v.required ? [{ attr: 'required', value: true as const }] : []),
+    { attr: 'options', value: `[\n${optLines}\n  ]`, expr: true },
+    { attr: 'value', value: 'share', expr: true },
+    { attr: 'onChange', value: 'setShare', expr: true },
+    ...(v.orientation === 'horizontal' ? [{ attr: 'orientation', value: 'horizontal' }] : []),
+    ...(v.hasDescription && v.description && !showError ? [{ attr: 'description', value: String(v.description) }] : []),
+    ...(showError ? [{ attr: 'error', value: String(v.errorMessage) }] : []),
+  ];
+  return (
+    <Playground
+      name="Radio group"
+      compact
+      values={v}
+      set={set}
+      file="Sharing.tsx"
+      tag="RadioGroup"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'legend', label: 'Legend', help: 'Names the group; read with each option.' },
+        { kind: 'boolean', key: 'required', label: 'Required', help: 'One must be chosen. An asterisk after the legend.' },
+        { kind: 'boolean', key: 'hasDescription', label: 'Description' },
+        { kind: 'text', key: 'description', label: 'Description text', help: 'Shown when Description is on.' },
+        { kind: 'text', key: 'options', label: 'Options', help: 'Up to 4, separated by commas.' },
+        { kind: 'segmented', key: 'orientation', label: 'Orientation', options: [{ value: 'vertical', label: 'Vertical' }, { value: 'horizontal', label: 'Horizontal' }] },
+        { kind: 'boolean', key: 'preselect', label: 'Default choice', help: 'Start with the first option chosen. Turn off when choosing should be a real decision.' },
+        { kind: 'boolean', key: 'error', label: 'Error' },
+        { kind: 'text', key: 'errorMessage', label: 'Error message', help: 'Replaces the description when Error is on.' },
+        { kind: 'boolean', key: 'disableLast', label: 'Disable last option' },
+      ]}
+      preview={
+        <RadioGroup
+          legend={String(v.legend) || 'Untitled group'}
+          options={options}
+          value={chosen}
+          onChange={setChosen}
+          orientation={v.orientation as 'vertical' | 'horizontal'}
+          required={!!v.required}
+          description={v.hasDescription && v.description ? String(v.description) : undefined}
+          error={showError ? String(v.errorMessage) : undefined}
+        />
+      }
+    />
+  );
+}
+
 /* ---------- Switch playground ---------- */
 const camel = (t: string) => {
   const w = t.replace(/[^a-zA-Z0-9 ]/g, '').trim().split(/\s+/).filter(Boolean);
@@ -740,6 +858,8 @@ const DEMOS: Record<string, () => ReactNode> = {
   checkbox: () => <CheckboxDemo />,
   'checkbox-group': () => <CheckboxGroupDemo />,
   input: () => <InputDemo />,
+  radio: () => <RadioDemo />,
+  'radio-group': () => <RadioGroupDemo />,
 };
 
 document.querySelectorAll<HTMLElement>('[data-react]').forEach((el) => {
