@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
+  BrowserFrame, Button, Checkbox, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -463,6 +463,61 @@ function ButtonDemo() {
   );
 }
 
+/* ---------- Checkbox playground ---------- */
+function CheckboxDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Accept the terms', description: 'You can withdraw at any time in Settings.',
+    checked: false, indeterminate: false, error: false, errorMessage: 'Accept the terms to continue.',
+    disabled: false, disabledReason: 'Your organisation has already accepted on your behalf.',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const name = camel(String(v.label));
+  const setter = `set${name[0].toUpperCase()}${name.slice(1)}`;
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) },
+    ...(v.description ? [{ attr: 'description', value: String(v.description) }] : []),
+    { attr: 'checked', value: name, expr: true },
+    { attr: 'onChange', value: setter, expr: true },
+    ...(v.indeterminate ? [{ attr: 'indeterminate', value: true as const }] : []),
+    ...(v.error && v.errorMessage ? [{ attr: 'error', value: String(v.errorMessage) }] : []),
+    ...(v.disabled ? [{ attr: 'disabled', value: true as const }] : []),
+    ...(v.disabled && v.disabledReason ? [{ attr: 'disabledReason', value: String(v.disabledReason) }] : []),
+  ];
+  return (
+    <Playground
+      name="Checkbox"
+      compact
+      values={v}
+      set={set}
+      file="Terms.tsx"
+      tag="Checkbox"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label' },
+        { kind: 'text', key: 'description', label: 'Description', help: 'Leave empty for none.' },
+        { kind: 'boolean', key: 'checked', label: 'Checked' },
+        { kind: 'boolean', key: 'indeterminate', label: 'Mixed', help: 'For a “select all” when only some are chosen.' },
+        { kind: 'boolean', key: 'error', label: 'Error' },
+        { kind: 'text', key: 'errorMessage', label: 'Error message', help: 'Shown under the label when Error is on. Say how to fix it.' },
+        { kind: 'boolean', key: 'disabled', label: 'Disabled' },
+        { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in a tooltip when Disabled is on.' },
+      ]}
+      preview={
+        <Checkbox
+          label={String(v.label) || 'Untitled'}
+          description={v.description ? String(v.description) : undefined}
+          checked={!!v.checked}
+          onChange={(c) => { set('checked', c); if (v.indeterminate) set('indeterminate', false); }}
+          indeterminate={!!v.indeterminate}
+          error={v.error && v.errorMessage ? String(v.errorMessage) : undefined}
+          disabled={!!v.disabled}
+          disabledReason={v.disabled && v.disabledReason ? String(v.disabledReason) : undefined}
+        />
+      }
+    />
+  );
+}
+
 /* ---------- Switch playground ---------- */
 const camel = (t: string) => {
   const w = t.replace(/[^a-zA-Z0-9 ]/g, '').trim().split(/\s+/).filter(Boolean);
@@ -538,6 +593,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   multiselect: () => <MultiSelectDemo />,
   switch: () => <SwitchDemo />,
   button: () => <ButtonDemo />,
+  checkbox: () => <CheckboxDemo />,
 };
 
 document.querySelectorAll<HTMLElement>('[data-react]').forEach((el) => {

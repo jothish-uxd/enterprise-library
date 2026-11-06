@@ -10,6 +10,7 @@ export { default as ResetButton } from './components/ResetButton';
 export { Tooltip, HoverCard, useTooltip } from './components/Tooltip';
 export { Switch } from './components/Switch';
 export { Button } from './components/Button';
+export { Checkbox } from './components/Checkbox';
 export { default as StatFilter } from './components/StatFilter';
 export { SortHeader, TableCheck, TableEmpty } from './components/Table';
 export { Card, ChoiceCard } from './components/Card';

@@ -267,6 +267,13 @@ code, .id { font-family: var(--mono); font-size: var(--text-caption); }
 .check__label { color: var(--ink); }
 .check__desc { font-size: var(--text-small); color: var(--ink-soft); line-height: 1.5; }
 .check:has(input:disabled) .check__label, .check:has(input:disabled) .check__desc { color: var(--ink-faint); }
+/* Unavailable but focusable (aria-disabled), as the Checkbox component renders it */
+.check.is-disabled { cursor: not-allowed; }
+.check.is-disabled input { opacity: .45; }
+.check.is-disabled .check__label, .check.is-disabled .check__desc { color: var(--ink-faint); }
+/* Error under one checkbox: lined up with its label text */
+.check-field { display: grid; gap: var(--space-1-5); justify-items: start; }
+.check__error { margin-left: calc(16px + var(--space-2)); }
 
 @media (forced-colors: active) {
   .field-error svg { color: CanvasText; }

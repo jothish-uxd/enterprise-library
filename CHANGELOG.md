@@ -10,6 +10,7 @@ The design system moves into Enterprise Library: one repo for foundations, compo
 - Buttons: `--ghost`, `--danger`, `--lg`, `--icon`, `.btn__icon`, the pressed state, `.btn-row`, `.link-button--danger`, forced-colors borders.
 - Table: `--selectable`, `--hover`, `--sticky`, `.center`, and `SortHeader`, `TableCheck`, `TableEmpty`.
 - Card: `.card` with header, body, footer and stats; `Card` and `ChoiceCard`.
+- Checkbox component (`Checkbox`): label, description, mixed state, an error message under the label (`error`), and disabled with a reason, as on Button and Switch. Docs: the Checkbox page is a playground.
 - Danger buttons are red: new `--danger` and `--on-danger` tokens, the one place colour appears outside a message.
 - Button component (`Button`): the `.btn` classes with variant (default primary), size, icon on the left or right (`iconPosition`), icon-only (label as name and tooltip), toggle (`pressed`) and an explained disabled state (`disabledReason`, as on Switch). Docs: the Buttons page is a playground.
 - Switch (`.switch`, `Switch`): one setting on or off, applied straight away; a native checkbox with `role="switch"`. Unavailable switches stay focusable (`aria-disabled`) and explain why in a tooltip on hover and focus. New `useTooltip` hook for that kind of tooltip on any control. The Tiles demo's picture button is now an "Include image" switch.
