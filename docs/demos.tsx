@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Checkbox, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
+  BrowserFrame, Button, Checkbox, CheckboxGroup, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -518,6 +518,64 @@ function CheckboxDemo() {
   );
 }
 
+/* ---------- CheckboxGroup playground ---------- */
+function CheckboxGroupDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    legend: 'Notify when a candidate submits', options: 'Hiring manager, Recruiter, Proctor',
+    orientation: 'vertical', selectAll: false, help: 'Each person gets one email per candidate.',
+    error: false, errorMessage: 'Choose at least one person to notify.', disableLast: false,
+  });
+  const [chosen, setChosen] = useState<string[]>(['hiring-manager']);
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const names = String(v.options).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
+  const options = names.map((n, i) => ({ value: slug(n), label: n, disabled: !!v.disableLast && i === names.length - 1 && names.length > 1,
+    disabledReason: !!v.disableLast && i === names.length - 1 ? 'Proctors are notified by the proctoring service.' : undefined }));
+  const optLines = options.map((o) => `    { value: '${o.value}', label: '${o.label}'${o.disabled ? ", disabled: true, disabledReason: 'Proctors are notified by the proctoring service.'" : ''} },`).join('\n');
+  const attrs: PgCodeLine[] = [
+    { attr: 'legend', value: String(v.legend) },
+    { attr: 'options', value: `[\n${optLines}\n  ]`, expr: true },
+    { attr: 'value', value: 'notify', expr: true },
+    { attr: 'onChange', value: 'setNotify', expr: true },
+    ...(v.orientation === 'horizontal' ? [{ attr: 'orientation', value: 'horizontal' }] : []),
+    ...(v.selectAll ? [{ attr: 'selectAll', value: 'Everyone' }] : []),
+    ...(v.help && !(v.error && v.errorMessage) ? [{ attr: 'help', value: String(v.help) }] : []),
+    ...(v.error && v.errorMessage ? [{ attr: 'error', value: String(v.errorMessage) }] : []),
+  ];
+  return (
+    <Playground
+      name="Checkbox group"
+      compact
+      values={v}
+      set={set}
+      file="Notify.tsx"
+      tag="CheckboxGroup"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'legend', label: 'Legend', help: 'Names the group; read with each checkbox.' },
+        { kind: 'text', key: 'options', label: 'Options', help: 'Up to 4, separated by commas.' },
+        { kind: 'segmented', key: 'orientation', label: 'Orientation', options: [{ value: 'vertical', label: 'Vertical' }, { value: 'horizontal', label: 'Horizontal' }] },
+        { kind: 'boolean', key: 'selectAll', label: 'Select all', help: 'An “Everyone” checkbox first; it shows the mixed state when only some are chosen.' },
+        { kind: 'text', key: 'help', label: 'Help text', help: 'Leave empty for none.' },
+        { kind: 'boolean', key: 'error', label: 'Error' },
+        { kind: 'text', key: 'errorMessage', label: 'Error message', help: 'Replaces the help text when Error is on.' },
+        { kind: 'boolean', key: 'disableLast', label: 'Disable last option' },
+      ]}
+      preview={
+        <CheckboxGroup
+          legend={String(v.legend) || 'Untitled group'}
+          options={options}
+          value={chosen}
+          onChange={setChosen}
+          orientation={v.orientation as 'vertical' | 'horizontal'}
+          selectAll={v.selectAll ? 'Everyone' : undefined}
+          help={v.help ? String(v.help) : undefined}
+          error={v.error && v.errorMessage ? String(v.errorMessage) : undefined}
+        />
+      }
+    />
+  );
+}
+
 /* ---------- Switch playground ---------- */
 const camel = (t: string) => {
   const w = t.replace(/[^a-zA-Z0-9 ]/g, '').trim().split(/\s+/).filter(Boolean);
@@ -594,6 +652,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   switch: () => <SwitchDemo />,
   button: () => <ButtonDemo />,
   checkbox: () => <CheckboxDemo />,
+  'checkbox-group': () => <CheckboxGroupDemo />,
 };
 
 document.querySelectorAll<HTMLElement>('[data-react]').forEach((el) => {
