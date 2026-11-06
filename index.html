@@ -852,6 +852,35 @@
   .nav-sublist { margin: 2px 0 6px 10px; padding-left: 10px; border-left: 1px solid var(--rule); }
   .nav-sublist .nav-link { font-size: 14px; }
 
+  /* ---------- Playground: one component, its properties beside it, code below ---------- */
+  .lib-playground { margin-top: 40px; }
+  .lib-playground:empty { min-height: 360px; border: 1px solid var(--rule); border-radius: 12px; }
+  .pg { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 320px); border: 1px solid var(--rule); border-radius: 12px; background: var(--bg); }
+  .pg__stage { display: grid; place-items: center; min-height: 340px; padding: 40px 32px; border-right: 1px solid var(--rule);
+    background-color: var(--bg); background-image: radial-gradient(var(--rule) 1px, transparent 1px); background-size: 16px 16px; border-radius: 12px 0 0 0; }
+  .pg__stage-inner { width: 100%; max-width: 380px; display: flex; justify-content: center; }
+  .pg__stage-inner > .switch--between { background: var(--bg); }
+  .pg__controls { padding: 8px 20px 12px; }
+  .pg__heading { margin: 12px 0 4px; font-size: 12px; font-weight: 500; color: var(--ink-faint); }
+  .pg__row { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  .pg__row:last-child { border-bottom: 0; }
+  .pg__row--field { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); align-items: center; gap: 4px 12px; }
+  .pg__row > .switch { font-size: 14px; }
+  .pg__row > .switch .switch__label { font-weight: 400; }
+  .pg__label { font-size: 14px; color: var(--ink); }
+  .pg__input { width: 100%; min-width: 0; height: 32px; padding: 0 10px; border: 1px solid var(--rule-strong); border-radius: 6px; background: var(--bg); color: var(--ink); font: inherit; font-size: 13px; }
+  .pg__input:hover { border-color: var(--ink-faint); }
+  .pg__row--stack { display: grid; gap: 6px; }
+  .pg__help { font-size: 12px; color: var(--ink-faint); line-height: 1.4; }
+  .pg__row--field > .field--inline { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); align-items: center; gap: 12px; }
+  .pg__row--field > .field--inline .field__label, .pg__row--stack > .segmented-field .segmented-field__label { font-size: 14px; font-weight: 400; color: var(--ink); }
+  .pg__row--stack > .segmented-field { display: grid; gap: 6px; }
+  .pg__code { grid-column: 1 / -1; border: 0; border-top: 1px solid var(--rule); border-radius: 0 0 12px 12px; }
+  @media (max-width: 860px) {
+    .pg { grid-template-columns: minmax(0, 1fr); }
+    .pg__stage { border-right: 0; border-bottom: 1px solid var(--rule); border-radius: 12px 12px 0 0; min-height: 220px; padding: 32px 20px; }
+  }
+
   /* ---------- Library demos ---------- */
   /* The page skips the library's base.css, so library markup gets its margin resets here. */
   .lib :where(h1, h2, h3, h4, p, dl, dd, figure) { margin: 0; }
@@ -1502,7 +1531,7 @@ export function AccessRequests({ rows, onUpdate }) {
   <p class="page-kicker">Component · CSS + React</p>
   <h1 class="page-title" id="h-switch" tabindex="-1">Switch</h1>
   <p class="page-lede">Turns one setting on or off, and the change takes effect straight away. A native checkbox with <code>role="switch"</code>, so screen readers hear “Include image, switch, on”.</p>
-  <div class="lib lib-demo is-wide" data-react="switch"></div>
+  <div class="lib lib-playground is-wide" data-react="switch"></div>
 
   <section class="doc-section" id="sw-disabled" aria-labelledby="h-sw-disabled">
     <h2 id="h-sw-disabled">When it’s unavailable</h2>

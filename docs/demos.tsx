@@ -296,29 +296,143 @@ function MultiSelectDemo() {
   );
 }
 
-/* ---------- Switch ---------- */
-function SwitchDemo() {
-  const [img, setImg] = useState(true);
-  const [digest, setDigest] = useState(false);
-  const [lock, setLock] = useState(true);
-  const [s, setS] = useState({ calc: true, notes: false });
+/* ---------- Playground: one component, controls beside it, code below ---------- */
+type PgValue = string | boolean;
+type PgControl =
+  | { kind: 'text'; key: string; label: string; help?: string }
+  | { kind: 'boolean'; key: string; label: string; help?: string }
+  | { kind: 'select'; key: string; label: string; options: { value: string; label: string }[] }
+  | { kind: 'segmented'; key: string; label: string; options: { value: string; label: string }[] };
+type PgCodeLine = { attr: string; value: string | true; expr?: boolean };
+
+function PgCode({ file, tag, attrs }: { file: string; tag: string; attrs: PgCodeLine[] }) {
+  const [copied, setCopied] = useState<'' | 'ok' | 'fail'>('');
+  const text = `<${tag}\n${attrs.map((a) => `  ${a.value === true ? a.attr : a.expr ? `${a.attr}={${a.value}}` : `${a.attr}="${a.value}"`}`).join('\n')}\n/>`;
+  const copy = () => {
+    const done = (ok: boolean) => { setCopied(ok ? 'ok' : 'fail'); window.setTimeout(() => setCopied(''), 2000); };
+    try { navigator.clipboard.writeText(text).then(() => done(true), () => done(false)); } catch { done(false); }
+  };
   return (
-    <>
-      <div className="lib-row" style={{ gap: '16px 32px' }}>
-        <Switch label="Include image" checked={img} onChange={setImg} />
-        <Switch label="Daily digest" showState checked={digest} onChange={setDigest} />
-        <Switch label="Compact rows" size="sm" checked={!digest} onChange={(v) => setDigest(!v)} />
+    <div className="code-block pg__code">
+      <div className="code-block-bar">
+        <span>{file}</span>
+        <button className="copy-button" type="button" aria-label={`Copy ${file}`} data-copied={copied === 'ok' ? '' : undefined} onClick={copy}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2" /><path d="M5 15V5a2 2 0 0 1 2-2h10" /></svg>
+          <span>{copied === 'ok' ? 'Copied' : copied === 'fail' ? 'Copy failed' : 'Copy'}</span>
+        </button>
       </div>
-      <Switch label="Lock after the deadline" description="Candidates who haven’t submitted can’t start or continue." checked={lock} onChange={setLock} />
-      <div className="lib-row" style={{ gap: '16px 32px' }}>
-        <Switch label="Proctoring" checked={false} onChange={() => {}} disabled disabledReason="Turn on recording in Settings first." />
-        <Switch label="Show scores to candidates" checked onChange={() => {}} disabled disabledReason="Set by your organisation’s results policy." />
+      <pre><code>
+        {'<'}<span className="tok-k">{tag}</span>{'\n'}
+        {attrs.map((a) => (
+          <span key={a.attr}>{'  '}{a.attr}{a.value === true ? null : a.expr ? <>{'={'}{a.value}{'}'}</> : <>=<span className="tok-s">"{a.value}"</span></>}{'\n'}</span>
+        ))}
+        {'/>'}
+      </code></pre>
+      <p className="visually-hidden" role="status" aria-live="polite">{copied === 'ok' ? `Copied ${file} to clipboard.` : copied === 'fail' ? `Couldn't copy ${file}. Select the text and copy it manually.` : ''}</p>
+    </div>
+  );
+}
+
+function Playground({ name, controls, values, set, preview, file, tag, attrs }: {
+  name: string; controls: PgControl[]; values: Record<string, PgValue>; set: (key: string, v: PgValue) => void;
+  preview: ReactNode; file: string; tag: string; attrs: PgCodeLine[];
+}) {
+  const id = React.useId();
+  return (
+    <div className="pg">
+      <div className="pg__stage" role="region" aria-label={`${name} preview`}>
+        <div className="pg__stage-inner">{preview}</div>
       </div>
-      <div className="lib-settings" role="group" aria-label="Allowed tools">
-        <Switch labelPosition="between" label="Calculator" description="A basic four-function calculator." checked={s.calc} onChange={(v) => setS({ ...s, calc: v })} />
-        <Switch labelPosition="between" label="Scratch notes" description="Cleared when the candidate submits." checked={s.notes} onChange={(v) => setS({ ...s, notes: v })} />
+      <div className="pg__controls" role="group" aria-label={`${name} properties`}>
+        <p className="pg__heading">Properties</p>
+        {controls.map((c) => {
+          const cid = `${id}-${c.key}`;
+          if (c.kind === 'boolean') return (
+            <div className="pg__row" key={c.key}>
+              <Switch labelPosition="between" size="sm" label={c.label} description={c.help} checked={!!values[c.key]} onChange={(v) => set(c.key, v)} />
+            </div>
+          );
+          if (c.kind === 'text') return (
+            <div className="pg__row pg__row--stack" key={c.key}>
+              <label className="pg__label" htmlFor={cid}>{c.label}</label>
+              <input id={cid} className="pg__input" value={String(values[c.key] ?? '')} onChange={(e) => set(c.key, e.target.value)} aria-describedby={c.help ? `${cid}-h` : undefined} />
+              {c.help && <span className="pg__help" id={`${cid}-h`}>{c.help}</span>}
+            </div>
+          );
+          if (c.kind === 'select') return (
+            <div className="pg__row pg__row--field" key={c.key}>
+              <Select label={c.label} inline value={String(values[c.key])} onChange={(v) => set(c.key, v)} options={c.options} />
+            </div>
+          );
+          return (
+            <div className="pg__row pg__row--stack" key={c.key}>
+              <SegmentedControl label={c.label} showLabel fill size="sm" value={String(values[c.key])} onChange={(v) => set(c.key, v)} options={c.options} />
+            </div>
+          );
+        })}
       </div>
-    </>
+      <PgCode file={file} tag={tag} attrs={attrs} />
+    </div>
+  );
+}
+
+/* ---------- Switch playground ---------- */
+const camel = (t: string) => {
+  const w = t.replace(/[^a-zA-Z0-9 ]/g, '').trim().split(/\s+/).filter(Boolean);
+  return w.length ? w.map((x, i) => (i ? x[0].toUpperCase() + x.slice(1).toLowerCase() : x.toLowerCase())).join('') : 'value';
+};
+function SwitchDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Require password', description: 'Asked for when someone opens a shared file.',
+    checked: false, showState: false, disabled: false, disabledReason: 'Your organisation requires passwords on every file.',
+    size: 'md', labelPosition: 'end',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const name = camel(String(v.label));
+  const setter = `set${name[0].toUpperCase()}${name.slice(1)}`;
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) },
+    ...(v.description ? [{ attr: 'description', value: String(v.description) }] : []),
+    { attr: 'checked', value: name, expr: true },
+    { attr: 'onChange', value: setter, expr: true },
+    ...(v.showState ? [{ attr: 'showState', value: true as const }] : []),
+    ...(v.disabled ? [{ attr: 'disabled', value: true as const }] : []),
+    ...(v.disabled && v.disabledReason ? [{ attr: 'disabledReason', value: String(v.disabledReason) }] : []),
+    ...(v.size !== 'md' ? [{ attr: 'size', value: String(v.size) }] : []),
+    ...(v.labelPosition !== 'end' ? [{ attr: 'labelPosition', value: String(v.labelPosition) }] : []),
+  ];
+  return (
+    <Playground
+      name="Switch"
+      values={v}
+      set={set}
+      file="Settings.tsx"
+      tag="Switch"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label' },
+        { kind: 'text', key: 'description', label: 'Description', help: 'Leave empty for none.' },
+        { kind: 'boolean', key: 'checked', label: 'Checked' },
+        { kind: 'boolean', key: 'showState', label: 'Show state' },
+        { kind: 'boolean', key: 'disabled', label: 'Disabled' },
+        { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in a tooltip when Disabled is on.' },
+        { kind: 'select', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }] },
+        { kind: 'segmented', key: 'labelPosition', label: 'Label position', options: [{ value: 'end', label: 'After' }, { value: 'start', label: 'Before' }, { value: 'between', label: 'Across' }] },
+      ]}
+      preview={
+        <Switch
+          label={String(v.label) || 'Untitled setting'}
+          description={v.description ? String(v.description) : undefined}
+          checked={!!v.checked}
+          onChange={(c) => set('checked', c)}
+          showState={!!v.showState}
+          disabled={!!v.disabled}
+          disabledReason={v.disabled && v.disabledReason ? String(v.disabledReason) : undefined}
+          size={v.size as 'sm' | 'md'}
+          labelPosition={v.labelPosition as 'end' | 'start' | 'between'}
+        />
+      }
+    />
   );
 }
 
