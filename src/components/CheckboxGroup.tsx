@@ -11,8 +11,11 @@ import { Checkbox } from './Checkbox';
  * - selectAll: adds a checkbox first that turns every option on or off. It
  *   shows the mixed state when only some are chosen; the options sit indented
  *   under it.
- * - help and error sit under the last option; the fieldset points at them.
- *   An error replaces the help, with the error icon, and says how to fix it.
+ * - required: at least one must be chosen. An asterisk after the legend, and
+ *   "required" in the legend for screen readers (a group can't take aria-required):
+ *   "Notify when a candidate submits, required, group".
+ * - description and error sit under the last option; the fieldset points at
+ *   them. An error replaces the description, with the error icon, and says how to fix it.
  */
 export interface CheckboxGroupOption { value: string; label: ReactNode; description?: ReactNode; disabled?: boolean; disabledReason?: ReactNode }
 
@@ -24,8 +27,11 @@ interface CheckboxGroupProps {
   orientation?: 'vertical' | 'horizontal';
   /** Label for a "select all" checkbox, e.g. "All channels". Leave out for none. */
   selectAll?: ReactNode;
-  help?: ReactNode;
-  /** Error under the group; replaces the help */
+  /** A line under the options, read as the group's description */
+  description?: ReactNode;
+  /** At least one must be chosen: an asterisk after the legend */
+  required?: boolean;
+  /** Error under the group; replaces the description */
   error?: ReactNode;
   name?: string;
   className?: string;
@@ -36,7 +42,7 @@ const ErrorIcon = () => (
 );
 
 export function CheckboxGroup({
-  legend, options, value, onChange, orientation = 'vertical', selectAll, help, error, name, className = '',
+  legend, options, value, onChange, orientation = 'vertical', selectAll, description, required, error, name, className = '',
 }: CheckboxGroupProps) {
   const id = useId();
   const usable = options.filter((o) => !o.disabled);
@@ -57,14 +63,14 @@ export function CheckboxGroup({
       ))}
     </div>
   );
-  const note = error ? `${id}-e` : help ? `${id}-h` : undefined;
+  const note = error ? `${id}-e` : description ? `${id}-h` : undefined;
   return (
     <fieldset className={['checks', 'checks--stack', 'checkbox-group', error && 'is-invalid', className].filter(Boolean).join(' ')} aria-describedby={note}>
-      <legend className="field__label">{legend}</legend>
+      <legend className="field__label">{legend}{required && <><span className="field__required" aria-hidden="true">*</span><span className="visually-hidden">, required</span></>}</legend>
       {selectAll && <Checkbox label={selectAll} checked={all} indeterminate={chosen > 0 && !all} onChange={setAll} />}
       {list}
       {error ? <span className="field-error" id={`${id}-e`}><ErrorIcon />{error}</span>
-        : help ? <span className="field-help" id={`${id}-h`}>{help}</span> : null}
+        : description ? <span className="field-help" id={`${id}-h`}>{description}</span> : null}
     </fieldset>
   );
 }

@@ -206,7 +206,7 @@ code, .id { font-family: var(--mono); font-size: var(--text-caption); }
 
 /* ---- forms.css ---- */
 /* Forms: fields (input, textarea), checkboxes, radios and form layout.
-   Labels sit above controls, help and errors below. Mark optional fields, not required ones. */
+   Labels sit above controls, help and errors below. Mark required fields with an asterisk (.field__required); leave optional ones unmarked. */
 .field { display: grid; gap: var(--space-1-5); min-width: 0; }
 .field__label { font-size: var(--text-caption); font-weight: var(--weight-medium); color: var(--ink-faint); }
 .field input, .field textarea {
@@ -223,7 +223,8 @@ code, .id { font-family: var(--mono); font-size: var(--text-caption); }
 .field input:read-only:hover, .field textarea:read-only:hover { border-color: var(--rule); }
 .field input[aria-disabled="true"], .field textarea[aria-disabled="true"] { background: var(--bg-subtle); color: var(--ink-faint); border-color: var(--rule); cursor: not-allowed; }
 .field.is-disabled .field__label { color: var(--ink-faint); }
-.field__optional { font-weight: var(--weight-regular); color: var(--ink-faint); }
+/* Required: an ink asterisk after the label, hidden from screen readers (the control says "required") */
+.field__required { margin-left: var(--space-0-5); color: var(--ink); font-weight: var(--weight-semibold); }
 
 /* Input with a leading icon (search) */
 .field__control { position: relative; display: grid; }

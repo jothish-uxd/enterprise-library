@@ -466,7 +466,7 @@ function ButtonDemo() {
 /* ---------- Checkbox playground ---------- */
 function CheckboxDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
-    label: 'Accept the terms', description: 'You can withdraw at any time in Settings.',
+    label: 'Accept the terms', required: true, hasDescription: true, description: 'You can withdraw at any time in Settings.',
     checked: false, indeterminate: false, error: false, errorMessage: 'Accept the terms to continue.',
     disabled: false, disabledReason: 'Your organisation has already accepted on your behalf.',
   });
@@ -475,7 +475,8 @@ function CheckboxDemo() {
   const setter = `set${name[0].toUpperCase()}${name.slice(1)}`;
   const attrs: PgCodeLine[] = [
     { attr: 'label', value: String(v.label) },
-    ...(v.description ? [{ attr: 'description', value: String(v.description) }] : []),
+    ...(v.required ? [{ attr: 'required', value: true as const }] : []),
+    ...(v.hasDescription && v.description ? [{ attr: 'description', value: String(v.description) }] : []),
     { attr: 'checked', value: name, expr: true },
     { attr: 'onChange', value: setter, expr: true },
     ...(v.indeterminate ? [{ attr: 'indeterminate', value: true as const }] : []),
@@ -494,7 +495,9 @@ function CheckboxDemo() {
       attrs={attrs}
       controls={[
         { kind: 'text', key: 'label', label: 'Label' },
-        { kind: 'text', key: 'description', label: 'Description', help: 'Leave empty for none.' },
+        { kind: 'boolean', key: 'required', label: 'Required', help: 'An asterisk after the label.' },
+        { kind: 'boolean', key: 'hasDescription', label: 'Description' },
+        { kind: 'text', key: 'description', label: 'Description text', help: 'Shown when Description is on.' },
         { kind: 'boolean', key: 'checked', label: 'Checked' },
         { kind: 'boolean', key: 'indeterminate', label: 'Mixed', help: 'For a “select all” when only some are chosen.' },
         { kind: 'boolean', key: 'error', label: 'Error' },
@@ -505,7 +508,8 @@ function CheckboxDemo() {
       preview={
         <Checkbox
           label={String(v.label) || 'Untitled'}
-          description={v.description ? String(v.description) : undefined}
+          required={!!v.required}
+          description={v.hasDescription && v.description ? String(v.description) : undefined}
           checked={!!v.checked}
           onChange={(c) => { set('checked', c); if (v.indeterminate) set('indeterminate', false); }}
           indeterminate={!!v.indeterminate}
@@ -528,8 +532,8 @@ const INPUT_TYPES: Record<string, { attrs: PgCodeLine[]; props: Record<string, s
 };
 function InputDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
-    label: 'Work email', placeholder: 'name@company.com', help: 'We’ll send the results here.', type: 'email',
-    optional: false, icon: false, error: false, errorMessage: 'Enter an email address, such as name@company.com.',
+    label: 'Work email', placeholder: 'name@company.com', hasDescription: true, description: 'We’ll send the results here.', type: 'email',
+    required: true, icon: false, error: false, errorMessage: 'Enter an email address, such as name@company.com.',
     readOnly: false, disabled: false, disabledReason: 'Set by your organisation’s single sign-on.',
   });
   const [text, setText] = useState('');
@@ -542,8 +546,8 @@ function InputDemo() {
     { attr: 'label', value: String(v.label) },
     ...t.attrs,
     ...(v.placeholder ? [{ attr: 'placeholder', value: String(v.placeholder) }] : []),
-    ...(v.help && !showError ? [{ attr: 'help', value: String(v.help) }] : []),
-    ...(v.optional ? [{ attr: 'optional', value: true as const }] : []),
+    ...(v.required ? [{ attr: 'required', value: true as const }] : []),
+    ...(v.hasDescription && v.description && !showError ? [{ attr: 'description', value: String(v.description) }] : []),
     ...(v.icon ? [{ attr: 'icon', value: '<SearchIcon />', expr: true }] : []),
     ...(showError ? [{ attr: 'error', value: String(v.errorMessage) }] : []),
     ...(v.readOnly ? [{ attr: 'readOnly', value: true as const }] : []),
@@ -565,11 +569,12 @@ function InputDemo() {
         { kind: 'text', key: 'label', label: 'Label' },
         { kind: 'select', key: 'type', label: 'Type', options: [{ value: 'text', label: 'Text' }, { value: 'email', label: 'Email' }, { value: 'search', label: 'Search' }, { value: 'numeric', label: 'Numeric' }] },
         { kind: 'text', key: 'placeholder', label: 'Placeholder', help: 'An example, never the only label. Leave empty for none.' },
-        { kind: 'text', key: 'help', label: 'Help text', help: 'Leave empty for none.' },
-        { kind: 'boolean', key: 'optional', label: 'Optional', help: 'Adds “(optional)” to the label.' },
+        { kind: 'boolean', key: 'required', label: 'Required', help: 'An asterisk after the label.' },
+        { kind: 'boolean', key: 'hasDescription', label: 'Description' },
+        { kind: 'text', key: 'description', label: 'Description text', help: 'Shown when Description is on.' },
         { kind: 'boolean', key: 'icon', label: 'Search icon' },
         { kind: 'boolean', key: 'error', label: 'Error' },
-        { kind: 'text', key: 'errorMessage', label: 'Error message', help: 'Replaces the help text when Error is on. Say how to fix it.' },
+        { kind: 'text', key: 'errorMessage', label: 'Error message', help: 'Replaces the description when Error is on. Say how to fix it.' },
         { kind: 'boolean', key: 'readOnly', label: 'Read only', help: 'Can be selected and copied, not changed.' },
         { kind: 'boolean', key: 'disabled', label: 'Disabled' },
         { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in a tooltip when Disabled is on.' },
@@ -579,8 +584,8 @@ function InputDemo() {
           label={String(v.label) || 'Untitled'}
           {...t.props}
           placeholder={v.placeholder ? String(v.placeholder) : undefined}
-          help={v.help ? String(v.help) : undefined}
-          optional={!!v.optional}
+          required={!!v.required}
+          description={v.hasDescription && v.description ? String(v.description) : undefined}
           icon={v.icon ? <SearchIcon /> : undefined}
           error={showError ? String(v.errorMessage) : undefined}
           readOnly={!!v.readOnly}
@@ -598,7 +603,7 @@ function InputDemo() {
 function CheckboxGroupDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
     legend: 'Notify when a candidate submits', options: 'Hiring manager, Recruiter, Proctor',
-    orientation: 'vertical', selectAll: false, help: 'Each person gets one email per candidate.',
+    orientation: 'vertical', selectAll: false, required: true, hasDescription: true, description: 'Each person gets one email per candidate.',
     error: false, errorMessage: 'Choose at least one person to notify.', disableLast: false,
   });
   const [chosen, setChosen] = useState<string[]>(['hiring-manager']);
@@ -614,7 +619,8 @@ function CheckboxGroupDemo() {
     { attr: 'onChange', value: 'setNotify', expr: true },
     ...(v.orientation === 'horizontal' ? [{ attr: 'orientation', value: 'horizontal' }] : []),
     ...(v.selectAll ? [{ attr: 'selectAll', value: 'Everyone' }] : []),
-    ...(v.help && !(v.error && v.errorMessage) ? [{ attr: 'help', value: String(v.help) }] : []),
+    ...(v.required ? [{ attr: 'required', value: true as const }] : []),
+    ...(v.hasDescription && v.description && !(v.error && v.errorMessage) ? [{ attr: 'description', value: String(v.description) }] : []),
     ...(v.error && v.errorMessage ? [{ attr: 'error', value: String(v.errorMessage) }] : []),
   ];
   return (
@@ -628,12 +634,14 @@ function CheckboxGroupDemo() {
       attrs={attrs}
       controls={[
         { kind: 'text', key: 'legend', label: 'Legend', help: 'Names the group; read with each checkbox.' },
+        { kind: 'boolean', key: 'required', label: 'Required', help: 'At least one must be chosen. An asterisk after the legend.' },
+        { kind: 'boolean', key: 'hasDescription', label: 'Description' },
+        { kind: 'text', key: 'description', label: 'Description text', help: 'Shown when Description is on.' },
         { kind: 'text', key: 'options', label: 'Options', help: 'Up to 4, separated by commas.' },
         { kind: 'segmented', key: 'orientation', label: 'Orientation', options: [{ value: 'vertical', label: 'Vertical' }, { value: 'horizontal', label: 'Horizontal' }] },
         { kind: 'boolean', key: 'selectAll', label: 'Select all', help: 'An “Everyone” checkbox first; it shows the mixed state when only some are chosen.' },
-        { kind: 'text', key: 'help', label: 'Help text', help: 'Leave empty for none.' },
         { kind: 'boolean', key: 'error', label: 'Error' },
-        { kind: 'text', key: 'errorMessage', label: 'Error message', help: 'Replaces the help text when Error is on.' },
+        { kind: 'text', key: 'errorMessage', label: 'Error message', help: 'Replaces the description when Error is on.' },
         { kind: 'boolean', key: 'disableLast', label: 'Disable last option' },
       ]}
       preview={
@@ -644,7 +652,8 @@ function CheckboxGroupDemo() {
           onChange={setChosen}
           orientation={v.orientation as 'vertical' | 'horizontal'}
           selectAll={v.selectAll ? 'Everyone' : undefined}
-          help={v.help ? String(v.help) : undefined}
+          required={!!v.required}
+          description={v.hasDescription && v.description ? String(v.description) : undefined}
           error={v.error && v.errorMessage ? String(v.errorMessage) : undefined}
         />
       }
@@ -659,7 +668,7 @@ const camel = (t: string) => {
 };
 function SwitchDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
-    label: 'Require password', description: 'Asked for when someone opens a shared file.',
+    label: 'Require password', hasDescription: true, description: 'Asked for when someone opens a shared file.',
     checked: false, showState: false, disabled: false, disabledReason: 'Your organisation requires passwords on every file.',
     size: 'md', labelPosition: 'end',
   });
@@ -668,7 +677,7 @@ function SwitchDemo() {
   const setter = `set${name[0].toUpperCase()}${name.slice(1)}`;
   const attrs: PgCodeLine[] = [
     { attr: 'label', value: String(v.label) },
-    ...(v.description ? [{ attr: 'description', value: String(v.description) }] : []),
+    ...(v.hasDescription && v.description ? [{ attr: 'description', value: String(v.description) }] : []),
     { attr: 'checked', value: name, expr: true },
     { attr: 'onChange', value: setter, expr: true },
     ...(v.showState ? [{ attr: 'showState', value: true as const }] : []),
@@ -688,7 +697,8 @@ function SwitchDemo() {
       attrs={attrs}
       controls={[
         { kind: 'text', key: 'label', label: 'Label' },
-        { kind: 'text', key: 'description', label: 'Description', help: 'Leave empty for none.' },
+        { kind: 'boolean', key: 'hasDescription', label: 'Description' },
+        { kind: 'text', key: 'description', label: 'Description text', help: 'Shown when Description is on.' },
         { kind: 'boolean', key: 'checked', label: 'Checked' },
         { kind: 'boolean', key: 'showState', label: 'Show state' },
         { kind: 'boolean', key: 'disabled', label: 'Disabled' },
@@ -699,7 +709,7 @@ function SwitchDemo() {
       preview={
         <Switch
           label={String(v.label) || 'Untitled setting'}
-          description={v.description ? String(v.description) : undefined}
+          description={v.hasDescription && v.description ? String(v.description) : undefined}
           checked={!!v.checked}
           onChange={(c) => set('checked', c)}
           showState={!!v.showState}

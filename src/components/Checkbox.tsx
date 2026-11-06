@@ -8,6 +8,8 @@ import { useTooltip } from './Tooltip';
  * - Its name is the label only; a description and an error are read as its
  *   description: "Accept the terms, checkbox, not checked, invalid entry.
  *   Accept the terms to continue."
+ * - required: an asterisk after the label (hidden from screen readers, which
+ *   hear "required" from aria-required). For a box people must tick, such as terms.
  * - error: shows the message under the label with the error icon, and sets
  *   aria-invalid. Say how to fix it.
  * - indeterminate: the mixed state, for a "select all" when some are chosen.
@@ -24,6 +26,8 @@ interface CheckboxProps {
   description?: ReactNode;
   /** Mixed: some of a group are chosen. Use for "select all". */
   indeterminate?: boolean;
+  /** Must be ticked: an asterisk after the label, and aria-required */
+  required?: boolean;
   /** Error message under the label; also marks it invalid */
   error?: ReactNode;
   /** Can't be changed right now. Stays focusable; give a reason. */
@@ -40,7 +44,7 @@ const ErrorIcon = () => (
 );
 
 export function Checkbox({
-  label, checked, onChange, description, indeterminate = false, error, disabled, disabledReason, name, value, id, className = '',
+  label, checked, onChange, description, indeterminate = false, required, error, disabled, disabledReason, name, value, id, className = '',
 }: CheckboxProps) {
   const auto = useId();
   const inputId = id ?? `cb-${auto}`;
@@ -61,6 +65,7 @@ export function Checkbox({
           checked={checked}
           aria-labelledby={`${inputId}-l`}
           aria-describedby={describedBy}
+          aria-required={required || undefined}
           aria-invalid={error ? true : undefined}
           aria-disabled={disabled || undefined}
           onChange={(e) => { if (!disabled) onChange(e.target.checked); }}
@@ -68,7 +73,7 @@ export function Checkbox({
           {...tip.focusProps}
         />
         <span className="check__text">
-          <span className="check__label" id={`${inputId}-l`}>{label}</span>
+          <span className="check__label" id={`${inputId}-l`}>{label}{required && <span className="field__required" aria-hidden="true">*</span>}</span>
           {description && <span className="check__desc" id={`${inputId}-d`}>{description}</span>}
         </span>
       </label>
