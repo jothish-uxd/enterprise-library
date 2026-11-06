@@ -880,6 +880,8 @@
   .lib-scroll { max-height: 280px; overflow: auto; border-bottom: 1px solid var(--rule); }
   .lib-fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 10px; min-width: 0; }
   .lib-index { list-style: none; margin: 40px 0 0; padding: 0; }
+  .lib-filter { margin-top: 40px; }
+  .lib-filter + .sr-only + .lib-index { margin-top: 16px; }
   .lib-index .card__title a { color: var(--ink); }
   .install { max-width: 560px; }
   .lib .table code { white-space: nowrap; }
@@ -1018,43 +1020,26 @@
       </ul>
     </div>
     <div class="nav-group" data-section="foundations">
-      <h2 class="nav-heading" id="nav-fd">Foundations</h2>
-      <ul class="nav-list" aria-labelledby="nav-fd">
+      <ul class="nav-list" aria-label="Foundations">
         <li><a class="nav-link" href="#foundations">All foundations</a></li>
         <li><a class="nav-link" href="#colour">Colour</a></li>
-        <li><a class="nav-link" href="#type">Type</a></li>
-        <li><a class="nav-link" href="#spacing">Spacing</a></li>
         <li><a class="nav-link" href="#radius-shadow">Radius, shadow and height</a></li>
+        <li><a class="nav-link" href="#spacing">Spacing</a></li>
+        <li><a class="nav-link" href="#type">Type</a></li>
       </ul>
     </div>
     <div class="nav-group" data-section="components">
-      <h2 class="nav-heading" id="nav-cm">Components</h2>
-      <ul class="nav-list" aria-labelledby="nav-cm">
+      <ul class="nav-list" aria-label="Components">
         <li><a class="nav-link" href="#components">All components</a></li>
-      </ul>
-    </div>
-    <div class="nav-group" data-section="components">
-      <h2 class="nav-heading" id="nav-cm-act"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-cm-act-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="15" height="9" rx="2"/><path d="M13 12l7 2.6-3 1.2-1.2 3z"/></svg><span>Actions and inputs</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
-      <ul class="nav-list" id="nav-cm-act-list" aria-labelledby="nav-cm-act">
-        <li><a class="nav-link" href="#buttons">Buttons</a></li>
-        <li><a class="nav-link" href="#fields">Fields</a></li>
-        <li><a class="nav-link" href="#select">Select</a></li>
-      </ul>
-    </div>
-    <div class="nav-group" data-section="components">
-      <h2 class="nav-heading" id="nav-cm-data"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-cm-data-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="14" height="11" rx="2"/><path d="M7 5.5h11.5a2 2 0 0 1 2 2V16"/></svg><span>Data and surfaces</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
-      <ul class="nav-list" id="nav-cm-data-list" aria-labelledby="nav-cm-data">
-        <li><a class="nav-link" href="#table">Table</a></li>
-        <li><a class="nav-link" href="#card">Card</a></li>
-        <li><a class="nav-link" href="#statfilter">StatFilter</a></li>
-        <li><a class="nav-link" href="#hovercard">HoverCard</a></li>
-      </ul>
-    </div>
-    <div class="nav-group" data-section="components">
-      <h2 class="nav-heading" id="nav-cm-frame"><button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-cm-frame-list"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M6 6.5h.01M8.5 6.5h.01"/></svg><span>Presenting apps</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button></h2>
-      <ul class="nav-list" id="nav-cm-frame-list" aria-labelledby="nav-cm-frame">
         <li><a class="nav-link" href="#browserframe">BrowserFrame</a></li>
+        <li><a class="nav-link" href="#buttons">Buttons</a></li>
+        <li><a class="nav-link" href="#card">Card</a></li>
+        <li><a class="nav-link" href="#fields">Fields</a></li>
+        <li><a class="nav-link" href="#hovercard">HoverCard</a></li>
         <li><a class="nav-link" href="#resetbutton">ResetButton</a></li>
+        <li><a class="nav-link" href="#select">Select</a></li>
+        <li><a class="nav-link" href="#statfilter">StatFilter</a></li>
+        <li><a class="nav-link" href="#table">Table</a></li>
       </ul>
     </div>
     <div class="nav-group" data-section="patterns">
@@ -1313,10 +1298,9 @@ export function AccessRequests({ rows, onUpdate }) {
      Foundations
      ===================================================================== -->
 <section class="panel" id="panel-foundations" data-section="foundations" aria-labelledby="h-foundations" hidden>
-  <p class="page-kicker">Foundations</p>
   <h1 class="page-title" id="h-foundations" tabindex="-1">Foundations</h1>
   <p class="page-lede">The values everything else is built from. Use a token, never a raw value; if a value you need is missing, add the token first.</p>
-  <ul class="lib card-grid lib-index"><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#colour">Colour</a></h2><p class="card__meta">Ten monochrome tokens plus three message colours, each with a dark value.</p></div><div class="card__end"><span class="tag">16 tokens</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#type">Type</a></h2><p class="card__meta">An eight-step ramp: six fixed sizes and two that scale with the viewport.</p></div><div class="card__end"><span class="tag">8 steps</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#spacing">Spacing</a></h2><p class="card__meta">A 4px grid, with half steps for the inside of controls.</p></div><div class="card__end"><span class="tag">13 steps</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#radius-shadow">Radius, shadow and height</a></h2><p class="card__meta">Four radii plus full, three shadows for things that float, three control heights.</p></div><div class="card__end"><span class="tag">11 tokens</span></div></div></li></ul>
+  <ul class="lib card-grid lib-index"><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#colour">Colour</a></h2><p class="card__meta">Ten monochrome tokens plus three message colours, each with a dark value.</p></div><div class="card__end"><span class="tag">16 tokens</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#radius-shadow">Radius, shadow and height</a></h2><p class="card__meta">Four radii plus full, three shadows for things that float, three control heights.</p></div><div class="card__end"><span class="tag">11 tokens</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#spacing">Spacing</a></h2><p class="card__meta">A 4px grid, with half steps for the inside of controls.</p></div><div class="card__end"><span class="tag">13 steps</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#type">Type</a></h2><p class="card__meta">An eight-step ramp: six fixed sizes and two that scale with the viewport.</p></div><div class="card__end"><span class="tag">8 steps</span></div></div></li></ul>
 
 </section>
 
@@ -1417,10 +1401,11 @@ export function AccessRequests({ rows, onUpdate }) {
      Components
      ===================================================================== -->
 <section class="panel" id="panel-components" data-section="components" aria-labelledby="h-components" hidden>
-  <p class="page-kicker">Components</p>
   <h1 class="page-title" id="h-components" tabindex="-1">Components</h1>
   <p class="page-lede">Single controls and surfaces. Each one is a real HTML element first, follows the ARIA Authoring Practices where it needs ARIA, and documents its keys and what a screen reader hears.</p>
-  <ul class="lib card-grid lib-index"><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#buttons">Buttons</a></h2><p class="card__meta">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</p></div><div class="card__end"><span class="tag">CSS</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#fields">Fields</a></h2><p class="card__meta">Text fields, textareas, checkboxes, help and invalid states.</p></div><div class="card__end"><span class="tag">CSS</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#select">Select</a></h2><p class="card__meta">A dropdown that looks like a field and opens like a menu.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#table">Table</a></h2><p class="card__meta">Hairline rows, sorting, selectable rows, sticky header, empty state.</p></div><div class="card__end"><span class="tag">CSS + React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#card">Card</a></h2><p class="card__meta">Card with header, body and footer, and ChoiceCard for picking.</p></div><div class="card__end"><span class="tag">CSS + React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#statfilter">StatFilter</a></h2><p class="card__meta">Counts that also filter what’s below them.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#hovercard">HoverCard</a></h2><p class="card__meta">Details on hover or focus, dismissable and persistent.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#browserframe">BrowserFrame</a></h2><p class="card__meta">A plain browser window for presenting an app inside a page.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#resetbutton">ResetButton</a></h2><p class="card__meta">Clears a demo’s saved changes after a confirm.</p></div><div class="card__end"><span class="tag">React</span></div></div></li></ul>
+  <div class="chips lib-filter" role="group" aria-label="Filter components by group"><button class="chip" type="button" aria-pressed="true" data-group="">All <span class="count">9</span></button><button class="chip" type="button" aria-pressed="false" data-group="Actions and inputs">Actions and inputs <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Data and surfaces">Data and surfaces <span class="count">4</span></button><button class="chip" type="button" aria-pressed="false" data-group="Presenting apps">Presenting apps <span class="count">2</span></button></div>
+  <p class="sr-only" id="cmp-filter-status" role="status" aria-live="polite"></p>
+  <ul class="lib card-grid lib-index" id="cmp-cards"><li class="card" data-group="Presenting apps"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#browserframe">BrowserFrame</a></h2><p class="card__meta">A plain browser window for presenting an app inside a page.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card" data-group="Actions and inputs"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#buttons">Buttons</a></h2><p class="card__meta">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</p></div><div class="card__end"><span class="tag">CSS</span></div></div></li><li class="card" data-group="Data and surfaces"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#card">Card</a></h2><p class="card__meta">Card with header, body and footer, and ChoiceCard for picking.</p></div><div class="card__end"><span class="tag">CSS + React</span></div></div></li><li class="card" data-group="Actions and inputs"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#fields">Fields</a></h2><p class="card__meta">Text fields, textareas, checkboxes, help and invalid states.</p></div><div class="card__end"><span class="tag">CSS</span></div></div></li><li class="card" data-group="Data and surfaces"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#hovercard">HoverCard</a></h2><p class="card__meta">Details on hover or focus, dismissable and persistent.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card" data-group="Presenting apps"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#resetbutton">ResetButton</a></h2><p class="card__meta">Clears a demo’s saved changes after a confirm.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card" data-group="Actions and inputs"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#select">Select</a></h2><p class="card__meta">A dropdown that looks like a field and opens like a menu.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card" data-group="Data and surfaces"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#statfilter">StatFilter</a></h2><p class="card__meta">Counts that also filter what’s below them.</p></div><div class="card__end"><span class="tag">React</span></div></div></li><li class="card" data-group="Data and surfaces"><div class="card__header"><div class="card__heading"><h2 class="card__title"><a href="#table">Table</a></h2><p class="card__meta">Hairline rows, sorting, selectable rows, sticky header, empty state.</p></div><div class="card__end"><span class="tag">CSS + React</span></div></div></li></ul>
 
   <section class="doc-section" id="cmp-next" aria-labelledby="h-cmp-next">
     <h2 id="h-cmp-next">Coming next</h2>
@@ -5561,6 +5546,19 @@ export function AccessRequests({ rows, onUpdate }) {
       try { localStorage.setItem(NAV_KEY, JSON.stringify(ids)); } catch (e) {}
     });
   });
+
+  /* ---------------- Components index: filter the cards by group ---------------- */
+  const cmpChips = [...document.querySelectorAll(".lib-filter .chip")];
+  cmpChips.forEach(chip => chip.addEventListener("click", () => {
+    const group = chip.dataset.group;
+    cmpChips.forEach(c => c.setAttribute("aria-pressed", String(c === chip)));
+    let shown = 0;
+    document.querySelectorAll("#cmp-cards > li").forEach(li => {
+      li.hidden = !!group && li.dataset.group !== group;
+      if (!li.hidden) shown++;
+    });
+    $("cmp-filter-status").textContent = group ? `Showing ${shown} components in ${group}.` : `Showing all ${shown} components.`;
+  }));
 
   /* ---------------- Routing: one page per pattern ---------------- */
   const panels = [...document.querySelectorAll(".panel")];
