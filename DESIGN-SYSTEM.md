@@ -252,6 +252,11 @@ An icon button for the BrowserFrame bar (`end` slot) that clears saved changes a
 
 Rules: the confirm is a small `alertdialog` under the button; focus starts on **Cancel**; Escape or a click outside closes it and returns focus to the button; the result is announced in a polite live region. Say what is cleared and what is kept.
 
+- The button's name is "Reset {what}", also shown in the library tooltip on hover and focus (not `title`).
+- `confirmVariant="danger"` makes the confirm's Reset button red, for resets that throw away work people would miss; keep the default primary for demo data that comes straight back.
+- `disabled` with `disabledReason`: `aria-disabled`, so it stays in the Tab order, won't open, and the reason shows in the tooltip and is read as its description. Use it when there's nothing to reset.
+- `to` is optional; leave it out to stay on the same page.
+
 ### Tooltip (`tooltip.css`, `components/Tooltip.tsx`)
 
 Extra detail beside something on the page, in two versions:

@@ -1,10 +1,17 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTooltip } from './Tooltip';
 
 /**
  * Icon button for the BrowserFrame bar that clears saved changes, after a confirm.
  * The confirm is a small alertdialog anchored under the button: focus starts on
  * Cancel, Escape or a click outside closes it, and the result is announced.
+ *
+ * - Its name is "Reset {what}", also shown in a tooltip on hover and focus.
+ * - confirmVariant 'danger' makes the confirm's Reset button red, for resets
+ *   that throw away work people would miss.
+ * - disabled: aria-disabled, so it stays in the Tab order and won't open;
+ *   disabledReason shows why in the tooltip and is read as its description.
  */
 interface Props {
   /** What is being reset, e.g. "lab" or "vault" */
@@ -13,17 +20,24 @@ interface Props {
   description: string;
   /** Announced after resetting */
   done: string;
-  /** Where to go after resetting */
-  to: string;
+  /** Where to go after resetting; leave out to stay put */
+  to?: string;
   onReset: () => void;
+  /** The confirm's Reset button. Default 'primary'. */
+  confirmVariant?: 'primary' | 'danger';
+  /** Nothing to reset right now. Stays focusable and won't open; give a reason. */
+  disabled?: boolean;
+  disabledReason?: string;
 }
 
-export default function ResetButton({ what, description, done: doneText, to, onReset }: Props) {
+export default function ResetButton({ what, description, done: doneText, to, onReset, confirmVariant = 'primary', disabled, disabledReason }: Props) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState('');
   const navigate = useNavigate();
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const reason = disabled ? disabledReason : undefined;
+  const tip = useTooltip(open ? null : reason ?? `Reset ${what}`);
   const cancelRef = useRef<HTMLButtonElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +57,7 @@ export default function ResetButton({ what, description, done: doneText, to, onR
   const reset = () => {
     onReset();
     setOpen(false);
-    navigate(to);
+    if (to) navigate(to);
     setDone(doneText);
     buttonRef.current?.focus();
   };
@@ -51,14 +65,17 @@ export default function ResetButton({ what, description, done: doneText, to, onR
   return (
     <span className="reset">
       <button
-        ref={buttonRef}
+        ref={(el) => { buttonRef.current = el; tip.anchorRef.current = el; }}
         type="button"
         className="bframe__btn"
         aria-label={`Reset ${what}`}
-        title={`Reset ${what}`}
+        aria-describedby={reason ? tip.describedBy : undefined}
+        aria-disabled={disabled || undefined}
         aria-expanded={open}
         aria-controls={`${id}-confirm`}
-        onClick={() => (open ? close() : setOpen(true))}
+        onClick={() => { if (disabled) return; if (open) close(); else setOpen(true); }}
+        {...tip.hoverProps}
+        {...tip.focusProps}
       >
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.75 8a5.25 5.25 0 1 0 1.6-3.78" /><path d="M2.5 2.5v3h3" /></svg>
       </button>
@@ -67,12 +84,13 @@ export default function ResetButton({ what, description, done: doneText, to, onR
           <p id={`${id}-h`} className="reset__title">Reset the {what}?</p>
           <p id={`${id}-d`} className="reset__desc">{description}</p>
           <div className="reset__actions">
-            <button type="button" className="btn btn--primary btn--sm" onClick={reset}>Reset {what}</button>
+            <button type="button" className={`btn btn--${confirmVariant} btn--sm`} onClick={reset}>Reset {what}</button>
             <button ref={cancelRef} type="button" className="btn btn--secondary btn--sm" onClick={close}>Cancel</button>
           </div>
         </div>
       )}
       <span className="visually-hidden" role="status" aria-live="polite">{done}</span>
+      {tip.tooltip}
     </span>
   );
 }

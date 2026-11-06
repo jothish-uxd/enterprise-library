@@ -249,14 +249,57 @@ function FrameApp() {
   );
 }
 
-/* ---------- ResetButton ---------- */
+/* ---------- ResetButton playground ---------- */
 function ResetDemo() {
-  const { pathname } = useLocation();
+  const [v, setV] = useState<Record<string, PgValue>>({
+    what: 'jobs', description: 'Clears jobs you added or changed. The sample jobs come back.', done: 'Jobs reset.',
+    confirmVariant: 'primary', disabled: false, disabledReason: 'Nothing to reset: you haven’t changed any jobs yet.',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const what = String(v.what) || 'demo';
+  const attrs: PgCodeLine[] = [
+    { attr: 'what', value: what },
+    { attr: 'description', value: String(v.description) },
+    { attr: 'done', value: String(v.done) },
+    { attr: 'to', value: `/${slug(what)}` },
+    { attr: 'onReset', value: `reset${camel(what)[0].toUpperCase()}${camel(what).slice(1)}`, expr: true },
+    ...(v.confirmVariant === 'danger' ? [{ attr: 'confirmVariant', value: 'danger' }] : []),
+    ...(v.disabled ? [{ attr: 'disabled', value: true as const }] : []),
+    ...(v.disabled && v.disabledReason ? [{ attr: 'disabledReason', value: String(v.disabledReason) }] : []),
+  ];
   return (
-    <div className="lib-row">
-      <ResetButton what="demo" description="Nothing is stored on this page, so this only shows the confirm." done="Demo reset." to="/" onReset={() => {}} />
-      <span className="t-small muted">Choose the icon. {pathname !== '/' ? '' : 'Focus starts on Cancel.'}</span>
-    </div>
+    <Playground
+      name="ResetButton"
+      compact
+      values={v}
+      set={set}
+      file="Bar.tsx"
+      tag="ResetButton"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'what', label: 'What', help: 'Names the button and the confirm: “Reset jobs”.' },
+        { kind: 'text', key: 'description', label: 'Description', help: 'What the reset clears, and what it keeps.' },
+        { kind: 'text', key: 'done', label: 'Done message', help: 'Announced to screen readers after resetting.' },
+        { kind: 'segmented', key: 'confirmVariant', label: 'Confirm button', options: [{ value: 'primary', label: 'Primary' }, { value: 'danger', label: 'Danger' }] },
+        { kind: 'boolean', key: 'disabled', label: 'Disabled' },
+        { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in the tooltip when Disabled is on.' },
+      ]}
+      preview={
+        <div className="pg-bar">
+          <span className="pg-bar__address">example.app/{slug(what)}</span>
+          <ResetButton
+            what={what}
+            description={String(v.description)}
+            done={String(v.done)}
+            to="/"
+            onReset={() => {}}
+            confirmVariant={v.confirmVariant as 'primary' | 'danger'}
+            disabled={!!v.disabled}
+            disabledReason={v.disabled && v.disabledReason ? String(v.disabledReason) : undefined}
+          />
+        </div>
+      }
+    />
   );
 }
 
