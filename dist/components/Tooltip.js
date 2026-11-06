@@ -17,9 +17,17 @@ function place(trigger, panel) {
 export function Tooltip(props) {
     return props.trigger === 'click' ? _jsx(ClickTooltip, { ...props }) : _jsx(HoverTooltip, { ...props });
 }
-function HoverTooltip({ label, children, content, className, onClick }) {
+/**
+ * useTooltip — the hover tooltip's behaviour, for any control that needs one,
+ * e.g. explaining why a switch or button is unavailable.
+ * Spread `hoverProps` on the area people point at, `focusProps` on the element
+ * that takes focus, put `describedBy` in its aria-describedby, attach `anchorRef`
+ * to what the arrow should point at, and render `tooltip`.
+ * Screen readers hear the text on focus whether or not it's showing.
+ */
+export function useTooltip(content) {
     const id = useId();
-    const triggerRef = useRef(null);
+    const anchorRef = useRef(null);
     const panelRef = useRef(null);
     const timer = useRef();
     const [open, setOpen] = useState(false);
@@ -41,13 +49,24 @@ function HoverTooltip({ label, children, content, className, onClick }) {
         return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('scroll', onScroll, true); };
     }, [open]);
     useLayoutEffect(() => {
-        if (!open || !triggerRef.current || !panelRef.current) {
+        if (!open || !anchorRef.current || !panelRef.current) {
             setPos(null);
             return;
         }
-        setPos(place(triggerRef.current, panelRef.current));
+        setPos(place(anchorRef.current, panelRef.current));
     }, [open]);
-    return (_jsxs(_Fragment, { children: [_jsx("button", { ref: triggerRef, type: "button", className: `tooltip-trigger${className ? ` ${className}` : ''}`, "aria-label": label, "aria-describedby": id, onMouseEnter: () => show(), onMouseLeave: () => hide(), onFocus: () => show(0), onBlur: () => hide(0), onClick: onClick, children: children }), createPortal(_jsx("div", { ref: panelRef, id: id, role: "tooltip", className: `tooltip${pos?.above ? ' is-above' : ''}`, hidden: !open, style: pos ? { top: pos.top, left: pos.left, ['--arrow-x']: `${pos.arrow}px` } : { visibility: 'hidden' }, onMouseEnter: () => clear(), onMouseLeave: () => hide(), children: content }), document.body)] }));
+    const tooltip = content == null ? null : createPortal(_jsx("div", { ref: panelRef, id: id, role: "tooltip", className: `tooltip${pos?.above ? ' is-above' : ''}`, hidden: !open, style: pos ? { top: pos.top, left: pos.left, ['--arrow-x']: `${pos.arrow}px` } : { visibility: 'hidden' }, onMouseEnter: () => clear(), onMouseLeave: () => hide(), children: content }), document.body);
+    return {
+        describedBy: content == null ? undefined : id,
+        anchorRef,
+        hoverProps: { onMouseEnter: () => show(), onMouseLeave: () => hide() },
+        focusProps: { onFocus: () => show(0), onBlur: () => hide(0) },
+        tooltip,
+    };
+}
+function HoverTooltip({ label, children, content, className, onClick }) {
+    const tip = useTooltip(content);
+    return (_jsxs(_Fragment, { children: [_jsx("button", { ref: (el) => { tip.anchorRef.current = el; }, type: "button", className: `tooltip-trigger${className ? ` ${className}` : ''}`, "aria-label": label, "aria-describedby": tip.describedBy, ...tip.hoverProps, ...tip.focusProps, onClick: onClick, children: children }), tip.tooltip] }));
 }
 function ClickTooltip({ label, children, content, className }) {
     const id = useId();

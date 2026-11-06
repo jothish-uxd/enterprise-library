@@ -57,9 +57,17 @@ export function Tooltip(props: Props) {
   return props.trigger === 'click' ? <ClickTooltip {...props} /> : <HoverTooltip {...props} />;
 }
 
-function HoverTooltip({ label, children, content, className, onClick }: Props) {
+/**
+ * useTooltip — the hover tooltip's behaviour, for any control that needs one,
+ * e.g. explaining why a switch or button is unavailable.
+ * Spread `hoverProps` on the area people point at, `focusProps` on the element
+ * that takes focus, put `describedBy` in its aria-describedby, attach `anchorRef`
+ * to what the arrow should point at, and render `tooltip`.
+ * Screen readers hear the text on focus whether or not it's showing.
+ */
+export function useTooltip(content: ReactNode) {
   const id = useId();
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const anchorRef = useRef<HTMLElement | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const timer = useRef<number>();
   const [open, setOpen] = useState(false);
@@ -80,41 +88,52 @@ function HoverTooltip({ label, children, content, className, onClick }: Props) {
   }, [open]);
 
   useLayoutEffect(() => {
-    if (!open || !triggerRef.current || !panelRef.current) { setPos(null); return; }
-    setPos(place(triggerRef.current, panelRef.current));
+    if (!open || !anchorRef.current || !panelRef.current) { setPos(null); return; }
+    setPos(place(anchorRef.current, panelRef.current));
   }, [open]);
 
+  const tooltip = content == null ? null : createPortal(
+    <div
+      ref={panelRef}
+      id={id}
+      role="tooltip"
+      className={`tooltip${pos?.above ? ' is-above' : ''}`}
+      hidden={!open}
+      style={pos ? { top: pos.top, left: pos.left, ['--arrow-x' as string]: `${pos.arrow}px` } : { visibility: 'hidden' }}
+      onMouseEnter={() => clear()}
+      onMouseLeave={() => hide()}
+    >
+      {content}
+    </div>,
+    document.body,
+  );
+
+  return {
+    describedBy: content == null ? undefined : id,
+    anchorRef,
+    hoverProps: { onMouseEnter: () => show(), onMouseLeave: () => hide() },
+    focusProps: { onFocus: () => show(0), onBlur: () => hide(0) },
+    tooltip,
+  };
+}
+
+function HoverTooltip({ label, children, content, className, onClick }: Props) {
+  const tip = useTooltip(content);
   return (
     <>
       <button
-        ref={triggerRef}
+        ref={(el) => { tip.anchorRef.current = el; }}
         type="button"
         className={`tooltip-trigger${className ? ` ${className}` : ''}`}
         aria-label={label}
-        aria-describedby={id}
-        onMouseEnter={() => show()}
-        onMouseLeave={() => hide()}
-        onFocus={() => show(0)}
-        onBlur={() => hide(0)}
+        aria-describedby={tip.describedBy}
+        {...tip.hoverProps}
+        {...tip.focusProps}
         onClick={onClick}
       >
         {children}
       </button>
-      {createPortal(
-        <div
-          ref={panelRef}
-          id={id}
-          role="tooltip"
-          className={`tooltip${pos?.above ? ' is-above' : ''}`}
-          hidden={!open}
-          style={pos ? { top: pos.top, left: pos.left, ['--arrow-x' as string]: `${pos.arrow}px` } : { visibility: 'hidden' }}
-          onMouseEnter={() => clear()}
-          onMouseLeave={() => hide()}
-        >
-          {content}
-        </div>,
-        document.body,
-      )}
+      {tip.tooltip}
     </>
   );
 }

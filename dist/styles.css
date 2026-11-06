@@ -658,6 +658,56 @@ a.tile__link:hover { background: var(--bg-subtle); }
   .chip { transition: background-color .12s ease, opacity .12s ease; }
 }
 
+/* ---- switch.css ---- */
+/* Switch: one setting, on or off, applied straight away.
+   <label class="switch"> wraps a track holding a native checkbox (role="switch") and a dot, then the text.
+   Off: an ink ring with the dot at the start. On: a filled track with the dot at the end.
+   Unavailable: .is-disabled with aria-disabled on the input, so it stays focusable. */
+
+.switch {
+  --switch-w: 36px; --switch-h: 22px; --switch-dot: 14px;
+  display: inline-flex; align-items: center; gap: var(--space-2-5);
+  font-size: var(--text-body-sm); color: var(--ink); cursor: pointer; vertical-align: middle;
+}
+.switch--sm { --switch-w: 28px; --switch-h: 18px; --switch-dot: 10px; font-size: var(--text-small); gap: var(--space-2); }
+.switch--start { flex-direction: row-reverse; justify-content: flex-end; }
+.switch--between { display: flex; flex-direction: row-reverse; justify-content: space-between; width: 100%; }
+
+.switch__track {
+  position: relative; flex: none; width: var(--switch-w); height: var(--switch-h);
+  border: 1.5px solid var(--ink); border-radius: var(--radius-full); background: var(--bg);
+}
+.switch__input { position: absolute; inset: -1.5px; width: calc(100% + 3px); height: calc(100% + 3px); margin: 0; opacity: 0; cursor: inherit; }
+.switch__thumb {
+  position: absolute; top: 50%; left: 3px; width: var(--switch-dot); height: var(--switch-dot);
+  border-radius: var(--radius-full); background: var(--ink); transform: translateY(-50%); pointer-events: none;
+}
+.switch__track:has(.switch__input:checked) { background: var(--ink); }
+.switch__track:has(.switch__input:checked) .switch__thumb { left: calc(var(--switch-w) - 3px - 3px - var(--switch-dot)); background: var(--bg); }
+.switch__track:has(.switch__input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.switch__text { display: grid; gap: 2px; min-width: 0; }
+.switch__label { display: inline-flex; align-items: baseline; gap: var(--space-2); font-weight: var(--weight-medium); }
+.switch__state { font-weight: var(--weight-regular); color: var(--ink-soft); min-width: 2em; }
+.switch__desc { font-size: var(--text-small); color: var(--ink-soft); line-height: 1.5; font-weight: var(--weight-regular); }
+
+/* Unavailable: still focusable, can't change; a tooltip says why */
+.switch.is-disabled { cursor: not-allowed; }
+.switch.is-disabled .switch__track { opacity: .4; }
+.switch.is-disabled .switch__label { color: var(--ink-faint); }
+
+@media (forced-colors: active) {
+  .switch__track { forced-color-adjust: none; border-color: CanvasText; background: Canvas; }
+  .switch__thumb { forced-color-adjust: none; background: CanvasText; }
+  .switch__track:has(.switch__input:checked) { background: Highlight; border-color: Highlight; }
+  .switch__track:has(.switch__input:checked) .switch__thumb { background: HighlightText; }
+  .switch.is-disabled .switch__track { opacity: 1; border-color: GrayText; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .switch__track { transition: background-color .15s ease; }
+  .switch__thumb { transition: left .15s ease, background-color .15s ease; }
+}
+
 /* ---- browser-frame.css ---- */
 /*
   BrowserFrame — design-system component.

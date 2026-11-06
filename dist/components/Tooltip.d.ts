@@ -34,6 +34,27 @@ interface Props {
     onClick?: () => void;
 }
 export declare function Tooltip(props: Props): import("react").JSX.Element;
+/**
+ * useTooltip — the hover tooltip's behaviour, for any control that needs one,
+ * e.g. explaining why a switch or button is unavailable.
+ * Spread `hoverProps` on the area people point at, `focusProps` on the element
+ * that takes focus, put `describedBy` in its aria-describedby, attach `anchorRef`
+ * to what the arrow should point at, and render `tooltip`.
+ * Screen readers hear the text on focus whether or not it's showing.
+ */
+export declare function useTooltip(content: ReactNode): {
+    describedBy: string | undefined;
+    anchorRef: import("react").MutableRefObject<HTMLElement | null>;
+    hoverProps: {
+        onMouseEnter: () => void;
+        onMouseLeave: () => void;
+    };
+    focusProps: {
+        onFocus: () => void;
+        onBlur: () => void;
+    };
+    tooltip: import("react").ReactPortal | null;
+};
 /** @deprecated Use Tooltip (trigger="hover"). Kept so 0.1 apps keep working. */
 export declare function HoverCard({ card, ...rest }: Omit<Props, 'content' | 'trigger'> & {
     card: ReactNode;

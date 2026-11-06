@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, TableCheck, TableEmpty, Tooltip,
+  BrowserFrame, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -296,6 +296,32 @@ function MultiSelectDemo() {
   );
 }
 
+/* ---------- Switch ---------- */
+function SwitchDemo() {
+  const [img, setImg] = useState(true);
+  const [digest, setDigest] = useState(false);
+  const [lock, setLock] = useState(true);
+  const [s, setS] = useState({ calc: true, notes: false });
+  return (
+    <>
+      <div className="lib-row" style={{ gap: '16px 32px' }}>
+        <Switch label="Include image" checked={img} onChange={setImg} />
+        <Switch label="Daily digest" showState checked={digest} onChange={setDigest} />
+        <Switch label="Compact rows" size="sm" checked={!digest} onChange={(v) => setDigest(!v)} />
+      </div>
+      <Switch label="Lock after the deadline" description="Candidates who haven’t submitted can’t start or continue." checked={lock} onChange={setLock} />
+      <div className="lib-row" style={{ gap: '16px 32px' }}>
+        <Switch label="Proctoring" checked={false} onChange={() => {}} disabled disabledReason="Turn on recording in Settings first." />
+        <Switch label="Show scores to candidates" checked onChange={() => {}} disabled disabledReason="Set by your organisation’s results policy." />
+      </div>
+      <div className="lib-settings" role="group" aria-label="Allowed tools">
+        <Switch labelPosition="between" label="Calculator" description="A basic four-function calculator." checked={s.calc} onChange={(v) => setS({ ...s, calc: v })} />
+        <Switch labelPosition="between" label="Scratch notes" description="Cleared when the candidate submits." checked={s.notes} onChange={(v) => setS({ ...s, notes: v })} />
+      </div>
+    </>
+  );
+}
+
 const DEMOS: Record<string, () => ReactNode> = {
   select: () => <SelectDemo />,
   table: () => <TableDemo />,
@@ -308,6 +334,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   segmented: () => <SegmentedDemo />,
   chips: () => <ChipsDemo />,
   multiselect: () => <MultiSelectDemo />,
+  switch: () => <SwitchDemo />,
 };
 
 document.querySelectorAll<HTMLElement>('[data-react]').forEach((el) => {

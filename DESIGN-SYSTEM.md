@@ -78,11 +78,21 @@ Shared anatomy: `.field` stacks a `.field__label` (joined with `for`/`id`), the 
 - **Input**: 36px, hairline border, 6px corners. States: hover, focus ring, invalid, read only (quiet fill, still focusable; prefer it to disabled), disabled. Leading icon: `.field__control` + `.field__icon`. Use the right `type`, `inputmode` and `autocomplete`; IDs are text with `inputmode="numeric"`, not `type="number"`.
 - **Text area**: resizes vertically; `.field__foot` holds the help and a `.field__counter` ("102 characters left", semibold "6 characters too many" with `.is-over`). Never cut off what people typed; announce the counter only when they reach or pass the limit.
 - **Select**: WAI-ARIA select-only combobox (see Select below). **MultiSelect**: same field, `aria-multiselectable` list with a box before each option; Enter or Space toggles and keeps the list open; the field shows "Email, Teams +2" and its name includes "4 chosen". For about 7+ options; fewer is a checkbox group.
-- **Checkbox**: `.check` around a native checkbox; `.check--desc` with `.check__label` and `.check__desc` for a description. Mixed state via `indeterminate` for "select all". Word it as what's true when checked. Settings that apply instantly are a switch (0.3.0).
+- **Checkbox**: `.check` around a native checkbox; `.check--desc` with `.check__label` and `.check__desc` for a description. Mixed state via `indeterminate` for "select all". Word it as what's true when checked. Settings that apply instantly are a Switch.
 - **Checkbox group / Radio group**: a `fieldset.checks` with a `legend.field__label`; `.checks--stack` stacks them (do this unless there are two or three short options); `.checks--nested` indents options under a "select all". A group error goes under the last option, and the fieldset points at it with `aria-describedby`.
 - **Radio button**: always in a group sharing a `name`; Tab reaches the chosen one, arrows move and choose. Never a lone radio. Choose a sensible default when there is one.
 - Check on submit, then move focus to an error summary that links to each field; re-check a field as it's fixed. Never disable submit to show a form is incomplete. Keep what people typed.
 - Layout: `.form`, `.form-grid`, `.form-actions`, `.inline-form`, `.field--wide` / `--narrow`. One column; size fields to their content.
+
+### Switch (`switch.css`, `components/Switch.tsx`)
+
+One setting on or off, applied straight away. A native checkbox with `role="switch"` inside `.switch__track`, with a `.switch__thumb` dot: off is an ink ring with the dot at the start, on is a filled track with the dot at the end. Never colour; high contrast uses Highlight for on. React: `<Switch label checked onChange description showState disabled disabledReason size labelPosition>`.
+
+- Settings that apply instantly are switches; choices sent with a form are checkboxes. Never pair a switch with Save.
+- The label names the setting ("Include image") and stays the same on or off; `showState` adds "On" or "Off". The name is the label only; a description is read separately.
+- Unavailable: `aria-disabled` (not `disabled`), so it stays in the Tab order and can't be flipped, and `disabledReason` shows in a tooltip on hover and focus and is read as its description: "Proctoring, switch, off, dimmed. Turn on recording in Settings first." Always give a reason.
+- Sizes 36×22 and `--sm` 28×18; `--start` puts the label first; `--between` spreads label and switch across a settings row.
+- `useTooltip(content)` gives any control the same hover-and-focus tooltip: spread `hoverProps` and `focusProps`, add `describedBy` to `aria-describedby`, attach `anchorRef`, render `tooltip`.
 
 ### Table (`table.css`, `components/Table.tsx`)
 

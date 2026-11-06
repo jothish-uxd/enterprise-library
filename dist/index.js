@@ -7,7 +7,8 @@ export { default as BrowserFrame, useFrameHistory } from './components/BrowserFr
 export { default as Select } from './components/Select';
 export { default as MultiSelect } from './components/MultiSelect';
 export { default as ResetButton } from './components/ResetButton';
-export { Tooltip, HoverCard } from './components/Tooltip';
+export { Tooltip, HoverCard, useTooltip } from './components/Tooltip';
+export { Switch } from './components/Switch';
 export { default as StatFilter } from './components/StatFilter';
 export { SortHeader, TableCheck, TableEmpty } from './components/Table';
 export { Card, ChoiceCard } from './components/Card';
