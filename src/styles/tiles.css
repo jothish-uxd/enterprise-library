@@ -1,0 +1,56 @@
+/* Tiles: a grid of links into other pages, such as a section's index.
+   Two layouts:
+   - .tiles          tiled: cells share 1px hairlines, square corners, no gaps
+   - .tiles--cards   cards: separate bordered boxes with a gap and rounded corners
+   Each .tile is one link (.tile__link) holding an optional picture (.tile__media),
+   a title with an optional tag (.tile__head, .tile__title, .tile__tag) and a description (.tile__desc).
+   Columns: as many as fit at --tiles-min wide, never more than --tiles-columns. */
+
+.tiles {
+  --tiles-min: 220px;
+  --tiles-columns: 3;
+  --tiles-gap: 0px;
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: var(--tiles-gap);
+  grid-template-columns: repeat(auto-fill, minmax(max(var(--tiles-min), (100% - (var(--tiles-columns) - 1) * var(--tiles-gap)) / var(--tiles-columns)), 1fr));
+  border-top: 1px solid var(--rule); border-left: 1px solid var(--rule);
+}
+.tile { display: grid; min-width: 0; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.tile[hidden] { display: none; }
+
+.tile__link {
+  display: grid; gap: var(--space-1); align-content: start; min-width: 0;
+  padding: var(--space-6);
+  color: inherit; text-decoration: none;
+}
+a.tile__link:hover { background: var(--bg-subtle); }
+.tile__link:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: 0; }
+
+/* Picture: decoration only (aria-hidden), drawn in ink with currentColor. */
+.tile__media { display: block; margin-bottom: var(--space-5); color: var(--ink); }
+.tile__media svg { display: block; width: 100%; height: 72px; }
+
+.tile__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); min-width: 0; }
+.tile__title { font-size: var(--text-body-sm); font-weight: var(--weight-medium); color: var(--ink); line-height: var(--leading-snug); }
+.tile__tag { flex: none; font-family: var(--mono); font-size: var(--text-caption); color: var(--ink-faint); white-space: nowrap; }
+.tile__tag--strong { color: var(--ink); }
+.tile__desc { font-size: var(--text-small); line-height: 1.5; color: var(--ink-soft); }
+
+/* ---------- Cards layout ---------- */
+.tiles--cards { --tiles-gap: var(--space-4); --tiles-min: 240px; border: 0; }
+.tiles--cards .tile { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--bg); overflow: hidden; }
+.tiles--cards .tile__link { padding: var(--space-5); }
+.tiles--cards .tile:has(a.tile__link:hover) { border-color: var(--rule-strong); }
+.tiles--cards .tile__link:focus-visible { border-radius: var(--radius-lg); }
+
+/* Two columns at most, for short lists or narrow areas. */
+.tiles--two { --tiles-columns: 2; }
+
+@media (forced-colors: active) {
+  .tiles, .tile, .tiles--cards .tile { border-color: CanvasText; }
+  a.tile__link:hover { outline: 1px solid LinkText; outline-offset: -3px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tile__link { transition: background-color .12s ease; }
+  .tiles--cards .tile { transition: border-color .12s ease; }
+}

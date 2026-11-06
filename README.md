@@ -20,7 +20,7 @@ Load Geist and Geist Mono in the app (see Getting started on the docs page).
 ## What's inside
 
 - **Foundations:** colour (monochrome plus error, warning and success), an eight-step type ramp, spacing, radius, shadow and control-height tokens.
-- **Components:** Buttons, Fields, Select, Table (with SortHeader, TableCheck, TableEmpty), Card and ChoiceCard, StatFilter, HoverCard, BrowserFrame, ResetButton.
+- **Components:** Buttons, Fields, Select, Table (with SortHeader, TableCheck, TableEmpty), Card and ChoiceCard, Tiles, StatFilter, HoverCard, BrowserFrame, ResetButton.
 - **Patterns** (working examples, React versions coming): bulk actions, data table, details sheet, filter bar, pagination, multi-step form, command palette, destructive confirm, notifications, empty / loading / error states, and admin screens (audit log, usage caps, compliance, reports, asset inventory, configuration, roles and permissions).
 
 ## Apps that use it

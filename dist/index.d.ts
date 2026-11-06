@@ -14,3 +14,4 @@ export type { StatFilterItem } from './components/StatFilter';
 export { SortHeader, TableCheck, TableEmpty } from './components/Table';
 export type { SortDirection } from './components/Table';
 export { Card, ChoiceCard } from './components/Card';
+export { Tiles, Tile } from './components/Tiles';

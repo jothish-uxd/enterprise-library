@@ -10,6 +10,7 @@ The design system moves into Enterprise Library: one repo for foundations, compo
 - Buttons: `--ghost`, `--danger`, `--lg`, `--icon`, `.btn__icon`, the pressed state, `.btn-row`, `.link-button--danger`, forced-colors borders.
 - Table: `--selectable`, `--hover`, `--sticky`, `.center`, and `SortHeader`, `TableCheck`, `TableEmpty`.
 - Card: `.card` with header, body, footer and stats; `Card` and `ChoiceCard`.
+- Tiles: a grid of links into other pages, tiled (shared hairlines) or as cards; `Tiles` and `Tile`. The docs' Patterns, Components and Foundations index pages use it.
 - Fields: `aria-invalid` styling. Stylesheets split into `base`, `type`, `forms`, `buttons`, `table` and `card`.
 
 ## 0.1.0 — 2026-11-04

@@ -81,8 +81,23 @@ Stylesheets: `styles.css` has everything. Each file also ships under `css/`: `to
 
 `.card` with `__header` (`__heading`, `__title`, `__meta`, `__end`), `__body`, `__footer` (full-width rule), `__stats`; variants `--subtle`, `--strong`, `--emphasis` (ink border), `--compact`; `.card-grid` (`--card-min`) and `.card-list`. `Card` renders the same markup.
 
-`ChoiceCard` is a card that is a real radio or checkbox: the input covers the card, invisible; the title is its name, the description its description. Chosen: a 2px ink edge and a filled mark (ring for radio, box for checkbox). Disabled stays readable and says why. Never a second control inside.
+`ChoiceCard` is a card that is a real radio or checkbox: the input covers the card, invisible; the title is its name, the description its description. Chosen: a 2px ink edge and a filled mark (ring for radio, box for checkbox). Disabled stays readable and says why. Never a second control inside. A grid of links to other pages is Tiles, not cards.
 
+
+### Tiles (`tiles.css`, `components/Tiles.tsx`)
+
+A grid of links into other pages: a section's index, a gallery of patterns or templates. Two layouts:
+
+- **Tiled** (`.tiles`, default): cells share 1px hairlines with square corners and no gaps, like a table. For many items, and items with a picture.
+- **Cards** (`.tiles--cards`): separate boxes with 12px corners, 16px apart. For a handful of items, a section index, or next to Card content.
+
+Each `.tile` holds one `.tile__link`: an optional `.tile__media` picture (72px, `aria-hidden`), a `.tile__head` with `.tile__title` and a mono `.tile__tag` (`--strong` for full ink), and a `.tile__desc`. Columns: as many as fit at `--tiles-min` (220px tiled, 240px cards), never more than `--tiles-columns` (3; `.tiles--two` caps at 2). React: `<Tiles layout columns minWidth label>` with `<Tile title description tag tagStrong media href | as + linkProps hidden>`.
+
+- Tiles are navigation; content people compare, choose or act on is a Card.
+- The whole tile is one link and its title is read first. Never a second control in a tile.
+- The picture is decoration; the title and description must stand alone.
+- Filtered tiles get `hidden`, and the number showing is announced in a polite live region.
+- High contrast: hairlines and borders become CanvasText.
 
 ### BrowserFrame
 
