@@ -14,7 +14,10 @@ import { type ReactNode } from 'react';
  * - It changes what's shown on this page. Moving between pages or panels of
  *   different content is Tabs, not a segmented control.
  * - Chosen is lifted out of the tray (page background and a rule), not coloured.
- * - Icon-only options keep their text label as the radio's name.
+ * - Icon-only options keep their text label as the radio's name, and show it
+ *   in a tooltip on hover and focus.
+ * - An unavailable option uses aria-disabled: the arrow keys still reach it but
+ *   don't choose it, and disabledReason says why in a tooltip and as its description.
  */
 export interface SegmentedOption<V extends string = string> {
     value: V;
@@ -23,7 +26,9 @@ export interface SegmentedOption<V extends string = string> {
     count?: number;
     /** Small outlined icon before the label (16px, currentColor) */
     icon?: ReactNode;
+    /** Can't be chosen right now; the arrow keys still reach it. Give a reason. */
     disabled?: boolean;
+    disabledReason?: string;
 }
 interface SegmentedControlProps<V extends string = string> {
     /** Names the group: "Type", "View" */

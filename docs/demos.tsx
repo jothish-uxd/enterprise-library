@@ -303,36 +303,80 @@ function ResetDemo() {
   );
 }
 
-/* ---------- SegmentedControl ---------- */
-const ASSETS = [
-  { name: 'X-wing schematic', kind: 'images' }, { name: 'Cantina sign', kind: 'images' }, { name: 'Shipment chart', kind: 'charts' },
-  { name: 'Briefing', kind: 'video' }, { name: 'Intercept', kind: 'audio' }, { name: 'Customer call', kind: 'audio' },
-  { name: 'Astromech manual', kind: 'documents' }, { name: 'Fuel chart', kind: 'charts' }, { name: 'Hangar walk-through', kind: 'video' },
+/* ---------- SegmentedControl playground ---------- */
+const SEG_ICONS = [
+  { name: 'GridIcon', el: <svg viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1" /><rect x="9" y="2.5" width="4.5" height="4.5" rx="1" /><rect x="2.5" y="9" width="4.5" height="4.5" rx="1" /><rect x="9" y="9" width="4.5" height="4.5" rx="1" /></svg> },
+  { name: 'ImageIcon', el: <svg viewBox="0 0 16 16"><rect x="2.5" y="3" width="11" height="10" rx="1.5" /><circle cx="6" cy="6.5" r="1" /><path d="m3 12 3.5-3.5 2.5 2.5 1.5-1.5L13 12" /></svg> },
+  { name: 'PlayIcon', el: <svg viewBox="0 0 16 16"><rect x="2.5" y="3" width="11" height="10" rx="1.5" /><path d="M7 6v4l3-2z" /></svg> },
+  { name: 'WaveIcon', el: <svg viewBox="0 0 16 16"><path d="M3 7v2M5.5 5v6M8 3v10M10.5 5v6M13 7v2" /></svg> },
 ];
-type Kind = 'all' | 'images' | 'video' | 'audio' | 'documents' | 'charts';
-const GridIcon = () => <svg viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1" /><rect x="9" y="2.5" width="4.5" height="4.5" rx="1" /><rect x="2.5" y="9" width="4.5" height="4.5" rx="1" /><rect x="9" y="9" width="4.5" height="4.5" rx="1" /></svg>;
-const ListIcon = () => <svg viewBox="0 0 16 16"><path d="M6 4h7.5M6 8h7.5M6 12h7.5M2.5 4h.01M2.5 8h.01M2.5 12h.01" /></svg>;
 function SegmentedDemo() {
-  const [kind, setKind] = useState<Kind>('video');
-  const [view, setView] = useState<'grid' | 'list'>('grid');
-  const [range, setRange] = useState<'7' | '30' | '90'>('30');
-  const kinds: Kind[] = ['all', 'images', 'video', 'audio', 'documents', 'charts'];
-  const count = (k: Kind) => (k === 'all' ? ASSETS.length : ASSETS.filter((a) => a.kind === k).length);
-  const shown = ASSETS.filter((a) => kind === 'all' || a.kind === kind);
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Type', showLabel: false, options: 'All, Images, Video, Audio', counts: true, icons: 'none',
+    size: 'md', fill: false, disableLast: false, disabledReason: 'No audio in this library yet.',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const names = String(v.options).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
+  const [chosen, setChosen] = useState('all');
+  const withIcons = v.icons !== 'none';
+  const iconOnly = v.icons === 'only';
+  const opts = names.map((n, i) => {
+    const off = !!v.disableLast && i === names.length - 1 && names.length > 1;
+    return {
+      value: slug(n), label: n,
+      count: v.counts && !iconOnly ? (i === 0 && /^all$/i.test(n) ? names.slice(1).reduce((t, m) => t + fakeCount(m), 0) : fakeCount(n)) : undefined,
+      icon: withIcons ? SEG_ICONS[i % SEG_ICONS.length] : undefined,
+      disabled: off, disabledReason: off && v.disabledReason ? String(v.disabledReason) : undefined,
+    };
+  });
+  const value = opts.some((o) => o.value === chosen) ? chosen : opts[0]?.value ?? '';
+  const name = camel(String(v.label)) || 'value';
+  const setter = `set${name[0].toUpperCase()}${name.slice(1)}`;
+  const optLines = opts.map((o) => `    { value: '${o.value}', label: '${o.label}'${o.count !== undefined ? `, count: ${o.count}` : ''}${o.icon ? `, icon: <${o.icon.name} />` : ''}${o.disabled ? `, disabled: true${o.disabledReason ? `, disabledReason: '${o.disabledReason}'` : ''}` : ''} },`).join('\n');
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) },
+    ...(v.showLabel ? [{ attr: 'showLabel', value: true as const }] : []),
+    { attr: 'options', value: `[\n${optLines}\n  ]`, expr: true },
+    { attr: 'value', value: name, expr: true },
+    { attr: 'onChange', value: setter, expr: true },
+    ...(iconOnly ? [{ attr: 'iconOnly', value: true as const }] : []),
+    ...(v.size === 'sm' ? [{ attr: 'size', value: 'sm' }] : []),
+    ...(v.fill ? [{ attr: 'fill', value: true as const }] : []),
+  ];
   return (
-    <>
-      <div className="lib-row">
-        <SegmentedControl label="Type" value={kind} onChange={setKind}
-          options={kinds.map((k) => ({ value: k, label: k[0].toUpperCase() + k.slice(1), count: count(k) }))} />
-        <SegmentedControl label="View" iconOnly value={view} onChange={setView}
-          options={[{ value: 'grid', label: 'Grid', icon: <GridIcon /> }, { value: 'list', label: 'List', icon: <ListIcon /> }]} />
-      </div>
-      <p className="t-small muted" aria-live="polite">{shown.length} {shown.length === 1 ? 'asset' : 'assets'}, as a {view}: {shown.map((a) => a.name).join(', ')}.</p>
-      <div className="lib-row">
-        <SegmentedControl label="Period" showLabel size="sm" value={range} onChange={setRange}
-          options={[{ value: '7', label: '7 days' }, { value: '30', label: '30 days' }, { value: '90', label: '90 days' }]} />
-      </div>
-    </>
+    <Playground
+      name="Segmented control"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="Toolbar.tsx"
+      tag="SegmentedControl"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label', help: 'Names the group for screen readers, even when hidden.' },
+        { kind: 'boolean', key: 'showLabel', label: 'Show label', help: 'Beside the control. Hidden by default.' },
+        { kind: 'text', key: 'options', label: 'Options', help: 'Up to 4 here, separated by commas. Keep them short.' },
+        { kind: 'boolean', key: 'counts', label: 'Counts', help: 'How many items each option would show.' },
+        { kind: 'segmented', key: 'icons', label: 'Icons', options: [{ value: 'none', label: 'None' }, { value: 'start', label: 'With text' }, { value: 'only', label: 'Icon only' }] },
+        { kind: 'select', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }] },
+        { kind: 'boolean', key: 'fill', label: 'Full width', help: 'Options share the width equally.' },
+        { kind: 'boolean', key: 'disableLast', label: 'Disable last option' },
+        { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in a tooltip when the last option is disabled.' },
+      ]}
+      preview={
+        <SegmentedControl
+          label={String(v.label) || 'Untitled'}
+          showLabel={!!v.showLabel}
+          options={opts.map((o) => ({ ...o, icon: o.icon?.el }))}
+          value={value}
+          onChange={setChosen}
+          iconOnly={iconOnly}
+          size={v.size as 'sm' | 'md'}
+          fill={!!v.fill}
+        />
+      }
+    />
   );
 }
 

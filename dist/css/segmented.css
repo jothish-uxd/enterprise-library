@@ -42,9 +42,12 @@
 /* Icon only: square options; the label is visually hidden but still the radio's name. */
 .segmented--icons .segmented__opt { width: calc(var(--segmented-h) - 2 * var(--space-0-5) - 2px); padding: 0; }
 
-/* Unavailable */
+/* Unavailable: faint, still reached by the arrow keys (aria-disabled); a tooltip says why */
 .segmented__opt:has(.segmented__input:disabled) { opacity: .45; cursor: not-allowed; }
-.segmented__opt:has(.segmented__input:disabled):hover { color: var(--ink-soft); }
+/* Fade the content, not the option, so the focus ring stays full strength */
+.segmented__opt.is-disabled { cursor: not-allowed; }
+.segmented__opt.is-disabled > :not(.segmented__input) { opacity: .45; }
+.segmented__opt.is-disabled:hover, .segmented__opt:has(.segmented__input:disabled):hover { color: var(--ink-soft); }
 
 /* Label beside the control (when it isn't hidden) */
 .segmented-field { display: inline-flex; align-items: center; gap: var(--space-2); max-width: 100%; }
