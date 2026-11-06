@@ -12,21 +12,72 @@ import {
   useFrameHistory, type SortDirection,
 } from '../src';
 
-/* ---------- Select ---------- */
+/* ---------- Select playground (Select and MultiSelect) ---------- */
 function SelectDemo() {
-  const [job, setJob] = useState('');
-  const [metric, setMetric] = useState('Recall');
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Job', required: true, hasDescription: true, description: 'The job this assessment is for.',
+    multiple: false, placeholder: 'Choose a job', options: 'Starfighter Pilot, Hangar Mechanic, Intelligence Analyst, Field Medic',
+    error: false, errorMessage: 'Choose the job this assessment is for.',
+    disabled: false, disabledReason: 'The job can’t change once candidates are invited.',
+  });
+  const [one, setOne] = useState('');
+  const [many, setMany] = useState<string[]>([]);
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const names = String(v.options).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
+  const options = names.map((n) => ({ value: slug(n), label: n }));
+  const multi = !!v.multiple;
+  const name = camel(String(v.label)) || 'value';
+  const setter = `set${name[0].toUpperCase()}${name.slice(1)}`;
+  const showError = !!v.error && !!v.errorMessage;
+  const optLines = options.map((o) => `    { value: '${o.value}', label: '${o.label}' },`).join('\n');
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) },
+    ...(v.required ? [{ attr: 'required', value: true as const }] : []),
+    ...(v.placeholder ? [{ attr: 'placeholder', value: String(v.placeholder) }] : []),
+    { attr: 'options', value: `[\n${optLines}\n  ]`, expr: true },
+    { attr: 'value', value: name, expr: true },
+    { attr: 'onChange', value: setter, expr: true },
+    ...(v.hasDescription && v.description && !showError ? [{ attr: 'description', value: String(v.description) }] : []),
+    ...(showError ? [{ attr: 'error', value: String(v.errorMessage) }] : []),
+    ...(v.disabled ? [{ attr: 'disabled', value: true as const }] : []),
+    ...(v.disabled && v.disabledReason ? [{ attr: 'disabledReason', value: String(v.disabledReason) }] : []),
+  ];
+  const common = {
+    label: String(v.label) || 'Untitled',
+    options,
+    placeholder: v.placeholder ? String(v.placeholder) : undefined,
+    required: !!v.required,
+    description: v.hasDescription && v.description ? String(v.description) : undefined,
+    error: showError ? String(v.errorMessage) : undefined,
+    disabled: !!v.disabled,
+    disabledReason: v.disabled && v.disabledReason ? String(v.disabledReason) : undefined,
+  };
   return (
-    <div className="lib-row lib-row--top">
-      <div style={{ width: 260 }}>
-        <Select label="Job" value={job} placeholder="Choose a job" onChange={setJob} describedBy="sel-help"
-          options={[{ value: 'REQ-4471', label: 'Starfighter Pilot L4' }, { value: 'REQ-4502', label: 'Hangar Mechanic L3' }, { value: 'REQ-4519', label: 'Intelligence Analyst L5' }]} />
-        <p className="field-help" id="sel-help" style={{ marginTop: 6 }}>The job this assessment is for.</p>
-      </div>
-      <Select label="Metric" inline value={metric} onChange={setMetric}
-        options={['Precision', 'Recall', 'F1 score'].map((m) => ({ value: m, label: m }))} />
-      <p className="t-small muted" aria-live="polite">{job ? `Chosen: ${job}` : 'No job chosen yet'}</p>
-    </div>
+    <Playground
+      name="Select"
+      compact
+      values={v}
+      set={set}
+      file="JobPicker.tsx"
+      tag={multi ? 'MultiSelect' : 'Select'}
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label' },
+        { kind: 'boolean', key: 'required', label: 'Required', help: 'An asterisk after the label.' },
+        { kind: 'boolean', key: 'hasDescription', label: 'Description' },
+        { kind: 'text', key: 'description', label: 'Description text', help: 'Shown when Description is on.' },
+        { kind: 'boolean', key: 'multiple', label: 'Multiple', help: 'Choose several: MultiSelect. The list stays open while people choose.' },
+        { kind: 'text', key: 'placeholder', label: 'Placeholder', help: 'Shown until something is chosen.' },
+        { kind: 'text', key: 'options', label: 'Options', help: 'Up to 4 here, separated by commas. In real use, about 7 to 30.' },
+        { kind: 'boolean', key: 'error', label: 'Error' },
+        { kind: 'text', key: 'errorMessage', label: 'Error message', help: 'Replaces the description when Error is on.' },
+        { kind: 'boolean', key: 'disabled', label: 'Disabled' },
+        { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in a tooltip when Disabled is on.' },
+      ]}
+      preview={multi
+        ? <MultiSelect {...common} value={many} onChange={setMany} />
+        : <Select {...common} value={one} onChange={setOne} />}
+    />
   );
 }
 
@@ -239,25 +290,6 @@ function SegmentedDemo() {
           options={[{ value: '7', label: '7 days' }, { value: '30', label: '30 days' }, { value: '90', label: '90 days' }]} />
       </div>
     </>
-  );
-}
-
-/* ---------- MultiSelect ---------- */
-const CHANNEL_OPTS = ['Email', 'Teams', 'Bloomberg Chat', 'WhatsApp', 'Text message', 'Slack', 'Zoom chat', 'LinkedIn messages', 'Voice'].map((l) => ({ value: l.toLowerCase().replace(/ /g, '-'), label: l }));
-function MultiSelectDemo() {
-  const [chosen, setChosen] = useState<string[]>(['email', 'teams', 'whatsapp']);
-  const [none, setNone] = useState<string[]>([]);
-  return (
-    <div className="lib-row lib-row--top">
-      <div style={{ width: 280 }}>
-        <MultiSelect label="Channels to review" value={chosen} onChange={setChosen} options={CHANNEL_OPTS} describedBy="ms-help" placeholder="Choose channels" />
-        <p className="field-help" id="ms-help" style={{ marginTop: 6 }}>Messages from these channels go to review.</p>
-      </div>
-      <div style={{ width: 220 }}>
-        <MultiSelect label="Channel" value={none} onChange={setNone} options={CHANNEL_OPTS} placeholder="Any channel" />
-      </div>
-      <p className="t-small muted" aria-live="polite">{chosen.length} channels chosen.</p>
-    </div>
   );
 }
 
@@ -852,7 +884,6 @@ const DEMOS: Record<string, () => ReactNode> = {
   resetbutton: () => <ResetDemo />,
   segmented: () => <SegmentedDemo />,
   chips: () => <ChipsDemo />,
-  multiselect: () => <MultiSelectDemo />,
   switch: () => <SwitchDemo />,
   button: () => <ButtonDemo />,
   checkbox: () => <CheckboxDemo />,

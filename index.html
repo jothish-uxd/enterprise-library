@@ -2121,11 +2121,11 @@ export function AccessRequests({ rows, onUpdate }) {
   <p class="page-kicker">Component · Forms · React</p>
   <h1 class="page-title" id="h-select" tabindex="-1">Select</h1>
   <p class="page-lede">Choose one option, or several, from a list that opens below a field. A custom dropdown that looks like a field and works like the native one: WAI-ARIA’s select-only combobox. <code>Select</code> chooses one; <code>MultiSelect</code> chooses several.</p>
-  <div class="lib lib-demo" data-react="select"></div>
+  <div class="lib lib-playground is-wide" data-react="select"></div>
 
   <section class="doc-section" id="sel-multi" aria-labelledby="h-sel-multi">
     <h2 id="h-sel-multi">Several at once: MultiSelect</h2>
-    <p>The same field, with a box before each option. Enter or Space turns an option on or off and the list stays open, so people can choose several in a row; Escape or Tab closes it. The field shows what’s chosen: “Email, Teams +1”.</p>  <div class="lib lib-demo" data-react="multiselect"></div>
+    <p>The same field, with a box before each option. Enter or Space turns an option on or off and the list stays open, so people can choose several in a row; Escape or Tab closes it. The field shows what’s chosen: “Email, Teams +1”.</p>
 <div class="code-block"><div class="code-block-bar"><span>Channels.tsx</span><button class="copy-button" type="button" data-copy-label="Channels.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;MultiSelect
   label=&quot;Channels to review&quot;
   value={channels}
@@ -2136,11 +2136,11 @@ export function AccessRequests({ rows, onUpdate }) {
   </section>
   <section class="doc-section" id="sel-keys" aria-labelledby="h-sel-keys">
     <h2 id="h-sel-keys">Keyboard</h2>
-    <table class="doc-table key-table"><caption class="sr-only">Select keyboard support</caption><tbody><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd> <kbd>↓</kbd> <kbd>↑</kbd></th><td>Open the list.</td></tr><tr><th scope="row"><kbd>↑</kbd> <kbd>↓</kbd> <kbd>Home</kbd> <kbd>End</kbd> <kbd>Page Up</kbd> <kbd>Page Down</kbd></th><td>Move through options.</td></tr><tr><th scope="row">Letters</th><td>Jump to a matching option.</td></tr><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd></th><td>Choose and close.</td></tr><tr><th scope="row"><kbd>Esc</kbd></th><td>Close without changing.</td></tr><tr><th scope="row"><kbd>Tab</kbd></th><td>Choose and move on.</td></tr></tbody></table>
+    <table class="doc-table key-table"><caption class="sr-only">Select keyboard support</caption><tbody><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd> <kbd>↓</kbd> <kbd>↑</kbd></th><td>Open the list.</td></tr><tr><th scope="row"><kbd>↑</kbd> <kbd>↓</kbd> <kbd>Home</kbd> <kbd>End</kbd> <kbd>Page Up</kbd> <kbd>Page Down</kbd></th><td>Move through options.</td></tr><tr><th scope="row">Letters</th><td>Jump to a matching option.</td></tr><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd></th><td>Choose and close.</td></tr><tr><th scope="row"><kbd>Esc</kbd></th><td>Close without changing.</td></tr><tr><th scope="row"><kbd>Tab</kbd></th><td>Choose and move on. MultiSelect: close and move on.</td></tr><tr><th scope="row">Unavailable</th><td><kbd>Tab</kbd> still reaches it and the reason shows; it won’t open or change. <kbd>Esc</kbd> closes the reason.</td></tr></tbody></table>
   </section>
   <section class="doc-section" id="sel-sr" aria-labelledby="h-sel-sr">
     <h2 id="h-sel-sr">Screen reader</h2>
-    <ul class="a11y-list"><li>Focus stays on the button; the open list is announced through <code>aria-activedescendant</code>, so people hear “Metric, Recall” and each option as they move.</li><li>In high contrast, the active option gets a Highlight outline.</li></ul>
+    <ul class="a11y-list"><li>Focus stays on the button; the open list is announced through <code>aria-activedescendant</code>, so people hear “Metric, Recall” and each option as they move.</li><li>Required: the asterisk is hidden; the button has <code>aria-required="true"</code>, so people hear “Job, combo box, required, Choose a job”. The description and any error are read after it.</li><li>Unavailable: <code>aria-disabled</code>, so it’s still in the Tab order and announced as dimmed, with the reason as its description.</li><li>In high contrast, the active option gets a Highlight outline.</li></ul>
   </section>
   <section class="doc-section" id="sel-usage" aria-labelledby="h-sel-usage">
     <h2 id="h-sel-usage">Usage</h2>
@@ -2150,16 +2150,17 @@ export function AccessRequests({ rows, onUpdate }) {
   onChange={setJob}
   placeholder=&quot;Choose a job&quot;
   options={jobs.map((j) =&gt; ({ value: j.id, label: j.title }))}
-  describedBy=&quot;job-help&quot;
+  required
+  description=&quot;The job this assessment is for.&quot;
 /&gt;</code></pre></div>
   </section>
   <section class="doc-section" id="sel-props" aria-labelledby="h-sel-props">
     <h2 id="h-sel-props">Props</h2>
-    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">Select props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>label</code></td><td><code class="type">string</code></td><td>Visible label and accessible name</td></tr><tr><td><code>value, onChange</code></td><td><code class="type">string | number</code></td><td>Controlled value</td></tr><tr><td><code>options</code></td><td><code class="type">{ value, label }[]</code></td><td>The choices</td></tr><tr><td><code>describedBy</code></td><td><code class="type">string</code></td><td>id of help text</td></tr><tr><td><code>inline</code></td><td><code class="type">boolean</code></td><td>Label beside the button</td></tr><tr><td><code>hideLabel</code></td><td><code class="type">boolean</code></td><td>Label for screen readers only</td></tr><tr><td><code>placeholder</code></td><td><code class="type">string</code></td><td>Shown when the value isn’t an option</td></tr><tr><td><code>invalid</code></td><td><code class="type">boolean</code></td><td>aria-invalid and a heavier border</td></tr><tr><td><code>buttonId</code></td><td><code class="type">string</code></td><td>So an error summary can link to it</td></tr></tbody></table></div>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">Select props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>label</code></td><td><code class="type">string</code></td><td>Visible label and accessible name</td></tr><tr><td><code>value, onChange</code></td><td><code class="type">string | number</code></td><td>Controlled value</td></tr><tr><td><code>options</code></td><td><code class="type">{ value, label }[]</code></td><td>The choices</td></tr><tr><td><code>required</code></td><td><code class="type">boolean</code></td><td>An asterisk after the label, and <code>aria-required</code></td></tr><tr><td><code>description</code></td><td><code class="type">ReactNode</code></td><td>A line under the field, read as its description</td></tr><tr><td><code>error</code></td><td><code class="type">ReactNode</code></td><td>Replaces the description with the message and its icon; sets <code>aria-invalid</code></td></tr><tr><td><code>disabled</code></td><td><code class="type">boolean</code></td><td>Can’t be changed; stays focusable and doesn’t open</td></tr><tr><td><code>disabledReason</code></td><td><code class="type">ReactNode</code></td><td>Why: a tooltip on hover and focus, and its description</td></tr><tr><td><code>describedBy</code></td><td><code class="type">string</code></td><td>id of help text kept outside the field; added to the description</td></tr><tr><td><code>inline</code></td><td><code class="type">boolean</code></td><td>Label beside the button</td></tr><tr><td><code>hideLabel</code></td><td><code class="type">boolean</code></td><td>Label for screen readers only</td></tr><tr><td><code>placeholder</code></td><td><code class="type">string</code></td><td>Shown when the value isn’t an option</td></tr><tr><td><code>invalid</code></td><td><code class="type">boolean</code></td><td>aria-invalid and a heavier border, for an error shown elsewhere; <code>error</code> sets it too</td></tr><tr><td><code>buttonId</code></td><td><code class="type">string</code></td><td>So an error summary can link to it</td></tr></tbody></table></div>
   </section>
   <section class="doc-section" id="sel-rules" aria-labelledby="h-sel-rules">
     <h2 id="h-sel-rules">Rules</h2>
-    <ul class="a11y-list"><li>Near the bottom of its scrolling area (the nearest <code>[data-scroll]</code>), the list opens upward. Long lists scroll at 280px.</li><li>Use it for 4 to 30 options. Fewer: radios or ChoiceCards. More: a searchable picker.</li></ul>
+    <ul class="a11y-list"><li>Near the bottom of its scrolling area (the nearest <code>[data-scroll]</code>), the list opens upward. Long lists scroll at 280px.</li><li>Use it for 4 to 30 options. Fewer: radios or ChoiceCards. More: a searchable picker.</li><li>Mark it required with an asterisk; leave optional ones unmarked. A placeholder says what to do (“Choose a job”), never what the field is.</li><li>Prefer read-only text to an unavailable select. If it must stay, say why with <code>disabledReason</code>.</li></ul>
   </section>
   <nav class="pager" aria-label="More in components" data-current="select"></nav>
 </section>

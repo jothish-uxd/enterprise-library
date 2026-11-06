@@ -31,10 +31,15 @@
 .select--wide .select__anchor { min-width: 240px; }
 @media (forced-colors: active) {
   .select__option.is-active { outline: 2px solid Highlight; }
+  .select__button[aria-disabled="true"] { color: GrayText; border-color: GrayText; }
 }
 
 .select__value.is-placeholder { color: var(--ink-faint); font-style: italic; }
 .select__button[aria-invalid="true"] { border-color: var(--ink); border-width: 2px; padding: 5px 11px 5px 9px; }
+/* Unavailable: quiet fill and faint text, still focusable (aria-disabled); a tooltip says why */
+.select__button[aria-disabled="true"], .select__button[aria-disabled="true"]:hover { background: var(--bg-subtle); color: var(--ink-faint); border-color: var(--rule); cursor: not-allowed; }
+.select__button[aria-disabled="true"] .select__chevron { color: var(--ink-faint); }
+.select > .field-help, .select > .field-error { margin-top: 0; }
 
 /* MultiSelect: a box before each option that fills when chosen. */
 .select--multi .select__option { justify-content: flex-start; gap: var(--space-2-5); }

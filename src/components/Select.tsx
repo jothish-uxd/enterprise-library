@@ -1,4 +1,9 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useTooltip } from './Tooltip';
+
+const ErrorIcon = () => (
+  <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" /><path d="M8 4.8v3.6M8 11h.01" /></svg>
+);
 
 export interface SelectOption<T extends string | number> { value: T; label: string }
 
@@ -17,6 +22,15 @@ interface Props<T extends string | number> {
   /** Shown when the value isn't one of the options, e.g. "Select an option" */
   placeholder?: string;
   invalid?: boolean;
+  /** A line under the field, read as its description */
+  description?: ReactNode;
+  /** Error message under the field; replaces the description and marks it invalid */
+  error?: ReactNode;
+  /** Must be answered: an asterisk after the label, and aria-required */
+  required?: boolean;
+  /** Can't be changed right now. Stays focusable and doesn't open; give a reason. */
+  disabled?: boolean;
+  disabledReason?: ReactNode;
   /** id for the button, so error summaries can link to it */
   buttonId?: string;
 }
@@ -26,16 +40,28 @@ interface Props<T extends string | number> {
  * The button keeps focus; the list is announced through aria-activedescendant.
  * Keys: Enter, Space, Alt+Down or Down to open; Up/Down, Home/End and typing to move;
  * Enter or Space to choose; Escape to close without choosing; Tab chooses and moves on.
+ *
+ * Field parts, as on Input: description under the field; error replaces it with
+ * the error icon and sets aria-invalid; required adds an asterisk after the
+ * label (hidden from screen readers, which hear "required" from aria-required);
+ * disabled uses aria-disabled, so the button stays in the Tab order, won't
+ * open or change, and disabledReason shows why in a tooltip on hover and focus.
+ * describedBy and invalid still work for help and errors kept outside the field.
  */
-export default function Select<T extends string | number>({ label, value, options, onChange, className, describedBy, inline, hideLabel, placeholder, invalid, buttonId }: Props<T>) {
+export default function Select<T extends string | number>({
+  label, value, options, onChange, className, describedBy, inline, hideLabel, placeholder, invalid, buttonId,
+  description, error, required, disabled, disabledReason,
+}: Props<T>) {
   const id = useId();
+  const tip = useTooltip(disabled ? disabledReason : null);
+  const ids = [error ? `${id}-err` : description ? `${id}-desc` : null, describedBy, tip.describedBy].filter(Boolean).join(' ') || undefined;
   const [open, setOpen] = useState(false);
   const found = options.findIndex((o) => o.value === value);
   const selected = Math.max(0, found);
   const [active, setActive] = useState(selected);
   const [above, setAbove] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const typed = useRef({ text: '', at: 0 });
 
@@ -110,11 +136,11 @@ export default function Select<T extends string | number>({ label, value, option
   };
 
   return (
-    <div className={`field select${inline ? ' field--inline' : ''}${className ? ` ${className}` : ''}`} ref={wrapRef}>
-      <span className={hideLabel ? 'visually-hidden' : 'field__label'} id={`${id}-label`}>{label}</span>
+    <div className={`field select${inline ? ' field--inline' : ''}${disabled ? ' is-disabled' : ''}${className ? ` ${className}` : ''}`} ref={wrapRef} {...tip.hoverProps}>
+      <span className={hideLabel ? 'visually-hidden' : 'field__label'} id={`${id}-label`}>{label}{required && <span className="field__required" aria-hidden="true">*</span>}</span>
       <div className="select__anchor">
         <button
-          ref={buttonRef}
+          ref={(el) => { buttonRef.current = el; tip.anchorRef.current = el; }}
           id={buttonId}
           type="button"
           role="combobox"
@@ -123,12 +149,15 @@ export default function Select<T extends string | number>({ label, value, option
           aria-expanded={open}
           aria-controls={`${id}-list`}
           aria-labelledby={`${id}-label`}
-          aria-describedby={describedBy}
-          aria-invalid={invalid || undefined}
+          aria-describedby={ids}
+          aria-invalid={invalid || error ? true : undefined}
+          aria-required={required || undefined}
+          aria-disabled={disabled || undefined}
           aria-activedescendant={open ? `${id}-opt-${active}` : undefined}
-          onClick={() => (open ? setOpen(false) : openList())}
-          onKeyDown={onKeyDown}
-          onBlur={(e) => { if (!wrapRef.current?.contains(e.relatedTarget as Node)) setOpen(false); }}
+          onClick={() => { if (disabled) return; if (open) setOpen(false); else openList(); }}
+          onKeyDown={(e) => { if (!disabled) onKeyDown(e); }}
+          onFocus={tip.focusProps.onFocus}
+          onBlur={(e) => { tip.focusProps.onBlur(); if (!wrapRef.current?.contains(e.relatedTarget as Node)) setOpen(false); }}
         >
           <span className={`select__value${found < 0 && placeholder ? ' is-placeholder' : ''}`}>{found < 0 && placeholder ? placeholder : options[selected]?.label}</span>
           <svg className="select__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
@@ -160,6 +189,10 @@ export default function Select<T extends string | number>({ label, value, option
           ))}
         </ul>
       </div>
+      {error
+        ? <span className="field-error" id={`${id}-err`}><ErrorIcon />{error}</span>
+        : description ? <span className="field-help" id={`${id}-desc`}>{description}</span> : null}
+      {tip.tooltip}
     </div>
   );
 }

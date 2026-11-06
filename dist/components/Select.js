@@ -1,13 +1,24 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import { useTooltip } from './Tooltip';
+const ErrorIcon = () => (_jsxs("svg", { viewBox: "0 0 16 16", "aria-hidden": "true", children: [_jsx("circle", { cx: "8", cy: "8", r: "6.2" }), _jsx("path", { d: "M8 4.8v3.6M8 11h.01" })] }));
 /**
  * Custom dropdown in the a11y-charts style (WAI-ARIA "select-only combobox").
  * The button keeps focus; the list is announced through aria-activedescendant.
  * Keys: Enter, Space, Alt+Down or Down to open; Up/Down, Home/End and typing to move;
  * Enter or Space to choose; Escape to close without choosing; Tab chooses and moves on.
+ *
+ * Field parts, as on Input: description under the field; error replaces it with
+ * the error icon and sets aria-invalid; required adds an asterisk after the
+ * label (hidden from screen readers, which hear "required" from aria-required);
+ * disabled uses aria-disabled, so the button stays in the Tab order, won't
+ * open or change, and disabledReason shows why in a tooltip on hover and focus.
+ * describedBy and invalid still work for help and errors kept outside the field.
  */
-export default function Select({ label, value, options, onChange, className, describedBy, inline, hideLabel, placeholder, invalid, buttonId }) {
+export default function Select({ label, value, options, onChange, className, describedBy, inline, hideLabel, placeholder, invalid, buttonId, description, error, required, disabled, disabledReason, }) {
     const id = useId();
+    const tip = useTooltip(disabled ? disabledReason : null);
+    const ids = [error ? `${id}-err` : description ? `${id}-desc` : null, describedBy, tip.describedBy].filter(Boolean).join(' ') || undefined;
     const [open, setOpen] = useState(false);
     const found = options.findIndex((o) => o.value === value);
     const selected = Math.max(0, found);
@@ -119,6 +130,13 @@ export default function Select({ label, value, options, onChange, className, des
         else
             setActive(hit);
     };
-    return (_jsxs("div", { className: `field select${inline ? ' field--inline' : ''}${className ? ` ${className}` : ''}`, ref: wrapRef, children: [_jsx("span", { className: hideLabel ? 'visually-hidden' : 'field__label', id: `${id}-label`, children: label }), _jsxs("div", { className: "select__anchor", children: [_jsxs("button", { ref: buttonRef, id: buttonId, type: "button", role: "combobox", className: "select__button", "aria-haspopup": "listbox", "aria-expanded": open, "aria-controls": `${id}-list`, "aria-labelledby": `${id}-label`, "aria-describedby": describedBy, "aria-invalid": invalid || undefined, "aria-activedescendant": open ? `${id}-opt-${active}` : undefined, onClick: () => (open ? setOpen(false) : openList()), onKeyDown: onKeyDown, onBlur: (e) => { if (!wrapRef.current?.contains(e.relatedTarget))
-                            setOpen(false); }, children: [_jsx("span", { className: `select__value${found < 0 && placeholder ? ' is-placeholder' : ''}`, children: found < 0 && placeholder ? placeholder : options[selected]?.label }), _jsx("svg", { className: "select__chevron", viewBox: "0 0 16 16", "aria-hidden": "true", children: _jsx("path", { d: "m4 6 4 4 4-4" }) })] }), _jsx("ul", { ref: listRef, id: `${id}-list`, role: "listbox", "aria-labelledby": `${id}-label`, tabIndex: -1, className: `select__list${above ? ' is-above' : ''}`, hidden: !open, children: options.map((o, i) => (_jsxs("li", { id: `${id}-opt-${i}`, "data-index": i, role: "option", "aria-selected": i === found, className: `select__option${i === active ? ' is-active' : ''}`, onMouseMove: () => setActive(i), onMouseDown: (e) => e.preventDefault(), onClick: () => { choose(i); buttonRef.current?.focus(); }, children: [_jsx("span", { children: o.label }), _jsx("svg", { className: "select__check", viewBox: "0 0 16 16", "aria-hidden": "true", children: _jsx("path", { d: "m3.5 8.5 3 3 6-7" }) })] }, String(o.value)))) })] })] }));
+    return (_jsxs("div", { className: `field select${inline ? ' field--inline' : ''}${disabled ? ' is-disabled' : ''}${className ? ` ${className}` : ''}`, ref: wrapRef, ...tip.hoverProps, children: [_jsxs("span", { className: hideLabel ? 'visually-hidden' : 'field__label', id: `${id}-label`, children: [label, required && _jsx("span", { className: "field__required", "aria-hidden": "true", children: "*" })] }), _jsxs("div", { className: "select__anchor", children: [_jsxs("button", { ref: (el) => { buttonRef.current = el; tip.anchorRef.current = el; }, id: buttonId, type: "button", role: "combobox", className: "select__button", "aria-haspopup": "listbox", "aria-expanded": open, "aria-controls": `${id}-list`, "aria-labelledby": `${id}-label`, "aria-describedby": ids, "aria-invalid": invalid || error ? true : undefined, "aria-required": required || undefined, "aria-disabled": disabled || undefined, "aria-activedescendant": open ? `${id}-opt-${active}` : undefined, onClick: () => { if (disabled)
+                            return; if (open)
+                            setOpen(false);
+                        else
+                            openList(); }, onKeyDown: (e) => { if (!disabled)
+                            onKeyDown(e); }, onFocus: tip.focusProps.onFocus, onBlur: (e) => { tip.focusProps.onBlur(); if (!wrapRef.current?.contains(e.relatedTarget))
+                            setOpen(false); }, children: [_jsx("span", { className: `select__value${found < 0 && placeholder ? ' is-placeholder' : ''}`, children: found < 0 && placeholder ? placeholder : options[selected]?.label }), _jsx("svg", { className: "select__chevron", viewBox: "0 0 16 16", "aria-hidden": "true", children: _jsx("path", { d: "m4 6 4 4 4-4" }) })] }), _jsx("ul", { ref: listRef, id: `${id}-list`, role: "listbox", "aria-labelledby": `${id}-label`, tabIndex: -1, className: `select__list${above ? ' is-above' : ''}`, hidden: !open, children: options.map((o, i) => (_jsxs("li", { id: `${id}-opt-${i}`, "data-index": i, role: "option", "aria-selected": i === found, className: `select__option${i === active ? ' is-active' : ''}`, onMouseMove: () => setActive(i), onMouseDown: (e) => e.preventDefault(), onClick: () => { choose(i); buttonRef.current?.focus(); }, children: [_jsx("span", { children: o.label }), _jsx("svg", { className: "select__check", viewBox: "0 0 16 16", "aria-hidden": "true", children: _jsx("path", { d: "m3.5 8.5 3 3 6-7" }) })] }, String(o.value)))) })] }), error
+                ? _jsxs("span", { className: "field-error", id: `${id}-err`, children: [_jsx(ErrorIcon, {}), error] })
+                : description ? _jsx("span", { className: "field-help", id: `${id}-desc`, children: description }) : null, tip.tooltip] }));
 }

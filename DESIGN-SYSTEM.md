@@ -208,7 +208,8 @@ import { Select } from '@jothish-uxd/enterprise-library';
     { value: 'Precision', label: 'Precision' },
     { value: 'Recall', label: 'Recall' },
   ]}
-  describedBy="metric-help"
+  required
+  description="Which score the chart ranks models by."
 />
 ```
 
@@ -217,11 +218,15 @@ import { Select } from '@jothish-uxd/enterprise-library';
 | `label` | Visible label; also the accessible name |
 | `value`, `onChange` | Controlled value (string or number) |
 | `options` | `{ value, label }` list |
-| `describedBy` | id of help text that describes the field |
+| `required` | An asterisk after the label (hidden from screen readers) and `aria-required` on the button: "Metric, combo box, required" |
+| `description` | A line under the field, read as its description |
+| `error` | Replaces the description with the message and the error icon; sets `aria-invalid` |
+| `disabled`, `disabledReason` | `aria-disabled`: stays in the Tab order, won't open or change, and shows the reason in a tooltip on hover and focus (and as its description) |
+| `describedBy` | id of help text kept outside the field; added to the description |
 | `inline` | Label beside the button instead of above it |
 | `hideLabel` | Keep the label for screen readers only, for compact fields whose context already names them (a status inside a policy match) |
 | `placeholder` | Shown when the value isn't one of the options, e.g. "Choose a job" |
-| `invalid` | Marks the field invalid (`aria-invalid`, heavier border) |
+| `invalid` | Marks the field invalid (`aria-invalid`, heavier border) for an error shown elsewhere; `error` sets it too |
 | `buttonId` | id for the button, so an error summary can link to it |
 | `className` | Extra classes, e.g. `select--wide` for a 240px minimum |
 
@@ -231,7 +236,8 @@ Rules:
 - **Never clipped.** Near the bottom of its scrolling area (the nearest `[data-scroll]` element; put it on each app region that scrolls), the list opens upward. Long lists scroll at 280px.
 - **Focus stays on the button.** The open list is announced through `aria-activedescendant`, so screen readers hear "Metric, Precision" and each option as you move.
 - **Keyboard.** Enter, Space or the arrow keys open it. Up/Down, Home/End and Page Up/Down move. Typing jumps to a matching option. Enter or Space chooses, Escape closes without changing, Tab chooses and moves on.
-- **High contrast.** In forced-colors mode the active option gets a system Highlight outline.
+- **High contrast.** In forced-colors mode the active option gets a system Highlight outline; an unavailable button is GrayText.
+- **MultiSelect** takes the same props, with `value` and `onChange` as arrays. Docs: one playground for both, with a Multiple switch.
 
 ### ResetButton
 
