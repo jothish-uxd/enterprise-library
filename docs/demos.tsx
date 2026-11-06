@@ -242,41 +242,6 @@ function SegmentedDemo() {
   );
 }
 
-/* ---------- ChipGroup ---------- */
-const MESSAGES = [
-  { s: 'open', ch: ['email'] }, { s: 'open', ch: ['teams'] }, { s: 'escalated', ch: ['whatsapp'] }, { s: 'cleared', ch: ['email'] },
-  { s: 'open', ch: ['bloomberg'] }, { s: 'escalated', ch: ['email'] }, { s: 'cleared', ch: ['teams'] }, { s: 'open', ch: ['sms'] },
-];
-type Status = 'all' | 'open' | 'escalated' | 'cleared';
-const CHANNELS = ['email', 'teams', 'bloomberg', 'whatsapp', 'sms'] as const;
-type Channel = typeof CHANNELS[number];
-const CH_LABEL: Record<Channel, string> = { email: 'Email', teams: 'Teams', bloomberg: 'Bloomberg Chat', whatsapp: 'WhatsApp', sms: 'Text message' };
-function ChipsDemo() {
-  const [status, setStatus] = useState<Status>('all');
-  const [channels, setChannels] = useState<Channel[]>(['email', 'teams']);
-  const statuses: Status[] = ['all', 'open', 'escalated', 'cleared'];
-  const byStatus = (s: Status) => MESSAGES.filter((m) => s === 'all' || m.s === s);
-  const shown = byStatus(status).filter((m) => channels.length === 0 || m.ch.some((c) => channels.includes(c as Channel)));
-  return (
-    <>
-      <div className="lib-fieldset">
-        <p className="t-label" id="chips-ch-l">Channels (choose any)</p>
-        <ChipGroup multiple label="Filter by channel" controls="chips-out" value={channels} onChange={setChannels}
-          options={CHANNELS.map((c) => ({ value: c, label: CH_LABEL[c], count: MESSAGES.filter((m) => m.ch.includes(c)).length }))} />
-      </div>
-      <div className="lib-fieldset">
-        <p className="t-label">Status (choose one)</p>
-        <ChipGroup label="Filter by status" size="sm" controls="chips-out" value={status} onChange={setStatus}
-          options={statuses.map((s) => ({ value: s, label: s[0].toUpperCase() + s.slice(1), count: byStatus(s).length }))} />
-      </div>
-      <p id="chips-out" className="t-small muted" aria-live="polite">
-        {shown.length} {shown.length === 1 ? 'message' : 'messages'}{channels.length ? ` in ${channels.map((c) => CH_LABEL[c]).join(', ')}` : ' in every channel'}.
-        {channels.length > 0 && <> <button type="button" className="link-button" onClick={() => setChannels([])}>Clear channels</button></>}
-      </p>
-    </>
-  );
-}
-
 /* ---------- MultiSelect ---------- */
 const CHANNEL_OPTS = ['Email', 'Teams', 'Bloomberg Chat', 'WhatsApp', 'Text message', 'Slack', 'Zoom chat', 'LinkedIn messages', 'Voice'].map((l) => ({ value: l.toLowerCase().replace(/ /g, '-'), label: l }));
 function MultiSelectDemo() {
@@ -324,7 +289,7 @@ function PgCode({ file, tag, attrs }: { file: string; tag: string; attrs: PgCode
       <pre><code>
         {'<'}<span className="tok-k">{tag}</span>{'\n'}
         {attrs.map((a) => (
-          <span key={a.attr}>{'  '}{a.attr}{a.value === true ? null : a.expr ? <>{'={'}{a.value}{'}'}</> : <>=<span className="tok-s">"{a.value}"</span></>}{'\n'}</span>
+          <span key={a.attr}>{'  '}{a.attr}{a.value === true ? null : a.expr ? <>{'={'}{String(a.value).split(/('[^']*')/).map((part, i) => (i % 2 ? <span key={i} className="tok-s">{part}</span> : part))}{'}'}</> : <>=<span className="tok-s">"{a.value}"</span></>}{'\n'}</span>
         ))}
         {'/>'}
       </code></pre>
@@ -333,15 +298,15 @@ function PgCode({ file, tag, attrs }: { file: string; tag: string; attrs: PgCode
   );
 }
 
-function Playground({ name, controls, values, set, preview, file, tag, attrs }: {
-  name: string; controls: PgControl[]; values: Record<string, PgValue>; set: (key: string, v: PgValue) => void;
+function Playground({ name, controls, values, set, preview, file, tag, attrs, wide }: {
+  wide?: boolean; name: string; controls: PgControl[]; values: Record<string, PgValue>; set: (key: string, v: PgValue) => void;
   preview: ReactNode; file: string; tag: string; attrs: PgCodeLine[];
 }) {
   const id = React.useId();
   return (
     <div className="pg">
       <div className="pg__stage" role="region" aria-label={`${name} preview`}>
-        <div className="pg__stage-inner">{preview}</div>
+        <div className={`pg__stage-inner${wide ? ' pg__stage-inner--wide' : ''}`}>{preview}</div>
       </div>
       <div className="pg__controls" role="group" aria-label={`${name} properties`}>
         <p className="pg__heading">Properties</p>
@@ -373,6 +338,59 @@ function Playground({ name, controls, values, set, preview, file, tag, attrs }: 
       </div>
       <PgCode file={file} tag={tag} attrs={attrs} />
     </div>
+  );
+}
+
+/* ---------- ChipGroup playground ---------- */
+const slug = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'option';
+const fakeCount = (t: string) => (t.length * 7 + t.charCodeAt(0)) % 9 + 1;
+function ChipsDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Filter by channel', options: 'Email, Teams, Bloomberg Chat, WhatsApp, Text message',
+    multiple: true, counts: true, all: true, disableLast: false, size: 'md',
+  });
+  const [single, setSingle] = useState('all');
+  const [multi, setMulti] = useState<string[]>(['email', 'teams']);
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+
+  const names = String(v.options).split(',').map((x) => x.trim()).filter(Boolean);
+  const listed = names.map((n, i) => ({ value: slug(n), label: n, count: v.counts ? fakeCount(n) : undefined, disabled: !!v.disableLast && i === names.length - 1 }));
+  const total = listed.reduce((t, o) => t + (o.count ?? 0), 0);
+  const options = !v.multiple && v.all ? [{ value: 'all', label: 'All', count: v.counts ? total : undefined, disabled: false }, ...listed] : listed;
+  const singleValue = options.some((o) => o.value === single) ? single : options[0]?.value ?? '';
+
+  const optLines = options.map((o) => `    { value: '${o.value}', label: '${o.label}'${o.count !== undefined ? `, count: ${o.count}` : ''}${o.disabled ? ', disabled: true' : ''} },`).join('\n');
+  const attrs: PgCodeLine[] = [
+    ...(v.multiple ? [{ attr: 'multiple', value: true as const }] : []),
+    { attr: 'label', value: String(v.label) },
+    { attr: 'value', value: v.multiple ? 'channels' : 'channel', expr: true },
+    { attr: 'onChange', value: v.multiple ? 'setChannels' : 'setChannel', expr: true },
+    { attr: 'options', value: `[\n${optLines}\n  ]`, expr: true },
+    ...(v.size !== 'md' ? [{ attr: 'size', value: String(v.size) }] : []),
+  ];
+
+  return (
+    <Playground
+      name="Chips"
+      wide
+      values={v}
+      set={set}
+      file="ChannelFilter.tsx"
+      tag="ChipGroup"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Group label', help: 'Read by screen readers, e.g. “Filter by channel”.' },
+        { kind: 'text', key: 'options', label: 'Options', help: 'Separated by commas.' },
+        { kind: 'boolean', key: 'multiple', label: 'Multi-select' },
+        { kind: 'boolean', key: 'counts', label: 'Show counts' },
+        { kind: 'boolean', key: 'all', label: '“All” first', help: 'Single-select only.' },
+        { kind: 'boolean', key: 'disableLast', label: 'Disable last option' },
+        { kind: 'select', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }] },
+      ]}
+      preview={v.multiple
+        ? <ChipGroup multiple label={String(v.label) || 'Filter'} size={v.size as 'sm' | 'md'} value={multi} onChange={setMulti} options={options} />
+        : <ChipGroup label={String(v.label) || 'Filter'} size={v.size as 'sm' | 'md'} value={singleValue} onChange={setSingle} options={options} />}
+    />
   );
 }
 

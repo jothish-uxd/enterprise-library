@@ -860,6 +860,8 @@
     background-color: var(--bg); background-image: radial-gradient(var(--rule) 1px, transparent 1px); background-size: 16px 16px; border-radius: 12px 0 0 0; }
   .pg__stage-inner { width: 100%; max-width: 380px; display: flex; justify-content: center; }
   .pg__stage-inner > .switch--between { background: var(--bg); }
+  .pg__stage-inner--wide { max-width: 520px; }
+  .pg__stage-inner > .chips { justify-content: center; }
   .pg__controls { padding: 8px 20px 12px; }
   .pg__heading { margin: 12px 0 4px; font-size: 12px; font-weight: 500; color: var(--ink-faint); }
   .pg__row { padding: 12px 0; border-bottom: 1px solid var(--rule); }
@@ -1729,7 +1731,7 @@ export function AccessRequests({ rows, onUpdate }) {
   <p class="page-kicker">Component · CSS + React</p>
   <h1 class="page-title" id="h-chips" tabindex="-1">Chips</h1>
   <p class="page-lede">Separate pill buttons that filter what’s below. They wrap onto more lines, so they suit many options, and several can be on at once.</p>
-  <div class="lib lib-demo is-wide" data-react="chips"></div>
+  <div class="lib lib-playground is-wide" data-react="chips"></div>
 
   <section class="doc-section" id="chip-keys" aria-labelledby="h-chip-keys">
     <h2 id="h-chip-keys">Keyboard</h2>
