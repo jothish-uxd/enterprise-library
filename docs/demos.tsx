@@ -298,17 +298,17 @@ function PgCode({ file, tag, attrs }: { file: string; tag: string; attrs: PgCode
   );
 }
 
-function Playground({ name, controls, values, set, preview, file, tag, attrs, wide }: {
-  wide?: boolean; name: string; controls: PgControl[]; values: Record<string, PgValue>; set: (key: string, v: PgValue) => void;
+function Playground({ name, controls, values, set, preview, file, tag, attrs, wide, compact }: {
+  wide?: boolean; compact?: boolean; name: string; controls: PgControl[]; values: Record<string, PgValue>; set: (key: string, v: PgValue) => void;
   preview: ReactNode; file: string; tag: string; attrs: PgCodeLine[];
 }) {
   const id = React.useId();
   return (
-    <div className="pg">
+    <div className={`pg${compact ? ' pg--compact' : ''}`}>
       <div className="pg__stage" role="region" aria-label={`${name} preview`}>
         <div className={`pg__stage-inner${wide ? ' pg__stage-inner--wide' : ''}`}>{preview}</div>
       </div>
-      <div className="pg__controls" role="group" aria-label={`${name} properties`}>
+      <div className="pg__controls" role="group" aria-label={`${name} properties`} tabIndex={compact ? -1 : undefined} data-scroll={compact ? '' : undefined}>
         <p className="pg__heading">Properties</p>
         {controls.map((c) => {
           const cid = `${id}-${c.key}`;
@@ -346,17 +346,19 @@ const slug = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(
 const fakeCount = (t: string) => (t.length * 7 + t.charCodeAt(0)) % 9 + 1;
 function ChipsDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
-    label: 'Filter by channel', options: 'Email, Teams, Bloomberg Chat, WhatsApp, Text message',
+    label: 'Filter by channel', options: 'Email, Teams, WhatsApp, Text message',
     multiple: true, counts: true, all: true, disableLast: false, size: 'md',
   });
   const [single, setSingle] = useState('all');
   const [multi, setMulti] = useState<string[]>(['email', 'teams']);
   const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
 
-  const names = String(v.options).split(',').map((x) => x.trim()).filter(Boolean);
+  const MAX = 4;
+  const withAll = !v.multiple && !!v.all;
+  const names = String(v.options).split(',').map((x) => x.trim()).filter(Boolean).slice(0, withAll ? MAX - 1 : MAX);
   const listed = names.map((n, i) => ({ value: slug(n), label: n, count: v.counts ? fakeCount(n) : undefined, disabled: !!v.disableLast && i === names.length - 1 }));
   const total = listed.reduce((t, o) => t + (o.count ?? 0), 0);
-  const options = !v.multiple && v.all ? [{ value: 'all', label: 'All', count: v.counts ? total : undefined, disabled: false }, ...listed] : listed;
+  const options = withAll ? [{ value: 'all', label: 'All', count: v.counts ? total : undefined, disabled: false }, ...listed] : listed;
   const singleValue = options.some((o) => o.value === single) ? single : options[0]?.value ?? '';
 
   const optLines = options.map((o) => `    { value: '${o.value}', label: '${o.label}'${o.count !== undefined ? `, count: ${o.count}` : ''}${o.disabled ? ', disabled: true' : ''} },`).join('\n');
@@ -373,6 +375,7 @@ function ChipsDemo() {
     <Playground
       name="Chips"
       wide
+      compact
       values={v}
       set={set}
       file="ChannelFilter.tsx"
@@ -380,7 +383,7 @@ function ChipsDemo() {
       attrs={attrs}
       controls={[
         { kind: 'text', key: 'label', label: 'Group label', help: 'Read by screen readers, e.g. “Filter by channel”.' },
-        { kind: 'text', key: 'options', label: 'Options', help: 'Separated by commas.' },
+        { kind: 'text', key: 'options', label: 'Options', help: 'Up to 4 chips, separated by commas. “All” counts as one.' },
         { kind: 'boolean', key: 'multiple', label: 'Multi-select' },
         { kind: 'boolean', key: 'counts', label: 'Show counts' },
         { kind: 'boolean', key: 'all', label: '“All” first', help: 'Single-select only.' },

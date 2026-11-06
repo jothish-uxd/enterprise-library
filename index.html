@@ -877,6 +877,16 @@
   .pg__row--field > .field--inline { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); align-items: center; gap: 12px; }
   .pg__row--field > .field--inline .field__label, .pg__row--stack > .segmented-field .segmented-field__label { font-size: 14px; font-weight: 400; color: var(--ink); }
   .pg__row--stack > .segmented-field { display: grid; gap: 6px; }
+  /* Compact: a fixed-height preview; the properties scroll beside it, so the component stays in view */
+  .pg--compact { --pg-h: 420px; }
+  .pg--compact .pg__stage { min-height: 0; height: var(--pg-h); }
+  .pg--compact .pg__controls { height: var(--pg-h); overflow-y: auto; overscroll-behavior: contain; padding-top: 0; scrollbar-width: thin; }
+  .pg--compact .pg__controls:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .pg--compact .pg__heading { position: sticky; top: 0; z-index: 1; margin: 0; padding: 12px 0 8px; background: var(--bg); border-bottom: 1px solid var(--rule); }
+  @media (max-width: 860px) {
+    .pg--compact .pg__stage { height: 176px; }
+    .pg--compact .pg__controls { height: auto; overflow: visible; }
+  }
   .pg__code { grid-column: 1 / -1; border: 0; border-top: 1px solid var(--rule); border-radius: 0 0 12px 12px; }
   @media (max-width: 860px) {
     .pg { grid-template-columns: minmax(0, 1fr); }
