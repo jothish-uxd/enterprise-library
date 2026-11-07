@@ -204,8 +204,8 @@ const TT_DEFAULTS = {
 };
 function TooltipDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
-    opens: 'click', look: 'info', label: TT_DEFAULTS.info.label, title: TT_DEFAULTS.info.title, text: TT_DEFAULTS.info.text,
-    details: false, note: false, links: true,
+    opens: 'hover', look: 'info', label: TT_DEFAULTS.info.label, title: TT_DEFAULTS.info.title, text: TT_DEFAULTS.info.text,
+    details: false, note: false, links: false,
   });
   const set = (key: string, value: PgValue) => setV((old) => {
     const next = { ...old, [key]: value };
