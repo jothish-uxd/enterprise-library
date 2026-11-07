@@ -1,0 +1,45 @@
+/* Tabs: switch between panels of related content in one place.
+   .tabs            wrapper; --sm smaller; --fill tabs share the width
+   .tabs__list      the row of tabs, on a hairline; scrolls sideways when it can't fit
+   .tabs__tab       one tab; [aria-selected="true"] is full ink with a 2px rule under it
+   .tabs__count     a count after the label
+   .tabs__panel     the content for the chosen tab */
+
+/* min-width: 0 lets the row scroll inside a narrow column instead of widening it */
+.tabs { min-width: 0; max-width: 100%; }
+.tabs__list {
+  display: flex; gap: var(--space-1); min-width: 0;
+  border-bottom: 1px solid var(--rule); overflow-x: auto; scrollbar-width: thin;
+}
+.tabs__tab {
+  appearance: none; display: inline-flex; align-items: center; gap: var(--space-1-5); flex: none;
+  margin-bottom: -1px; padding: var(--space-3) var(--space-2-5) var(--space-2-5);
+  border: 0; border-bottom: 2px solid transparent; background: none;
+  font: inherit; font-size: var(--text-body-sm); font-weight: var(--weight-medium); color: var(--ink-soft);
+  white-space: nowrap; cursor: pointer;
+}
+.tabs__tab:hover { color: var(--ink); }
+.tabs__tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.tabs__tab:focus-visible { outline: 2px solid var(--focus); outline-offset: -4px; border-radius: var(--radius-sm); }
+.tabs__count { font-family: var(--mono); font-size: var(--text-caption); font-weight: var(--weight-regular); color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+.tabs__tab[aria-selected="true"] .tabs__count { color: var(--ink-soft); }
+
+/* Unavailable: faint, still reached by the arrow keys; a tooltip says why */
+.tabs__tab[aria-disabled="true"] { color: var(--ink-faint); cursor: not-allowed; }
+.tabs__tab[aria-disabled="true"]:hover { color: var(--ink-faint); }
+
+.tabs--sm .tabs__tab { padding: var(--space-2) var(--space-2) var(--space-1-5); font-size: var(--text-small); }
+.tabs--fill .tabs__tab { flex: 1 1 0; justify-content: center; }
+
+.tabs__panel { padding-top: var(--space-5); }
+.tabs__panel:focus-visible { outline: 2px solid var(--focus); outline-offset: var(--space-1); border-radius: var(--radius-sm); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .tabs__tab { transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease; }
+}
+
+@media (forced-colors: active) {
+  .tabs__list { border-bottom-color: CanvasText; }
+  .tabs__tab[aria-selected="true"] { border-bottom-color: Highlight; color: Highlight; }
+  .tabs__tab[aria-disabled="true"] { color: GrayText; }
+}

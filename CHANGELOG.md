@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 — 2026-11-06
+
+- Tabs (`Tabs`, `tabs.css`): automatic or manual activation, counts, small and full-width, and unavailable tabs that stay reachable and say why. Generalised from Online Assessments.
+- Breadcrumbs (`Breadcrumbs`, `breadcrumbs.css`): router or plain links, the current page last, silent separators, and a fold for long trails. Generalised from Cipher Lab.
+- Docs: Tabs and Breadcrumbs pages with playgrounds; playground previews never grow wider than their column.
+
 ## 0.3.0 — 2026-11-06
 
 From 0.3.0, every push is a new patch version (0.3.1, 0.3.2…), each with its own entry here.

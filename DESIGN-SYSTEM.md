@@ -123,7 +123,7 @@ All three narrow or switch what's shown below them. Pick by how many options the
 | Keyboard | One Tab stop; arrows move and choose | Each chip a Tab stop; Enter/Space toggles | Each card a Tab stop |
 | Built as | Radio group (real radios) | Toggle buttons in a group | Toggle buttons in a group |
 
-- Moving between pages, or panels of different content, is navigation: Tabs (0.3.0), not any of these.
+- Moving between pages, or panels of different content, is navigation: Tabs or links, not any of these.
 - More than 6 options, or long labels: chips that wrap, or a Select.
 - Keep "All" first, and announce how many results are showing in a polite live region.
 
@@ -152,6 +152,26 @@ A button that opens a short list of actions on one thing (WAI-ARIA menu button).
 - An unavailable item stays in the arrow-key order, can't be chosen, and shows its reason under the label, read as its description: "Archive, menu item, dimmed. Only the owner can archive it."
 - Keyboard: Enter, Space or Down opens on the first item, Up on the last; Up and Down move and wrap; Home and End jump; a letter jumps to the next item starting with it; Enter or Space chooses and closes; Esc closes and returns focus to the button; Tab closes and moves on.
 - The list opens below the button, or above it when there's no room (inside the nearest `[data-scroll]` or the window). Forced colors: CanvasText border, Highlight focus.
+
+### Tabs (`tabs.css`, `components/Tabs.tsx`)
+
+Switch between panels of related content in one place (WAI-ARIA tabs). Not for moving between pages (links or the side navigation) or for changing the view of one list (Segmented control).
+
+- `<Tabs label tabs value onChange activation size fill>`; each tab is `{ value, label, panel, count?, disabled?, disabledReason? }`. Classes are `.tabs`, `.tabs__list`, `.tabs__tab`, `.tabs__count`, `.tabs__panel` (namespaced so they don't meet a page's own `.tab`).
+- Keyboard: Tab reaches the chosen tab, then the panel; Left and Right move and wrap; Home and End jump. `activation="automatic"` (default) shows a panel as its tab is reached; `"manual"` waits for Enter or Space, for slow panels.
+- Screen readers: "Assessment sections, tab list"; "Questions 42, tab, selected, 2 of 4"; each panel is named by its tab and takes focus when nothing focusable starts it.
+- An unavailable tab uses `aria-disabled`: the arrow keys reach it, it's never chosen, and its reason shows in a tooltip and is read as its description.
+- The chosen tab is full ink with a 2px rule under it (Highlight in high contrast). The row scrolls sideways when it can't fit; it never wraps. Panels stay mounted while hidden.
+
+### Breadcrumbs (`breadcrumbs.css`, `components/Breadcrumbs.tsx`)
+
+Where this page sits: the pages above it, each a link, ending with this page. For hierarchies three or more levels deep.
+
+- `<Breadcrumbs items maxItems label>`; items are `{ label, to? }` (router link) or `{ label, href? }` (plain link); the last is the current page, `aria-current="page"`, not a link.
+- A `nav` named "Breadcrumb" around an ordered list: "Breadcrumb, navigation, list, 4 items".
+- Separators are CSS with empty alternative text (`content: "/" / ""`), so they aren't read.
+- `maxItems` folds the middle into a "…" button ("Show 2 more levels"); opening it moves focus to the first level revealed.
+- Rules: show the hierarchy, not history; use the pages' own titles; put it above the page title.
 
 ### Tiles (`tiles.css`, `components/Tiles.tsx`)
 

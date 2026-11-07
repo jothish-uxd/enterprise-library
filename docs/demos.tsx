@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Card, Checkbox, Dialog, Menu, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  BrowserFrame, Button, Card, Breadcrumbs, Checkbox, Dialog, Menu, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -877,6 +877,105 @@ function MenuDemo() {
   );
 }
 
+/* ---------- Tabs playground ---------- */
+const TAB_TEXT: Record<string, string> = {
+  overview: 'Pilot screening v3: 42 questions, about 40 minutes, proctored.',
+  questions: 'Questions are grouped into four sections; each can be reordered.',
+  candidates: '132 candidates have taken it this month; 18 are in progress.',
+  settings: 'Who can edit it, how long links last, and what candidates see when they finish.',
+};
+function TabsDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Assessment sections', tabs: 'Overview, Questions, Candidates, Settings', counts: true, activation: 'automatic',
+    size: 'md', fill: false, disableLast: true, reason: 'Only owners can change settings.',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const names = String(v.tabs).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
+  const [chosen, setChosen] = useState('overview');
+  const tabs = names.map((n, i) => {
+    const off = !!v.disableLast && i === names.length - 1 && names.length > 1;
+    const val = slug(n);
+    return {
+      value: val, label: n, count: v.counts && i > 0 && i < 3 ? (i === 1 ? 42 : 132) : undefined,
+      panel: <p className="t-body-sm">{TAB_TEXT[val] ?? `${n}: what belongs here.`}</p>,
+      disabled: off, disabledReason: off && v.reason ? String(v.reason) : undefined,
+    };
+  });
+  const value = tabs.some((t) => t.value === chosen && !t.disabled) ? chosen : tabs[0]?.value ?? '';
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) },
+    { attr: 'tabs', value: `[\n${tabs.map((t) => `    { value: '${t.value}', label: '${t.label}'${t.count !== undefined ? `, count: ${t.count}` : ''}, panel: <${camel(t.label)[0].toUpperCase() + camel(t.label).slice(1)} />${t.disabled ? `, disabled: true${t.disabledReason ? `, disabledReason: '${t.disabledReason}'` : ''}` : ''} },`).join('\n')}\n  ]`, expr: true },
+    { attr: 'value', value: 'section', expr: true },
+    { attr: 'onChange', value: 'setSection', expr: true },
+    ...(v.activation === 'manual' ? [{ attr: 'activation', value: 'manual' }] : []),
+    ...(v.size === 'sm' ? [{ attr: 'size', value: 'sm' }] : []),
+    ...(v.fill ? [{ attr: 'fill', value: true as const }] : []),
+  ];
+  return (
+    <Playground
+      name="Tabs"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="Assessment.tsx"
+      tag="Tabs"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label', help: 'Names the tab list for screen readers.' },
+        { kind: 'text', key: 'tabs', label: 'Tabs', help: 'Up to 4, separated by commas. Short nouns.' },
+        { kind: 'boolean', key: 'counts', label: 'Counts', help: 'A number after the label, in mono.' },
+        { kind: 'segmented', key: 'activation', label: 'Activation', options: [{ value: 'automatic', label: 'Automatic' }, { value: 'manual', label: 'Manual' }] },
+        { kind: 'select', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }] },
+        { kind: 'boolean', key: 'fill', label: 'Full width', help: 'Tabs share the width equally.' },
+        { kind: 'boolean', key: 'disableLast', label: 'Disable last tab' },
+        { kind: 'text', key: 'reason', label: 'Disabled reason', help: 'Shown in a tooltip and read as its description.' },
+      ]}
+      preview={
+        <div className="pg-tabs">
+          <Tabs label={String(v.label) || 'Sections'} tabs={tabs} value={value} onChange={setChosen}
+            activation={v.activation as 'automatic' | 'manual'} size={v.size as 'sm' | 'md'} fill={!!v.fill} />
+        </div>
+      }
+    />
+  );
+}
+
+/* ---------- Breadcrumbs playground ---------- */
+function BreadcrumbsDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({ trail: 'Hiring, Jobs, Starfighter Pilot L4, Pilot screening v3', fold: false, label: 'Breadcrumb' });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const names = String(v.trail).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
+  let path = '';
+  const items = names.map((n, i) => {
+    path += `/${slug(n)}`;
+    return i === names.length - 1 ? { label: n } : { label: n, to: path };
+  });
+  const attrs: PgCodeLine[] = [
+    { attr: 'items', value: `[\n${items.map((c) => `    { label: '${c.label}'${'to' in c && c.to ? `, to: '${c.to}'` : ''} },`).join('\n')}\n  ]`, expr: true },
+    ...(v.fold ? [{ attr: 'maxItems', value: '3', expr: true }] : []),
+    ...(v.label && v.label !== 'Breadcrumb' ? [{ attr: 'label', value: String(v.label) }] : []),
+  ];
+  return (
+    <Playground
+      name="Breadcrumbs"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="JobPage.tsx"
+      tag="Breadcrumbs"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'trail', label: 'Trail', help: 'Up to 4 levels, separated by commas. The last is this page, not a link.' },
+        { kind: 'boolean', key: 'fold', label: 'Fold the middle', help: 'Keep the first and last two; the rest open from “…”.' },
+        { kind: 'text', key: 'label', label: 'Label', help: 'The navigation’s name. Change it only if a page has two trails.' },
+      ]}
+      preview={<Breadcrumbs key={`${v.fold}-${names.length}`} items={items} maxItems={v.fold ? 3 : undefined} label={String(v.label) || 'Breadcrumb'} />}
+    />
+  );
+}
+
 /* ---------- Playground: one component, controls beside it, code below ---------- */
 type PgValue = string | boolean;
 type PgControl =
@@ -1547,6 +1646,8 @@ const DEMOS: Record<string, () => ReactNode> = {
   input: () => <InputDemo />,
   dialog: () => <DialogDemo />,
   menu: () => <MenuDemo />,
+  tabs: () => <TabsDemo />,
+  breadcrumbs: () => <BreadcrumbsDemo />,
   tiles: () => <TilesDemo />,
   textarea: () => <TextAreaDemo />,
   radio: () => <RadioDemo />,

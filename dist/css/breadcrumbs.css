@@ -1,0 +1,27 @@
+/* Breadcrumbs: where this page sits, ending with the current page.
+   .breadcrumbs            the <nav>
+   .breadcrumbs__list      the ordered list; wraps on narrow screens
+   .breadcrumbs__link      a level above this page
+   .breadcrumbs__current   this page: full ink, not a link
+   .breadcrumbs__more      the "…" button that opens folded levels */
+
+.breadcrumbs { font-size: var(--text-small); }
+.breadcrumbs__list { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1-5); margin: 0; padding: 0; list-style: none; }
+.breadcrumbs__item { display: inline-flex; align-items: center; gap: var(--space-1-5); min-width: 0; color: var(--ink-faint); }
+/* The separator is decoration: an empty alternative text keeps screen readers quiet */
+.breadcrumbs__item + .breadcrumbs__item::before { content: "/"; content: "/" / ""; color: var(--rule-strong); }
+.breadcrumbs__link { color: var(--ink-soft); text-decoration: none; border-radius: var(--radius-xs); }
+.breadcrumbs__link:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.breadcrumbs__link:focus-visible, .breadcrumbs__more:focus-visible, .breadcrumbs__current:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.breadcrumbs__current { color: var(--ink); font-weight: var(--weight-medium); border-radius: var(--radius-xs); }
+.breadcrumbs__more {
+  appearance: none; display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 var(--space-1);
+  border: 0; border-radius: var(--radius-xs); background: none; color: var(--ink-soft);
+  font: inherit; line-height: 1; cursor: pointer;
+}
+.breadcrumbs__more:hover { background: var(--bg-hover); color: var(--ink); }
+
+@media (forced-colors: active) {
+  .breadcrumbs__item + .breadcrumbs__item::before { color: CanvasText; }
+  .breadcrumbs__current { text-decoration: underline; }
+}
