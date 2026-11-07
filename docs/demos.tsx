@@ -8,7 +8,7 @@ import React, { StrictMode, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Checkbox, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  BrowserFrame, Button, Card, Checkbox, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -198,32 +198,125 @@ function TableDemo() {
 const PLANS = [
   { value: 'standard', title: 'Standard', desc: 'Webcam check at the start and end.', meta: 'ID · WEBCAM' },
   { value: 'live', title: 'Live proctor', desc: 'A proctor watches the whole session.', meta: 'ID · WEBCAM · SCREEN' },
-  { value: 'none', title: 'Unproctored', desc: 'Not allowed for evaluated modules.', meta: 'NONE', disabled: true },
+  { value: 'none', title: 'Unproctored', desc: 'No checks during the session.', meta: 'NONE', disabled: true },
 ];
-function ChoiceDemo() {
-  const [plan, setPlan] = useState('standard');
-  const [tools, setTools] = useState<string[]>(['calc']);
+function CardDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    title: 'Pilot screening v3', meta: 'Edited 2 days ago by Leia Organa', tag: true, stats: true, footer: true, variant: 'default', compact: false,
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const variant = v.variant as 'default' | 'subtle' | 'strong' | 'emphasis';
+  const attrs: PgCodeLine[] = [
+    ...(v.title ? [{ attr: 'title', value: String(v.title) }] : []),
+    ...(v.meta ? [{ attr: 'meta', value: String(v.meta) }] : []),
+    ...(v.tag ? [{ attr: 'end', value: '<span className="tag">Live</span>', expr: true }] : []),
+    ...(v.footer ? [{ attr: 'footer', value: '<>\n    <span>132 candidates</span>\n    <Button size="sm" variant="secondary">Open</Button>\n  </>', expr: true }] : []),
+    ...(variant !== 'default' ? [{ attr: 'variant', value: variant }] : []),
+    ...(v.compact ? [{ attr: 'compact', value: true as const }] : []),
+  ];
+  const body = v.stats
+    ? ['<dl className="card__stats">', '  <div><dt>Pass rate</dt><dd>64%</dd></div>', '  <div><dt>Median</dt><dd>38 min</dd></div>', '</dl>']
+    : ['<p>132 candidates have taken it this month.</p>'];
   return (
-    <>
-      <fieldset className="lib-fieldset">
-        <legend className="t-label">Proctoring</legend>
-        <div className="card-grid" style={{ ['--card-min' as string]: '200px' }}>
-          {PLANS.map((p) => (
-            <ChoiceCard key={p.value} name="demo-plan" value={p.value} checked={plan === p.value} onChange={() => setPlan(p.value)}
-              title={p.title} description={p.desc} meta={p.meta} disabled={p.disabled} />
-          ))}
-        </div>
-      </fieldset>
-      <fieldset className="lib-fieldset">
-        <legend className="t-label">Allowed tools</legend>
-        <div className="card-list" style={{ maxWidth: 360 }}>
-          {[{ v: 'calc', t: 'Calculator' }, { v: 'notes', t: 'Scratch notes' }].map((o) => (
-            <ChoiceCard key={o.v} type="checkbox" compact name="demo-tools" value={o.v} checked={tools.includes(o.v)} title={o.t}
-              onChange={(c) => setTools(c ? [...tools, o.v] : tools.filter((x) => x !== o.v))} />
-          ))}
-        </div>
-      </fieldset>
-    </>
+    <Playground
+      name="Card"
+      compact
+      values={v}
+      set={set}
+      file="Assessments.tsx"
+      tag="Card"
+      attrs={attrs.length ? attrs : [{ attr: 'title', value: 'Untitled' }]}
+      codeChildren={body}
+      controls={[
+        { kind: 'text', key: 'title', label: 'Title', help: 'A heading (h3 by default). Leave empty for none.' },
+        { kind: 'text', key: 'meta', label: 'Meta', help: 'One quiet line: owner, date, count. Leave empty for none.' },
+        { kind: 'boolean', key: 'tag', label: 'Tag', help: 'In the end slot, at the right of the header.' },
+        { kind: 'boolean', key: 'stats', label: 'Stats', help: 'Label-and-number pairs in the body.' },
+        { kind: 'boolean', key: 'footer', label: 'Footer', help: 'Under a full-width rule.' },
+        { kind: 'select', key: 'variant', label: 'Variant', options: [{ value: 'default', label: 'Default' }, { value: 'subtle', label: 'Subtle' }, { value: 'strong', label: 'Strong' }, { value: 'emphasis', label: 'Emphasis' }] },
+        { kind: 'boolean', key: 'compact', label: 'Compact', help: 'Less padding, for dense grids.' },
+      ]}
+      preview={
+        <Card
+          className="pg-card"
+          title={v.title ? String(v.title) : undefined}
+          meta={v.meta ? String(v.meta) : undefined}
+          end={v.tag ? <span className="tag">Live</span> : undefined}
+          footer={v.footer ? <><span>132 candidates</span><Button size="sm" variant="secondary">Open</Button></> : undefined}
+          variant={variant}
+          compact={!!v.compact}
+        >
+          {v.stats
+            ? <dl className="card__stats"><div><dt>Pass rate</dt><dd>64%</dd></div><div><dt>Median</dt><dd>38 min</dd></div></dl>
+            : <p>132 candidates have taken it this month.</p>}
+        </Card>
+      }
+    />
+  );
+}
+
+const CHOICE_ICONS = [
+  <svg key="a" viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.5" /><path d="M3.5 13.5c.8-2.4 2.5-3.5 4.5-3.5s3.7 1.1 4.5 3.5" /></svg>,
+  <svg key="b" viewBox="0 0 16 16"><rect x="2.5" y="3.5" width="11" height="8" rx="1.5" /><path d="M6 13.5h4" /></svg>,
+  <svg key="c" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5" /><path d="M4.2 11.8l7.6-7.6" /></svg>,
+];
+function ChoiceCardDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    type: 'radio', descriptions: true, meta: true, icons: false, compact: false,
+    disableLast: true, disabledReason: 'Evaluated modules must be proctored.',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const [plan, setPlan] = useState('standard');
+  const [many, setMany] = useState<string[]>(['standard']);
+  const radio = v.type === 'radio';
+  const opts = PLANS.map((p, i) => ({ ...p, disabled: !!v.disableLast && i === PLANS.length - 1 }));
+  const reason = v.disabledReason ? String(v.disabledReason) : undefined;
+  const line = (p: typeof opts[number]) => [
+    `  <ChoiceCard${radio ? '' : ' type="checkbox"'}${v.compact ? ' compact' : ''}`,
+    `    name="proctoring" value="${p.value}" title="${p.title}"`,
+    ...(v.descriptions ? [`    description="${p.desc}"`] : []),
+    ...(v.meta ? [`    meta="${p.meta}"`] : []),
+    ...(v.icons ? ['    icon={<PersonIcon />}'] : []),
+    radio ? `    checked={plan === '${p.value}'} onChange={() => setPlan('${p.value}')}` : `    checked={tools.includes('${p.value}')} onChange={(c) => toggle('${p.value}', c)}`,
+    ...(p.disabled ? [`    disabled disabledReason="${reason ?? ''}"`] : []),
+    '  />',
+  ];
+  return (
+    <Playground
+      name="ChoiceCard"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="Proctoring.tsx"
+      tag="fieldset"
+      attrs={[]}
+      codeChildren={['<legend className="field__label">Proctoring</legend>', '<div className="card-grid">', ...opts.flatMap(line), '</div>']}
+      controls={[
+        { kind: 'segmented', key: 'type', label: 'Type', options: [{ value: 'radio', label: 'Radio' }, { value: 'checkbox', label: 'Checkbox' }] },
+        { kind: 'boolean', key: 'descriptions', label: 'Descriptions', help: 'Read as each card’s description.' },
+        { kind: 'boolean', key: 'meta', label: 'Meta', help: 'A mono line: labels or an ID.' },
+        { kind: 'boolean', key: 'icons', label: 'Icons', help: 'A small outlined icon before the title.' },
+        { kind: 'boolean', key: 'compact', label: 'Compact' },
+        { kind: 'boolean', key: 'disableLast', label: 'Disable last card' },
+        { kind: 'text', key: 'disabledReason', label: 'Disabled reason', help: 'Shown in a tooltip and read as its description.' },
+      ]}
+      preview={
+        <fieldset className="pg-choice">
+          <legend className="field__label">Proctoring</legend>
+          <div className="card-grid" style={{ ['--card-min' as string]: '150px' }}>
+            {opts.map((p, i) => (
+              <ChoiceCard key={p.value} type={radio ? 'radio' : 'checkbox'} name="pg-plan" value={p.value}
+                checked={radio ? plan === p.value : many.includes(p.value)}
+                onChange={(c) => (radio ? setPlan(p.value) : setMany(c ? [...many, p.value] : many.filter((x) => x !== p.value)))}
+                title={p.title} description={v.descriptions ? p.desc : undefined} meta={v.meta ? p.meta : undefined}
+                icon={v.icons ? CHOICE_ICONS[i] : undefined} compact={!!v.compact}
+                disabled={p.disabled} disabledReason={p.disabled ? reason : undefined} />
+            ))}
+          </div>
+        </fieldset>
+      }
+    />
   );
 }
 
@@ -553,8 +646,9 @@ type PgCodeLine = { attr: string; value: string | true; expr?: boolean };
 
 function PgCode({ file, tag, attrs, children }: { file: string; tag: string; attrs: PgCodeLine[]; children?: string[] }) {
   const [copied, setCopied] = useState<'' | 'ok' | 'fail'>('');
-  const open = `<${tag}\n${attrs.map((a) => `  ${a.value === true ? a.attr : a.expr ? `${a.attr}={${a.value}}` : `${a.attr}="${a.value}"`}`).join('\n')}`;
-  const text = children?.length ? `${open}\n>\n${children.map((c) => `  ${c}`).join('\n')}\n</${tag}>` : `${open}\n/>`;
+  const open = !attrs.length ? `<${tag}` : `<${tag}\n${attrs.map((a) => `  ${a.value === true ? a.attr : a.expr ? `${a.attr}={${a.value}}` : `${a.attr}="${a.value}"`}`).join('\n')}`;
+  const close = attrs.length ? '\n>' : '>';
+  const text = children?.length ? `${open}${close}\n${children.map((c) => `  ${c}`).join('\n')}\n</${tag}>` : `${open}${attrs.length ? '\n' : ' '}/>`;
   const copy = () => {
     const done = (ok: boolean) => { setCopied(ok ? 'ok' : 'fail'); window.setTimeout(() => setCopied(''), 2000); };
     try { navigator.clipboard.writeText(text).then(() => done(true), () => done(false)); } catch { done(false); }
@@ -569,11 +663,11 @@ function PgCode({ file, tag, attrs, children }: { file: string; tag: string; att
         </button>
       </div>
       <pre><code>
-        {'<'}<span className="tok-k">{tag}</span>{'\n'}
+        {'<'}<span className="tok-k">{tag}</span>{attrs.length ? '\n' : null}
         {attrs.map((a) => (
           <span key={a.attr}>{'  '}{a.attr}{a.value === true ? null : a.expr ? <>{'={'}{String(a.value).split(/('[^']*')/).map((part, i) => (i % 2 ? <span key={i} className="tok-s">{part}</span> : part))}{'}'}</> : <>=<span className="tok-s">"{a.value}"</span></>}{'\n'}</span>
         ))}
-        {children?.length ? <>{'>'}{'\n'}{children.map((c) => <span key={c}>{'  '}{c.startsWith('<') ? <>{'<'}<span className="tok-k">{c.slice(1).split(/[\s/>]/)[0]}</span>{c.slice(1 + c.slice(1).split(/[\s/>]/)[0].length)}</> : c}{'\n'}</span>)}{'</'}<span className="tok-k">{tag}</span>{'>'}</> : '/>'}
+        {children?.length ? <>{attrs.length ? '>' : '>'}{'\n'}{children.map((c) => <span key={c}>{'  '}{c.startsWith('<') ? <>{'<'}<span className="tok-k">{c.slice(1).split(/[\s/>]/)[0]}</span>{c.slice(1 + c.slice(1).split(/[\s/>]/)[0].length)}</> : c}{'\n'}</span>)}{'</'}<span className="tok-k">{tag}</span>{'>'}</> : attrs.length ? '/>' : ' />'}
       </code></pre>
       <p className="visually-hidden" role="status" aria-live="polite">{copied === 'ok' ? `Copied ${file} to clipboard.` : copied === 'fail' ? `Couldn't copy ${file}. Select the text and copy it manually.` : ''}</p>
     </div>
@@ -1196,7 +1290,8 @@ function SwitchDemo() {
 const DEMOS: Record<string, () => ReactNode> = {
   select: () => <SelectDemo />,
   table: () => <TableDemo />,
-  choicecard: () => <ChoiceDemo />,
+  card: () => <CardDemo />,
+  choicecard: () => <ChoiceCardDemo />,
   statfilter: () => <StatFilterDemo />,
   tooltip: () => <TooltipDemo />,
   browserframe: () => <FrameApp />,

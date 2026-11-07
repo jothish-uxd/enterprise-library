@@ -7,7 +7,7 @@ import { type ReactNode } from 'react';
  *   aria-describedby (role="tooltip"), so screen readers hear it on focus.
  * - WCAG 1.4.13: hoverable (the pointer can move onto it), dismissable
  *   (Escape closes it without moving focus) and persistent (it stays until
- *   the pointer or focus leaves).
+ *   the pointer or focus leaves, and follows its trigger when the page scrolls).
  * - Never put links or buttons in it: it closes as soon as focus moves, so
  *   keyboard and screen reader users could never reach them.
  *

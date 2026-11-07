@@ -865,6 +865,8 @@
   .pg__stage-inner > .field { width: 100%; max-width: 320px; }
   .pg__stage-inner > .tiles { width: 100%; }
   .pg__stage-inner > .table-wrap { width: 100%; }
+  .pg__stage-inner > .pg-card { width: 100%; max-width: 340px; }
+  .pg__stage-inner > .pg-choice { width: 100%; border: 0; margin: 0; padding: 0; min-width: 0; }
   .pg-inline { display: inline-flex; align-items: center; gap: 6px; margin: 0; }
   /* ResetButton preview: the end of a browser bar, where it lives */
   .pg-bar { width: 100%; max-width: 380px; align-self: start; margin-top: 24px; display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px; border: 1px solid var(--rule-strong); border-radius: 8px; background: var(--bg); }
@@ -1795,15 +1797,11 @@ export function AccessRequests({ rows, onUpdate }) {
   <p class="page-kicker">Component · CSS + React</p>
   <h1 class="page-title" id="h-card" tabindex="-1">Card</h1>
   <p class="page-lede">For things people compare or pick between: a header with title, meta and an end slot, a body, and a footer under a full-width rule. ChoiceCard is a card that is a real radio or checkbox.</p>
-  <div class="lib lib-demo is-wide"><div class="card-grid">
-<div class="card"><div class="card__header"><div class="card__heading"><h3 class="card__title">Pilot screening v3</h3><p class="card__meta">Edited 2 days ago by Leia Organa</p></div><div class="card__end"><span class="tag">Live</span></div></div><div class="card__body"><dl class="card__stats"><div><dt>Pass rate</dt><dd>64%</dd></div><div><dt>Median</dt><dd>38 min</dd></div></dl></div><div class="card__footer"><span>132 candidates</span><button type="button" class="btn btn--secondary btn--sm">Open</button></div></div>
-<div class="card card--emphasis"><div class="card__header"><div class="card__heading"><h3 class="card__title">Model R2-7</h3><p class="card__meta">Passed every threshold</p></div><div class="card__end"><span class="tag">Best</span></div></div><div class="card__body"><dl class="card__stats"><div><dt>Precision</dt><dd>0.94</dd></div><div><dt>Recall</dt><dd>0.89</dd></div></dl></div></div>
-<div class="card card--subtle card--compact"><div class="card__header"><div class="card__heading"><h3 class="card__title">Summary</h3></div></div><div class="card__body"><p>3 flags, 1 open. Reviewed by Mon Mothma.</p></div></div>
-</div></div>
+  <div class="lib lib-playground is-wide" data-react="card"></div>
 
   <section class="doc-section" id="card-choice" aria-labelledby="h-card-choice">
     <h2 id="h-card-choice">ChoiceCard</h2>
-    <p>A radio or checkbox the size of a card. The real input covers the card, invisible, so the keyboard, forms and screen readers get the native control.</p>  <div class="lib lib-demo is-wide" data-react="choicecard"></div>
+    <p>A radio or checkbox the size of a card. The real input covers the card, invisible, so the keyboard, forms and screen readers get the native control.</p>  <div class="lib lib-playground is-wide" data-react="choicecard"></div>
 
   </section>
   <section class="doc-section" id="card-classes" aria-labelledby="h-card-classes">
@@ -1827,7 +1825,7 @@ export function AccessRequests({ rows, onUpdate }) {
   </section>
   <section class="doc-section" id="card-rules" aria-labelledby="h-card-rules">
     <h2 id="h-card-rules">Rules</h2>
-    <ul class="a11y-list"><li>A single block of content is a section with a heading, not a card. A grid of links to other pages is <a href="#tiles">Tiles</a>.</li><li>A chosen ChoiceCard has a 2px ink edge and a filled mark: a ring for radio, a box for checkbox.</li><li>The title is the input’s name and the description its description, so people hear “Live proctor, radio button, 2 of 3, A proctor watches the whole session.”</li><li>An unavailable choice stays readable and says why in its description.</li><li>Never put a second control inside a ChoiceCard.</li></ul>
+    <ul class="a11y-list"><li>A single block of content is a section with a heading, not a card. A grid of links to other pages is <a href="#tiles">Tiles</a>.</li><li>A chosen ChoiceCard has a 2px ink edge and a filled mark: a ring for radio, a box for checkbox.</li><li>The title is the input’s name and the description its description, so people hear “Live proctor, radio button, 2 of 3, A proctor watches the whole session.”</li><li>An unavailable choice stays readable and reachable (<code>aria-disabled</code>): Tab, or the arrow keys in a radio group, still land on it, it can’t be chosen, and <code>disabledReason</code> says why in a tooltip and as its description.</li><li>Never put a second control inside a ChoiceCard.</li></ul>
   </section>
   <nav class="pager" aria-label="More in components" data-current="card"></nav>
 </section>

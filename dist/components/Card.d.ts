@@ -14,6 +14,9 @@ import { type ElementType, type ReactNode } from 'react';
  * - State by shape: the chosen ChoiceCard gets a 2px ink edge and a filled
  *   mark (ring for radio, box for checkbox). Emphasis is an ink border.
  * - Never put a second interactive control inside a ChoiceCard.
+ * - An unavailable ChoiceCard uses aria-disabled: still reachable (Tab, or the
+ *   arrow keys in a radio group), never chosen, and disabledReason says why in
+ *   a tooltip and as its description.
  */
 type Variant = 'default' | 'subtle' | 'strong' | 'emphasis';
 interface CardProps {
@@ -47,9 +50,11 @@ interface ChoiceCardProps {
     meta?: ReactNode;
     /** Small outlined icon before the title */
     icon?: ReactNode;
+    /** Can't be chosen right now; stays reachable. Give a reason. */
     disabled?: boolean;
+    disabledReason?: ReactNode;
     compact?: boolean;
     className?: string;
 }
-export declare function ChoiceCard({ type, name, value, checked, onChange, title, description, meta, icon, disabled, compact, className }: ChoiceCardProps): import("react").JSX.Element;
+export declare function ChoiceCard({ type, name, value, checked, onChange, title, description, meta, icon, disabled, disabledReason, compact, className }: ChoiceCardProps): import("react").JSX.Element;
 export {};

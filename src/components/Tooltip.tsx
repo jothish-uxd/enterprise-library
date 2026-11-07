@@ -9,7 +9,7 @@ import { createPortal } from 'react-dom';
  *   aria-describedby (role="tooltip"), so screen readers hear it on focus.
  * - WCAG 1.4.13: hoverable (the pointer can move onto it), dismissable
  *   (Escape closes it without moving focus) and persistent (it stays until
- *   the pointer or focus leaves).
+ *   the pointer or focus leaves, and follows its trigger when the page scrolls).
  * - Never put links or buttons in it: it closes as soon as focus moves, so
  *   keyboard and screen reader users could never reach them.
  *
@@ -81,10 +81,17 @@ export function useTooltip(content: ReactNode) {
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { clear(); setOpen(false); } };
-    const onScroll = () => setOpen(false);
+    // Follow the trigger when the page scrolls (focus scrolls controls into view;
+    // closing then would hide the text from keyboard users before they see it).
+    const follow = () => { if (anchorRef.current && panelRef.current) setPos(place(anchorRef.current, panelRef.current)); };
     document.addEventListener('keydown', onKey);
-    document.addEventListener('scroll', onScroll, true);
-    return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('scroll', onScroll, true); };
+    document.addEventListener('scroll', follow, true);
+    window.addEventListener('resize', follow);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('scroll', follow, true);
+      window.removeEventListener('resize', follow);
+    };
   }, [open]);
 
   useLayoutEffect(() => {

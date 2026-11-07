@@ -43,10 +43,18 @@ export function useTooltip(content) {
             clear();
             setOpen(false);
         } };
-        const onScroll = () => setOpen(false);
+        // Follow the trigger when the page scrolls (focus scrolls controls into view;
+        // closing then would hide the text from keyboard users before they see it).
+        const follow = () => { if (anchorRef.current && panelRef.current)
+            setPos(place(anchorRef.current, panelRef.current)); };
         document.addEventListener('keydown', onKey);
-        document.addEventListener('scroll', onScroll, true);
-        return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('scroll', onScroll, true); };
+        document.addEventListener('scroll', follow, true);
+        window.addEventListener('resize', follow);
+        return () => {
+            document.removeEventListener('keydown', onKey);
+            document.removeEventListener('scroll', follow, true);
+            window.removeEventListener('resize', follow);
+        };
     }, [open]);
     useLayoutEffect(() => {
         if (!open || !anchorRef.current || !panelRef.current) {
