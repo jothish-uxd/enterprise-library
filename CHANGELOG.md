@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2 — 2026-11-06
+
+- Stepper (`Stepper`, `stepper.css`): full (numbered steps, horizontal or vertical, as links or plain) or compact (a segmented bar and "Step 3 of 4"); each step complete, in progress or not started, read out with its number. Generalised from Cipher Lab's stage navigation and stage progress. Docs page with a playground.
+
 ## 0.3.1 — 2026-11-06
 
 - Tabs (`Tabs`, `tabs.css`): automatic or manual activation, counts, small and full-width, and unavailable tabs that stay reachable and say why. Generalised from Online Assessments.

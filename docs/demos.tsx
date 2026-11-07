@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Card, Breadcrumbs, Checkbox, Dialog, Menu, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  BrowserFrame, Button, Card, Breadcrumbs, Checkbox, Dialog, Menu, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -976,6 +976,57 @@ function BreadcrumbsDemo() {
   );
 }
 
+/* ---------- Stepper playground ---------- */
+function StepperDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Assessment setup', steps: 'Details, Questions, Proctoring, Review', current: '3', variant: 'full', orientation: 'horizontal', links: false, unit: 'Step',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const names = String(v.steps).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
+  const at = Math.min(Number(v.current), names.length) - 1;
+  const steps = names.map((n, i) => ({
+    id: slug(n), label: n,
+    status: (i < at ? 'complete' : i === at ? 'in-progress' : 'not-started') as 'complete' | 'in-progress' | 'not-started',
+    ...(v.links && i <= at ? { to: `/setup/${slug(n)}` } : {}),
+  }));
+  const compact = v.variant === 'compact';
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) },
+    { attr: 'steps', value: `[\n${steps.map((s) => `    { id: '${s.id}', label: '${s.label}', status: '${s.status}'${'to' in s ? `, to: '${s.to}'` : ''} },`).join('\n')}\n  ]`, expr: true },
+    { attr: 'current', value: steps[at]?.id ?? '' },
+    ...(compact ? [{ attr: 'variant', value: 'compact' }] : []),
+    ...(!compact && v.orientation === 'vertical' ? [{ attr: 'orientation', value: 'vertical' }] : []),
+    ...(compact && v.unit && v.unit !== 'Step' ? [{ attr: 'unit', value: String(v.unit) }] : []),
+  ];
+  return (
+    <Playground
+      name="Stepper"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="Setup.tsx"
+      tag="Stepper"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label', help: 'Names the steps for screen readers.' },
+        { kind: 'text', key: 'steps', label: 'Steps', help: 'Up to 4, separated by commas.' },
+        { kind: 'select', key: 'current', label: 'Current step', options: names.map((n, i) => ({ value: String(i + 1), label: `${i + 1}. ${n}` })) },
+        { kind: 'segmented', key: 'variant', label: 'Variant', options: [{ value: 'full', label: 'Full' }, { value: 'compact', label: 'Compact' }] },
+        { kind: 'segmented', key: 'orientation', label: 'Orientation', options: [{ value: 'horizontal', label: 'Horizontal' }, { value: 'vertical', label: 'Vertical' }] },
+        { kind: 'boolean', key: 'links', label: 'Steps are links', help: 'Finished steps and this one link to their pages; later ones aren’t reachable yet.' },
+        { kind: 'text', key: 'unit', label: 'Unit', help: 'Compact only: “Step 3 of 4”, or “Stage”.' },
+      ]}
+      preview={
+        <div className={`pg-stepper${!compact && v.orientation === 'vertical' ? ' is-vertical' : ''}`}>
+          <Stepper label={String(v.label) || 'Steps'} steps={steps} current={steps[at]?.id ?? ''}
+            variant={compact ? 'compact' : 'full'} orientation={v.orientation as 'horizontal' | 'vertical'} unit={String(v.unit) || 'Step'} />
+        </div>
+      }
+    />
+  );
+}
+
 /* ---------- Playground: one component, controls beside it, code below ---------- */
 type PgValue = string | boolean;
 type PgControl =
@@ -1648,6 +1699,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   menu: () => <MenuDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
+  stepper: () => <StepperDemo />,
   tiles: () => <TilesDemo />,
   textarea: () => <TextAreaDemo />,
   radio: () => <RadioDemo />,

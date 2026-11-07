@@ -42,3 +42,5 @@ export { Tabs } from './components/Tabs';
 export type { TabItem, TabsProps } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export type { Crumb, BreadcrumbsProps } from './components/Breadcrumbs';
+export { Stepper } from './components/Stepper';
+export type { Step, StepStatus, StepperProps } from './components/Stepper';

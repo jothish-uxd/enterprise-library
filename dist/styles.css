@@ -1170,3 +1170,62 @@ html:has(.dialog[open]) { overflow: hidden; }
   .breadcrumbs__current { text-decoration: underline; }
 }
 
+/* ---- stepper.css ---- */
+/* Stepper: where people are in a sequence of steps.
+   .stepper                 full, horizontal: a row of numbered steps on a hairline
+   .stepper--vertical       stacked, joined by a rule, for a sidebar
+   .stepper--compact        a segmented bar and "Step 4 of 7: name"
+   .stepper__step           one step; .is-complete, .is-in-progress, .is-not-started; .is-current
+   .stepper__num            the number, or a check when complete */
+
+.stepper { min-width: 0; max-width: 100%; }
+.stepper__list { display: flex; margin: 0; padding: 0; list-style: none; border-bottom: 1px solid var(--rule); overflow-x: auto; scrollbar-width: thin; }
+.stepper__item { flex: none; }
+.stepper__step {
+  display: flex; align-items: center; gap: var(--space-1-5);
+  margin-bottom: -1px; padding: var(--space-3) var(--space-2) var(--space-2-5);
+  border-bottom: 2px solid transparent; border-radius: 0;
+  font-size: var(--text-small); font-weight: var(--weight-medium); color: var(--ink-soft);
+  text-decoration: none; white-space: nowrap;
+}
+a.stepper__step:hover { color: var(--ink); }
+.stepper__step:focus-visible { outline: 2px solid var(--focus); outline-offset: -4px; border-radius: var(--radius-sm); }
+.stepper__step.is-current { color: var(--ink); border-bottom-color: var(--ink); }
+
+.stepper__num {
+  display: inline-grid; place-items: center; flex: none; width: 20px; height: 20px; border-radius: var(--radius-full);
+  border: 1px solid var(--rule-strong); color: var(--ink-faint);
+  font-family: var(--mono); font-size: var(--text-caption); font-weight: var(--weight-regular); font-variant-numeric: tabular-nums;
+}
+.stepper__num svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.is-complete > .stepper__num { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+.is-in-progress > .stepper__num { border: 1.5px solid var(--ink); color: var(--ink); }
+.is-not-started { color: var(--ink-faint); }
+.is-not-started.is-current { color: var(--ink); }
+
+/* Vertical: a column joined by a rule, the current step marked with an ink bar */
+.stepper--vertical .stepper__list { flex-direction: column; border-bottom: 0; overflow: visible; }
+.stepper--vertical .stepper__item { position: relative; }
+.stepper--vertical .stepper__item + .stepper__item::before {
+  content: ""; position: absolute; left: calc(var(--space-2-5) + 9.5px); top: calc(var(--space-1) * -1); height: var(--space-3);
+  border-left: 1px solid var(--rule-strong);
+}
+.stepper--vertical .stepper__step {
+  margin: 0; padding: var(--space-2) var(--space-2-5); border-bottom: 0; border-left: 2px solid transparent; white-space: normal;
+}
+.stepper--vertical .stepper__step.is-current { border-left-color: var(--ink); background: var(--bg-subtle); }
+
+/* Compact: a segmented bar and the current step */
+.stepper--compact { display: inline-flex; align-items: center; gap: var(--space-3); margin: 0; font-size: var(--text-small); color: var(--ink); white-space: nowrap; }
+.stepper__bar { display: inline-flex; gap: var(--space-1); }
+.stepper__bar span { width: 8px; height: 8px; border-radius: var(--radius-xs); border: 1px solid var(--rule-strong); }
+.stepper__bar .is-complete { background: var(--ink); border-color: var(--ink); }
+.stepper__bar .is-current { width: 18px; border-color: var(--ink); background: var(--ink); }
+.stepper__count { font-family: var(--mono); font-size: var(--text-caption); color: var(--ink-faint); margin-right: var(--space-1); }
+
+@media (forced-colors: active) {
+  .stepper__list { border-bottom-color: CanvasText; }
+  .stepper__step.is-current { border-color: Highlight; }
+  .is-complete > .stepper__num, .stepper__bar .is-complete, .stepper__bar .is-current { background: CanvasText; border-color: CanvasText; color: Canvas; }
+}
+

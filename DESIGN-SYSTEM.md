@@ -173,6 +173,16 @@ Where this page sits: the pages above it, each a link, ending with this page. Fo
 - `maxItems` folds the middle into a "…" button ("Show 2 more levels"); opening it moves focus to the first level revealed.
 - Rules: show the hierarchy, not history; use the pages' own titles; put it above the page title.
 
+### Stepper (`stepper.css`, `components/Stepper.tsx`)
+
+Where people are in a sequence of steps, and how far each has got.
+
+- `<Stepper label steps current variant orientation unit statusText>`; each step is `{ id, label, status, to?, href? }` with `status` `complete`, `in-progress` or `not-started`.
+- `variant="full"` (default): every step, numbered. Complete is a filled ink circle with a check; in progress a 1.5px ink ring; not started a faint ring. The current step is full ink with a 2px rule under it, or an ink bar beside it when `orientation="vertical"`. Never colour.
+- `variant="compact"`: a segmented bar and "Step 3 of 4: Proctoring" (`unit` changes "Step").
+- Plain steps are an ordered list named by `label`, the current one `aria-current="step"`. Steps with `to` or `href` are links in a `nav`, the current one `aria-current="page"`; only links are in the Tab order. Each step reads its number, name and status: "3. Proctoring, in progress, current step".
+- Rules: three to about seven steps, short noun labels; link only the steps people can go back to; see the Multi-step form pattern for saving and validation between steps.
+
 ### Tiles (`tiles.css`, `components/Tiles.tsx`)
 
 A grid of links into other pages: a section's index, a gallery of patterns or templates. Two layouts:
