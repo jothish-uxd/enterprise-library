@@ -91,58 +91,106 @@ const PEOPLE = [
 ];
 
 function TableDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    rows: '4', selectable: true, sortable: true, hover: false, compact: false, idCol: true, jobCol: false, empty: false,
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
   const [sort, setSort] = useState<{ key: 'name' | 'score'; dir: SortDirection }>({ key: 'score', dir: 'descending' });
   const [chosen, setChosen] = useState<string[]>(['C-0451']);
-  const [query, setQuery] = useState('');
-  const rows = PEOPLE.filter((p) => p.name.toLowerCase().includes(query.trim().toLowerCase()))
-    .sort((a, b) => (sort.key === 'score' ? a.score - b.score : a.name.localeCompare(b.name)) * (sort.dir === 'ascending' ? 1 : -1));
+  const base = v.empty ? [] : PEOPLE.slice(0, Number(v.rows));
+  const rows = [...base].sort((a, b) => (sort.key === 'score' ? a.score - b.score : a.name.localeCompare(b.name)) * (sort.dir === 'ascending' ? 1 : -1));
   const all = rows.length > 0 && rows.every((r) => chosen.includes(r.id));
   const some = rows.some((r) => chosen.includes(r.id));
+  const sel = !!v.selectable, srt = !!v.sortable;
+  const cols = 2 + (sel ? 1 : 0) + (v.idCol ? 1 : 0) + (v.jobCol ? 1 : 0);
+  const cls = ['table', sel && 'table--selectable', v.hover && 'table--hover', v.compact && 'table--compact'].filter(Boolean).join(' ');
+
+  const head = (label: string, key: 'name' | 'score', numeric = false) => srt
+    ? `<SortHeader${numeric ? ' numeric' : ''} sort={sortBy === '${key}' ? dir : undefined} onSort={(d) => sort('${key}', d)}>${label}</SortHeader>`
+    : `<th scope="col"${numeric ? ' className="num"' : ''}>${label}</th>`;
+  const code = [
+    '<caption className="visually-hidden">Candidates</caption>',
+    '<thead>',
+    '  <tr>',
+    ...(sel ? ['    <TableCheck header checked={all} indeterminate={some && !all} label="Choose all candidates" onChange={chooseAll} />'] : []),
+    `    ${head('Name', 'name')}`,
+    ...(v.idCol ? ['    <th scope="col">ID</th>'] : []),
+    ...(v.jobCol ? ['    <th scope="col">Job</th>'] : []),
+    `    ${head('Score', 'score', true)}`,
+    '  </tr>',
+    '</thead>',
+    '<tbody>',
+    '  {rows.map((r) => (',
+    `    <tr key={r.id}${sel ? " className={chosen.has(r.id) ? 'is-selected' : undefined}" : ''}>`,
+    ...(sel ? ['      <TableCheck checked={chosen.has(r.id)} label={`Choose ${r.name}`} onChange={(c) => choose(r.id, c)} />'] : []),
+    '      <th scope="row">{r.name}</th>',
+    ...(v.idCol ? ['      <td><code>{r.id}</code></td>'] : []),
+    ...(v.jobCol ? ['      <td>{r.job}</td>'] : []),
+    '      <td className="num">{r.score}</td>',
+    '    </tr>',
+    '  ))}',
+    `  {rows.length === 0 && <TableEmpty colSpan={${cols}} title="No candidates yet" action={<Button size="sm" variant="secondary">Invite candidates</Button>} />}`,
+    '</tbody>',
+  ];
   return (
-    <>
-      <div className="lib-row">
-        <div className="field" style={{ width: 240 }}>
-          <label className="field__label" htmlFor="tbl-q">Filter by name</label>
-          <input id="tbl-q" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Try “Vader”" />
+    <Playground
+      name="Table"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="Candidates.tsx"
+      tag="table"
+      attrs={[{ attr: 'className', value: cls }]}
+      codeChildren={code}
+      controls={[
+        { kind: 'select', key: 'rows', label: 'Rows', options: [{ value: '2', label: '2' }, { value: '3', label: '3' }, { value: '4', label: '4' }] },
+        { kind: 'boolean', key: 'selectable', label: 'Selectable', help: 'A checkbox column; chosen rows get a wash and an ink bar.' },
+        { kind: 'boolean', key: 'sortable', label: 'Sortable', help: 'Name and Score sort; the header says which way.' },
+        { kind: 'boolean', key: 'hover', label: 'Hover rows', help: 'A wash on hover, for rows that open something.' },
+        { kind: 'boolean', key: 'compact', label: 'Compact', help: 'Shorter rows for dense lists.' },
+        { kind: 'boolean', key: 'idCol', label: 'ID column' },
+        { kind: 'boolean', key: 'jobCol', label: 'Job column' },
+        { kind: 'boolean', key: 'empty', label: 'Empty', help: 'No rows: the table says why and offers the next step.' },
+      ]}
+      preview={
+        <div className="table-wrap">
+          <table className={cls}>
+            <caption className="visually-hidden">Candidates{srt ? ', sortable by name and score' : ''}</caption>
+            <thead>
+              <tr>
+                {sel && <TableCheck header checked={all} indeterminate={some && !all} label={`Choose all ${rows.length} candidates`}
+                  onChange={(c) => setChosen(c ? Array.from(new Set([...chosen, ...rows.map((r) => r.id)])) : chosen.filter((id) => !rows.some((r) => r.id === id)))} />}
+                {srt ? <SortHeader sort={sort.key === 'name' ? sort.dir : undefined} onSort={(dir) => setSort({ key: 'name', dir })}>Name</SortHeader> : <th scope="col">Name</th>}
+                {v.idCol && <th scope="col">ID</th>}
+                {v.jobCol && <th scope="col">Job</th>}
+                {srt ? <SortHeader numeric sort={sort.key === 'score' ? sort.dir : undefined} onSort={(dir) => setSort({ key: 'score', dir })}>Score</SortHeader> : <th scope="col" className="num">Score</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((p) => {
+                const on = sel && chosen.includes(p.id);
+                return (
+                  <tr key={p.id} className={on ? 'is-selected' : undefined}>
+                    {sel && <TableCheck checked={on} label={`Choose ${p.name}`} onChange={(c) => setChosen(c ? [...chosen, p.id] : chosen.filter((x) => x !== p.id))} />}
+                    <th scope="row">{p.name}</th>
+                    {v.idCol && <td><code>{p.id}</code></td>}
+                    {v.jobCol && <td>{p.job}</td>}
+                    <td className="num">{p.score}</td>
+                  </tr>
+                );
+              })}
+              {rows.length === 0 && (
+                <TableEmpty colSpan={cols} title="No candidates yet"
+                  action={<Button size="sm" variant="secondary" onClick={() => set('empty', false)}>Invite candidates</Button>}>
+                  Invite people to this job and they’ll appear here.
+                </TableEmpty>
+              )}
+            </tbody>
+          </table>
         </div>
-        <p className="t-small muted" aria-live="polite">{chosen.length} chosen</p>
-      </div>
-      <div className="table-wrap lib-scroll" data-scroll="">
-        <table className="table table--selectable table--sticky">
-          <caption className="visually-hidden">Candidates, sortable by name and score</caption>
-          <thead>
-            <tr>
-              <TableCheck header checked={all} indeterminate={some && !all} label={`Choose all ${rows.length} candidates`}
-                onChange={(c) => setChosen(c ? Array.from(new Set([...chosen, ...rows.map((r) => r.id)])) : chosen.filter((id) => !rows.some((r) => r.id === id)))} />
-              <SortHeader sort={sort.key === 'name' ? sort.dir : undefined} onSort={(dir) => setSort({ key: 'name', dir })}>Name</SortHeader>
-              <th scope="col">ID</th>
-              <th scope="col">Job</th>
-              <SortHeader numeric sort={sort.key === 'score' ? sort.dir : undefined} onSort={(dir) => setSort({ key: 'score', dir })}>Score</SortHeader>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((p) => {
-              const on = chosen.includes(p.id);
-              return (
-                <tr key={p.id} className={on ? 'is-selected' : undefined}>
-                  <TableCheck checked={on} label={`Choose ${p.name}`} onChange={(c) => setChosen(c ? [...chosen, p.id] : chosen.filter((x) => x !== p.id))} />
-                  <th scope="row"><a className="row-link" href="#table" onClick={(e) => e.preventDefault()}>{p.name}</a></th>
-                  <td><code>{p.id}</code></td>
-                  <td>{p.job}</td>
-                  <td className="num">{p.score}</td>
-                </tr>
-              );
-            })}
-            {rows.length === 0 && (
-              <TableEmpty colSpan={5} title="No candidates match"
-                action={<button type="button" className="btn btn--secondary btn--sm" onClick={() => setQuery('')}>Clear filter</button>}>
-                Nobody’s name contains “{query.trim()}”.
-              </TableEmpty>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </>
+      }
+    />
   );
 }
 
