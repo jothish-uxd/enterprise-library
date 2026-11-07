@@ -458,21 +458,70 @@ function TooltipDemo() {
 
 /* ---------- BrowserFrame ---------- */
 const FRAME_PAGES = ['jobs', 'talent', 'interviews'];
-function FrameApp() {
-  const { pathname, nav, scrollRef } = useFrameHistory();
+function FrameApp({ host, withNav, withMenu, avatar, reset }: { host: string; withNav: boolean; withMenu: boolean; avatar: boolean; reset: boolean }) {
+  const { pathname, nav, menuOpen, setMenuOpen, scrollRef } = useFrameHistory();
   const navigate = useNavigate();
   const page = pathname.slice(1) || 'jobs';
+  const go = (p: string) => { navigate(`/${p}`); setMenuOpen(false); };
+  const end = (avatar || reset) ? (
+    <>
+      {reset && <ResetButton what="demo" description="Clears everything you changed in the demo." done="Demo reset." to="/jobs" onReset={() => {}} />}
+      {avatar && <span className="lib-avatar" aria-hidden="true">LO</span>}
+    </>
+  ) : undefined;
   return (
-    <div className="lib-frame">
-      <BrowserFrame host="hire.example" path={pathname} nav={nav} end={<span className="lib-avatar" aria-hidden="true">LO</span>}>
+    <div className="lib-frame pg-frame">
+      <BrowserFrame host={host || 'example.app'} path={pathname} nav={withNav ? nav : undefined} end={end}
+        menu={withMenu ? { open: menuOpen, onToggle: () => setMenuOpen((o) => !o), controls: 'pg-frame-menu' } : undefined}>
         <div className="lib-frame__app" ref={scrollRef as React.RefObject<HTMLDivElement>} data-scroll="">
+          {withMenu && menuOpen && (
+            <nav id="pg-frame-menu" className="pg-frame__menu" aria-label="Demo app menu">
+              <ul>{FRAME_PAGES.map((p) => (
+                <li key={p}><button type="button" aria-current={page === p ? 'page' : undefined} onClick={() => go(p)}>{p[0].toUpperCase() + p.slice(1)}</button></li>
+              ))}</ul>
+            </nav>
+          )}
           <nav aria-label="Demo app"><ul className="lib-frame__tabs">{FRAME_PAGES.map((p) => (
-            <li key={p}><button type="button" aria-current={page === p ? 'page' : undefined} onClick={() => navigate(`/${p}`)}>{p[0].toUpperCase() + p.slice(1)}</button></li>
+            <li key={p}><button type="button" aria-current={page === p ? 'page' : undefined} onClick={() => go(p)}>{p[0].toUpperCase() + p.slice(1)}</button></li>
           ))}</ul></nav>
-          <p className="t-body-sm muted">You’re on {page}. Visit another page, then use Back and Forward in the bar: they only move through pages visited inside the frame.</p>
+          <p className="t-body-sm muted">You’re on {page}.{withNav ? ' Visit another page, then use Back and Forward in the bar: they only move through pages visited inside the frame.' : ''}</p>
         </div>
       </BrowserFrame>
     </div>
+  );
+}
+function BrowserFrameDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({ host: 'hire.example', nav: true, menu: false, avatar: true, reset: false });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const attrs: PgCodeLine[] = [
+    ...(v.host && v.host !== 'example.app' ? [{ attr: 'host', value: String(v.host) }] : []),
+    { attr: 'path', value: 'pathname', expr: true },
+    ...(v.nav ? [{ attr: 'nav', value: 'nav', expr: true }] : []),
+    ...(v.menu ? [{ attr: 'menu', value: "{ open: menuOpen, onToggle: () => setMenuOpen((o) => !o), controls: 'app-menu' }", expr: true }] : []),
+    ...(v.avatar || v.reset ? [{ attr: 'end', value: `<>${v.reset ? '<ResetButton what="demo" … />' : ''}${v.avatar ? '<Avatar />' : ''}</>`, expr: true }] : []),
+  ];
+  return (
+    <Playground
+      name="BrowserFrame"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="Demo.tsx"
+      tag="BrowserFrame"
+      attrs={attrs}
+      codeChildren={['<MyApp />']}
+      controls={[
+        { kind: 'text', key: 'host', label: 'Host', help: 'Shown in the address bar before the path.' },
+        { kind: 'boolean', key: 'nav', label: 'Back and Forward', help: 'Move only through pages visited inside the frame.' },
+        { kind: 'boolean', key: 'menu', label: 'Menu button', help: 'For small screens; it shows below 960px wide (always here). Its panel opens inside the frame.' },
+        { kind: 'boolean', key: 'avatar', label: 'Avatar', help: 'In the end slot, at the right of the bar.' },
+        { kind: 'boolean', key: 'reset', label: 'Reset button', help: 'A ResetButton in the end slot, to clear the demo.' },
+      ]}
+      preview={
+        <FrameApp host={String(v.host)} withNav={!!v.nav} withMenu={!!v.menu} avatar={!!v.avatar} reset={!!v.reset} />
+      }
+    />
   );
 }
 
@@ -1332,7 +1381,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   choicecard: () => <ChoiceCardDemo />,
   statfilter: () => <StatFilterDemo />,
   tooltip: () => <TooltipDemo />,
-  browserframe: () => <FrameApp />,
+  browserframe: () => <BrowserFrameDemo />,
   resetbutton: () => <ResetDemo />,
   segmented: () => <SegmentedDemo />,
   chips: () => <ChipsDemo />,
