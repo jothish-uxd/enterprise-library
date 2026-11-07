@@ -864,6 +864,7 @@
   .pg__stage-inner > .chips { justify-content: center; }
   .pg__stage-inner > .field { width: 100%; max-width: 320px; }
   .pg__stage-inner > .tiles { width: 100%; }
+  .pg-inline { display: inline-flex; align-items: center; gap: 6px; margin: 0; }
   /* ResetButton preview: the end of a browser bar, where it lives */
   .pg-bar { width: 100%; max-width: 380px; align-self: start; margin-top: 24px; display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 12px; border: 1px solid var(--rule-strong); border-radius: 8px; background: var(--bg); }
   .pg-bar__address { flex: 1; min-width: 0; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -1692,15 +1693,12 @@ export function AccessRequests({ rows, onUpdate }) {
   <h1 class="page-title" id="h-tooltip" tabindex="-1">Tooltip</h1>
   <p class="page-lede">Extra detail beside something on the page. Two versions: one opens on hover or focus and holds text only; the other opens when the button is pressed and can hold links.</p>
 
-  <section class="doc-section" id="tt-hover" aria-labelledby="h-tt-hover">
-    <h2 id="h-tt-hover">On hover</h2>
-    <p>Opens when the pointer rests on the trigger or keyboard focus reaches it, and closes when they leave. For a few words or a short list that explain what’s there: what a flag means, the full text of a shortened label.</p>  <div class="lib lib-demo" data-react="tooltip-hover"></div>
+  <div class="lib lib-playground is-wide" data-react="tooltip"></div>
 
-  </section>
-  <section class="doc-section" id="tt-click" aria-labelledby="h-tt-click">
-    <h2 id="h-tt-click">On click</h2>
-    <p>Opens and closes when the button is pressed, and stays open while people read and use it. For a short explanation with somewhere to go next: a policy, a help article, the record behind a number.</p>  <div class="lib lib-demo" data-react="tooltip-click"></div>
-
+  <section class="doc-section" id="tt-versions" aria-labelledby="h-tt-versions">
+    <h2 id="h-tt-versions">Two versions</h2>
+    <p><strong>On hover</strong> opens when the pointer rests on the trigger or keyboard focus reaches it, and closes when they leave. For a few words or a short list that explain what’s there: what a flag means, the full text of a shortened label. Text only.</p>
+    <p><strong>On click</strong> opens and closes when the button is pressed, and stays open while people read and use it. For a short explanation with somewhere to go next: a policy, a help article, the record behind a number. It can hold links.</p>
   </section>
   <section class="doc-section" id="tt-which" aria-labelledby="h-tt-which">
     <h2 id="h-tt-which">Which version</h2>

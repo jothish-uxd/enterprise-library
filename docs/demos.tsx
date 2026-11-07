@@ -196,36 +196,84 @@ function StatFilterDemo() {
 /* ---------- Tooltip ---------- */
 const FlagIcon = () => <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 14V2.5h8l-1.5 3 1.5 3h-8" fill="currentColor" /></svg>;
 const InfoIcon = () => <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6.2" /><path d="M8 7.2v3.8M8 5h.01" /></svg>;
-function TooltipHoverDemo() {
-  return (
-    <div className="lib-row">
-      <p className="t-body-sm">Message from San Hill, flagged&nbsp;
-        <Tooltip label="2 policy matches, 1 open" content={<>
-          <p className="tooltip__title">Policy matches</p>
-          <dl className="tooltip__dl"><div><dt>Bribery</dt><dd>Open</dd></div><div><dt>Gifts and entertainment</dt><dd>Cleared</dd></div></dl>
-          <p className="tooltip__note">From the nightly scan.</p>
-        </>}>
-          <FlagIcon /> 2
-        </Tooltip>
-      </p>
-    </div>
+const TT_DEFAULTS = {
+  info: { label: 'About proctoring', title: 'Proctoring', text: 'A webcam check at the start and end of the assessment. Candidates are told before they begin.',
+    dl: [['Starts', 'Before the first question'], ['Ends', 'After submitting']], note: 'Recordings are kept for 30 days.' },
+  count: { label: '2 policy matches, 1 open', title: 'Policy matches', text: 'Flagged by the nightly scan.',
+    dl: [['Bribery', 'Open'], ['Gifts and entertainment', 'Cleared']], note: 'Open matches need a reviewer.' },
+};
+function TooltipDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    opens: 'click', look: 'info', label: TT_DEFAULTS.info.label, title: TT_DEFAULTS.info.title, text: TT_DEFAULTS.info.text,
+    details: false, note: false, links: true,
+  });
+  const set = (key: string, value: PgValue) => setV((old) => {
+    const next = { ...old, [key]: value };
+    // Hover tooltips never hold links: links on means click; hover means no links.
+    if (key === 'links' && value) next.opens = 'click';
+    if (key === 'opens' && value === 'hover') next.links = false;
+    // Switching the trigger swaps in its own example text, unless it was edited.
+    if (key === 'look') {
+      const from = TT_DEFAULTS[old.look as 'info' | 'count'], to = TT_DEFAULTS[value as 'info' | 'count'];
+      (['label', 'title', 'text'] as const).forEach((k) => { if (old[k] === from[k]) next[k] = to[k]; });
+    }
+    return next;
+  });
+  const d = TT_DEFAULTS[v.look as 'info' | 'count'];
+  const click = v.opens === 'click';
+  const info = v.look === 'info';
+  const lines: string[] = [
+    ...(v.title ? [`<p className="tooltip__title">${v.title}</p>`] : []),
+    ...(v.text ? [`<p>${v.text}</p>`] : []),
+    ...(v.details ? ['<dl className="tooltip__dl">', ...d.dl.map(([t, dd]) => `  <div><dt>${t}</dt><dd>${dd}</dd></div>`), '</dl>'] : []),
+    ...(v.note ? [`<p className="tooltip__note">${d.note}</p>`] : []),
+    ...(v.links && click ? ['<p className="tooltip__links">', '  <a href="/help/proctoring">Proctoring options</a>', '  <a href="/help/retention">Data retention</a>', '</p>'] : []),
+  ];
+  const attrs: PgCodeLine[] = [
+    ...(click ? [{ attr: 'trigger', value: 'click' }] : []),
+    { attr: 'label', value: String(v.label) },
+    ...(info ? [{ attr: 'className', value: 'tooltip-trigger--info' }] : []),
+    { attr: 'content', value: `<>\n${lines.map((l) => `    ${l}`).join('\n')}\n  </>`, expr: true },
+  ];
+  const content = (
+    <>
+      {v.title ? <p className="tooltip__title">{String(v.title)}</p> : null}
+      {v.text ? <p>{String(v.text)}</p> : null}
+      {v.details ? <dl className="tooltip__dl">{d.dl.map(([t, dd]) => <div key={t}><dt>{t}</dt><dd>{dd}</dd></div>)}</dl> : null}
+      {v.note ? <p className="tooltip__note">{d.note}</p> : null}
+      {v.links && click ? <p className="tooltip__links"><a href="#radio-group">Proctoring options</a><a href="#compliance">Data retention</a></p> : null}
+    </>
   );
-}
-function TooltipClickDemo() {
+  const tip = (
+    <Tooltip key={`${v.opens}`} trigger={click ? 'click' : 'hover'} label={String(v.label) || 'Untitled'}
+      className={info ? 'tooltip-trigger--info' : undefined} content={content}>
+      {info ? <InfoIcon /> : <><FlagIcon /> 2</>}
+    </Tooltip>
+  );
   return (
-    <div className="lib-row">
-      <span className="field__label" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-        Proctoring
-        <Tooltip trigger="click" label="About proctoring" className="tooltip-trigger--info" content={<>
-          <p className="tooltip__title">Proctoring</p>
-          <p>A webcam check at the start and end of the assessment. Candidates are told before they begin.</p>
-          <p className="tooltip__links"><a href="#radio-group">Proctoring options</a><a href="#compliance">Data retention</a></p>
-        </>}>
-          <InfoIcon />
-        </Tooltip>
-      </span>
-      <button type="button" className="btn btn--secondary btn--sm">Next thing in the Tab order</button>
-    </div>
+    <Playground
+      name="Tooltip"
+      compact
+      values={v}
+      set={set}
+      file={info ? 'Proctoring.tsx' : 'Flags.tsx'}
+      tag="Tooltip"
+      attrs={attrs}
+      codeChildren={[info ? '<InfoIcon />' : '<FlagIcon /> 2']}
+      controls={[
+        { kind: 'segmented', key: 'opens', label: 'Opens', options: [{ value: 'hover', label: 'On hover' }, { value: 'click', label: 'On click' }] },
+        { kind: 'select', key: 'look', label: 'Trigger', options: [{ value: 'info', label: 'Info icon' }, { value: 'count', label: 'Count' }] },
+        { kind: 'text', key: 'label', label: 'Label', help: 'The trigger’s name: what it explains, not “Info”.' },
+        { kind: 'text', key: 'title', label: 'Title', help: 'Leave empty for none.' },
+        { kind: 'text', key: 'text', label: 'Text', help: 'A sentence or two. Leave empty for none.' },
+        { kind: 'boolean', key: 'details', label: 'Details', help: 'Label-and-value lines.' },
+        { kind: 'boolean', key: 'note', label: 'Note', help: 'A small closing line.' },
+        { kind: 'boolean', key: 'links', label: 'Links', help: 'On click only: turning this on switches Opens to On click.' },
+      ]}
+      preview={info
+        ? <span className="field__label pg-inline">Proctoring {tip}</span>
+        : <p className="t-body-sm pg-inline">Message from San Hill, flagged {tip}</p>}
+    />
   );
 }
 
@@ -1102,8 +1150,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   table: () => <TableDemo />,
   choicecard: () => <ChoiceDemo />,
   statfilter: () => <StatFilterDemo />,
-  'tooltip-hover': () => <TooltipHoverDemo />,
-  'tooltip-click': () => <TooltipClickDemo />,
+  tooltip: () => <TooltipDemo />,
   browserframe: () => <FrameApp />,
   resetbutton: () => <ResetDemo />,
   segmented: () => <SegmentedDemo />,

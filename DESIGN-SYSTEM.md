@@ -261,7 +261,7 @@ Rules: the confirm is a small `alertdialog` under the button; focus starts on **
 
 ### Tooltip (`tooltip.css`, `components/Tooltip.tsx`)
 
-Extra detail beside something on the page, in two versions:
+Extra detail beside something on the page, in two versions (the docs show both in one playground, with an Opens switch):
 
 | | On hover (`trigger="hover"`, default) | On click (`trigger="click"`) |
 | --- | --- | --- |
