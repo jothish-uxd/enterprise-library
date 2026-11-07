@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 — 2026-11-04
+## 0.2.0 — 2026-11-06
 
 The design system moves into Enterprise Library: one repo for foundations, components and patterns. The package is now `@jothish-uxd/enterprise-library`, installed with `npm install github:jothish-uxd/enterprise-library#v0.2.0`. `jothish-uxd/design-system` is retired.
 
