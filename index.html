@@ -1165,7 +1165,7 @@
       <button class="tab" type="button" role="tab" id="tab-example" aria-controls="example" aria-selected="true" tabindex="0">Live example</button>
       <button class="tab" type="button" role="tab" id="tab-support" aria-controls="support" aria-selected="false" tabindex="-1">Support targets</button>
       <button class="tab" type="button" role="tab" id="tab-includes" aria-controls="includes" aria-selected="false" tabindex="-1">What’s included</button>
-      <button class="tab" type="button" role="tab" id="tab-layers" aria-controls="layers" aria-selected="false" tabindex="-1">Why patterns</button>
+      <button class="tab" type="button" role="tab" id="tab-layers" aria-controls="layers" aria-selected="false" tabindex="-1">How it’s built</button>
     </div>
   </div>
 
@@ -1200,40 +1200,41 @@
   </section>
 
   <section class="doc-section tab-panel" id="layers" role="tabpanel" aria-labelledby="tab-layers" tabindex="0" hidden>
-    <h2 class="sr-only" id="h-layers">Patterns, not parts</h2>
-    <p>Most design systems stop at components: a checkbox, a button, a table cell. Most accessibility bugs show up in between, in how those parts behave together on a real screen. This library starts one level up.</p>
+    <h2 class="sr-only" id="h-layers">How it’s built</h2>
+    <p>Three layers, each built on the one before. Every layer is accessible on its own, and each one up takes care of more of the screen: tokens make every value consistent, components get one control right, and patterns get the whole task right.</p>
     <ol class="layers">
-      <li><span class="layer-tag">Layer 1 · <a href="#foundations">Foundations</a></span><strong>Tokens</strong><span>Color, type, spacing, radius, shadow, and the focus ring.</span></li>
-      <li><span class="layer-tag">Layer 2 · <a href="#components">Components</a></span><strong>Components</strong><span>Button, Select, Table, Card. Use ours, or bring your own.</span></li>
-      <li class="is-focus"><span class="layer-tag">Layer 3 · this library</span><strong>Patterns</strong><span>Data table, Bulk actions, Multi-step form, Command palette.</span></li>
-      <li><span class="layer-tag">Layer 4</span><strong>Templates</strong><span>Review queue, Settings page, Admin console.</span></li>
+      <li><span class="layer-tag">Layer 1 · <a href="#foundations">Foundations</a></span><strong>Tokens</strong><span>Colour, type, spacing, radius, shadow, control heights and the focus ring. Every value in the library comes from here.</span></li>
+      <li><span class="layer-tag">Layer 2 · <a href="#components">Components</a></span><strong>Components</strong><span>Button, Input, Select, Checkbox, Table, Tooltip and more. Each one names itself, follows its WAI-ARIA pattern, and says why when it’s unavailable.</span></li>
+      <li><span class="layer-tag">Layer 3 · <a href="#patterns">Patterns</a></span><strong>Patterns</strong><span>Data table, Bulk actions, Multi-step form, Command palette: components working together on a real screen.</span></li>
+      <li><span class="layer-tag">Layer 4 · later</span><strong>Templates</strong><span>Review queue, Settings page, Admin console: whole screens, built from the patterns.</span></li>
     </ol>
     <div class="table-scroll" style="margin-top:40px">
-      <table class="doc-table compare-table">
-        <caption class="sr-only">What a component handles compared with what a pattern handles</caption>
-        <thead><tr><th scope="col">Concern</th><th scope="col">A checkbox component handles</th><th scope="col">The bulk actions pattern handles</th></tr></thead>
+      <table class="doc-table compare-table wide-table">
+        <caption class="sr-only">What each layer takes care of</caption>
+        <thead><tr><th scope="col">Concern</th><th scope="col">Foundations</th><th scope="col">A component: Checkbox</th><th scope="col">A pattern: Bulk actions</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Keyboard</th><td>Space toggles one box.</td><td>Tab order across filters, select all, rows, and the action bar.</td></tr>
-          <tr><th scope="row">Focus</th><td>Shows a focus ring.</td><td>Where focus goes after an action runs, a row disappears, or a dialog closes.</td></tr>
-          <tr><th scope="row">Announcements</th><td>Its own name and state.</td><td>“3 requests approved,” result counts after filtering, sort changes.</td></tr>
-          <tr><th scope="row">States</th><td>Checked, unchecked, disabled.</td><td>Loading, no results, partial failure, no permission, undo.</td></tr>
-          <tr><th scope="row">Content</th><td>Its label.</td><td>Button verbs, error wording, and confirmation copy.</td></tr>
+          <tr><th scope="row">Keyboard</th><td>—</td><td>Space toggles it. Tab reaches it, even when it’s unavailable.</td><td>Tab order across filters, select all, rows and the action bar.</td></tr>
+          <tr><th scope="row">Focus</th><td>The focus ring and its colour, in light, dark and high contrast.</td><td>Shows the ring; keeps focus when it can’t act.</td><td>Where focus goes after an action runs, a row disappears or a dialog closes.</td></tr>
+          <tr><th scope="row">Announcements</th><td>—</td><td>Its name, state, description and any error: “Accept the terms, checkbox, required, not checked.”</td><td>“3 requests approved,” result counts after filtering, sort changes.</td></tr>
+          <tr><th scope="row">States</th><td>Error, warning and success colours; faint ink for what’s unavailable.</td><td>Checked, mixed, required, error, and disabled with a reason.</td><td>Loading, no results, partial failure, no permission, undo.</td></tr>
+          <tr><th scope="row">Content</th><td>The type ramp.</td><td>Its label, description and error message.</td><td>Button verbs, error wording and confirmation copy.</td></tr>
         </tbody>
       </table>
     </div>
+    <p style="margin-top:24px">Not sure where to start? <a href="#use-cases">Use cases</a> has a table of which layer to reach for.</p>
   </section>
 
   <section class="doc-section tab-panel" id="includes" role="tabpanel" aria-labelledby="tab-includes" tabindex="0" hidden>
-    <h2 class="sr-only" id="h-includes">What every pattern includes</h2>
+    <h2 class="sr-only" id="h-includes">What every component and pattern includes</h2>
     <dl class="feature-list">
-      <div><dt>A keyboard map</dt><dd>Every pattern documents its keys and follows the ARIA Authoring Practices, so it behaves the way people expect.</dd></div>
-      <div><dt>A focus plan</dt><dd>Each action has a set place for focus to land, including after deletes, dialogs, and route changes.</dd></div>
-      <div><dt>Written announcements</dt><dd>Status messages are part of the pattern, worded once and announced politely. Your screens stay quiet otherwise.</dd></div>
-      <div><dt>Every state designed</dt><dd>Loading, empty, no results, partial failure, and no permission all ship as part of the pattern.</dd></div>
+      <div><dt>A keyboard map</dt><dd>Every component and pattern documents its keys and follows the ARIA Authoring Practices, so it behaves the way people expect.</dd></div>
+      <div><dt>A focus plan</dt><dd>Each action has a set place for focus to land, including after deletes, dialogs, and route changes.</dd></div><div><dt>Unavailable says why</dt><dd>A control that can’t be used stays in the Tab order and explains itself, in a tooltip and to screen readers, instead of silently disappearing.</dd></div>
+      <div><dt>Written announcements</dt><dd>Status messages are part of the component or pattern, worded once and announced politely. Your screens stay quiet otherwise.</dd></div>
+      <div><dt>Every state designed</dt><dd>Components ship required, error, read-only and disabled states; patterns add loading, empty, no results, partial failure and no permission.</dd></div><div><dt>A playground for each component</dt><dd>Change its properties beside a live preview and copy the matching code.</dd></div>
       <div><dt>HTML first</dt><dd>Real tables, buttons, and labels. ARIA only fills the gaps native elements leave.</dd></div>
-      <div><dt>Color means a message</dt><dd>Status and selection use shape, text, and weight. Color appears in one place only: red, yellow, and green messages for errors, warnings, and success, each with its own icon and words.</dd></div>
+      <div><dt>Color means a message</dt><dd>Status and selection use shape, text, and weight. Color appears in two places only: red, yellow, and green messages for errors, warnings, and success, each with its own icon and words, and the red danger button.</dd></div>
       <div><dt>Light, dark, and high contrast</dt><dd>Surfaces follow your theme tokens, and Windows High Contrast gets system colors.</dd></div>
-      <div><dt>Content guidance</dt><dd>Recommended labels, verbs, and error messages for each pattern, written for the person using the screen.</dd></div>
+      <div><dt>Content guidance</dt><dd>Recommended labels, verbs, and error messages for each component and pattern, written for the person using the screen.</dd></div>
       <div><dt>Tests you can keep</dt><dd>Testing Library recipes that check names, roles, focus, and announcements in your own app.</dd></div>
       <div><dt>Reduced motion</dt><dd>Transitions switch off when the operating system asks for less motion.</dd></div>
     </dl>
@@ -1241,7 +1242,7 @@
 
   <section class="doc-section tab-panel" id="support" role="tabpanel" aria-labelledby="tab-support" tabindex="0" hidden>
     <h2 class="sr-only" id="h-support">Support targets</h2>
-    <p>These are the targets for v1. Each pattern page will publish its own results against them.</p>
+    <p>These are the targets for v1. Each component and pattern page will publish its own results against them.</p>
     <div class="table-scroll">
       <table class="doc-table">
         <caption class="sr-only">Screen reader and browser pairings targeted for version 1</caption>

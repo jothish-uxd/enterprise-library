@@ -11,6 +11,7 @@ The design system moves into Enterprise Library: one repo for foundations, compo
 - Table: `--selectable`, `--hover`, `--sticky`, `.center`, and `SortHeader`, `TableCheck`, `TableEmpty`.
 - Card: `.card` with header, body, footer and stats; `Card` and `ChoiceCard`.
 - Required fields are marked, not optional ones: `.field__required` puts an ink asterisk after the label (hidden from screen readers, which hear "required" from `aria-required`). `required` on Input, Checkbox and CheckboxGroup; `.field__optional` is gone. Input and CheckboxGroup take `description` (was `help`), matching Checkbox and Switch. Docs: every form playground has Required and Description switches.
+- Docs Overview: “Why patterns” becomes “How it’s built”: foundations, components and patterns as three layers, with a table of what each takes care of. “What’s included” and the support targets cover components as well as patterns.
 - Every component page is now a playground: Table, Card and ChoiceCard, StatFilter and BrowserFrame joined the rest. Code blocks handle tags without attributes.
 - Hover tooltips (`Tooltip`, `useTooltip`) follow their trigger when the page scrolls instead of closing. Focus scrolls controls into view, and closing then hid the text from keyboard users.
 - ChoiceCard: `disabledReason`; unavailable cards use `aria-disabled` (still reachable, never chosen, say why).
