@@ -4,11 +4,11 @@
   Each demo mounts into a [data-react="name"] element with its own in-memory router,
   so nothing here touches the page's own hash routing.
 */
-import React, { StrictMode, useState, type ReactNode } from 'react';
+import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Card, Checkbox, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  BrowserFrame, Button, Card, Checkbox, Dialog, Menu, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -722,6 +722,161 @@ function TilesDemo() {
   );
 }
 
+/* ---------- Dialog playground ---------- */
+const XIcon = () => <svg className="btn__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>;
+function DialogDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    title: 'Delete Pilot screening v3?', hasDescription: true, description: 'Its 132 candidates’ results are deleted with it. This can’t be undone.',
+    body: 'none', size: 'sm', alert: true, footer: true, close: true,
+  });
+  const set = (key: string, value: PgValue) => setV((old) => {
+    const next = { ...old, [key]: value };
+    if (key === 'alert' && !value && old.title === 'Delete Pilot screening v3?') { next.title = 'Rename assessment'; next.description = 'Candidates see the new name in their invitations.'; next.body = 'form'; }
+    if (key === 'alert' && value && old.title === 'Rename assessment') { next.title = 'Delete Pilot screening v3?'; next.description = 'Its 132 candidates’ results are deleted with it. This can’t be undone.'; next.body = 'none'; }
+    return next;
+  });
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState('Pilot screening v3');
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const alert = !!v.alert;
+  const size = v.size as 'sm' | 'lg' | 'drawer';
+  const desc = v.hasDescription && v.description ? String(v.description) : undefined;
+  const main = alert ? 'Delete' : 'Save';
+  const body = (live: boolean) => v.body === 'form'
+    ? <Input label="Name" required value={live ? name : 'Pilot screening v3'} onChange={(e) => live && setName(e.target.value)} />
+    : v.body === 'text'
+      ? <div className="t-body-sm"><p>Results stay in reports for 30 days, then they’re removed from exports too.</p><p>Candidates who haven’t started can still use their link until it expires.</p></div>
+      : null;
+  const foot = (live: boolean) => v.footer ? (
+    <>
+      <Button ref={live ? cancelRef : undefined} variant="secondary" size="sm" onClick={() => live && setOpen(false)}>Cancel</Button>
+      <Button variant={alert ? 'danger' : 'primary'} size="sm" onClick={() => live && setOpen(false)}>{main}</Button>
+    </>
+  ) : undefined;
+  const attrs: PgCodeLine[] = [
+    { attr: 'open', value: 'open', expr: true },
+    { attr: 'onClose', value: '() => setOpen(false)', expr: true },
+    { attr: 'title', value: String(v.title) },
+    ...(desc ? [{ attr: 'description', value: desc }] : []),
+    ...(size !== 'sm' ? [{ attr: 'size', value: size }] : []),
+    ...(alert ? [{ attr: 'alert', value: true as const }, ...(v.footer ? [{ attr: 'initialFocus', value: 'cancelRef', expr: true }] : [])] : []),
+    ...(!v.close ? [{ attr: 'hideClose', value: true as const }] : []),
+    ...(v.footer ? [{ attr: 'footer', value: `<>\n    <Button ${alert ? 'ref={cancelRef} ' : ''}variant="secondary" size="sm" onClick={() => setOpen(false)}>Cancel</Button>\n    <Button variant="${alert ? 'danger' : 'primary'}" size="sm" onClick={${alert ? 'remove' : 'save'}}>${main}</Button>\n  </>`, expr: true }] : []),
+  ];
+  const children = v.body === 'form' ? ['<Input label="Name" required value={name} onChange={(e) => setName(e.target.value)} />']
+    : v.body === 'text' ? ['<p>Results stay in reports for 30 days…</p>', '<p>Candidates who haven’t started…</p>'] : undefined;
+  return (
+    <Playground
+      name="Dialog"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="Assessment.tsx"
+      tag="Dialog"
+      attrs={attrs}
+      codeChildren={children}
+      controls={[
+        { kind: 'text', key: 'title', label: 'Title', help: 'Names the dialog. For a confirm, ask the question.' },
+        { kind: 'boolean', key: 'hasDescription', label: 'Description' },
+        { kind: 'text', key: 'description', label: 'Description text', help: 'Read with the title. For a confirm, say what will happen.' },
+        { kind: 'boolean', key: 'alert', label: 'Alert', help: 'Destroys something: an alertdialog, focus starts on Cancel, the backdrop doesn’t close it.' },
+        { kind: 'select', key: 'body', label: 'Body', options: [{ value: 'none', label: 'None' }, { value: 'form', label: 'A field' }, { value: 'text', label: 'Text' }] },
+        { kind: 'select', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small (480px)' }, { value: 'lg', label: 'Large (760px)' }, { value: 'drawer', label: 'Drawer' }] },
+        { kind: 'boolean', key: 'footer', label: 'Footer', help: 'Cancel, then the main action, at the right.' },
+        { kind: 'boolean', key: 'close', label: 'Close button', help: 'Esc closes it either way.' },
+      ]}
+      preview={
+        <div className={`pg-dialog pg-dialog--${size}`}>
+          <div className={`dialog dialog--${size} pg-dialog__copy`} {...({ inert: '' } as Record<string, string>)} aria-hidden="true">
+            <div className="dialog__inner">
+              <div className="dialog__head">
+                <h2 className="dialog__title">{String(v.title) || 'Untitled'}</h2>
+                {v.close && <span className="btn btn--ghost btn--sm btn--icon dialog__close"><XIcon /></span>}
+              </div>
+              {desc && <div className="dialog__desc">{desc}</div>}
+              {body(false) && <div className="dialog__body">{body(false)}</div>}
+              {foot(false) && <div className="dialog__foot">{foot(false)}</div>}
+            </div>
+          </div>
+          <Button size="sm" variant={alert ? 'danger' : 'secondary'} onClick={() => setOpen(true)}>{alert ? 'Delete assessment' : 'Rename'}</Button>
+          <Dialog open={open} onClose={() => setOpen(false)} title={String(v.title) || 'Untitled'} description={desc} size={size}
+            alert={alert} initialFocus={alert && v.footer ? cancelRef : undefined} hideClose={!v.close} footer={foot(true)}>
+            {body(true)}
+          </Dialog>
+        </div>
+      }
+    />
+  );
+}
+
+/* ---------- Menu playground ---------- */
+const MENU_ICONS: Record<string, JSX.Element> = {
+  Rename: <svg viewBox="0 0 16 16"><path d="M3 13h3l7-7-3-3-7 7z" /></svg>,
+  Duplicate: <svg viewBox="0 0 16 16"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" /><path d="M10.5 3.5v-1h-8v8h1" /></svg>,
+  Archive: <svg viewBox="0 0 16 16"><rect x="2.5" y="3" width="11" height="3" rx="1" /><path d="M3.5 6v7h9V6M6.5 9h3" /></svg>,
+  Delete: <svg viewBox="0 0 16 16"><path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.6 8.5h5.8l.6-8.5" /></svg>,
+};
+const MoreIcon = () => <svg className="btn__icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="3.5" cy="8" r="1" /><circle cx="8" cy="8" r="1" /><circle cx="12.5" cy="8" r="1" /></svg>;
+const ChevronIcon = () => <svg className="btn__icon btn__icon--end" viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 6.5 3.5 3.5 3.5-3.5" /></svg>;
+function MenuDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Options for Pilot screening v3', trigger: 'icon', variant: 'secondary', size: 'md', align: 'end',
+    icons: false, danger: true, disable: true, reason: 'Only the owner can archive it.',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const [chose, setChose] = useState('');
+  const names = ['Rename', 'Duplicate', 'Archive', ...(v.danger ? ['Delete'] : [])];
+  const items = names.map((n) => ({
+    label: n, onSelect: () => setChose(n),
+    icon: v.icons ? MENU_ICONS[n] : undefined,
+    disabled: !!v.disable && n === 'Archive', disabledReason: v.disable && n === 'Archive' && v.reason ? String(v.reason) : undefined,
+    divider: n === 'Delete', danger: n === 'Delete',
+  }));
+  const iconOnly = v.trigger === 'icon';
+  const trig = v.trigger === 'icon' ? ['<MoreIcon />'] : v.trigger === 'text' ? ['Options'] : ['Options <ChevronIcon />'];
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) },
+    ...(iconOnly ? [{ attr: 'iconOnly', value: true as const }] : []),
+    ...(v.variant !== 'secondary' ? [{ attr: 'variant', value: String(v.variant) }] : []),
+    ...(v.size === 'sm' ? [{ attr: 'size', value: 'sm' }] : []),
+    ...(v.align === 'start' ? [{ attr: 'align', value: 'start' }] : []),
+    { attr: 'items', value: `[\n${items.map((it) => `    { label: '${it.label}', onSelect: ${it.label === 'Delete' ? 'remove' : camel(it.label)}${it.icon ? `, icon: <${it.label}Icon />` : ''}${it.disabled ? `, disabled: true${it.disabledReason ? `, disabledReason: '${it.disabledReason}'` : ''}` : ''}${it.divider ? ', divider: true, danger: true' : ''} },`).join('\n')}\n  ]`, expr: true },
+  ];
+  return (
+    <Playground
+      name="Menu"
+      compact
+      values={v}
+      set={set}
+      file="AssessmentRow.tsx"
+      tag="Menu"
+      attrs={attrs}
+      codeChildren={trig}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label', help: 'The button’s name: say whose options they are.' },
+        { kind: 'select', key: 'trigger', label: 'Button', options: [{ value: 'icon', label: 'Icon only' }, { value: 'text', label: 'Text' }, { value: 'both', label: 'Text and chevron' }] },
+        { kind: 'select', key: 'variant', label: 'Variant', options: [{ value: 'secondary', label: 'Secondary' }, { value: 'ghost', label: 'Ghost' }, { value: 'primary', label: 'Primary' }] },
+        { kind: 'select', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }] },
+        { kind: 'segmented', key: 'align', label: 'Align', options: [{ value: 'start', label: 'Start' }, { value: 'end', label: 'End' }] },
+        { kind: 'boolean', key: 'icons', label: 'Item icons' },
+        { kind: 'boolean', key: 'danger', label: 'Delete item', help: 'After a rule, in medium weight. Confirm in a Dialog.' },
+        { kind: 'boolean', key: 'disable', label: 'Disable Archive' },
+        { kind: 'text', key: 'reason', label: 'Disabled reason', help: 'Shown under the item and read as its description.' },
+      ]}
+      preview={
+        <div className="pg-menu">
+          <Menu label={String(v.label) || 'Options'} items={items} iconOnly={iconOnly} variant={v.variant as 'secondary' | 'ghost' | 'primary'}
+            size={v.size as 'sm' | 'md'} align={v.align as 'start' | 'end'}>
+            {v.trigger === 'icon' ? <MoreIcon /> : v.trigger === 'text' ? 'Options' : <>Options <ChevronIcon /></>}
+          </Menu>
+          <p className="t-small muted" role="status">{chose ? `Chose ${chose}.` : 'Nothing chosen yet.'}</p>
+        </div>
+      }
+    />
+  );
+}
+
 /* ---------- Playground: one component, controls beside it, code below ---------- */
 type PgValue = string | boolean;
 type PgControl =
@@ -1390,6 +1545,8 @@ const DEMOS: Record<string, () => ReactNode> = {
   checkbox: () => <CheckboxDemo />,
   'checkbox-group': () => <CheckboxGroupDemo />,
   input: () => <InputDemo />,
+  dialog: () => <DialogDemo />,
+  menu: () => <MenuDemo />,
   tiles: () => <TilesDemo />,
   textarea: () => <TextAreaDemo />,
   radio: () => <RadioDemo />,

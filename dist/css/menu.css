@@ -1,0 +1,62 @@
+/* Menu: a button that opens a short list of actions.
+   .menu               wrapper (positions the list)
+   .menu__button       the trigger; also a .btn
+   .menu__list         the list; --start or --end aligns it; .is-above opens it upward
+   .menu__item         an action; .has-divider starts a group; .is-danger destroys something
+   .menu__icon         optional decorative icon
+   .menu__reason       why an unavailable item can't be chosen */
+
+.menu { position: relative; display: inline-flex; }
+.menu__list {
+  position: absolute; top: calc(100% + var(--space-1-5)); z-index: 30;
+  min-width: 210px; max-width: min(320px, calc(100vw - var(--space-8)));
+  margin: 0; padding: var(--space-1); list-style: none;
+  border: 1px solid var(--rule-strong); border-radius: var(--radius-md);
+  background: var(--bg); box-shadow: var(--shadow-popover);
+}
+.menu__list.is-above { top: auto; bottom: calc(100% + var(--space-1-5)); }
+.menu__list--end { right: 0; }
+.menu__list--start { left: 0; }
+
+.menu__item {
+  display: flex; align-items: flex-start; gap: var(--space-2-5);
+  padding: var(--space-1-5) var(--space-2-5); border-radius: var(--radius-xs);
+  font-size: var(--text-body-sm); line-height: var(--leading-snug); color: var(--ink);
+  cursor: pointer; user-select: none;
+}
+.menu__item:hover, .menu__item:focus { background: var(--bg-hover); outline: none; }
+.menu__item:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.menu__text { display: grid; gap: var(--space-0-5); min-width: 0; }
+.menu__label { white-space: nowrap; }
+.menu__icon { display: grid; flex: none; width: 16px; height: 16px; margin-top: var(--space-0-5); color: var(--ink-soft); }
+.menu__icon > svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Unavailable: faint, still reachable, says why */
+.menu__item[aria-disabled="true"] { color: var(--ink-faint); cursor: not-allowed; }
+.menu__item[aria-disabled="true"]:hover { background: none; }
+.menu__item[aria-disabled="true"]:focus { background: var(--bg-subtle); }
+.menu__item[aria-disabled="true"] .menu__icon { opacity: .6; }
+.menu__reason { font-size: var(--text-caption); color: var(--ink-faint); white-space: normal; }
+
+/* A new group */
+.menu__item.has-divider { position: relative; margin-top: var(--space-2); }
+.menu__item.has-divider::before {
+  content: ""; position: absolute; left: calc(var(--space-1) * -1); right: calc(var(--space-1) * -1);
+  top: calc(var(--space-1) * -1); border-top: 1px solid var(--rule);
+}
+
+/* Destroys something: medium weight in ink (colour is for messages and the danger button) */
+.menu__item.is-danger .menu__label { font-weight: var(--weight-medium); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .menu__list { animation: menu-in var(--duration-base) ease-out; }
+  @keyframes menu-in { from { opacity: 0; transform: translateY(-4px); } }
+  .menu__list.is-above { animation-name: menu-in-above; }
+  @keyframes menu-in-above { from { opacity: 0; transform: translateY(4px); } }
+}
+
+@media (forced-colors: active) {
+  .menu__list { border-color: CanvasText; }
+  .menu__item:focus { outline: 2px solid Highlight; outline-offset: -2px; }
+  .menu__item[aria-disabled="true"] { color: GrayText; }
+}

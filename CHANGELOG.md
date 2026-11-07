@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 — not yet released
+
+- Dialog (`Dialog`, `dialog.css`): a modal on the native `<dialog>`, small, large or a drawer; alert dialogs for destructive confirms; focus starts on `initialFocus`, the first field, or the first action. Docs page with a playground.
+- Menu (`Menu`, `menu.css`): a menu button with icons, groups, a danger item, and unavailable items that stay reachable and say why; type-ahead. Docs page with a playground.
+- Button takes a ref.
+- Tokens: `--backdrop` (behind a modal), `--duration-fast` and `--duration-base` (motion).
+
 ## 0.2.0 — 2026-11-06
 
 The design system moves into Enterprise Library: one repo for foundations, components and patterns. The package is now `@jothish-uxd/enterprise-library`, installed with `npm install github:jothish-uxd/enterprise-library#v0.2.0`. `jothish-uxd/design-system` is retired.

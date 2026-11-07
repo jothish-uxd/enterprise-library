@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import { type ButtonHTMLAttributes, type ReactNode } from 'react';
 /**
  * Button — the `.btn` classes as a component, with the accessible parts built in.
  *
@@ -33,5 +33,6 @@ interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'dis
     /** The label */
     children: ReactNode;
 }
-export declare function Button({ variant, size, icon, iconPosition, iconOnly, pressed, disabled, disabledReason, children, className, type, onClick, ...rest }: ButtonProps): import("react").JSX.Element;
+/** Takes a ref to the <button>, e.g. to start a Dialog's focus on Cancel. */
+export declare const Button: import("react").ForwardRefExoticComponent<ButtonProps & import("react").RefAttributes<HTMLButtonElement>>;
 export {};

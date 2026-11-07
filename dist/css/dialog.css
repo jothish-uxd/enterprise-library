@@ -1,0 +1,48 @@
+/* Dialog: a modal on the native <dialog>.
+   .dialog              480px; .dialog--lg 760px; .dialog--drawer pinned to the right edge
+   .dialog__inner       column: head, description, body (scrolls), footer
+   .dialog__head        title and the close button
+   .dialog__desc        read as the dialog's description
+   .dialog__foot        actions, right-aligned, under a rule */
+
+.dialog {
+  width: min(480px, calc(100vw - var(--space-8))); max-height: calc(100dvh - var(--space-12)); padding: 0;
+  border: 1px solid var(--rule-strong); border-radius: var(--radius-lg);
+  background: var(--bg); color: var(--ink); box-shadow: var(--shadow-overlay);
+}
+.dialog--lg { width: min(760px, calc(100vw - var(--space-8))); }
+.dialog::backdrop { background: var(--backdrop); }
+.dialog__inner { display: flex; flex-direction: column; max-height: calc(100dvh - var(--space-12)); }
+.dialog__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); padding: var(--space-5) var(--space-5) 0; }
+.dialog__title { margin: 0; padding-top: var(--space-0-5); font-size: var(--text-lead); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-title-sm); line-height: var(--leading-snug); }
+.dialog__close { flex: none; margin: calc(var(--space-1) * -1) calc(var(--space-2) * -1) 0 0; }
+.dialog__desc { display: grid; gap: var(--space-2); padding: var(--space-2) var(--space-5) 0; font-size: var(--text-body-sm); color: var(--ink-soft); }
+.dialog__desc p { margin: 0; }
+.dialog__body { padding: var(--space-4) var(--space-5); overflow-y: auto; }
+.dialog__foot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); padding: var(--space-3-5) var(--space-5); border-top: 1px solid var(--rule); }
+.dialog__desc + .dialog__foot, .dialog__head + .dialog__foot { margin-top: var(--space-4); }
+
+/* Drawer: pinned to the right edge, full height */
+.dialog--drawer {
+  width: min(640px, 100vw); max-width: 100vw; height: 100dvh; max-height: 100dvh;
+  margin: 0 0 0 auto; border-radius: 0; border-width: 0 0 0 1px;
+}
+.dialog--drawer .dialog__inner { height: 100%; max-height: none; }
+.dialog--drawer .dialog__body { flex: 1; }
+
+/* The page behind doesn't scroll while a dialog is open */
+html:has(.dialog[open]) { overflow: hidden; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .dialog[open] { animation: dialog-in var(--duration-base) ease-out; }
+  .dialog--drawer[open] { animation-name: drawer-in; }
+  .dialog[open]::backdrop { animation: backdrop-in var(--duration-base) ease-out; }
+  @keyframes dialog-in { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+  @keyframes drawer-in { from { transform: translateX(24px); opacity: 0; } }
+  @keyframes backdrop-in { from { opacity: 0; } }
+}
+
+@media (forced-colors: active) {
+  .dialog { border-color: CanvasText; }
+  .dialog__foot { border-top-color: CanvasText; }
+}

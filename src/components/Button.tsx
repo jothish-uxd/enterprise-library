@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, MouseEvent, ReactNode } from 'react';
+import { forwardRef, type ButtonHTMLAttributes, type MouseEvent, type ReactNode } from 'react';
 import { useTooltip } from './Tooltip';
 
 /**
@@ -36,10 +36,11 @@ interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'dis
   children: ReactNode;
 }
 
-export function Button({
+/** Takes a ref to the <button>, e.g. to start a Dialog's focus on Cancel. */
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({
   variant = 'primary', size = 'md', icon, iconPosition = 'start', iconOnly, pressed, disabled, disabledReason, children,
   className = '', type = 'button', onClick, ...rest
-}: ButtonProps) {
+}, ref) {
   const reason = disabled && disabledReason ? disabledReason : null;
   // One tooltip: the reason when unavailable, otherwise the label for icon-only buttons.
   const tip = useTooltip(reason ?? (iconOnly ? children : null));
@@ -49,7 +50,10 @@ export function Button({
     <>
       <button
         {...rest}
-        ref={(el) => { tip.anchorRef.current = el; }}
+        ref={(el) => {
+          tip.anchorRef.current = el;
+          if (typeof ref === 'function') ref(el); else if (ref) ref.current = el;
+        }}
         type={type}
         className={cls}
         aria-pressed={pressed}
@@ -66,4 +70,4 @@ export function Button({
       {tip.tooltip}
     </>
   );
-}
+});

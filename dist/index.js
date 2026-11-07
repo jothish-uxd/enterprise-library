@@ -22,3 +22,5 @@ export { Card, ChoiceCard } from './components/Card';
 export { Tiles, Tile } from './components/Tiles';
 export { SegmentedControl } from './components/SegmentedControl';
 export { ChipGroup } from './components/ChipGroup';
+export { Dialog } from './components/Dialog';
+export { Menu } from './components/Menu';

@@ -33,3 +33,8 @@ export { SegmentedControl } from './components/SegmentedControl';
 export type { SegmentedOption } from './components/SegmentedControl';
 export { ChipGroup } from './components/ChipGroup';
 export type { ChipOption } from './components/ChipGroup';
+
+export { Dialog } from './components/Dialog';
+export type { DialogProps } from './components/Dialog';
+export { Menu } from './components/Menu';
+export type { MenuItem, MenuProps } from './components/Menu';

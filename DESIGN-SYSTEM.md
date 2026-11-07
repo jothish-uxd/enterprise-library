@@ -131,6 +131,28 @@ All three narrow or switch what's shown below them. Pick by how many options the
 
 **Chips** (`chips.css`, `components/ChipGroup.tsx`). `.chips` wrapping row; `.chip` 36px toggle button (`--sm` 30px) with `aria-pressed`; chosen is solid ink; `.chip__count` (or `.count`); `.chip__check` shows when a multi-select chip is on. React: `<ChipGroup label options value onChange multiple size controls>`. Single-select always has one chip on and pressing it again doesn't turn it off; multi-select with nothing on means no filter, so offer a way to clear.
 
+### Dialog (`dialog.css`, `components/Dialog.tsx`)
+
+A modal on the native `<dialog>`: the page behind goes inert, Esc closes it, focus returns to whatever opened it, and the page doesn't scroll while it's open.
+
+- `<Dialog open onClose title description footer size alert initialFocus hideClose>`. Named by its title (an h2), described by `description`.
+- Sizes: `sm` 480px (confirms, short forms), `lg` 760px, `drawer` pinned to the right edge at full height.
+- Focus starts on `initialFocus`, else the first field in the body, else the first footer action, and only then the close button.
+- `alert` makes it an `alertdialog` (the description is read straight away) and the backdrop no longer closes it. Use it only for confirms that destroy something, and start on Cancel: `initialFocus={cancelRef}` with `<Button ref={cancelRef}>`.
+- Keyboard: Tab and Shift+Tab stay inside; Esc closes it (an alert too); Enter activates the focused button.
+- Rules: title a confirm as the question and name the button with the verb; say whether it can be undone; the main action goes last, at the right, and only a destructive one is red. No dialog from a dialog, none on page load.
+- Tokens: `--backdrop` behind it, `--shadow-overlay`, `--radius-lg`; a 160ms entrance (`--duration-base`) only when motion is allowed. Forced colors: CanvasText border.
+
+### Menu (`menu.css`, `components/Menu.tsx`)
+
+A button that opens a short list of actions on one thing (WAI-ARIA menu button). For doing something, not for choosing a value (Select) or going somewhere (links).
+
+- `<Menu label items iconOnly variant size align>`, with the button's content as children. The trigger is a `.btn` (`variant`, `size`, `iconOnly`); `label` is its name: "Options for Pilot screening v3, menu button, collapsed".
+- Items: `{ label, onSelect, icon?, disabled?, disabledReason?, divider?, danger? }`. `divider` starts a group; `danger` sets the item in medium ink weight (the confirm Dialog after it carries the red).
+- An unavailable item stays in the arrow-key order, can't be chosen, and shows its reason under the label, read as its description: "Archive, menu item, dimmed. Only the owner can archive it."
+- Keyboard: Enter, Space or Down opens on the first item, Up on the last; Up and Down move and wrap; Home and End jump; a letter jumps to the next item starting with it; Enter or Space chooses and closes; Esc closes and returns focus to the button; Tab closes and moves on.
+- The list opens below the button, or above it when there's no room (inside the nearest `[data-scroll]` or the window). Forced colors: CanvasText border, Highlight focus.
+
 ### Tiles (`tiles.css`, `components/Tiles.tsx`)
 
 A grid of links into other pages: a section's index, a gallery of patterns or templates. Two layouts:

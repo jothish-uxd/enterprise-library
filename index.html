@@ -18,6 +18,8 @@
   @import url("dist/css/segmented.css") layer(lib);
   @import url("dist/css/chips.css") layer(lib);
   @import url("dist/css/switch.css") layer(lib);
+  @import url("dist/css/dialog.css") layer(lib);
+  @import url("dist/css/menu.css") layer(lib);
   @import url("dist/css/browser-frame.css") layer(lib);
   @import url("dist/css/select.css") layer(lib);
   @import url("dist/css/reset.css") layer(lib);
@@ -867,6 +869,15 @@
   .pg__stage-inner > .table-wrap { width: 100%; }
   .pg__stage-inner > .pg-card { width: 100%; max-width: 340px; }
   .pg__stage-inner > .pg-statfilter { width: 100%; display: grid; gap: 16px; }
+  /* Dialog preview: a still copy of the dialog, and a button that opens the real one */
+  .pg__stage-inner > .pg-dialog { width: 100%; display: grid; justify-items: center; gap: 16px; }
+  .pg-dialog__copy { position: static; display: block; width: 100%; max-width: 440px; max-height: none; margin: 0; box-shadow: var(--shadow-popover); }
+  .pg-dialog__copy .dialog__inner { max-height: none; }
+  .pg-dialog--lg .pg-dialog__copy { max-width: 100%; }
+  .pg-dialog--drawer { justify-items: end; }
+  .pg-dialog--drawer .pg-dialog__copy { width: 300px; height: 280px; border-width: 1px; border-radius: 0; }
+  .pg__stage-inner > .pg-menu { display: grid; justify-items: center; gap: 12px; align-self: start; margin-top: 24px; }
+  .pg-menu p { margin: 0; }
   .pg__stage-inner > .pg-frame { width: 100%; height: 320px; }
   .pg-frame .bframe__menu { display: inline-grid; }
   .pg-frame .lib-frame__app { position: relative; }
@@ -1082,6 +1093,7 @@
         <li><a class="nav-link" href="#buttons">Buttons</a></li>
         <li><a class="nav-link" href="#card">Card</a></li>
         <li><a class="nav-link" href="#chips">Chips</a></li>
+        <li><a class="nav-link" href="#dialog">Dialog</a></li>
         <li class="nav-sub"><button class="nav-toggle nav-subtoggle" type="button" aria-expanded="true" aria-controls="nav-forms-list"><span>Forms</span><svg class="nav-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg></button>
           <ul class="nav-list nav-sublist" id="nav-forms-list" aria-label="Forms">
             <li><a class="nav-link" href="#forms">Overview</a></li>
@@ -1094,6 +1106,7 @@
             <li><a class="nav-link" href="#textarea">Text area</a></li>
           </ul>
         </li>
+        <li><a class="nav-link" href="#menu">Menu</a></li>
         <li><a class="nav-link" href="#resetbutton">ResetButton</a></li>
         <li><a class="nav-link" href="#segmented">Segmented control</a></li>
         <li><a class="nav-link" href="#statfilter">StatFilter</a></li>
@@ -1465,13 +1478,13 @@ export function AccessRequests({ rows, onUpdate }) {
 <section class="panel" id="panel-components" data-section="components" aria-labelledby="h-components" hidden>
   <h1 class="page-title" id="h-components" tabindex="-1">Components</h1>
   <p class="page-lede">Single controls and surfaces. Each one is a real HTML element first, follows the ARIA Authoring Practices where it needs ARIA, and documents its keys and what a screen reader hears.</p>
-  <div class="chips lib-filter" role="group" aria-label="Filter components by group"><button class="chip" type="button" aria-pressed="true" data-group="">All <span class="count">12</span></button><button class="chip" type="button" aria-pressed="false" data-group="Actions and inputs">Actions and inputs <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Data and surfaces">Data and surfaces <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Filters and views">Filters and views <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Navigation">Navigation <span class="count">1</span></button><button class="chip" type="button" aria-pressed="false" data-group="Presenting apps">Presenting apps <span class="count">2</span></button></div>
+  <div class="chips lib-filter" role="group" aria-label="Filter components by group"><button class="chip" type="button" aria-pressed="true" data-group="">All <span class="count">14</span></button><button class="chip" type="button" aria-pressed="false" data-group="Actions and inputs">Actions and inputs <span class="count">4</span></button><button class="chip" type="button" aria-pressed="false" data-group="Data and surfaces">Data and surfaces <span class="count">4</span></button><button class="chip" type="button" aria-pressed="false" data-group="Filters and views">Filters and views <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Navigation">Navigation <span class="count">1</span></button><button class="chip" type="button" aria-pressed="false" data-group="Presenting apps">Presenting apps <span class="count">2</span></button></div>
   <p class="sr-only" id="cmp-filter-status" role="status" aria-live="polite"></p>
-  <ul class="lib tiles tiles--separate lib-index" id="cmp-cards"><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#browserframe"><span class="tile__head"><span class="tile__title">BrowserFrame</span><span class="tile__tag">React</span></span><span class="tile__desc">A plain browser window for presenting an app inside a page.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#buttons"><span class="tile__head"><span class="tile__title">Buttons</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#card"><span class="tile__head"><span class="tile__title">Card</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Card with header, body and footer, and ChoiceCard for picking.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#chips"><span class="tile__head"><span class="tile__title">Chips</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Pill buttons that filter; they wrap, and several can be on.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#forms"><span class="tile__head"><span class="tile__title">Forms</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Input, text area, select and multi-select, checkboxes and radios.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#resetbutton"><span class="tile__head"><span class="tile__title">ResetButton</span><span class="tile__tag">React</span></span><span class="tile__desc">Clears a demo’s saved changes after a confirm.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#segmented"><span class="tile__head"><span class="tile__title">Segmented control</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Choose one of a few options in a tray: a filter, or grid or list.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#statfilter"><span class="tile__head"><span class="tile__title">StatFilter</span><span class="tile__tag">React</span></span><span class="tile__desc">Counts that also filter what’s below them.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#switch"><span class="tile__head"><span class="tile__title">Switch</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">One setting on or off, applied straight away; says why when it’s unavailable.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#table"><span class="tile__head"><span class="tile__title">Table</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Hairline rows, sorting, selectable rows, sticky header, empty state.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tiles"><span class="tile__head"><span class="tile__title">Tiles</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A grid of links into other pages, tiled or as cards.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#tooltip"><span class="tile__head"><span class="tile__title">Tooltip</span><span class="tile__tag">React</span></span><span class="tile__desc">Detail on hover, text only; or on click, with links.</span></a></li></ul>
+  <ul class="lib tiles tiles--separate lib-index" id="cmp-cards"><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#browserframe"><span class="tile__head"><span class="tile__title">BrowserFrame</span><span class="tile__tag">React</span></span><span class="tile__desc">A plain browser window for presenting an app inside a page.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#buttons"><span class="tile__head"><span class="tile__title">Buttons</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#card"><span class="tile__head"><span class="tile__title">Card</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Card with header, body and footer, and ChoiceCard for picking.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#chips"><span class="tile__head"><span class="tile__title">Chips</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Pill buttons that filter; they wrap, and several can be on.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#dialog"><span class="tile__head"><span class="tile__title">Dialog</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A modal for a decision or a short task; confirms, small forms and drawers.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#forms"><span class="tile__head"><span class="tile__title">Forms</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Input, text area, select and multi-select, checkboxes and radios.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#menu"><span class="tile__head"><span class="tile__title">Menu</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A button that opens a short list of actions on one thing.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#resetbutton"><span class="tile__head"><span class="tile__title">ResetButton</span><span class="tile__tag">React</span></span><span class="tile__desc">Clears a demo’s saved changes after a confirm.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#segmented"><span class="tile__head"><span class="tile__title">Segmented control</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Choose one of a few options in a tray: a filter, or grid or list.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#statfilter"><span class="tile__head"><span class="tile__title">StatFilter</span><span class="tile__tag">React</span></span><span class="tile__desc">Counts that also filter what’s below them.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#switch"><span class="tile__head"><span class="tile__title">Switch</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">One setting on or off, applied straight away; says why when it’s unavailable.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#table"><span class="tile__head"><span class="tile__title">Table</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Hairline rows, sorting, selectable rows, sticky header, empty state.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tiles"><span class="tile__head"><span class="tile__title">Tiles</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A grid of links into other pages, tiled or as cards.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#tooltip"><span class="tile__head"><span class="tile__title">Tooltip</span><span class="tile__tag">React</span></span><span class="tile__desc">Detail on hover, text only; or on click, with links.</span></a></li></ul>
 
   <section class="doc-section" id="cmp-next" aria-labelledby="h-cmp-next">
     <h2 id="h-cmp-next">Coming next</h2>
-    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Components planned for the next versions</caption><thead><tr><th scope="col">Version</th><th scope="col">Components</th></tr></thead><tbody><tr><th scope="row">0.3.0</th><td>Dialog, Menu, Tabs, Breadcrumbs, Stepper, StatusMark, and the app shell: the sticky header and side navigation used across the apps</td></tr><tr><th scope="row">0.4.0</th><td>Charts, merged from Accessible Charts</td></tr></tbody></table></div>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Components planned for the next versions</caption><thead><tr><th scope="col">Version</th><th scope="col">Components</th></tr></thead><tbody><tr><th scope="row">0.3.0</th><td><a href="#dialog">Dialog</a> and <a href="#menu">Menu</a> (here now, not yet released); still to come: Tabs, Breadcrumbs, Stepper, StatusMark, and the app shell: the sticky header and side navigation used across the apps</td></tr><tr><th scope="row">0.4.0</th><td>Charts, merged from Accessible Charts</td></tr></tbody></table></div>
   </section>
 </section>
 
@@ -1611,6 +1624,102 @@ export function AccessRequests({ rows, onUpdate }) {
     <ul class="a11y-list"><li>State is the dot’s position and the filled track, never colour. In high contrast, on is Highlight.</li><li>Don’t pair a switch with a Save button: if it needs saving, it’s a checkbox.</li><li>If turning it on or off can’t be undone or affects other people, confirm first or use a button.</li><li>Disabled controls elsewhere can explain themselves the same way with the <code>useTooltip</code> hook: spread its hover and focus props, add its id to <code>aria-describedby</code>, and use <code>aria-disabled</code>.</li></ul>
   </section>
   <nav class="pager" aria-label="More in components" data-current="switch"></nav>
+</section>
+
+<!-- =====================================================================
+     Dialog
+     ===================================================================== -->
+<section class="panel" id="panel-dialog" data-section="components" aria-labelledby="h-dialog" hidden>
+  <p class="page-kicker">Component · CSS + React</p>
+  <h1 class="page-title" id="h-dialog" tabindex="-1">Dialog</h1>
+  <p class="page-lede">A modal for a decision or a short task that has to be finished, or dismissed, before people go back to the page. Built on the native <code>&lt;dialog&gt;</code>, so the page behind goes inert, Esc closes it, and focus returns to what opened it.</p>
+  <div class="lib lib-playground is-wide" data-react="dialog"></div>
+
+  <section class="doc-section" id="dg-when" aria-labelledby="h-dg-when">
+    <h2 id="h-dg-when">When to use it</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">When to use a dialog</caption><thead><tr><th scope="col"></th><th scope="col">Use</th><th scope="col">Instead</th></tr></thead><tbody><tr><th scope="row">Confirm something that can’t be undone</th><td>A small <strong>alert</strong> dialog: ask the question, say what happens, start on Cancel.</td><td>For anything that can be undone, just do it and offer Undo.</td></tr><tr><th scope="row">A short task: rename, invite, add a note</th><td>A small dialog with the fields and Save.</td><td>Long forms get their own page.</td></tr><tr><th scope="row">Details beside a list</th><td>A <strong>drawer</strong>, pinned to the right edge.</td><td>If people need the list at the same time, use the <a href="#details-sheet">Details sheet</a> pattern, which isn’t modal.</td></tr><tr><th scope="row">Extra detail about something</th><td>—</td><td>A <a href="#tooltip">Tooltip</a>, which isn’t modal either.</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="dg-keys" aria-labelledby="h-dg-keys">
+    <h2 id="h-dg-keys">Keyboard</h2>
+    <table class="doc-table key-table"><caption class="sr-only">Dialog keyboard support</caption><tbody><tr><th scope="row"><kbd>Tab</kbd> <kbd>Shift</kbd>+<kbd>Tab</kbd></th><td>Move through the dialog’s controls. Focus can’t leave it; the page behind is inert.</td></tr><tr><th scope="row"><kbd>Esc</kbd></th><td>Close it, including an alert. Focus goes back to the button that opened it.</td></tr><tr><th scope="row"><kbd>Enter</kbd></th><td>Activate the focused button. Enter in a field doesn’t submit unless the dialog holds a form.</td></tr></tbody></table>
+  </section>
+  <section class="doc-section" id="dg-sr" aria-labelledby="h-dg-sr">
+    <h2 id="h-dg-sr">Screen readers</h2>
+    <ul class="a11y-list"><li>Named by its title and described by <code>description</code>: “Delete Pilot screening v3?, alert dialog. Its 132 candidates’ results are deleted with it. This can’t be undone.”</li><li><code>alert</code> makes it an <code>alertdialog</code>, so the description is read straight away; use it only for confirms that destroy something.</li><li>Focus starts on <code>initialFocus</code>, else the first field in the body, else the first action in the footer. In a destructive confirm, start on Cancel so a stray Enter doesn’t delete anything.</li><li>The close button is named “Close”. Esc closes the dialog whether or not it’s shown.</li></ul>
+  </section>
+  <section class="doc-section" id="dg-usage" aria-labelledby="h-dg-usage">
+    <h2 id="h-dg-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Assessment.tsx</span><button class="copy-button" type="button" data-copy-label="Assessment.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>const cancelRef = useRef&lt;HTMLButtonElement&gt;(null);
+
+&lt;Dialog
+  open={open}
+  onClose={() =&gt; setOpen(false)}
+  title=&quot;Delete Pilot screening v3?&quot;
+  description=&quot;Its 132 candidates’ results are deleted with it. This can’t be undone.&quot;
+  alert
+  initialFocus={cancelRef}
+  footer={&lt;&gt;
+    &lt;Button ref={cancelRef} variant=&quot;secondary&quot; size=&quot;sm&quot; onClick={() =&gt; setOpen(false)}&gt;Cancel&lt;/Button&gt;
+    &lt;Button variant=&quot;danger&quot; size=&quot;sm&quot; onClick={remove}&gt;Delete&lt;/Button&gt;
+  &lt;/&gt;}
+/&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="dg-props" aria-labelledby="h-dg-props">
+    <h2 id="h-dg-props">Props</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">Dialog props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>open, onClose</code></td><td><code class="type">boolean, () =&amp;gt; void</code></td><td>Shown or not; <code>onClose</code> runs on Esc, the close button and the backdrop</td></tr><tr><td><code>title</code></td><td><code class="type">string</code></td><td>The dialog’s name, an h2. For a confirm, ask the question</td></tr><tr><td><code>description</code></td><td><code class="type">ReactNode</code></td><td>Under the title, read as the description</td></tr><tr><td><code>children</code></td><td><code class="type">ReactNode</code></td><td>The body; scrolls when it’s long</td></tr><tr><td><code>footer</code></td><td><code class="type">ReactNode</code></td><td>The actions: Cancel, then the main action, at the right</td></tr><tr><td><code>size</code></td><td><code class="type">&#x27;sm&#x27; | &#x27;lg&#x27; | &#x27;drawer&#x27;</code></td><td>480px, 760px, or pinned to the right edge at full height</td></tr><tr><td><code>alert</code></td><td><code class="type">boolean</code></td><td>An alertdialog for destructive confirms; the backdrop doesn’t close it</td></tr><tr><td><code>initialFocus</code></td><td><code class="type">RefObject</code></td><td>Where focus starts, such as Cancel</td></tr><tr><td><code>hideClose</code></td><td><code class="type">boolean</code></td><td>Hide the close button; Esc still closes it</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="dg-rules" aria-labelledby="h-dg-rules">
+    <h2 id="h-dg-rules">Rules</h2>
+    <ul class="a11y-list"><li>Ask one thing. Title a confirm as the question (“Delete Pilot screening v3?”) and name the button with the verb (“Delete”), never “OK” or “Yes”.</li><li>Say what will happen, and whether it can be undone, in the description.</li><li>The main action goes last, at the right. Only a destructive one is red (<code>variant="danger"</code>).</li><li>Don’t open a dialog from a dialog. Don’t open one on page load.</li><li>The page behind doesn’t scroll while it’s open. The entrance is a short fade, and it switches off with reduced motion.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="dialog"></nav>
+</section>
+
+<!-- =====================================================================
+     Menu
+     ===================================================================== -->
+<section class="panel" id="panel-menu" data-section="components" aria-labelledby="h-menu" hidden>
+  <p class="page-kicker">Component · CSS + React</p>
+  <h1 class="page-title" id="h-menu" tabindex="-1">Menu</h1>
+  <p class="page-lede">A button that opens a short list of actions on one thing, such as an assessment’s Rename, Duplicate and Delete. The WAI-ARIA menu button: focus moves into the list, the arrow keys move through it.</p>
+  <div class="lib lib-playground is-wide" data-react="menu"></div>
+
+  <section class="doc-section" id="mn-when" aria-labelledby="h-mn-when">
+    <h2 id="h-mn-when">Menu, Select or links</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Menu, Select or links</caption><thead><tr><th scope="col"></th><th scope="col">Menu</th><th scope="col">Select</th><th scope="col">Links</th></tr></thead><tbody><tr><th scope="row">For</th><td>Doing something: Rename, Duplicate, Delete</td><td>Choosing a value that stays chosen</td><td>Going somewhere</td></tr><tr><th scope="row">After choosing</th><td>The action runs; the menu closes</td><td>The button shows the choice</td><td>A new page</td></tr><tr><th scope="row">Screen reader</th><td>“menu button”, then “menu item”</td><td>“combo box”, then “option”</td><td>“link”</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="mn-keys" aria-labelledby="h-mn-keys">
+    <h2 id="h-mn-keys">Keyboard</h2>
+    <table class="doc-table key-table"><caption class="sr-only">Menu keyboard support</caption><tbody><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd> <kbd>↓</kbd></th><td>Open it, on the first item.</td></tr><tr><th scope="row"><kbd>↑</kbd></th><td>Open it, on the last item.</td></tr><tr><th scope="row"><kbd>↓</kbd> <kbd>↑</kbd></th><td>Move through the items, wrapping at the ends. Unavailable items are included, and say why.</td></tr><tr><th scope="row"><kbd>Home</kbd> <kbd>End</kbd></th><td>Jump to the first or last item.</td></tr><tr><th scope="row">A letter</th><td>Jump to the next item starting with it.</td></tr><tr><th scope="row"><kbd>Enter</kbd> <kbd>Space</kbd></th><td>Choose the item. The menu closes.</td></tr><tr><th scope="row"><kbd>Esc</kbd></th><td>Close it; focus goes back to the button.</td></tr><tr><th scope="row"><kbd>Tab</kbd></th><td>Close it and move on.</td></tr></tbody></table>
+  </section>
+  <section class="doc-section" id="mn-sr" aria-labelledby="h-mn-sr">
+    <h2 id="h-mn-sr">Screen readers</h2>
+    <ul class="a11y-list"><li>The button says whose options they are and that it opens a menu: “Options for Pilot screening v3, menu button, collapsed”. An icon-only button keeps that label as its name.</li><li>Each item is a menu item: “Rename, menu item, 1 of 4”.</li><li>An unavailable item says so and why: “Archive, menu item, dimmed, 3 of 4. Only the owner can archive it.” The reason is also shown under its label.</li></ul>
+  </section>
+  <section class="doc-section" id="mn-usage" aria-labelledby="h-mn-usage">
+    <h2 id="h-mn-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>AssessmentRow.tsx</span><button class="copy-button" type="button" data-copy-label="AssessmentRow.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>&lt;Menu
+  label={`Options for ${assessment.name}`}
+  iconOnly
+  items={[
+    { label: &#x27;Rename&#x27;, onSelect: rename },
+    { label: &#x27;Duplicate&#x27;, onSelect: duplicate },
+    { label: &#x27;Archive&#x27;, onSelect: archive, disabled: !isOwner, disabledReason: &#x27;Only the owner can archive it.&#x27; },
+    { label: &#x27;Delete&#x27;, onSelect: () =&gt; setConfirming(true), divider: true, danger: true },
+  ]}
+&gt;
+  &lt;MoreIcon /&gt;
+&lt;/Menu&gt;</code></pre></div>
+  </section>
+  <section class="doc-section" id="mn-props" aria-labelledby="h-mn-props">
+    <h2 id="h-mn-props">Props</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">Menu props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>label</code></td><td><code class="type">string</code></td><td>The button’s name: “Options for Pilot screening v3”</td></tr><tr><td><code>items</code></td><td><code class="type">{ label, onSelect, icon?, disabled?, disabledReason?, divider?, danger? }[]</code></td><td>The actions, in order</td></tr><tr><td><code>children</code></td><td><code class="type">ReactNode</code></td><td>What the button shows: text, an icon, or both</td></tr><tr><td><code>iconOnly</code></td><td><code class="type">boolean</code></td><td>A square icon button; <code>label</code> is its name</td></tr><tr><td><code>variant</code></td><td><code class="type">&#x27;secondary&#x27; | &#x27;ghost&#x27; | &#x27;primary&#x27;</code></td><td>The button’s style. Default secondary</td></tr><tr><td><code>size</code></td><td><code class="type">&#x27;sm&#x27; | &#x27;md&#x27;</code></td><td>The button’s size</td></tr><tr><td><code>align</code></td><td><code class="type">&#x27;start&#x27; | &#x27;end&#x27;</code></td><td>Line the list up with the button’s start or end. Default end</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="mn-rules" aria-labelledby="h-mn-rules">
+    <h2 id="h-mn-rules">Rules</h2>
+    <ul class="a11y-list"><li>Keep it short: up to about seven actions, the common ones first. Start a new group with <code>divider</code>.</li><li>Name items with verbs. Don’t put links, checkboxes or a second menu in it.</li><li>A destructive item (<code>danger</code>) goes last, after a rule, in medium weight. It opens a confirm <a href="#dialog">Dialog</a>; the red is on that dialog’s button.</li><li>Keep unavailable items in the list and say why, instead of hiding them; people look for them where they expect them.</li><li>The list opens below the button, or above it when there’s no room.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="menu"></nav>
 </section>
 <!-- =====================================================================
      Table
