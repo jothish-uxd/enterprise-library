@@ -12,7 +12,8 @@ This repo is the single source of Sleepy's design system: foundations (tokens), 
 
 ## Every change
 
-- `npm run check`, `npm run build`, `npm run build:docs`; update `DESIGN-SYSTEM.md` and `CHANGELOG.md`; bump `version` in package.json (and the install command and badge in `index.html`); commit and push.
+- Every push is a new patch version (0.3.0, 0.3.1, 0.3.2…): `npm run bump` raises it in package.json, the lockfile, the README and the docs page (badge, install commands, version note), and the push gets its own `## X.Y.Z — date` entry in `CHANGELOG.md`. A new minor (0.4.0) only when Sleepy says so: `npm run bump -- 0.4.0`.
+- `npm run check`, `npm run build`, `npm run build:docs`; update `DESIGN-SYSTEM.md`; commit and push.
 - Claude sessions can't push tags, so ask Sleepy to publish a GitHub Release named and tagged `vX.Y.Z` on that commit. Then update the apps that use it (listed in README.md).
 - Open the page and check every section in light, dark and at phone width before pushing.
 

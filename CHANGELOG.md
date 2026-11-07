@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.3.0 — not yet released
+## 0.3.0 — 2026-11-06
+
+From 0.3.0, every push is a new patch version (0.3.1, 0.3.2…), each with its own entry here.
+
+- Versioning: `npm run bump` raises the patch number in package.json, the README and the docs page.
 
 - Dialog (`Dialog`, `dialog.css`): a modal on the native `<dialog>`, small, large or a drawer; alert dialogs for destructive confirms; focus starts on `initialFocus`, the first field, or the first action. Docs page with a playground.
 - Menu (`Menu`, `menu.css`): a menu button with icons, groups, a danger item, and unavailable items that stay reachable and say why; type-ahead. Docs page with a playground.

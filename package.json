@@ -1,6 +1,6 @@
 {
   "name": "@jothish-uxd/enterprise-library",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Enterprise Library: tokens, components and accessible patterns shared by Sleepy's apps.",
   "license": "UNLICENSED",
   "type": "module",
@@ -30,6 +30,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.lib.json && node scripts/build-css.mjs",
+    "bump": "node scripts/bump.mjs",
     "build:docs": "esbuild docs/demos.tsx --bundle --minify --format=esm --target=es2020 --jsx=automatic --outfile=docs/demos.js",
     "check": "tsc -p tsconfig.json"
   },
