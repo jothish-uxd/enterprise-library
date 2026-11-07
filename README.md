@@ -7,7 +7,7 @@ Docs: https://jothish-uxd.github.io/enterprise-library/ — one page, `index.htm
 ## Install
 
 ```sh
-npm install github:jothish-uxd/enterprise-library#v0.3.2
+npm install github:jothish-uxd/enterprise-library#v0.3.3
 ```
 
 ```tsx
@@ -20,7 +20,7 @@ Load Geist and Geist Mono in the app (see Getting started on the docs page).
 ## What's inside
 
 - **Foundations:** colour (monochrome plus error, warning and success), an eight-step type ramp, spacing, radius, shadow and control-height tokens.
-- **Components:** Buttons (Button), Forms (Input, TextArea, Select and MultiSelect, Checkbox and CheckboxGroup, Radio and RadioGroup), Table (with SortHeader, TableCheck, TableEmpty), Card and ChoiceCard, Dialog, Menu, Tabs, Breadcrumbs, Stepper, Tiles, Segmented control, Chips, Switch, StatFilter, Tooltip, BrowserFrame, ResetButton.
+- **Components:** Buttons (Button), Forms (Input, TextArea, Select and MultiSelect, Checkbox and CheckboxGroup, Radio and RadioGroup), Table (with SortHeader, TableCheck, TableEmpty), Card and ChoiceCard, Dialog, Menu, Tabs, Breadcrumbs, Stepper, StatusMark, Tiles, Segmented control, Chips, Switch, StatFilter, Tooltip, BrowserFrame, ResetButton.
 - **Patterns** (working examples, React versions coming): bulk actions, data table, details sheet, filter bar, pagination, multi-step form, command palette, destructive confirm, notifications, empty / loading / error states, and admin screens (audit log, usage caps, compliance, reports, asset inventory, configuration, roles and permissions).
 
 ## Apps that use it

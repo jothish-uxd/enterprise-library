@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3 — 2026-11-06
+
+- StatusMark (`StatusMark`, `status-mark.css`): a status in words with a mark that repeats it by shape (dashed, ring, half, filled, check, slash), plain or as a badge, with a muted form for statuses that are over. Brings together the status labels in Cipher Lab and Online Assessments and the docs' access-request pattern. Docs page with a playground and a table of all six marks.
+
 ## 0.3.2 — 2026-11-06
 
 - Stepper (`Stepper`, `stepper.css`): full (numbered steps, horizontal or vertical, as links or plain) or compact (a segmented bar and "Step 3 of 4"); each step complete, in progress or not started, read out with its number. Generalised from Cipher Lab's stage navigation and stage progress. Docs page with a playground.

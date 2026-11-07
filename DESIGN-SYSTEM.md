@@ -183,6 +183,15 @@ Where people are in a sequence of steps, and how far each has got.
 - Plain steps are an ordered list named by `label`, the current one `aria-current="step"`. Steps with `to` or `href` are links in a `nav`, the current one `aria-current="page"`; only links are in the Tab order. Each step reads its number, name and status: "3. Proctoring, in progress, current step".
 - Rules: three to about seven steps, short noun labels; link only the steps people can go back to; see the Multi-step form pattern for saving and validation between steps.
 
+### StatusMark (`status-mark.css`, `components/StatusMark.tsx`)
+
+A status in words, with a small mark that repeats it by shape. Never colour, never the mark alone.
+
+- `<StatusMark mark variant size muted>{words}</StatusMark>`. Marks are named by shape so each product maps its own statuses: `dashed` (not started, pending, draft), `ring` (open, ready), `half` (in progress, in review, on hold), `filled` (live, published), `check` (complete, passed, approved), `slash` (failed, denied, cancelled).
+- `variant="badge"`: a small bordered box; a dashed badge has a dashed border, a slash badge a 1.5px ink border, a check badge is filled ink. `muted` softens the words for statuses that are over.
+- The mark is an inline SVG with `aria-hidden`; the words are what's read. Class `.status-mark` (not `.status`, which apps use for their own labels).
+- Forced colors: marks and borders in CanvasText.
+
 ### Tiles (`tiles.css`, `components/Tiles.tsx`)
 
 A grid of links into other pages: a section's index, a gallery of patterns or templates. Two layouts:

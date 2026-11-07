@@ -1229,3 +1229,50 @@ a.stepper__step:hover { color: var(--ink); }
   .is-complete > .stepper__num, .stepper__bar .is-complete, .stepper__bar .is-current { background: CanvasText; border-color: CanvasText; color: Canvas; }
 }
 
+/* ---- status-mark.css ---- */
+/* StatusMark: a status in words, with a mark that shows the same thing by shape.
+   .status-mark            plain: mark and words
+   .status-mark--badge     in a small bordered box; --check badges are filled ink
+   .status-mark--sm        smaller, for dense tables
+   .is-muted               softer words, for statuses that are over
+   .status-mark__icon      a 14px SVG: __line strokes, __fill fills, __tick is the check
+   Marks: --dashed, --ring, --half, --filled, --check, --slash */
+
+.status-mark {
+  display: inline-flex; align-items: center; gap: var(--space-1-5);
+  font-size: var(--text-small); font-weight: var(--weight-medium); line-height: var(--leading-snug);
+  color: var(--ink); white-space: nowrap; vertical-align: middle;
+}
+.status-mark__icon { width: 14px; height: 14px; flex: none; }
+.status-mark__line { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+.status-mark__fill { fill: currentColor; }
+.status-mark__tick { fill: none; stroke: var(--bg); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.status-mark--dashed .status-mark__icon { color: var(--ink-faint); }
+
+.status-mark.is-muted { color: var(--ink-soft); font-weight: var(--weight-regular); }
+
+.status-mark--sm { gap: var(--space-1); font-size: var(--text-caption); }
+.status-mark--sm .status-mark__icon { width: 12px; height: 12px; }
+
+/* Badge: a small bordered box */
+.status-mark--badge {
+  height: 22px; padding: 0 var(--space-2) 0 var(--space-1-5);
+  border: 1px solid var(--rule-strong); border-radius: var(--radius-sm); background: var(--bg);
+  font-size: var(--text-caption);
+}
+.status-mark--badge .status-mark__icon { width: 12px; height: 12px; }
+.status-mark--badge.status-mark--dashed { border-style: dashed; color: var(--ink-soft); }
+.status-mark--badge.status-mark--slash { border: 1.5px solid var(--ink); }
+.status-mark--badge.status-mark--check { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+.status-mark--badge.status-mark--check .status-mark__tick { stroke: var(--ink); }
+
+@media (forced-colors: active) {
+  .status-mark__line { stroke: CanvasText; }
+  .status-mark__fill { fill: CanvasText; }
+  .status-mark__tick { stroke: Canvas; }
+  .status-mark--badge { border-color: CanvasText; }
+  .status-mark--badge.status-mark--check { background: Canvas; color: CanvasText; }
+  .status-mark--badge.status-mark--check .status-mark__fill { fill: CanvasText; }
+  .status-mark--badge.status-mark--check .status-mark__tick { stroke: Canvas; }
+}
+

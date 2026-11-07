@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Card, Breadcrumbs, Checkbox, Dialog, Menu, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  BrowserFrame, Button, Card, Breadcrumbs, Checkbox, Dialog, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1027,6 +1027,70 @@ function StepperDemo() {
   );
 }
 
+/* ---------- StatusMark playground ---------- */
+const MARK_EXAMPLES: [string, string, string][] = [
+  ['dashed', 'Not started', 'Not started, pending, draft'],
+  ['ring', 'Open', 'Open, ready, scheduled'],
+  ['half', 'In progress', 'In progress, in review, on hold'],
+  ['filled', 'Live', 'Live, published, active'],
+  ['check', 'Passed', 'Complete, passed, approved'],
+  ['slash', 'Failed', 'Failed, denied, cancelled'],
+];
+function StatusMarkDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({ mark: 'half', label: 'In progress', variant: 'plain', size: 'md', muted: false });
+  const set = (key: string, value: PgValue) => setV((old) => {
+    const next = { ...old, [key]: value };
+    if (key === 'mark') { const from = MARK_EXAMPLES.find((m) => m[0] === old.mark), to = MARK_EXAMPLES.find((m) => m[0] === value); if (from && to && old.label === from[1]) next.label = to[1]; }
+    return next;
+  });
+  const attrs: PgCodeLine[] = [
+    { attr: 'mark', value: String(v.mark) },
+    ...(v.variant === 'badge' ? [{ attr: 'variant', value: 'badge' }] : []),
+    ...(v.size === 'sm' ? [{ attr: 'size', value: 'sm' }] : []),
+    ...(v.muted ? [{ attr: 'muted', value: true as const }] : []),
+  ];
+  return (
+    <Playground
+      name="StatusMark"
+      compact
+      values={v}
+      set={set}
+      file="JobRow.tsx"
+      tag="StatusMark"
+      attrs={attrs}
+      codeChildren={[String(v.label) || 'Status']}
+      controls={[
+        { kind: 'select', key: 'mark', label: 'Mark', options: MARK_EXAMPLES.map(([m, , use]) => ({ value: m, label: `${m[0].toUpperCase()}${m.slice(1)}: ${use.split(',')[0]}` })) },
+        { kind: 'text', key: 'label', label: 'Words', help: 'Always shown, always read. The mark only repeats it.' },
+        { kind: 'segmented', key: 'variant', label: 'Variant', options: [{ value: 'plain', label: 'Plain' }, { value: 'badge', label: 'Badge' }] },
+        { kind: 'select', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }] },
+        { kind: 'boolean', key: 'muted', label: 'Muted', help: 'Softer words, for statuses that are over: closed, archived.' },
+      ]}
+      preview={<StatusMark mark={v.mark as 'half'} variant={v.variant as 'plain' | 'badge'} size={v.size as 'sm' | 'md'} muted={!!v.muted}>{String(v.label) || 'Status'}</StatusMark>}
+    />
+  );
+}
+function StatusMarkGallery() {
+  return (
+    <div className="table-wrap">
+      <table className="table">
+        <caption className="visually-hidden">The six marks, plain and as badges</caption>
+        <thead><tr><th scope="col">Mark</th><th scope="col">Plain</th><th scope="col">Badge</th><th scope="col">Use it for</th></tr></thead>
+        <tbody>
+          {MARK_EXAMPLES.map(([m, label, use]) => (
+            <tr key={m}>
+              <th scope="row"><code>{m}</code></th>
+              <td><StatusMark mark={m as 'half'}>{label}</StatusMark></td>
+              <td><StatusMark mark={m as 'half'} variant="badge">{label}</StatusMark></td>
+              <td>{use}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 /* ---------- Playground: one component, controls beside it, code below ---------- */
 type PgValue = string | boolean;
 type PgControl =
@@ -1700,6 +1764,8 @@ const DEMOS: Record<string, () => ReactNode> = {
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,
+  statusmark: () => <StatusMarkDemo />,
+  'statusmark-gallery': () => <StatusMarkGallery />,
   tiles: () => <TilesDemo />,
   textarea: () => <TextAreaDemo />,
   radio: () => <RadioDemo />,
