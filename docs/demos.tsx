@@ -321,16 +321,54 @@ function ChoiceCardDemo() {
 }
 
 /* ---------- StatFilter ---------- */
-const STAGES = { All: 132, Applied: 76, Screening: 31, Assessment: 18, Interview: 6, Offer: 1, Hired: 0 } as const;
-type Stage = keyof typeof STAGES;
 function StatFilterDemo() {
-  const [stage, setStage] = useState<Stage>('Assessment');
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Pipeline. Choose a stage to list its candidates', stages: 'Screening, Assessment, Interview', all: true, big: false, region: true,
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const names = String(v.stages).split(',').map((x) => x.trim()).filter(Boolean).slice(0, v.all ? 3 : 4);
+  const scale = v.big ? 1371 : 11;
+  const base = names.map((n) => ({ value: slug(n), label: n, count: fakeCount(n) * scale }));
+  const items = v.all ? [{ value: 'all', label: 'All', count: base.reduce((t, i) => t + i.count, 0) }, ...base] : base;
+  const [chosen, setChosen] = useState('all');
+  const value = items.some((i) => i.value === chosen) ? chosen : items[0]?.value ?? '';
+  const current = items.find((i) => i.value === value);
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) },
+    ...(v.region ? [{ attr: 'controls', value: 'candidates' }] : []),
+    { attr: 'value', value: 'stage', expr: true },
+    { attr: 'onChange', value: 'setStage', expr: true },
+    { attr: 'items', value: `[\n${items.map((i) => `    { value: '${i.value}', label: '${i.label}', count: ${i.count} },`).join('\n')}\n  ]`, expr: true },
+  ];
   return (
-    <>
-      <StatFilter label="Pipeline. Choose a stage to list its candidates" controls="sf-out" value={stage} onChange={setStage}
-        items={(Object.keys(STAGES) as Stage[]).map((k) => ({ value: k, label: k, count: STAGES[k] }))} />
-      <p id="sf-out" className="t-small muted" aria-live="polite">Showing <strong>{stage}</strong>: {STAGES[stage]} candidates.</p>
-    </>
+    <Playground
+      name="StatFilter"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="Pipeline.tsx"
+      tag="StatFilter"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label', help: 'Names the group for screen readers; say that choosing filters.' },
+        { kind: 'text', key: 'stages', label: 'Stages', help: 'Up to 4 cards in all, separated by commas.' },
+        { kind: 'boolean', key: 'all', label: '“All” first', help: 'When seeing everything is useful. Its count is the total.' },
+        { kind: 'boolean', key: 'big', label: 'Large counts', help: 'Thousands, with separators.' },
+        { kind: 'boolean', key: 'region', label: 'Filtered region', help: 'What the cards control (aria-controls), with a heading that follows the choice.' },
+      ]}
+      preview={
+        <div className="pg-statfilter">
+          <StatFilter label={String(v.label) || 'Untitled'} items={items} value={value} onChange={setChosen} controls={v.region ? 'pg-sf-out' : undefined} />
+          {v.region && current && (
+            <section id="pg-sf-out" className="pg-statfilter__out" aria-live="polite">
+              <h3>{current.label === 'All' ? 'All candidates' : current.label}</h3>
+              <p className="t-small muted">{current.count.toLocaleString('en-US')} candidates</p>
+            </section>
+          )}
+        </div>
+      }
+    />
   );
 }
 

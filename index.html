@@ -866,6 +866,10 @@
   .pg__stage-inner > .tiles { width: 100%; }
   .pg__stage-inner > .table-wrap { width: 100%; }
   .pg__stage-inner > .pg-card { width: 100%; max-width: 340px; }
+  .pg__stage-inner > .pg-statfilter { width: 100%; display: grid; gap: 16px; }
+  .pg-statfilter__out { padding-top: 12px; border-top: 1px solid var(--rule); }
+  .pg-statfilter__out h3 { margin: 0 0 2px; font-size: 14px; font-weight: 600; }
+  .pg-statfilter__out p { margin: 0; }
   .pg__stage-inner > .pg-choice { width: 100%; border: 0; margin: 0; padding: 0; min-width: 0; }
   .pg-inline { display: inline-flex; align-items: center; gap: 6px; margin: 0; }
   /* ResetButton preview: the end of a browser bar, where it lives */
@@ -1837,7 +1841,7 @@ export function AccessRequests({ rows, onUpdate }) {
   <p class="page-kicker">Component · React</p>
   <h1 class="page-title" id="h-statfilter" tabindex="-1">StatFilter</h1>
   <p class="page-lede">A strip of counts that also filters what’s below it. Use it when a page would otherwise show KPI cards and a separate set of filter chips with the same numbers.</p>
-  <div class="lib lib-demo is-wide" data-react="statfilter"></div>
+  <div class="lib lib-playground is-wide" data-react="statfilter"></div>
 
   <section class="doc-section" id="sf-sr" aria-labelledby="h-sf-sr">
     <h2 id="h-sf-sr">Screen reader</h2>
