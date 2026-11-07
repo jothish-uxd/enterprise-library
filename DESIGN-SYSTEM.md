@@ -107,7 +107,7 @@ One setting on or off, applied straight away. A native checkbox with `role="swit
 
 `.card` with `__header` (`__heading`, `__title`, `__meta`, `__end`), `__body`, `__footer` (full-width rule), `__stats`; variants `--subtle`, `--strong`, `--emphasis` (ink border), `--compact`; `.card-grid` (`--card-min`) and `.card-list`. `Card` renders the same markup.
 
-`ChoiceCard` is a card that is a real radio or checkbox: the input covers the card, invisible; the title is its name, the description its description. Chosen: a 2px ink edge and a filled mark (ring for radio, box for checkbox). Disabled stays readable and says why. Never a second control inside. A grid of links to other pages is Tiles, not cards.
+`ChoiceCard` is a card that is a real radio or checkbox: the input covers the card, invisible; the title is its name, the description its description. Chosen: a 2px ink edge and a filled mark (ring for radio, box for checkbox). Disabled stays readable and says why. Never a second control inside. A grid of links to other pages is Tiles, not cards. An unavailable ChoiceCard (`disabled` with `disabledReason`) uses `aria-disabled`: Tab, or the arrow keys in a radio group, still reach it, it can't be chosen, and the reason shows in a tooltip and is read as its description.
 
 
 ### Filters and views: Segmented control, Chips, StatFilter
@@ -271,7 +271,7 @@ Extra detail beside something on the page, in two versions (the docs show both i
 | Built as | A button described by `role="tooltip"` | A disclosure button (`aria-expanded`) and a native popover |
 
 - The trigger is a real button with its own name: an icon-only trigger names what it explains ("About proctoring", not "Info").
-- Hover: hoverable, dismissable, persistent (WCAG 1.4.13). It closes when focus moves, so a link in it could never be reached by keyboard or screen reader: if there's a link, use the click version.
+- Hover: hoverable, dismissable, persistent (WCAG 1.4.13): when the page scrolls, it follows its trigger instead of closing, so a tooltip opened by keyboard focus isn't lost to the scroll that focus causes. It closes when focus moves, so a link in it could never be reached by keyboard or screen reader: if there's a link, use the click version.
 - Click: Tab goes from the open button straight into its links, then on through the page; Escape closes it and returns focus to the button.
 - Both render above everything (no clipping in scrolling areas) and flip above the trigger when there's no room below.
 - Keep it short. Nothing people need to finish the task should live only in a tooltip.
