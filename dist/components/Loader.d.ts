@@ -18,7 +18,7 @@ import { type ReactNode } from 'react';
  * Six more for AI, to say what a model is doing (pair them with words that
  * say it too: "Thinking", "Searching 12 sources", "Writing a summary"):
  * - sparkle   a four-point star that turns and breathes: thinking
- * - shimmer   a still star, and the label shimmers: thinking, in a line of text
+ * - shimmer   a round orb and the label, with one highlight sweeping across both: thinking, in a line of text
  * - network   nodes that light up and swell along their links: reasoning
  * - scan      a band sweeps down over lines and back up: searching, reading sources
  * - tokens    lines that write themselves out: generating, writing

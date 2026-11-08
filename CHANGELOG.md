@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.17 — 2026-11-08
+
+- Loader, shimmer: a round orb replaces the star (which belongs to sparkle), and the same highlight sweeps across the orb and the label.
+
 ## 0.3.16 — 2026-11-08
 
 - Loader, AI types: shimmer now has a still star beside the label, and a narrower, brighter highlight; network's nodes swell as they light up; scan's band goes down and back up instead of starting over.

@@ -1709,8 +1709,9 @@ a.stepper__step:hover { color: var(--ink); }
 .loader__star { fill: var(--ink); transform-origin: 18px 18px; }
 .loader__star--small { fill: var(--ink-soft); transform-origin: 29px 6.5px; }
 
-/* Shimmer: a still star, and the label shimmers */
+/* Shimmer: a round orb and the label, one highlight sweeping across both */
 .loader--shimmer .loader__mark { width: calc(var(--loader-size) * .6); }
+.loader__orb { display: block; width: 100%; aspect-ratio: 1; border-radius: var(--radius-full); background: var(--ink-soft); }
 .loader--shimmer .loader__label { color: var(--ink-soft); }
 
 /* Network: links in the rule colour, nodes that light up one after another */
@@ -1737,8 +1738,11 @@ a.stepper__step:hover { color: var(--ink); }
 
 @media (prefers-reduced-motion: no-preference) {
   .loader__star { animation: loader-breathe 1.8s ease-in-out infinite; }
-  .loader__star--still { animation: none; }
   .loader__star--small { animation: loader-twinkle 1.8s ease-in-out infinite; }
+  .loader__orb {
+    background-image: linear-gradient(110deg, var(--ink-faint) 0 40%, var(--ink) 47% 53%, var(--ink-faint) 60% 100%);
+    background-size: 300% 100%; animation: loader-shimmer 1.6s linear infinite;
+  }
   .loader--shimmer .loader__label {
     color: transparent; -webkit-background-clip: text; background-clip: text;
     background-image: linear-gradient(90deg, var(--ink-faint) 0 40%, var(--ink) 47% 53%, var(--ink-faint) 60% 100%);
@@ -1798,6 +1802,7 @@ a.stepper__step:hover { color: var(--ink); }
 @media (forced-colors: active) {
   .loader__track, .loader__tick, .loader__link { stroke: GrayText; }
   .loader__star, .loader__node { fill: CanvasText; }
+  .loader__orb { background: CanvasText; forced-color-adjust: none; }
   .loader__text-line, .loader__token-line, .loader__caret { background: CanvasText; forced-color-adjust: none; }
   .loader__beam { border-color: Highlight; background: none; }
   .loader--shimmer .loader__label { color: CanvasText; background: none; }
