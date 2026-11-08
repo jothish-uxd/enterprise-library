@@ -35,6 +35,7 @@ export { Skeleton } from './components/Skeleton';
 /** @deprecated Renamed Loader in 0.3.13 */
 export { Loader as ProgressIndicator, Loader as ProgressCircle } from './components/Loader';
 export { Tag, TagList, TagInput } from './components/Tag';
+export { FormGroup, FormSection, focusField } from './components/FormGroup';
 export { Tabs } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Stepper } from './components/Stepper';

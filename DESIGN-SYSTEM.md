@@ -124,6 +124,17 @@ Shared anatomy: `.field` stacks a `.field__label` (joined with `for`/`id`), the 
 - Check on submit, then move focus to an error summary that links to each field; re-check a field as it's fixed. Never disable submit to show a form is incomplete. Keep what people typed.
 - Layout: `.form`, `.form-grid`, `.form-actions`, `.inline-form`, `.field--wide` / `--narrow`. One column; size fields to their content.
 
+### Form group (`form-group.css`, `components/FormGroup.tsx`)
+
+A whole form: header, sections, error summary and actions, with one way of handling mistakes. Generalised from the forms in Online Assessments and the docs' multi-step form pattern.
+
+- `<FormGroup title description errors onSubmit onCancel submitLabel cancelLabel requiredNote headingLevel>` with `<FormSection title description>` children (fieldsets named by their legends). A `<form noValidate>` named by its title.
+- `errors` is `{ id, message }[]` in page order; the app's `onSubmit` checks the values and sets it, and the fields show their own inline errors (`error` on Input, Select, RadioGroup…).
+- After a submit: no errors, nothing more; one error, focus goes to that field (`focusField(id)`: the element, or the first control inside it); two or more, an error summary appears under the header (error icon, "Fix N problems before you submit", a list of links to each field) and takes focus. Tab from the summary goes straight to the first field with an error; the links stay reachable by clicking and by Shift+Tab from that field.
+- Required fields have an asterisk; the header's note says "Fields marked * are required" (read as "with an asterisk"). Optional fields are unmarked.
+- Footer: Cancel (secondary) then the submit button (primary), right-aligned over a rule.
+- Error ids: an input's `id`, a Select's `buttonId`, or a wrapper `id` around a radio or checkbox group.
+
 ### Switch (`switch.css`, `components/Switch.tsx`)
 
 One setting on or off, applied straight away. A native checkbox with `role="switch"` inside `.switch__track`, with a `.switch__thumb` dot: off is an ink ring with the dot at the start, on is a filled track with the dot at the end. Never colour; high contrast uses Highlight for on. React: `<Switch label checked onChange description showState disabled disabledReason size labelPosition>`.

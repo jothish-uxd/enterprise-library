@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, Banner, ProgressBar, Loader, Skeleton, Tag, TagInput, type TagColor, type StatusMarkShape, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, Banner, ProgressBar, Loader, Skeleton, Tag, TagInput, FormGroup, FormSection, type FormError, type TagColor, type StatusMarkShape, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1501,6 +1501,115 @@ function TagDemo() {
   );
 }
 
+/* ---------- Form group playground ---------- */
+type InviteValues = { first: string; last: string; email: string; phone: string; assessment: string; proctoring: string; help: string[]; note: string };
+const INVITE_EMPTY: InviteValues = { first: '', last: '', email: '', phone: '', assessment: '', proctoring: '', help: [], note: '' };
+const INVITE_FULL: InviteValues = { first: 'Jyn', last: 'Erso', email: 'jyn@example.com', phone: '', assessment: 'pilot', proctoring: 'recorded', help: [], note: '' };
+const INVITE_ONE: InviteValues = { ...INVITE_FULL, email: 'jyn.example.com' };
+function checkInvite(x: InviteValues): FormError[] {
+  const e: FormError[] = [];
+  if (!x.first.trim()) e.push({ id: 'fg-first', message: 'Enter a first name' });
+  if (!x.last.trim()) e.push({ id: 'fg-last', message: 'Enter a last name' });
+  if (!x.email.trim()) e.push({ id: 'fg-email', message: 'Enter an email address' });
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x.email)) e.push({ id: 'fg-email', message: 'Enter an email address such as name@company.com' });
+  if (!x.assessment) e.push({ id: 'fg-assessment', message: 'Choose an assessment' });
+  if (!x.proctoring) e.push({ id: 'fg-proctoring', message: 'Choose how it’s proctored' });
+  return e;
+}
+function FormGroupDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({ title: 'Invite a candidate', showDesc: true, note: true, start: 'empty' });
+  const [x, setX] = useState<InviteValues>(INVITE_EMPTY);
+  const [errors, setErrors] = useState<FormError[]>([]);
+  const [sent, setSent] = useState(false);
+  const set = (key: string, value: PgValue) => {
+    setV((old) => ({ ...old, [key]: value }));
+    if (key === 'start') { setX(value === 'full' ? INVITE_FULL : value === 'one' ? INVITE_ONE : INVITE_EMPTY); setErrors([]); setSent(false); }
+  };
+  const err = (id: string) => errors.find((e) => e.id === id)?.message;
+  const upd = (patch: Partial<InviteValues>) => setX((o) => ({ ...o, ...patch }));
+  const submit = () => {
+    const e = checkInvite(x);
+    setErrors(e);
+    if (!e.length) setSent(true);
+  };
+  const raw = `const [errors, setErrors] = useState<FormError[]>([]);
+
+<FormGroup
+  title="${String(v.title) || 'Untitled form'}"${v.showDesc ? '\n  description="They’ll get an email with a link to the assessment."' : ''}${v.note ? '' : '\n  requiredNote={null}'}
+  errors={errors}
+  onSubmit={() => { const e = check(values); setErrors(e); if (!e.length) send(values); }}
+  onCancel={close}
+  submitLabel="Send invite"
+>
+  <FormSection title="Candidate">
+    <Input id="first" label="First name" required error={errorFor('first')} … />
+    <Input id="phone" label="Phone" type="tel" … />            {/* optional */}
+  </FormSection>
+  <FormSection title="Assessment">
+    <Select buttonId="assessment" label="Assessment" required … />
+    <div id="proctoring"><RadioGroup legend="Proctoring" required … /></div>
+  </FormSection>
+</FormGroup>`;
+  return (
+    <Playground
+      name="Form group"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="InviteCandidate.tsx"
+      tag="FormGroup"
+      attrs={[]}
+      codeRaw={raw}
+      controls={[
+        { kind: 'segmented', key: 'start', label: 'Start with', options: [{ value: 'empty', label: 'Empty' }, { value: 'one', label: 'One mistake' }, { value: 'full', label: 'All filled' }] },
+        { kind: 'text', key: 'title', label: 'Title' },
+        { kind: 'boolean', key: 'showDesc', label: 'Description' },
+        { kind: 'boolean', key: 'note', label: 'Required note', help: '“Fields marked * are required.”' },
+      ]}
+      preview={sent ? (
+        <div className="pg-form-done">
+          <Banner tone="success" title="Invite sent." announce="polite">{x.first} {x.last} will get an email at {x.email}.</Banner>
+          <Button variant="secondary" onClick={() => { setSent(false); setX(INVITE_EMPTY); setErrors([]); }}>Invite someone else</Button>
+        </div>
+      ) : (
+        <div className="pg-form">
+          <FormGroup
+            title={String(v.title) || 'Untitled form'}
+            description={v.showDesc ? 'They’ll get an email with a link to the assessment.' : undefined}
+            requiredNote={v.note ? undefined : null}
+            errors={errors}
+            onSubmit={submit}
+            onCancel={() => { setX(INVITE_EMPTY); setErrors([]); }}
+            submitLabel="Send invite"
+          >
+            <FormSection title="Candidate">
+              <div className="pg-form__row">
+                <Input id="fg-first" label="First name" required autoComplete="given-name" value={x.first} error={err('fg-first')} onChange={(e) => upd({ first: e.target.value })} />
+                <Input id="fg-last" label="Last name" required autoComplete="family-name" value={x.last} error={err('fg-last')} onChange={(e) => upd({ last: e.target.value })} />
+              </div>
+              <Input id="fg-email" label="Email" type="email" required autoComplete="email" value={x.email} error={err('fg-email')} onChange={(e) => upd({ email: e.target.value })} />
+              <Input id="fg-phone" label="Phone" type="tel" autoComplete="tel" description="Only for reminders by text." value={x.phone} onChange={(e) => upd({ phone: e.target.value })} />
+            </FormSection>
+            <FormSection title="Assessment">
+              <Select buttonId="fg-assessment" label="Assessment" required placeholder="Choose an assessment" value={x.assessment} error={err('fg-assessment')}
+                options={[{ value: 'pilot', label: 'Pilot screening v3' }, { value: 'nav', label: 'Navigation drills' }, { value: 'astro', label: 'Astromech basics' }]}
+                onChange={(val) => upd({ assessment: String(val) })} />
+              <div id="fg-proctoring">
+                <RadioGroup legend="Proctoring" required value={x.proctoring} error={err('fg-proctoring')} onChange={(val) => upd({ proctoring: val })}
+                  options={[{ value: 'recorded', label: 'Recorded', description: 'The webcam records while they work.' }, { value: 'live', label: 'Live', description: 'A proctor watches in real time.' }, { value: 'none', label: 'None' }]} />
+              </div>
+              <CheckboxGroup legend="Accommodations" value={x.help} onChange={(val) => upd({ help: val })}
+                options={[{ value: 'time', label: 'Extra time' }, { value: 'reader', label: 'Screen reader friendly version' }]} />
+              <TextArea label="Note to the candidate" limit={300} value={x.note} onChange={(e) => upd({ note: e.target.value })} />
+            </FormSection>
+          </FormGroup>
+        </div>
+      )}
+    />
+  );
+}
+
 /* ---------- Breadcrumbs playground ---------- */
 function BreadcrumbsDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({ trail: 'Hiring, Jobs, Starfighter Pilot L4, Pilot screening v3', fold: false, label: 'Breadcrumb' });
@@ -2381,6 +2490,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   loader: () => <LoaderDemo />,
   skeleton: () => <SkeletonDemo />,
   tag: () => <TagDemo />,
+  'form-group': () => <FormGroupDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,

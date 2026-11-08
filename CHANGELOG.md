@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.21 — 2026-11-08
+
+- Form group (`FormGroup`, `FormSection`, `focusField`, `form-group.css`): a header with a note about required fields, sections as named fieldsets, and Cancel and Submit. One error after a submit sends focus to that field; two or more also show an error summary at the top, with each problem as a link, and Tab from the summary goes straight to the first field with an error. Docs page after Forms, with a playground that validates as you'd expect.
+
 ## 0.3.20 — 2026-11-08
 
 - Tag input (`TagInput`): a labelled field that adds tags on Enter or a comma and lists them below it, each removable; refuses blanks and duplicates, takes a `max`, and announces what happened. Focus returns to the field when the last tag is removed. `TagList` can be named by a visible element (`labelledBy`).

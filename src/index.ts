@@ -61,6 +61,8 @@ export { Loader as ProgressIndicator, Loader as ProgressCircle } from './compone
 export type { LoaderProps as ProgressIndicatorProps } from './components/Loader';
 export { Tag, TagList, TagInput } from './components/Tag';
 export type { TagProps, TagListProps, TagInputProps, TagColor, TagItem } from './components/Tag';
+export { FormGroup, FormSection, focusField } from './components/FormGroup';
+export type { FormGroupProps, FormSectionProps, FormError } from './components/FormGroup';
 export { Tabs } from './components/Tabs';
 export type { TabItem, TabsProps } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
