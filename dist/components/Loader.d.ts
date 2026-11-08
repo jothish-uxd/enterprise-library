@@ -15,6 +15,15 @@ import { type ReactNode } from 'react';
  * - grid    nine squares that light up in a wave
  * Only circle and ticks can show a value.
  *
+ * Six more for AI, to say what a model is doing (pair them with words that
+ * say it too: "Thinking", "Searching 12 sources", "Writing a summary"):
+ * - sparkle   a four-point star that turns and breathes: thinking
+ * - shimmer   no mark; the label itself shimmers: thinking, in a line of text
+ * - network   nodes that light up along their links: reasoning
+ * - scan      a band sweeps down over lines: searching, reading sources
+ * - tokens    lines that write themselves out: generating, writing
+ * - caret     a blinking cursor, after streamed text: still writing
+ *
  * - role="progressbar", always named by `label` ("Loading results"), shown
  *   beside or below, or kept for screen readers only. With a value it has
  *   aria-valuenow/-min/-max and `valueText` ("8 of 12").
@@ -25,7 +34,9 @@ import { type ReactNode } from 'react';
  * - size 'sm' (16px, inline with text), 'md' (32px), 'lg' (64px; circle and
  *   ticks show the value inside).
  */
-export type LoaderType = 'circle' | 'ticks' | 'dots' | 'bars' | 'orbit' | 'pulse' | 'grid';
+export type LoaderType = 'circle' | 'ticks' | 'dots' | 'bars' | 'orbit' | 'pulse' | 'grid' | 'sparkle' | 'shimmer' | 'network' | 'scan' | 'tokens' | 'caret';
+/** The AI types, for pickers and docs */
+export declare const AI_LOADER_TYPES: LoaderType[];
 export interface LoaderProps {
     type?: LoaderType;
     /** Says what's happening: "Loading results" */
@@ -40,4 +51,4 @@ export interface LoaderProps {
     labelPosition?: 'end' | 'below' | 'hidden';
     className?: string;
 }
-export declare function Loader({ type, label, value, max, valueText, size, labelPosition, className, }: LoaderProps): import("react").JSX.Element;
+export declare function Loader({ type, label, value, max, valueText, size, labelPosition: position, className, }: LoaderProps): import("react").JSX.Element;

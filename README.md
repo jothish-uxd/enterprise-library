@@ -7,7 +7,7 @@ Docs: https://jothish-uxd.github.io/enterprise-library/ — one page, `index.htm
 ## Install
 
 ```sh
-npm install github:jothish-uxd/enterprise-library#v0.3.14
+npm install github:jothish-uxd/enterprise-library#v0.3.15
 ```
 
 ```tsx
@@ -20,7 +20,7 @@ Load Geist and Geist Mono in the app (see Getting started on the docs page).
 ## What's inside
 
 - **Foundations:** colour (monochrome plus error, warning and success), an eight-step type ramp, spacing, radius, shadow and control-height tokens.
-- **Components:** Accordion, Alerts (Banner, Toast: `ToastProvider`, `useToast`), Buttons (`Button`), Forms (Input, Text area, Select and Multi-select, Checkbox and Checkbox group, Radio button and Radio group), Table (with `SortHeader`, `TableCheck`, `TableEmpty`), Card and Choice card, Dialog, Link, Loader (circle, ticks, dots, bars, orbit, pulse, grid), Menu, Navigation (Header navigation `HeaderNav`, Side navigation `SideNav`), Progress bar (`ProgressBar`), Tabs, Breadcrumbs, Stepper, Status mark (`StatusMark`), Tiles, Segmented control, Skeleton, Chips, Switch, Stat filter (`StatFilter`), Tooltip, Browser frame (`BrowserFrame`), Reset button (`ResetButton`).
+- **Components:** Accordion, Alerts (Banner, Toast: `ToastProvider`, `useToast`), Buttons (`Button`), Forms (Input, Text area, Select and Multi-select, Checkbox and Checkbox group, Radio button and Radio group), Table (with `SortHeader`, `TableCheck`, `TableEmpty`), Card and Choice card, Dialog, Link, Loader (circle, ticks, dots, bars, orbit, pulse, grid; AI: sparkle, shimmer, network, scan, tokens, caret), Menu, Navigation (Header navigation `HeaderNav`, Side navigation `SideNav`), Progress bar (`ProgressBar`), Tabs, Breadcrumbs, Stepper, Status mark (`StatusMark`), Tiles, Segmented control, Skeleton, Chips, Switch, Stat filter (`StatFilter`), Tooltip, Browser frame (`BrowserFrame`), Reset button (`ResetButton`).
 - **Patterns** (working examples, React versions coming): bulk actions, data table, details sheet, filter bar, pagination, multi-step form, command palette, destructive confirm, notifications, empty / loading / error states, and admin screens (audit log, usage caps, compliance, reports, asset inventory, configuration, roles and permissions).
 
 ## Apps that use it

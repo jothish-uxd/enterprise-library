@@ -51,7 +51,7 @@ export { ToastProvider, useToast } from './components/Toast';
 export type { ToastOptions, ToastProviderProps } from './components/Toast';
 export { ProgressBar } from './components/ProgressBar';
 export type { ProgressBarProps } from './components/ProgressBar';
-export { Loader } from './components/Loader';
+export { Loader, AI_LOADER_TYPES } from './components/Loader';
 export type { LoaderProps, LoaderType } from './components/Loader';
 export { Skeleton } from './components/Skeleton';
 export type { SkeletonProps } from './components/Skeleton';

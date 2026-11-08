@@ -1,6 +1,7 @@
 /* Loader: a small square mark that shows something is loading, and how far it's got when that can be measured.
    .loader                     __mark (role=progressbar) and __label (with __inline-value)
      --circle --ticks --dots --bars --orbit --pulse --grid
+     AI (--ai): --sparkle --shimmer --network --scan --tokens --caret
      --sm --md --lg            16px, 32px, 64px; at lg, circle and ticks show the value inside (__value)
      --label-end --label-below --label-hidden
      --waiting                 no value: it moves; with reduced motion it holds still */
@@ -59,6 +60,67 @@
 .loader__cell--2 { background: var(--ink-faint); }
 .loader__cell--3, .loader__cell--4 { background: var(--rule-strong); }
 
+/* ---------- AI ---------- */
+/* Sparkle: a four-point star, and a small one that twinkles */
+.loader__star { fill: var(--ink); transform-origin: 18px 18px; }
+.loader__star--small { fill: var(--ink-soft); transform-origin: 29px 6.5px; }
+
+/* Shimmer: no mark; the label is the loader */
+.loader--shimmer { gap: 0; }
+.loader--shimmer .loader__mark { width: 0; height: 0; }
+.loader--shimmer .loader__label { color: var(--ink-soft); }
+
+/* Network: links in the rule colour, nodes that light up one after another */
+.loader__link { stroke: var(--rule-strong); stroke-width: 1.4; }
+.loader__node { fill: var(--ink-faint); }
+.loader__node--5 { fill: var(--ink); }
+
+/* Scan and tokens: lines of text in a small page */
+.loader__page { position: relative; display: grid; align-content: center; gap: calc(var(--loader-size) / 10); width: 84%; height: 84%; overflow: hidden; }
+.loader__text-line, .loader__token-line { display: block; height: calc(var(--loader-size) / 10); border-radius: var(--radius-full); background: var(--rule-strong); }
+.loader__text-line:nth-child(2) { width: 80%; }
+.loader__text-line:nth-child(3) { width: 92%; }
+.loader__text-line:nth-child(4) { width: 60%; }
+.loader__beam { position: absolute; left: 0; right: 0; top: 0; height: 30%; border-bottom: 2px solid var(--ink); background: linear-gradient(to bottom, transparent, var(--bg-hover)); }
+.loader__token-line { width: 100%; background: var(--ink); }
+.loader__token-line:nth-child(2) { width: 85%; background: var(--ink-soft); }
+.loader__token-line:nth-child(3) { width: 45%; background: var(--ink-faint); }
+
+/* Caret: a block cursor after the words */
+.loader--caret { flex-direction: row-reverse; justify-content: flex-end; gap: var(--space-1); }
+.loader--caret .loader__mark { width: calc(var(--loader-size) / 2.5); }
+.loader__caret { display: block; width: 45%; height: min(60%, 1.25em); border-radius: 1px; background: var(--ink); }
+.loader--caret.loader--label-below { flex-direction: column-reverse; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .loader__star { animation: loader-breathe 1.8s ease-in-out infinite; }
+  .loader__star--small { animation: loader-twinkle 1.8s ease-in-out infinite; }
+  .loader--shimmer .loader__label {
+    color: transparent; -webkit-background-clip: text; background-clip: text;
+    background-image: linear-gradient(90deg, var(--ink-faint) 0 35%, var(--ink) 50%, var(--ink-faint) 65% 100%);
+    background-size: 250% 100%; animation: loader-shimmer 1.8s linear infinite;
+  }
+  .loader__node { animation: loader-node 1.8s ease-in-out infinite; }
+  .loader__node--5 { animation-delay: 0s; }
+  .loader__node--0 { animation-delay: .3s; }
+  .loader__node--1 { animation-delay: .6s; }
+  .loader__node--2 { animation-delay: .9s; }
+  .loader__node--4 { animation-delay: 1.2s; }
+  .loader__node--3 { animation-delay: 1.5s; }
+  .loader__beam { animation: loader-scan 1.6s ease-in-out infinite; }
+  .loader__token-line, .loader__token-line:nth-child(n) { background: var(--ink); transform-origin: left; animation: loader-write 2.4s ease-out infinite; }
+  .loader__token-line:nth-child(2) { animation-delay: .4s; }
+  .loader__token-line:nth-child(3) { animation-delay: .8s; }
+  .loader__caret { animation: loader-caret 1s steps(1) infinite; }
+  @keyframes loader-breathe { 0%, 100% { transform: rotate(0) scale(.82); } 50% { transform: rotate(45deg) scale(1); } }
+  @keyframes loader-twinkle { 0%, 40%, 100% { opacity: 0; transform: scale(.4); } 60% { opacity: 1; transform: scale(1); } }
+  @keyframes loader-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+  @keyframes loader-node { 0%, 60%, 100% { fill: var(--ink-faint); } 20% { fill: var(--ink); } }
+  @keyframes loader-scan { from { transform: translateY(-100%); } to { transform: translateY(340%); } }
+  @keyframes loader-write { 0% { transform: scaleX(0); opacity: 1; } 45% { transform: scaleX(1); opacity: 1; } 85% { opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
+  @keyframes loader-caret { 50% { opacity: 0; } }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .loader--circle .loader__fill { transition: stroke-dasharray var(--duration-base) ease; }
   .loader--circle.loader--waiting svg { animation: loader-spin .9s linear infinite; }
@@ -90,7 +152,11 @@
 }
 
 @media (forced-colors: active) {
-  .loader__track, .loader__tick { stroke: GrayText; }
+  .loader__track, .loader__tick, .loader__link { stroke: GrayText; }
+  .loader__star, .loader__node { fill: CanvasText; }
+  .loader__text-line, .loader__token-line, .loader__caret { background: CanvasText; forced-color-adjust: none; }
+  .loader__beam { border-color: Highlight; background: none; }
+  .loader--shimmer .loader__label { color: CanvasText; background: none; }
   .loader--circle .loader__fill, .loader__tick.is-on, .loader__tick--11, .loader__tick--10, .loader__wave { stroke: CanvasText; }
   .loader__moon, .loader__core { fill: CanvasText; }
   .loader__dot, .loader__bar, .loader__cell { background: CanvasText; forced-color-adjust: none; }

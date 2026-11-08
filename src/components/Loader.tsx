@@ -16,6 +16,15 @@ import { useId, type ReactNode } from 'react';
  * - grid    nine squares that light up in a wave
  * Only circle and ticks can show a value.
  *
+ * Six more for AI, to say what a model is doing (pair them with words that
+ * say it too: "Thinking", "Searching 12 sources", "Writing a summary"):
+ * - sparkle   a four-point star that turns and breathes: thinking
+ * - shimmer   no mark; the label itself shimmers: thinking, in a line of text
+ * - network   nodes that light up along their links: reasoning
+ * - scan      a band sweeps down over lines: searching, reading sources
+ * - tokens    lines that write themselves out: generating, writing
+ * - caret     a blinking cursor, after streamed text: still writing
+ *
  * - role="progressbar", always named by `label` ("Loading results"), shown
  *   beside or below, or kept for screen readers only. With a value it has
  *   aria-valuenow/-min/-max and `valueText` ("8 of 12").
@@ -26,7 +35,11 @@ import { useId, type ReactNode } from 'react';
  * - size 'sm' (16px, inline with text), 'md' (32px), 'lg' (64px; circle and
  *   ticks show the value inside).
  */
-export type LoaderType = 'circle' | 'ticks' | 'dots' | 'bars' | 'orbit' | 'pulse' | 'grid';
+export type LoaderType = 'circle' | 'ticks' | 'dots' | 'bars' | 'orbit' | 'pulse' | 'grid'
+  | 'sparkle' | 'shimmer' | 'network' | 'scan' | 'tokens' | 'caret';
+
+/** The AI types, for pickers and docs */
+export const AI_LOADER_TYPES: LoaderType[] = ['sparkle', 'shimmer', 'network', 'scan', 'tokens', 'caret'];
 
 export interface LoaderProps {
   type?: LoaderType;
@@ -79,6 +92,36 @@ function Mark({ type, known, pct }: { type: LoaderType; known: boolean; pct: num
           <circle className="loader__core" cx="18" cy="18" r="6" />
         </svg>
       );
+    case 'sparkle':
+      return (
+        <svg {...SVG}>
+          <path className="loader__star" d="M18 4c1 7.2 4.8 11 14 14-9.2 3-13 6.8-14 14-1-7.2-4.8-11-14-14 9.2-3 13-6.8 14-14z" />
+          <path className="loader__star loader__star--small" d="M29 2.5c.4 2.4 1.6 3.6 4 4-2.4.4-3.6 1.6-4 4-.4-2.4-1.6-3.6-4-4 2.4-.4 3.6-1.6 4-4z" />
+        </svg>
+      );
+    case 'shimmer':
+      return null;
+    case 'network': {
+      const nodes: [number, number][] = [[6, 9], [18, 5], [30, 11], [11, 25], [25, 29], [18, 17]];
+      const links: [number, number][] = [[0, 5], [1, 5], [2, 5], [3, 5], [4, 5], [0, 1], [1, 2], [3, 4]];
+      return (
+        <svg {...SVG}>
+          {links.map(([a, b], i) => <line key={i} className="loader__link" x1={nodes[a][0]} y1={nodes[a][1]} x2={nodes[b][0]} y2={nodes[b][1]} />)}
+          {nodes.map(([x, y], i) => <circle key={i} className={`loader__node loader__node--${i}`} cx={x} cy={y} r={i === 5 ? 3.6 : 3} />)}
+        </svg>
+      );
+    }
+    case 'scan':
+      return (
+        <span className="loader__page">
+          {[0, 1, 2, 3].map((i) => <span key={i} className="loader__text-line" />)}
+          <span className="loader__beam" />
+        </span>
+      );
+    case 'tokens':
+      return <span className="loader__page">{[0, 1, 2].map((i) => <span key={i} className="loader__token-line" />)}</span>;
+    case 'caret':
+      return <span className="loader__caret" />;
     case 'grid':
       return <span className="loader__grid">{Array.from({ length: 9 }, (_, i) => <span key={i} className={`loader__cell loader__cell--${(i % 3) + Math.floor(i / 3)}`} />)}</span>;
     default:
@@ -92,15 +135,17 @@ function Mark({ type, known, pct }: { type: LoaderType; known: boolean; pct: num
 }
 
 export function Loader({
-  type = 'circle', label, value, max = 100, valueText, size = 'md', labelPosition = 'end', className = '',
+  type = 'circle', label, value, max = 100, valueText, size = 'md', labelPosition: position = 'end', className = '',
 }: LoaderProps) {
+  // Shimmer is the label, so it always shows
+  const labelPosition = type === 'shimmer' ? 'end' : position;
   const id = useId();
   const known = MEASURABLE.includes(type) && typeof value === 'number' && Number.isFinite(value);
   const clamped = known ? Math.min(Math.max(value!, 0), max) : 0;
   const pct = max > 0 ? (clamped / max) * 100 : 0;
   const text = known ? (valueText ?? `${Math.round(pct)}%`) : undefined;
   const inside = known && size === 'lg';
-  const cls = ['loader', `loader--${type}`, `loader--${size}`, `loader--label-${labelPosition}`, !known && 'loader--waiting', className]
+  const cls = ['loader', `loader--${type}`, AI_LOADER_TYPES.includes(type) && 'loader--ai', `loader--${size}`, `loader--label-${labelPosition}`, !known && 'loader--waiting', className]
     .filter(Boolean).join(' ');
   return (
     <div className={cls}>

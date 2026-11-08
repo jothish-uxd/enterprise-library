@@ -251,6 +251,14 @@ A small square mark that shows something is loading or working, and how far it's
   - `ticks`: twelve ticks; measured, the first n are ink and the rest `--rule-strong`; waiting, they fade from ink through `--ink-soft` and `--ink-faint` and turn in 12 steps.
   - `dots`: three dots pulse in turn. `bars`: four bars rise and fall. `orbit`: a dot goes round a `--rule` ring. `pulse`: a ring grows from a dot and fades. `grid`: nine squares light up in a diagonal wave.
   - Only circle and ticks take a `value`.
+  - AI (`AI_LOADER_TYPES`, class `.loader--ai`), to say what a model is doing, always paired with a label that says it too:
+    - `sparkle`: a four-point star turns and breathes, a small one twinkles (thinking).
+    - `shimmer`: no mark; a highlight sweeps across the label (`background-clip: text`); the label always shows.
+    - `network`: six nodes light up in turn along `--rule-strong` links (reasoning).
+    - `scan`: an ink-edged band sweeps down over four lines (searching, reading sources).
+    - `tokens`: three lines write themselves out left to right (generating).
+    - `caret`: a block cursor after the label, blinking (still writing).
+    - Reduced motion: all still; shimmer is plain `--ink-soft` text and the caret stays solid.
 - Sizes `sm` 16px, `md` 32px, `lg` 64px (circle and ticks show the value inside, in mono). Labels beside (`end`), `below`, or `hidden`.
 - `role="progressbar"` named by the label, with value attributes only when measured. Not a live region, not focusable: mark the loading area `aria-busy="true"` and announce the end if the wait was long.
 - Reduced motion: nothing moves. Circle and orbit go dashed; ticks, dots, bars, pulse and grid hold a still fade in ink shades.

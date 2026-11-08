@@ -1323,13 +1323,30 @@ const LOADER_TYPES: { value: string; label: string }[] = [
   { value: 'circle', label: 'Circle' }, { value: 'ticks', label: 'Ticks' }, { value: 'dots', label: 'Dots' },
   { value: 'bars', label: 'Bars' }, { value: 'orbit', label: 'Orbit' }, { value: 'pulse', label: 'Pulse' }, { value: 'grid', label: 'Grid' },
 ];
+const AI_TYPES: { value: string; label: string }[] = [
+  { value: 'sparkle', label: 'Sparkle' }, { value: 'shimmer', label: 'Shimmer' }, { value: 'network', label: 'Network' },
+  { value: 'scan', label: 'Scan' }, { value: 'tokens', label: 'Tokens' }, { value: 'caret', label: 'Caret' },
+];
+const LOADER_LABEL: Record<string, string> = {
+  sparkle: 'Thinking', shimmer: 'Thinking', network: 'Reasoning through the rubric', scan: 'Searching 12 sources',
+  tokens: 'Writing a summary', caret: 'Writing',
+};
 const LOADER_MEASURED = ['circle', 'ticks'];
 function LoaderDemo() {
-  const [type, setType] = useState('circle');
+  const [type, setTypeRaw] = useState('circle');
   const [v, setV] = useState<Record<string, PgValue>>({
-    label: 'Loading results', progress: 'none', words: false, size: 'md', position: 'end',
+    set: 'general', label: 'Loading results', progress: 'none', words: false, size: 'md', position: 'end',
   });
-  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const labelFor = (t: string) => LOADER_LABEL[t] ?? 'Loading results';
+  const setType = (t: string) => {
+    setV((old) => (old.label === labelFor(type) ? { ...old, label: labelFor(t) } : old));
+    setTypeRaw(t);
+  };
+  const set = (key: string, value: PgValue) => {
+    if (key === 'set') setType(value === 'ai' ? 'sparkle' : 'circle');
+    setV((old) => ({ ...old, [key]: value }));
+  };
+  const ai = v.set === 'ai';
   const measurable = LOADER_MEASURED.includes(type);
   const known = measurable && v.progress !== 'none';
   const value = known ? Number(v.progress) : undefined;
@@ -1340,16 +1357,17 @@ function LoaderDemo() {
     ...(known ? [{ attr: 'value', value: String(value), expr: true }, { attr: 'max', value: '12', expr: true }] : []),
     ...(valueText ? [{ attr: 'valueText', value: valueText }] : []),
     ...(v.size !== 'md' ? [{ attr: 'size', value: String(v.size) }] : []),
-    ...(v.position !== 'end' ? [{ attr: 'labelPosition', value: String(v.position) }] : []),
+    ...(v.position !== 'end' && type !== 'shimmer' ? [{ attr: 'labelPosition', value: String(v.position) }] : []),
   ];
   const controls: PgControl[] = [
-    { kind: 'text', key: 'label', label: 'Label', help: 'What’s happening. Always there, even when hidden.' },
+    { kind: 'segmented', key: 'set', label: 'Set', options: [{ value: 'general', label: 'General' }, { value: 'ai', label: 'AI' }] },
+    { kind: 'text', key: 'label', label: 'Label', help: ai ? 'Say what the model is doing: thinking, searching, writing.' : 'What’s happening. Always there, even when hidden.' },
     ...(measurable ? [
       { kind: 'select' as const, key: 'progress', label: 'Progress', options: [{ value: 'none', label: 'Not measured' }, { value: '0', label: '0 of 12' }, { value: '3', label: '3 of 12' }, { value: '8', label: '8 of 12' }, { value: '12', label: '12 of 12' }] },
       { kind: 'boolean' as const, key: 'words', label: 'Value in words', help: '“8 of 12” instead of “67%”.' },
     ] : []),
     { kind: 'segmented', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }, { value: 'lg', label: 'Large' }] },
-    { kind: 'segmented', key: 'position', label: 'Label', options: [{ value: 'end', label: 'Beside' }, { value: 'below', label: 'Below' }, { value: 'hidden', label: 'Hidden' }] },
+    ...(type === 'shimmer' ? [] : [{ kind: 'segmented' as const, key: 'position', label: 'Label position', options: [{ value: 'end', label: 'Beside' }, { value: 'below', label: 'Below' }, { value: 'hidden', label: 'Hidden' }] }]),
   ];
   return (
     <Playground
@@ -1360,7 +1378,7 @@ function LoaderDemo() {
       file="Results.tsx"
       tag="Loader"
       attrs={attrs}
-      above={<ChipGroup label="Loader type" size="sm" options={LOADER_TYPES} value={type} onChange={setType} />}
+      above={<ChipGroup label={ai ? 'AI loader type' : 'Loader type'} size="sm" options={ai ? AI_TYPES : LOADER_TYPES} value={type} onChange={setType} />}
       controls={controls}
       preview={
         <Loader type={type as 'circle'} label={String(v.label) || 'Loading'} value={value} max={12} valueText={valueText}

@@ -30,7 +30,7 @@ export { HeaderNav } from './components/HeaderNav';
 export { Banner } from './components/Banner';
 export { ToastProvider, useToast } from './components/Toast';
 export { ProgressBar } from './components/ProgressBar';
-export { Loader } from './components/Loader';
+export { Loader, AI_LOADER_TYPES } from './components/Loader';
 export { Skeleton } from './components/Skeleton';
 /** @deprecated Renamed Loader in 0.3.13 */
 export { Loader as ProgressIndicator, Loader as ProgressCircle } from './components/Loader';

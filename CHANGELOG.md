@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.15 — 2026-11-08
+
+- Loader: six AI types that say what a model is doing: sparkle (thinking), shimmer (the label shimmers), network (reasoning), scan (searching sources), tokens (writing) and caret (still writing). `AI_LOADER_TYPES` lists them. All still with reduced motion.
+- Docs: the Loader playground has a General / AI set; an "AI loaders" section says what each is for and how to label it.
+
 ## 0.3.14 — 2026-11-08
 
 - Loader is now small marks only, in seven types: circle, ticks, dots, and new bars, orbit, pulse and grid. Circle and ticks can show a value. The `line` type is gone (use the progress bar, which slides without a value), and so is `skeleton`, which is now its own component.
