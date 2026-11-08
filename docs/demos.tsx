@@ -283,7 +283,7 @@ function ChoiceCardDemo() {
   ];
   return (
     <Playground
-      name="ChoiceCard"
+      name="Choice card"
       compact
       wide
       values={v}
@@ -342,7 +342,7 @@ function StatFilterDemo() {
   ];
   return (
     <Playground
-      name="StatFilter"
+      name="Stat filter"
       compact
       wide
       values={v}
@@ -502,7 +502,7 @@ function BrowserFrameDemo() {
   ];
   return (
     <Playground
-      name="BrowserFrame"
+      name="Browser frame"
       compact
       wide
       values={v}
@@ -545,7 +545,7 @@ function ResetDemo() {
   ];
   return (
     <Playground
-      name="ResetButton"
+      name="Reset button"
       compact
       values={v}
       set={set}
@@ -1069,7 +1069,7 @@ function SideNavDemo() {
   ];
   return (
     <Playground
-      name="SideNav"
+      name="Side navigation"
       compact
       wide
       values={v}
@@ -1107,7 +1107,7 @@ function HeaderNavDemo() {
   ];
   return (
     <Playground
-      name="HeaderNav"
+      name="Header navigation"
       compact
       wide
       values={v}
@@ -1243,7 +1243,7 @@ function StatusMarkDemo() {
   ];
   return (
     <Playground
-      name="StatusMark"
+      name="Status mark"
       compact
       values={v}
       set={set}

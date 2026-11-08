@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.8 — 2026-11-08
+
+- Docs: component names are in sentence case with spaces wherever people read them (Status mark, Stat filter, Browser frame, Reset button, Choice card, Side navigation, Header navigation, Multi-select). React names stay in code. No API changes.
+
 ## 0.3.7 — 2026-11-08
 
 - Navigation (`navigation.css`): `HeaderNav`, top-level sections across the app header, with the current one marked by full ink and a 2px rule on the header's edge; and `SideNav`, the pages within a section in named groups, with a back link, group icons, counts, add links, empty text, and the current page marked by weight, a tint and an ink bar. Generalised from Cipher Lab and Online Assessments. Docs page with a playground for each.

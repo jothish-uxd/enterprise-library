@@ -23,5 +23,6 @@ This repo is the single source of Sleepy's design system: foundations (tokens), 
 - New components come from real use in an app. Generalise them before adding: no app names, no app-specific class names or data, no CSS imports inside components (styles live in `src/styles/` and ship in `styles.css`).
 - Keep the look: Geist and Geist Mono, monochrome ink, state shown with ink weight, rules and shape, never colour alone. Colour appears only in error, warning and success messages, and on the danger button (red, `--danger`). Only use the tokens in `src/styles/tokens.css`; add a token there before using a new value anywhere.
 - Accessibility is part of each component's contract: real buttons with names, WAI-ARIA patterns, visible focus, forced-colors fallbacks, reduced motion respected. Document the keyboard and screen-reader behaviour in DESIGN-SYSTEM.md and on the component's page.
+- Name components in sentence case with spaces everywhere people read them: sidebar, page titles, tiles, headings, prose, playground labels (Status mark, Side navigation, Reset button). The React name (`StatusMark`) appears only in code.
 - Every new component gets a page in the Components section of `index.html` (sidebar link, panel, pager) with a live demo.
 - Commit as Sleepy <jothish.uxd@gmail.com>.

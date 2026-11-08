@@ -61,6 +61,8 @@ Stylesheets: `styles.css` has everything. Each file also ships under `css/`: `to
 
 ## Components
 
+In docs and prose, components are named in sentence case with spaces (Status mark, Side navigation). The React name (`StatusMark`, `SideNav`) appears only in code.
+
 ### Accordion (`accordion.css`, `components/Accordion.tsx`)
 
 A stack of sections people open one or more of, so a long page shows its outline first: setup sections, test cases, FAQs (WAI-ARIA accordion). Not for views people switch between (Tabs) or a single show/hide.
@@ -117,14 +119,14 @@ One setting on or off, applied straight away. A native checkbox with `role="swit
 
 `.table` with modifiers `--selectable` (checkbox column; chosen rows `.is-selected` or `aria-selected` get a wash and a 3px ink bar), `--hover`, `--compact`, `--sticky` (`--table-sticky-top`). Helpers: `SortHeader` (th carries `aria-sort`, the button the name: “Score, sorted descending, button”), `TableCheck` (row checkbox or select-all with the mixed state), `TableEmpty` (one row saying why it’s empty, with a next step). Every table has a caption and row headers.
 
-### Card and ChoiceCard (`card.css`, `components/Card.tsx`)
+### Card and choice card (`card.css`, `components/Card.tsx`: `Card`, `ChoiceCard`)
 
 `.card` with `__header` (`__heading`, `__title`, `__meta`, `__end`), `__body`, `__footer` (full-width rule), `__stats`; variants `--subtle`, `--strong`, `--emphasis` (ink border), `--compact`; `.card-grid` (`--card-min`) and `.card-list`. `Card` renders the same markup.
 
 `ChoiceCard` is a card that is a real radio or checkbox: the input covers the card, invisible; the title is its name, the description its description. Chosen: a 2px ink edge and a filled mark (ring for radio, box for checkbox). Disabled stays readable and says why. Never a second control inside. A grid of links to other pages is Tiles, not cards. An unavailable ChoiceCard (`disabled` with `disabledReason`) uses `aria-disabled`: Tab, or the arrow keys in a radio group, still reach it, it can't be chosen, and the reason shows in a tooltip and is read as its description.
 
 
-### Filters and views: Segmented control, Chips, StatFilter
+### Filters and views: segmented control, chips, stat filter
 
 All three narrow or switch what's shown below them. Pick by how many options there are, whether people choose one or several, and whether the counts are the point.
 
@@ -197,7 +199,7 @@ Where people are in a sequence of steps, and how far each has got.
 - Plain steps are an ordered list named by `label`, the current one `aria-current="step"`. Steps with `to` or `href` are links in a `nav`, the current one `aria-current="page"`; only links are in the Tab order. Each step reads its number, name and status: "3. Proctoring, in progress, current step".
 - Rules: three to about seven steps, short noun labels; link only the steps people can go back to; see the Multi-step form pattern for saving and validation between steps.
 
-### Navigation: SideNav and HeaderNav (`navigation.css`, `components/SideNav.tsx`, `components/HeaderNav.tsx`)
+### Navigation: side navigation and header navigation (`navigation.css`, `components/SideNav.tsx`, `components/HeaderNav.tsx`)
 
 Moving between a product's pages. Generalised from the header tabs and sidebars in Cipher Lab and Online Assessments. Classes are `.sidenav__*` and `.headernav__*`, so they don't collide with apps' own `.nav-link`.
 
@@ -221,7 +223,7 @@ Goes somewhere. To do something, use a Button.
 - Keyboard: Tab reaches it, Enter follows it. Screen readers: "proctoring policy, link"; new-tab links add "(opens in a new tab)". Link text says where it goes, never "click here".
 - Forced colors: LinkText, underline kept on hover.
 
-### StatusMark (`status-mark.css`, `components/StatusMark.tsx`)
+### Status mark (`status-mark.css`, `components/StatusMark.tsx`)
 
 A status in words, with a small mark that repeats it by shape. Never colour, never the mark alone.
 
@@ -247,7 +249,7 @@ Each `.tile` holds one `.tile__link`: an optional `.tile__media` picture (72px, 
 - Filtered tiles get `hidden`, and the number showing is announced in a polite live region.
 - High contrast: hairlines and borders become CanvasText.
 
-### BrowserFrame
+### Browser frame (`BrowserFrame`)
 
 `src/components/BrowserFrame.tsx` and `src/styles/browser-frame.css`.
 
@@ -340,7 +342,7 @@ Rules:
 - **High contrast.** In forced-colors mode the active option gets a system Highlight outline; an unavailable button is GrayText.
 - **MultiSelect** takes the same props, with `value` and `onChange` as arrays. Docs: one playground for both, with a Multiple switch.
 
-### ResetButton
+### Reset button (`ResetButton`)
 
 `src/components/ResetButton.tsx` and `src/styles/reset.css`.
 
@@ -377,7 +379,7 @@ Extra detail beside something on the page, in two versions (the docs show both i
 - Content: `.tooltip__title` (`--rule`), `.tooltip__dl`, `.tooltip__note`, and for click `.tooltip__links`. Trigger: `.tooltip-trigger`, `--info` for a quiet info icon.
 - `HoverCard` (with `card`) and the `.hovercard`, `.card-title`, `.card-dl`, `.card-note` classes are deprecated aliases kept for 0.1 apps.
 
-### StatFilter
+### Stat filter (`StatFilter`)
 
 `src/components/StatFilter.tsx` and `src/styles/stat-filter.css`.
 
