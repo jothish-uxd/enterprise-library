@@ -1,11 +1,29 @@
 /* Tag: a short label on a thing. The base .tag (mono, small, quiet) is in type.css.
    .tag--strong        full ink, to set one tag apart
+   .tag--red --amber --green --teal --blue --purple --pink
+                       a tint for categories and statuses (--tag-* tokens); always with words
+   .tag__mark          a status mark shape before the label
    .tag--dismissible   a remove button (__dismiss) after the label; its target is 24px
    .tag-list           a list of tags that wraps; __items, __empty */
 
 .tag { display: inline-flex; align-items: center; gap: var(--space-1); line-height: var(--leading-snug); }
 .tag--strong { color: var(--ink); border-color: var(--ink); background: var(--bg); }
 .tag--dismissible { padding-right: 2px; }
+.tag__mark { flex: none; width: 11px; height: 11px; margin-left: -2px; }
+/* The check's cut matches the tag's own fill */
+.tag__mark .status-mark__tick { stroke: var(--tag-surface, var(--bg-subtle)); }
+
+/* Colours: tinted box, coloured words and rule; strong adds a full-colour border */
+.tag--red { --tag-surface: var(--tag-red-bg); color: var(--tag-red); background: var(--tag-surface); border-color: var(--tag-red-rule); }
+.tag--amber { --tag-surface: var(--tag-amber-bg); color: var(--tag-amber); background: var(--tag-surface); border-color: var(--tag-amber-rule); }
+.tag--green { --tag-surface: var(--tag-green-bg); color: var(--tag-green); background: var(--tag-surface); border-color: var(--tag-green-rule); }
+.tag--teal { --tag-surface: var(--tag-teal-bg); color: var(--tag-teal); background: var(--tag-surface); border-color: var(--tag-teal-rule); }
+.tag--blue { --tag-surface: var(--tag-blue-bg); color: var(--tag-blue); background: var(--tag-surface); border-color: var(--tag-blue-rule); }
+.tag--purple { --tag-surface: var(--tag-purple-bg); color: var(--tag-purple); background: var(--tag-surface); border-color: var(--tag-purple-rule); }
+.tag--pink { --tag-surface: var(--tag-pink-bg); color: var(--tag-pink); background: var(--tag-surface); border-color: var(--tag-pink-rule); }
+.tag--strong:is(.tag--red, .tag--amber, .tag--green, .tag--teal, .tag--blue, .tag--purple, .tag--pink) { border-color: currentColor; }
+.tag:is(.tag--red, .tag--amber, .tag--green, .tag--teal, .tag--blue, .tag--purple, .tag--pink) .tag__dismiss { color: inherit; }
+.tag:is(.tag--red, .tag--amber, .tag--green, .tag--teal, .tag--blue, .tag--purple, .tag--pink) .tag__dismiss:hover { background: var(--bg); }
 .tag__label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 
 .tag__dismiss {
@@ -23,6 +41,6 @@
 .tag-list__empty { margin: 0; font-size: var(--text-small); color: var(--ink-faint); }
 
 @media (forced-colors: active) {
-  .tag, .tag--strong { border-color: CanvasText; }
+  .tag, .tag--strong, .tag[class*="tag--"] { border-color: CanvasText; color: CanvasText; }
   .tag__dismiss { color: ButtonText; }
 }

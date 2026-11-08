@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.19 — 2026-11-08
+
+- Tag colours: `color` on `Tag` (gray, red, amber, green, teal, blue, purple, pink) from new `--tag-*` tokens, for scanning categories and statuses in large sets of data, with text at least 5.8:1 on its tint. `mark` adds a status mark shape so a status reads by shape too. `TagList` takes `{ label, color, mark }`. `StatusMarkIcon` is exported for reuse.
+- Colour rule: tags join messages and the danger button as places colour appears, always with words (CLAUDE.md, the Colour page, Status mark and Buttons pages).
+- Docs: the Tag playground shows tags in a list or in a table's status column; the Colour page lists the tag tokens.
+
 ## 0.3.18 — 2026-11-08
 
 - Tag (`Tag`, `TagList`, `tag.css`): the mono `.tag` label as a component, with `strong` and an optional remove button (24px target, named "Remove {label}"). A tag list moves focus to the next tag when one is removed, or to a field you name when none are left, and announces it. Generalised from Online Assessments' tag input. Docs page with a playground.

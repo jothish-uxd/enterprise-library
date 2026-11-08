@@ -1,4 +1,5 @@
 import { type ReactNode, type RefObject } from 'react';
+import { type StatusMarkShape } from './StatusMark';
 /**
  * Tag — a short label on a thing: a type, a keyword, a skill. Mono, small and
  * quiet; not a button and not a filter (use Chips to filter).
@@ -6,12 +7,22 @@ import { type ReactNode, type RefObject } from 'react';
  * - `onDismiss` adds a remove button after the label, named "Remove {label}"
  *   (or `dismissLabel`). Its target is 24px, bigger than it looks.
  * - `strong` shows it in full ink, to set one tag apart: "Live" among "Soon".
+ * - `color` tints it (red, amber, green, teal, blue, purple, pink; gray is the
+ *   default), for categories and statuses across large sets of data, such as
+ *   a status column. The words always carry the meaning; add a `mark` (a
+ *   status mark shape) when the colour stands for a status, so it's told
+ *   apart by shape too.
  * - In a TagList, removing a tag moves focus to the next tag's remove button
  *   (or the previous one, or `emptyFocus` when none are left) and says
  *   "Removed {label}" politely, so keyboard users never lose their place.
  */
+export type TagColor = 'gray' | 'red' | 'amber' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
 export interface TagProps {
     children: ReactNode;
+    /** A tint, for categories and statuses in large sets of data (default gray) */
+    color?: TagColor;
+    /** A status mark shape before the label, so a status reads by shape too */
+    mark?: StatusMarkShape;
     /** Show a remove button; called when it's pressed */
     onDismiss?: () => void;
     /** Names the remove button; default "Remove {children}" */
@@ -19,11 +30,17 @@ export interface TagProps {
     strong?: boolean;
     className?: string;
 }
-export declare function Tag({ children, onDismiss, dismissLabel, strong, className }: TagProps): import("react").JSX.Element;
+export declare function Tag({ children, color, mark, onDismiss, dismissLabel, strong, className }: TagProps): import("react").JSX.Element;
+/** A tag in a list: its words, and optionally a colour and mark */
+export type TagItem = string | {
+    label: string;
+    color?: TagColor;
+    mark?: StatusMarkShape;
+};
 export interface TagListProps {
     /** Names the list for screen readers: "Skills" */
     label: string;
-    tags: string[];
+    tags: TagItem[];
     /** Makes the tags removable */
     onRemove?: (tag: string) => void;
     /** Where focus goes when the last tag is removed, e.g. the field that adds tags */

@@ -2,6 +2,8 @@
   Tokens — Enterprise Library.
   Geist, monochrome ink on white, true black in dark mode.
   State is shown with ink weight, rules and shape, never a brand colour.
+  Hue appears only in messages (error, warning, success), the danger button and
+  tag colours, and always alongside words.
   Dark mode follows the OS, and [data-theme="light"|"dark"] on <html> overrides it.
 */
 
@@ -26,9 +28,19 @@
   --success: #157032;
   --success-bg: #e6f4ea;
   --ok: var(--success);   /* deprecated alias, kept for 0.1 apps */
-  /* Danger buttons: the one place colour appears outside a message. */
+  /* Danger buttons: colour outside a message, with tags below. */
   --danger: var(--error);
   --on-danger: #ffffff;
+  /* Tag colours: for categories and statuses across large sets of data, such
+     as a status column. Always with words in the tag (text is at least 5.8:1 on
+     its tint); never the only way a value is told apart. */
+  --tag-red: #a1271c; --tag-red-bg: #fdecea; --tag-red-rule: #f1b4ad;
+  --tag-amber: #7a5000; --tag-amber-bg: #fdf3d7; --tag-amber-rule: #e8cc85;
+  --tag-green: #156b30; --tag-green-bg: #e6f4ea; --tag-green-rule: #a6d6b3;
+  --tag-teal: #0b6464; --tag-teal-bg: #e1f3f2; --tag-teal-rule: #9fd6d2;
+  --tag-blue: #1f4fc2; --tag-blue-bg: #e8effd; --tag-blue-rule: #b0c6f3;
+  --tag-purple: #6a2fb0; --tag-purple-bg: #f2ebfb; --tag-purple-rule: #cfbaee;
+  --tag-pink: #a1195a; --tag-pink-bg: #fce8f1; --tag-pink-rule: #eeb0cd;
 
   /* Shadows: overlays only. Flat surfaces use rules, not shadows. */
   --shadow-frame: 0 1px 2px rgba(0, 0, 0, .04), 0 12px 32px -12px rgba(0, 0, 0, .12);
@@ -116,6 +128,13 @@
     --success: #6fd28c;
     --success-bg: #11301c;
     --on-danger: #0a0a0a;
+    --tag-red: #ff9b91; --tag-red-bg: #3b1513; --tag-red-rule: #6b2a24;
+    --tag-amber: #f2c14e; --tag-amber-bg: #352a0e; --tag-amber-rule: #5e4a17;
+    --tag-green: #6fd28c; --tag-green-bg: #11301c; --tag-green-rule: #24532f;
+    --tag-teal: #5fd3cf; --tag-teal-bg: #0e2f2e; --tag-teal-rule: #1f5452;
+    --tag-blue: #8cb4ff; --tag-blue-bg: #14223f; --tag-blue-rule: #2b4170;
+    --tag-purple: #c4a2ff; --tag-purple-bg: #2a1a40; --tag-purple-rule: #4a3170;
+    --tag-pink: #ff8fc0; --tag-pink-bg: #3a1426; --tag-pink-rule: #66284a;
     --shadow-frame: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 32px -12px rgba(0, 0, 0, .7);
     --shadow-popover: 0 12px 32px -8px rgba(0, 0, 0, .7), 0 2px 6px rgba(0, 0, 0, .5);
     --shadow-overlay: 0 16px 40px -12px rgba(0, 0, 0, .8), 0 2px 6px rgba(0, 0, 0, .5);
@@ -142,6 +161,13 @@
   --success: #6fd28c;
   --success-bg: #11301c;
   --on-danger: #0a0a0a;
+  --tag-red: #ff9b91; --tag-red-bg: #3b1513; --tag-red-rule: #6b2a24;
+  --tag-amber: #f2c14e; --tag-amber-bg: #352a0e; --tag-amber-rule: #5e4a17;
+  --tag-green: #6fd28c; --tag-green-bg: #11301c; --tag-green-rule: #24532f;
+  --tag-teal: #5fd3cf; --tag-teal-bg: #0e2f2e; --tag-teal-rule: #1f5452;
+  --tag-blue: #8cb4ff; --tag-blue-bg: #14223f; --tag-blue-rule: #2b4170;
+  --tag-purple: #c4a2ff; --tag-purple-bg: #2a1a40; --tag-purple-rule: #4a3170;
+  --tag-pink: #ff8fc0; --tag-pink-bg: #3a1426; --tag-pink-rule: #66284a;
   --shadow-frame: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 32px -12px rgba(0, 0, 0, .7);
   --shadow-popover: 0 12px 32px -8px rgba(0, 0, 0, .7), 0 2px 6px rgba(0, 0, 0, .5);
   --shadow-overlay: 0 16px 40px -12px rgba(0, 0, 0, .8), 0 2px 6px rgba(0, 0, 0, .5);

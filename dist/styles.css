@@ -4,6 +4,8 @@
   Tokens — Enterprise Library.
   Geist, monochrome ink on white, true black in dark mode.
   State is shown with ink weight, rules and shape, never a brand colour.
+  Hue appears only in messages (error, warning, success), the danger button and
+  tag colours, and always alongside words.
   Dark mode follows the OS, and [data-theme="light"|"dark"] on <html> overrides it.
 */
 
@@ -28,9 +30,19 @@
   --success: #157032;
   --success-bg: #e6f4ea;
   --ok: var(--success);   /* deprecated alias, kept for 0.1 apps */
-  /* Danger buttons: the one place colour appears outside a message. */
+  /* Danger buttons: colour outside a message, with tags below. */
   --danger: var(--error);
   --on-danger: #ffffff;
+  /* Tag colours: for categories and statuses across large sets of data, such
+     as a status column. Always with words in the tag (text is at least 5.8:1 on
+     its tint); never the only way a value is told apart. */
+  --tag-red: #a1271c; --tag-red-bg: #fdecea; --tag-red-rule: #f1b4ad;
+  --tag-amber: #7a5000; --tag-amber-bg: #fdf3d7; --tag-amber-rule: #e8cc85;
+  --tag-green: #156b30; --tag-green-bg: #e6f4ea; --tag-green-rule: #a6d6b3;
+  --tag-teal: #0b6464; --tag-teal-bg: #e1f3f2; --tag-teal-rule: #9fd6d2;
+  --tag-blue: #1f4fc2; --tag-blue-bg: #e8effd; --tag-blue-rule: #b0c6f3;
+  --tag-purple: #6a2fb0; --tag-purple-bg: #f2ebfb; --tag-purple-rule: #cfbaee;
+  --tag-pink: #a1195a; --tag-pink-bg: #fce8f1; --tag-pink-rule: #eeb0cd;
 
   /* Shadows: overlays only. Flat surfaces use rules, not shadows. */
   --shadow-frame: 0 1px 2px rgba(0, 0, 0, .04), 0 12px 32px -12px rgba(0, 0, 0, .12);
@@ -118,6 +130,13 @@
     --success: #6fd28c;
     --success-bg: #11301c;
     --on-danger: #0a0a0a;
+    --tag-red: #ff9b91; --tag-red-bg: #3b1513; --tag-red-rule: #6b2a24;
+    --tag-amber: #f2c14e; --tag-amber-bg: #352a0e; --tag-amber-rule: #5e4a17;
+    --tag-green: #6fd28c; --tag-green-bg: #11301c; --tag-green-rule: #24532f;
+    --tag-teal: #5fd3cf; --tag-teal-bg: #0e2f2e; --tag-teal-rule: #1f5452;
+    --tag-blue: #8cb4ff; --tag-blue-bg: #14223f; --tag-blue-rule: #2b4170;
+    --tag-purple: #c4a2ff; --tag-purple-bg: #2a1a40; --tag-purple-rule: #4a3170;
+    --tag-pink: #ff8fc0; --tag-pink-bg: #3a1426; --tag-pink-rule: #66284a;
     --shadow-frame: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 32px -12px rgba(0, 0, 0, .7);
     --shadow-popover: 0 12px 32px -8px rgba(0, 0, 0, .7), 0 2px 6px rgba(0, 0, 0, .5);
     --shadow-overlay: 0 16px 40px -12px rgba(0, 0, 0, .8), 0 2px 6px rgba(0, 0, 0, .5);
@@ -144,6 +163,13 @@
   --success: #6fd28c;
   --success-bg: #11301c;
   --on-danger: #0a0a0a;
+  --tag-red: #ff9b91; --tag-red-bg: #3b1513; --tag-red-rule: #6b2a24;
+  --tag-amber: #f2c14e; --tag-amber-bg: #352a0e; --tag-amber-rule: #5e4a17;
+  --tag-green: #6fd28c; --tag-green-bg: #11301c; --tag-green-rule: #24532f;
+  --tag-teal: #5fd3cf; --tag-teal-bg: #0e2f2e; --tag-teal-rule: #1f5452;
+  --tag-blue: #8cb4ff; --tag-blue-bg: #14223f; --tag-blue-rule: #2b4170;
+  --tag-purple: #c4a2ff; --tag-purple-bg: #2a1a40; --tag-purple-rule: #4a3170;
+  --tag-pink: #ff8fc0; --tag-pink-bg: #3a1426; --tag-pink-rule: #66284a;
   --shadow-frame: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 32px -12px rgba(0, 0, 0, .7);
   --shadow-popover: 0 12px 32px -8px rgba(0, 0, 0, .7), 0 2px 6px rgba(0, 0, 0, .5);
   --shadow-overlay: 0 16px 40px -12px rgba(0, 0, 0, .8), 0 2px 6px rgba(0, 0, 0, .5);
@@ -1844,12 +1870,30 @@ a.stepper__step:hover { color: var(--ink); }
 /* ---- tag.css ---- */
 /* Tag: a short label on a thing. The base .tag (mono, small, quiet) is in type.css.
    .tag--strong        full ink, to set one tag apart
+   .tag--red --amber --green --teal --blue --purple --pink
+                       a tint for categories and statuses (--tag-* tokens); always with words
+   .tag__mark          a status mark shape before the label
    .tag--dismissible   a remove button (__dismiss) after the label; its target is 24px
    .tag-list           a list of tags that wraps; __items, __empty */
 
 .tag { display: inline-flex; align-items: center; gap: var(--space-1); line-height: var(--leading-snug); }
 .tag--strong { color: var(--ink); border-color: var(--ink); background: var(--bg); }
 .tag--dismissible { padding-right: 2px; }
+.tag__mark { flex: none; width: 11px; height: 11px; margin-left: -2px; }
+/* The check's cut matches the tag's own fill */
+.tag__mark .status-mark__tick { stroke: var(--tag-surface, var(--bg-subtle)); }
+
+/* Colours: tinted box, coloured words and rule; strong adds a full-colour border */
+.tag--red { --tag-surface: var(--tag-red-bg); color: var(--tag-red); background: var(--tag-surface); border-color: var(--tag-red-rule); }
+.tag--amber { --tag-surface: var(--tag-amber-bg); color: var(--tag-amber); background: var(--tag-surface); border-color: var(--tag-amber-rule); }
+.tag--green { --tag-surface: var(--tag-green-bg); color: var(--tag-green); background: var(--tag-surface); border-color: var(--tag-green-rule); }
+.tag--teal { --tag-surface: var(--tag-teal-bg); color: var(--tag-teal); background: var(--tag-surface); border-color: var(--tag-teal-rule); }
+.tag--blue { --tag-surface: var(--tag-blue-bg); color: var(--tag-blue); background: var(--tag-surface); border-color: var(--tag-blue-rule); }
+.tag--purple { --tag-surface: var(--tag-purple-bg); color: var(--tag-purple); background: var(--tag-surface); border-color: var(--tag-purple-rule); }
+.tag--pink { --tag-surface: var(--tag-pink-bg); color: var(--tag-pink); background: var(--tag-surface); border-color: var(--tag-pink-rule); }
+.tag--strong:is(.tag--red, .tag--amber, .tag--green, .tag--teal, .tag--blue, .tag--purple, .tag--pink) { border-color: currentColor; }
+.tag:is(.tag--red, .tag--amber, .tag--green, .tag--teal, .tag--blue, .tag--purple, .tag--pink) .tag__dismiss { color: inherit; }
+.tag:is(.tag--red, .tag--amber, .tag--green, .tag--teal, .tag--blue, .tag--purple, .tag--pink) .tag__dismiss:hover { background: var(--bg); }
 .tag__label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 
 .tag__dismiss {
@@ -1867,7 +1911,7 @@ a.stepper__step:hover { color: var(--ink); }
 .tag-list__empty { margin: 0; font-size: var(--text-small); color: var(--ink-faint); }
 
 @media (forced-colors: active) {
-  .tag, .tag--strong { border-color: CanvasText; }
+  .tag, .tag--strong, .tag[class*="tag--"] { border-color: CanvasText; color: CanvasText; }
   .tag__dismiss { color: ButtonText; }
 }
 

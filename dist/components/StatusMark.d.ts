@@ -28,4 +28,9 @@ export interface StatusMarkProps {
     muted?: boolean;
     className?: string;
 }
+/** Just the mark, for use inside another component such as a Tag */
+export declare function StatusMarkIcon({ mark, className }: {
+    mark: StatusMarkShape;
+    className?: string;
+}): import("react").JSX.Element;
 export declare function StatusMark({ mark, children, variant, size, muted, className }: StatusMarkProps): import("react").JSX.Element;

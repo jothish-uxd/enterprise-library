@@ -38,5 +38,5 @@ export { Tag, TagList } from './components/Tag';
 export { Tabs } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Stepper } from './components/Stepper';
-export { StatusMark } from './components/StatusMark';
+export { StatusMark, StatusMarkIcon } from './components/StatusMark';
 export { Link } from './components/Link';

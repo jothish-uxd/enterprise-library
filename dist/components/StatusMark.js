@@ -7,6 +7,10 @@ const SHAPES = {
     check: _jsxs(_Fragment, { children: [_jsx("circle", { cx: "7", cy: "7", r: "6", className: "status-mark__fill" }), _jsx("path", { d: "M4.3 7.2l1.8 1.8 3.6-3.8", className: "status-mark__tick" })] }),
     slash: _jsxs(_Fragment, { children: [_jsx("circle", { cx: "7", cy: "7", r: "5.25", className: "status-mark__line" }), _jsx("path", { d: "M3.3 10.7l7.4-7.4", className: "status-mark__line" })] }),
 };
+/** Just the mark, for use inside another component such as a Tag */
+export function StatusMarkIcon({ mark, className = 'status-mark__icon' }) {
+    return _jsx("svg", { className: className, viewBox: "0 0 14 14", "aria-hidden": "true", focusable: "false", children: SHAPES[mark] });
+}
 export function StatusMark({ mark, children, variant = 'plain', size = 'md', muted, className = '' }) {
     const cls = ['status-mark', `status-mark--${mark}`, variant === 'badge' && 'status-mark--badge', size === 'sm' && 'status-mark--sm', muted && 'is-muted', className]
         .filter(Boolean).join(' ');

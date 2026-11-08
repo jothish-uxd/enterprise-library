@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, Banner, ProgressBar, Loader, Skeleton, TagList, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, Banner, ProgressBar, Loader, Skeleton, Tag, TagList, type TagColor, type StatusMarkShape, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1425,8 +1425,18 @@ function SkeletonDemo() {
 }
 
 /* ---------- Tag playground ---------- */
+const TAG_COLORS = ['gray', 'red', 'amber', 'green', 'teal', 'blue', 'purple', 'pink'].map((c) => ({ value: c, label: c[0].toUpperCase() + c.slice(1) }));
+const TAG_MARKS = [{ value: 'none', label: 'None' }, ...['dashed', 'ring', 'half', 'filled', 'check', 'slash'].map((m) => ({ value: m, label: m[0].toUpperCase() + m.slice(1) }))];
+const TAG_ROWS: { name: string; role: string; status: string; color: TagColor; mark: StatusMarkShape }[] = [
+  { name: 'Wedge Antilles', role: 'Starfighter Pilot L4', status: 'Hired', color: 'green', mark: 'check' },
+  { name: 'Biggs Darklighter', role: 'Starfighter Pilot L4', status: 'In review', color: 'blue', mark: 'half' },
+  { name: 'Jyn Erso', role: 'Field Analyst L3', status: 'On hold', color: 'amber', mark: 'ring' },
+  { name: 'Porkins', role: 'Starfighter Pilot L4', status: 'Not selected', color: 'red', mark: 'slash' },
+];
 function TagDemo() {
-  const [v, setV] = useState<Record<string, PgValue>>({ label: 'Skills', tags: 'Navigation, Astromech repair, Piloting, Diplomacy', dismiss: true, adder: true });
+  const [v, setV] = useState<Record<string, PgValue>>({
+    view: 'list', label: 'Skills', tags: 'Navigation, Astromech repair, Piloting, Diplomacy', color: 'gray', mark: 'none', dismiss: true, adder: true, marks: true,
+  });
   const start = String(v.tags).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
   const [tags, setTags] = useState<string[]>(start);
   const [text, setText] = useState('');
@@ -1441,9 +1451,16 @@ function TagDemo() {
     setText('');
     if (t && !tags.includes(t) && tags.length < 4) setTags([...tags, t]);
   };
-  const attrs: PgCodeLine[] = [
+  const table = v.view === 'table';
+  const color = v.color as TagColor;
+  const mark = v.mark === 'none' ? undefined : (v.mark as StatusMarkShape);
+  const items = tags.map((t) => (color === 'gray' && !mark ? t : { label: t, ...(color !== 'gray' ? { color } : {}), ...(mark ? { mark } : {}) }));
+  const attrs: PgCodeLine[] = table ? [
+    { attr: 'color', value: 'green' },
+    ...(v.marks ? [{ attr: 'mark', value: 'check' }] : []),
+  ] : [
     { attr: 'label', value: String(v.label) || 'Tags' },
-    { attr: 'tags', value: 'skills', expr: true },
+    { attr: 'tags', value: color === 'gray' && !mark ? 'skills' : `skills.map((label) => ({ label${color !== 'gray' ? `, color: '${color}'` : ''}${mark ? `, mark: '${mark}'` : ''} }))`, expr: true },
     ...(v.dismiss ? [{ attr: 'onRemove', value: '(t) => setSkills(skills.filter((s) => s !== t))', expr: true }] : []),
     ...(v.dismiss && v.adder ? [{ attr: 'emptyFocus', value: 'addField', expr: true }] : []),
     { attr: 'empty', value: 'No skills yet.' },
@@ -1452,20 +1469,42 @@ function TagDemo() {
     <Playground
       name="Tag"
       compact
+      wide={table}
       values={v}
       set={set}
-      file="Skills.tsx"
-      tag="TagList"
+      file={table ? 'CandidateTable.tsx' : 'Skills.tsx'}
+      tag={table ? 'Tag' : 'TagList'}
       attrs={attrs}
+      codeChildren={table ? ['Hired'] : undefined}
       controls={[
-        { kind: 'text', key: 'label', label: 'Label', help: 'Names the list for screen readers.' },
-        { kind: 'text', key: 'tags', label: 'Tags', help: 'Up to 4, separated by commas.' },
-        { kind: 'boolean', key: 'dismiss', label: 'Dismissible', help: 'A remove button after each tag.' },
-        { kind: 'boolean', key: 'adder', label: 'Add field', help: 'Where focus goes when the last tag is removed.' },
+        { kind: 'segmented', key: 'view', label: 'Show in', options: [{ value: 'list', label: 'A list' }, { value: 'table', label: 'A table' }] },
+        ...(table ? [
+          { kind: 'boolean' as const, key: 'marks', label: 'Status marks', help: 'A shape for each status, so it isn’t colour alone.' },
+        ] : [
+          { kind: 'text' as const, key: 'label', label: 'Label', help: 'Names the list for screen readers.' },
+          { kind: 'text' as const, key: 'tags', label: 'Tags', help: 'Up to 4, separated by commas.' },
+          { kind: 'select' as const, key: 'color', label: 'Color', options: TAG_COLORS },
+          { kind: 'select' as const, key: 'mark', label: 'Mark', options: TAG_MARKS },
+          { kind: 'boolean' as const, key: 'dismiss', label: 'Dismissible', help: 'A remove button after each tag.' },
+          { kind: 'boolean' as const, key: 'adder', label: 'Add field', help: 'Where focus goes when the last tag is removed.' },
+        ]),
       ]}
-      preview={
+      preview={table ? (
+        <div className="pg-tag-table table-wrap">
+          <table className="table">
+            <caption className="visually-hidden">Candidates and their status</caption>
+            <thead><tr><th scope="col">Candidate</th><th scope="col">Role</th><th scope="col">Status</th></tr></thead>
+            <tbody>
+              {TAG_ROWS.map((r) => (
+                <tr key={r.name}><th scope="row">{r.name}</th><td>{r.role}</td>
+                  <td><Tag color={r.color} mark={v.marks ? r.mark : undefined}>{r.status}</Tag></td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
         <div className="pg-tags">
-          <TagList label={String(v.label) || 'Tags'} tags={tags} empty="No skills yet."
+          <TagList label={String(v.label) || 'Tags'} tags={items} empty="No skills yet."
             onRemove={v.dismiss ? (t) => setTags((all) => all.filter((x) => x !== t)) : undefined}
             emptyFocus={v.adder ? field : undefined} />
           {v.adder && (
@@ -1477,7 +1516,7 @@ function TagDemo() {
             </div>
           )}
         </div>
-      }
+      )}
     />
   );
 }

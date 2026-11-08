@@ -40,6 +40,11 @@ const SHAPES: Record<StatusMarkShape, ReactNode> = {
   slash: <><circle cx="7" cy="7" r="5.25" className="status-mark__line" /><path d="M3.3 10.7l7.4-7.4" className="status-mark__line" /></>,
 };
 
+/** Just the mark, for use inside another component such as a Tag */
+export function StatusMarkIcon({ mark, className = 'status-mark__icon' }: { mark: StatusMarkShape; className?: string }) {
+  return <svg className={className} viewBox="0 0 14 14" aria-hidden="true" focusable="false">{SHAPES[mark]}</svg>;
+}
+
 export function StatusMark({ mark, children, variant = 'plain', size = 'md', muted, className = '' }: StatusMarkProps) {
   const cls = ['status-mark', `status-mark--${mark}`, variant === 'badge' && 'status-mark--badge', size === 'sm' && 'status-mark--sm', muted && 'is-muted', className]
     .filter(Boolean).join(' ');

@@ -59,14 +59,14 @@ export { Loader as ProgressIndicator, Loader as ProgressCircle } from './compone
 /** @deprecated Renamed LoaderProps in 0.3.13 */
 export type { LoaderProps as ProgressIndicatorProps } from './components/Loader';
 export { Tag, TagList } from './components/Tag';
-export type { TagProps, TagListProps } from './components/Tag';
+export type { TagProps, TagListProps, TagColor, TagItem } from './components/Tag';
 export { Tabs } from './components/Tabs';
 export type { TabItem, TabsProps } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export type { Crumb, BreadcrumbsProps } from './components/Breadcrumbs';
 export { Stepper } from './components/Stepper';
 export type { Step, StepStatus, StepperProps } from './components/Stepper';
-export { StatusMark } from './components/StatusMark';
+export { StatusMark, StatusMarkIcon } from './components/StatusMark';
 export type { StatusMarkProps, StatusMarkShape } from './components/StatusMark';
 export { Link } from './components/Link';
 export type { LinkProps } from './components/Link';

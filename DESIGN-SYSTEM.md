@@ -297,8 +297,9 @@ A status in words, with a small mark that repeats it by shape. Never colour, nev
 
 A short label on a thing: a type, a keyword, a skill. Generalised from Online Assessments' tag input and the `.tag` label both apps use.
 
-- `<Tag onDismiss dismissLabel strong>{label}</Tag>`. Mono caption on `--bg-subtle` with a `--rule` border. `strong`: full ink, ink border. `onDismiss` adds `.tag__dismiss`, a 16px × button with a 24px target (`::after`), named "Remove {label}".
-- `<TagList label tags onRemove emptyFocus empty />`: a named `<ul>` that wraps. Removing a tag moves focus to the next tag's remove button, else the previous, else `emptyFocus` (the field that adds tags); "Removed {label}" is announced politely.
+- `<Tag color mark onDismiss dismissLabel strong>{label}</Tag>`. `color`: gray (default), red, amber, green, teal, blue, purple, pink, from the `--tag-{color}`, `-bg`, `-rule` tokens (text at least 5.8:1 on its tint, light and dark), for categories and statuses in large sets of data. `mark`: a status mark shape (`StatusMarkIcon`) before the label, so a status reads by shape as well as words and colour. Forced colors drop the tint.
+- Mono caption on `--bg-subtle` with a `--rule` border. `strong`: full ink, ink border. `onDismiss` adds `.tag__dismiss`, a 16px × button with a 24px target (`::after`), named "Remove {label}".
+- `<TagList label tags onRemove emptyFocus empty />`: tags are strings or `{ label, color, mark }`; a named `<ul>` that wraps. Removing a tag moves focus to the next tag's remove button, else the previous, else `emptyFocus` (the field that adds tags); "Removed {label}" is announced politely.
 - Tags are text, not buttons, links or filters (use chips to filter). Forced colors: CanvasText borders, ButtonText ×.
 
 ### Tiles (`tiles.css`, `components/Tiles.tsx`)
