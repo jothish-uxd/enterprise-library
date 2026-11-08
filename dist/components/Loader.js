@@ -23,7 +23,7 @@ function Mark({ type, known, pct }) {
         case 'sparkle':
             return (_jsxs("svg", { ...SVG, children: [_jsx("path", { className: "loader__star", d: "M18 4c1 7.2 4.8 11 14 14-9.2 3-13 6.8-14 14-1-7.2-4.8-11-14-14 9.2-3 13-6.8 14-14z" }), _jsx("path", { className: "loader__star loader__star--small", d: "M29 2.5c.4 2.4 1.6 3.6 4 4-2.4.4-3.6 1.6-4 4-.4-2.4-1.6-3.6-4-4 2.4-.4 3.6-1.6 4-4z" })] }));
         case 'shimmer':
-            return null;
+            return (_jsx("svg", { ...SVG, children: _jsx("path", { className: "loader__star loader__star--still", d: "M18 4c1 7.2 4.8 11 14 14-9.2 3-13 6.8-14 14-1-7.2-4.8-11-14-14 9.2-3 13-6.8 14-14z" }) }));
         case 'network': {
             const nodes = [[6, 9], [18, 5], [30, 11], [11, 25], [25, 29], [18, 17]];
             const links = [[0, 5], [1, 5], [2, 5], [3, 5], [4, 5], [0, 1], [1, 2], [3, 4]];

@@ -1709,14 +1709,13 @@ a.stepper__step:hover { color: var(--ink); }
 .loader__star { fill: var(--ink); transform-origin: 18px 18px; }
 .loader__star--small { fill: var(--ink-soft); transform-origin: 29px 6.5px; }
 
-/* Shimmer: no mark; the label is the loader */
-.loader--shimmer { gap: 0; }
-.loader--shimmer .loader__mark { width: 0; height: 0; }
+/* Shimmer: a still star, and the label shimmers */
+.loader--shimmer .loader__mark { width: calc(var(--loader-size) * .6); }
 .loader--shimmer .loader__label { color: var(--ink-soft); }
 
 /* Network: links in the rule colour, nodes that light up one after another */
 .loader__link { stroke: var(--rule-strong); stroke-width: 1.4; }
-.loader__node { fill: var(--ink-faint); }
+.loader__node { fill: var(--ink-faint); transform-box: fill-box; transform-origin: center; }
 .loader__node--5 { fill: var(--ink); }
 
 /* Scan and tokens: lines of text in a small page */
@@ -1738,11 +1737,12 @@ a.stepper__step:hover { color: var(--ink); }
 
 @media (prefers-reduced-motion: no-preference) {
   .loader__star { animation: loader-breathe 1.8s ease-in-out infinite; }
+  .loader__star--still { animation: none; }
   .loader__star--small { animation: loader-twinkle 1.8s ease-in-out infinite; }
   .loader--shimmer .loader__label {
     color: transparent; -webkit-background-clip: text; background-clip: text;
-    background-image: linear-gradient(90deg, var(--ink-faint) 0 35%, var(--ink) 50%, var(--ink-faint) 65% 100%);
-    background-size: 250% 100%; animation: loader-shimmer 1.8s linear infinite;
+    background-image: linear-gradient(90deg, var(--ink-faint) 0 40%, var(--ink) 47% 53%, var(--ink-faint) 60% 100%);
+    background-size: 300% 100%; animation: loader-shimmer 1.6s linear infinite;
   }
   .loader__node { animation: loader-node 1.8s ease-in-out infinite; }
   .loader__node--5 { animation-delay: 0s; }
@@ -1751,7 +1751,7 @@ a.stepper__step:hover { color: var(--ink); }
   .loader__node--2 { animation-delay: .9s; }
   .loader__node--4 { animation-delay: 1.2s; }
   .loader__node--3 { animation-delay: 1.5s; }
-  .loader__beam { animation: loader-scan 1.6s ease-in-out infinite; }
+  .loader__beam { animation: loader-scan 1.4s ease-in-out infinite alternate; }
   .loader__token-line, .loader__token-line:nth-child(n) { background: var(--ink); transform-origin: left; animation: loader-write 2.4s ease-out infinite; }
   .loader__token-line:nth-child(2) { animation-delay: .4s; }
   .loader__token-line:nth-child(3) { animation-delay: .8s; }
@@ -1759,8 +1759,8 @@ a.stepper__step:hover { color: var(--ink); }
   @keyframes loader-breathe { 0%, 100% { transform: rotate(0) scale(.82); } 50% { transform: rotate(45deg) scale(1); } }
   @keyframes loader-twinkle { 0%, 40%, 100% { opacity: 0; transform: scale(.4); } 60% { opacity: 1; transform: scale(1); } }
   @keyframes loader-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
-  @keyframes loader-node { 0%, 60%, 100% { fill: var(--ink-faint); } 20% { fill: var(--ink); } }
-  @keyframes loader-scan { from { transform: translateY(-100%); } to { transform: translateY(340%); } }
+  @keyframes loader-node { 0%, 60%, 100% { fill: var(--ink-faint); transform: scale(.75); } 20% { fill: var(--ink); transform: scale(1.35); } }
+  @keyframes loader-scan { from { transform: translateY(-25%); } to { transform: translateY(240%); } }
   @keyframes loader-write { 0% { transform: scaleX(0); opacity: 1; } 45% { transform: scaleX(1); opacity: 1; } 85% { opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
   @keyframes loader-caret { 50% { opacity: 0; } }
 }

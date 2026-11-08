@@ -7,7 +7,7 @@ Docs: https://jothish-uxd.github.io/enterprise-library/ — one page, `index.htm
 ## Install
 
 ```sh
-npm install github:jothish-uxd/enterprise-library#v0.3.15
+npm install github:jothish-uxd/enterprise-library#v0.3.16
 ```
 
 ```tsx

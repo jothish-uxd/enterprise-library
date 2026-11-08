@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.16 — 2026-11-08
+
+- Loader, AI types: shimmer now has a still star beside the label, and a narrower, brighter highlight; network's nodes swell as they light up; scan's band goes down and back up instead of starting over.
+
 ## 0.3.15 — 2026-11-08
 
 - Loader: six AI types that say what a model is doing: sparkle (thinking), shimmer (the label shimmers), network (reasoning), scan (searching sources), tokens (writing) and caret (still writing). `AI_LOADER_TYPES` lists them. All still with reduced motion.

@@ -253,9 +253,9 @@ A small square mark that shows something is loading or working, and how far it's
   - Only circle and ticks take a `value`.
   - AI (`AI_LOADER_TYPES`, class `.loader--ai`), to say what a model is doing, always paired with a label that says it too:
     - `sparkle`: a four-point star turns and breathes, a small one twinkles (thinking).
-    - `shimmer`: no mark; a highlight sweeps across the label (`background-clip: text`); the label always shows.
-    - `network`: six nodes light up in turn along `--rule-strong` links (reasoning).
-    - `scan`: an ink-edged band sweeps down over four lines (searching, reading sources).
+    - `shimmer`: a still star, and a highlight sweeps across the label (`background-clip: text`); the label always shows.
+    - `network`: six nodes light up and swell in turn along `--rule-strong` links (reasoning).
+    - `scan`: an ink-edged band sweeps down over four lines and back up (searching, reading sources).
     - `tokens`: three lines write themselves out left to right (generating).
     - `caret`: a block cursor after the label, blinking (still writing).
     - Reduced motion: all still; shimmer is plain `--ink-soft` text and the caret stays solid.

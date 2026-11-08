@@ -19,9 +19,9 @@ import { useId, type ReactNode } from 'react';
  * Six more for AI, to say what a model is doing (pair them with words that
  * say it too: "Thinking", "Searching 12 sources", "Writing a summary"):
  * - sparkle   a four-point star that turns and breathes: thinking
- * - shimmer   no mark; the label itself shimmers: thinking, in a line of text
- * - network   nodes that light up along their links: reasoning
- * - scan      a band sweeps down over lines: searching, reading sources
+ * - shimmer   a still star, and the label shimmers: thinking, in a line of text
+ * - network   nodes that light up and swell along their links: reasoning
+ * - scan      a band sweeps down over lines and back up: searching, reading sources
  * - tokens    lines that write themselves out: generating, writing
  * - caret     a blinking cursor, after streamed text: still writing
  *
@@ -100,7 +100,11 @@ function Mark({ type, known, pct }: { type: LoaderType; known: boolean; pct: num
         </svg>
       );
     case 'shimmer':
-      return null;
+      return (
+        <svg {...SVG}>
+          <path className="loader__star loader__star--still" d="M18 4c1 7.2 4.8 11 14 14-9.2 3-13 6.8-14 14-1-7.2-4.8-11-14-14 9.2-3 13-6.8 14-14z" />
+        </svg>
+      );
     case 'network': {
       const nodes: [number, number][] = [[6, 9], [18, 5], [30, 11], [11, 25], [25, 29], [18, 17]];
       const links: [number, number][] = [[0, 5], [1, 5], [2, 5], [3, 5], [4, 5], [0, 1], [1, 2], [3, 4]];
