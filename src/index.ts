@@ -51,6 +51,8 @@ export { ToastProvider, useToast } from './components/Toast';
 export type { ToastOptions, ToastProviderProps } from './components/Toast';
 export { ProgressBar } from './components/ProgressBar';
 export type { ProgressBarProps } from './components/ProgressBar';
+export { ProgressCircle } from './components/ProgressCircle';
+export type { ProgressCircleProps } from './components/ProgressCircle';
 export { Tabs } from './components/Tabs';
 export type { TabItem, TabsProps } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';

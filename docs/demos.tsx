@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, Banner, ProgressBar, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, Banner, ProgressBar, ProgressCircle, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1318,6 +1318,46 @@ function ProgressDemo() {
   );
 }
 
+/* ---------- Progress circle playground ---------- */
+function ProgressCircleDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Scoring results', progress: 'none', words: false, size: 'md', position: 'end',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const known = v.progress !== 'none';
+  const value = known ? Number(v.progress) : undefined;
+  const valueText = known && v.words ? `${value} of 12` : undefined;
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) || 'Loading' },
+    ...(known ? [{ attr: 'value', value: String(value), expr: true }, { attr: 'max', value: '12', expr: true }] : []),
+    ...(valueText ? [{ attr: 'valueText', value: valueText }] : []),
+    ...(v.size !== 'md' ? [{ attr: 'size', value: String(v.size) }] : []),
+    ...(v.position !== 'end' ? [{ attr: 'labelPosition', value: String(v.position) }] : []),
+  ];
+  return (
+    <Playground
+      name="Progress circle"
+      compact
+      values={v}
+      set={set}
+      file="Results.tsx"
+      tag="ProgressCircle"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label', help: 'What’s happening. Always there, even when hidden.' },
+        { kind: 'select', key: 'progress', label: 'Progress', options: [{ value: 'none', label: 'Spinning (not measured)' }, { value: '0', label: '0 of 12' }, { value: '3', label: '3 of 12' }, { value: '8', label: '8 of 12' }, { value: '12', label: '12 of 12' }] },
+        { kind: 'boolean', key: 'words', label: 'Value in words', help: '“8 of 12” instead of “67%”.' },
+        { kind: 'segmented', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }, { value: 'lg', label: 'Large' }] },
+        { kind: 'segmented', key: 'position', label: 'Label', options: [{ value: 'end', label: 'Beside' }, { value: 'below', label: 'Below' }, { value: 'hidden', label: 'Hidden' }] },
+      ]}
+      preview={
+        <ProgressCircle label={String(v.label) || 'Loading'} value={value} max={12} valueText={valueText}
+          size={v.size as 'sm' | 'md' | 'lg'} labelPosition={v.position as 'end' | 'below' | 'hidden'} />
+      }
+    />
+  );
+}
+
 /* ---------- Breadcrumbs playground ---------- */
 function BreadcrumbsDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({ trail: 'Hiring, Jobs, Starfighter Pilot L4, Pilot screening v3', fold: false, label: 'Breadcrumb' });
@@ -2194,6 +2234,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   banner: () => <BannerDemo />,
   toast: () => <ToastDemo />,
   progress: () => <ProgressDemo />,
+  'progress-circle': () => <ProgressCircleDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,

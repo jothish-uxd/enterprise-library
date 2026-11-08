@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.11 — 2026-11-08
+
+- Progress circle (`ProgressCircle`, `progress-circle.css`): a ring that fills with a value, or spins without one (dashed and still with reduced motion), in three sizes with the label beside, below or hidden. Docs page with a playground, and when to use a circle, a spinner or a bar.
+
 ## 0.3.10 — 2026-11-08
 
 - Progress bar (`ProgressBar`, `progress.css`): measured or not, the value in words or as a percent, a description, and an error state that stops the bar with a message, hatched track and icon. Not a live region; the docs say to announce the start and end instead. Generalised from Cipher Lab's training runs and Online Assessments' uploads. Docs page with a playground.
