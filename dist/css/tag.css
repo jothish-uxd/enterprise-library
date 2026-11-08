@@ -1,0 +1,28 @@
+/* Tag: a short label on a thing. The base .tag (mono, small, quiet) is in type.css.
+   .tag--strong        full ink, to set one tag apart
+   .tag--dismissible   a remove button (__dismiss) after the label; its target is 24px
+   .tag-list           a list of tags that wraps; __items, __empty */
+
+.tag { display: inline-flex; align-items: center; gap: var(--space-1); line-height: var(--leading-snug); }
+.tag--strong { color: var(--ink); border-color: var(--ink); background: var(--bg); }
+.tag--dismissible { padding-right: 2px; }
+.tag__label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+.tag__dismiss {
+  position: relative; appearance: none; display: inline-grid; place-items: center; flex: none;
+  width: 16px; height: 16px; padding: 0; border: 0; border-radius: var(--radius-xs);
+  background: none; color: var(--ink-soft); cursor: pointer;
+}
+/* A 24px target around the 16px button */
+.tag__dismiss::after { content: ""; position: absolute; inset: -4px; }
+.tag__dismiss svg { width: 9px; height: 9px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.tag__dismiss:hover { color: var(--ink); background: var(--bg-hover); }
+.tag__dismiss:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+.tag-list__items { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.tag-list__empty { margin: 0; font-size: var(--text-small); color: var(--ink-faint); }
+
+@media (forced-colors: active) {
+  .tag, .tag--strong { border-color: CanvasText; }
+  .tag__dismiss { color: ButtonText; }
+}

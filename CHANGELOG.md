@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.18 — 2026-11-08
+
+- Tag (`Tag`, `TagList`, `tag.css`): the mono `.tag` label as a component, with `strong` and an optional remove button (24px target, named "Remove {label}"). A tag list moves focus to the next tag when one is removed, or to a field you name when none are left, and announces it. Generalised from Online Assessments' tag input. Docs page with a playground.
+
 ## 0.3.17 — 2026-11-08
 
 - Loader, shimmer: a round orb replaces the star (which belongs to sparkle), and the same highlight sweeps across the orb and the label.

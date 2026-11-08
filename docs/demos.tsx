@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, Banner, ProgressBar, Loader, Skeleton, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, Banner, ProgressBar, Loader, Skeleton, TagList, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1424,6 +1424,64 @@ function SkeletonDemo() {
   );
 }
 
+/* ---------- Tag playground ---------- */
+function TagDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({ label: 'Skills', tags: 'Navigation, Astromech repair, Piloting, Diplomacy', dismiss: true, adder: true });
+  const start = String(v.tags).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
+  const [tags, setTags] = useState<string[]>(start);
+  const [text, setText] = useState('');
+  const field = useRef<HTMLInputElement>(null);
+  const set = (key: string, value: PgValue) => setV((old) => {
+    const next = { ...old, [key]: value };
+    if (key === 'tags') setTags(String(value).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4));
+    return next;
+  });
+  const add = () => {
+    const t = text.trim().replace(/,$/, '');
+    setText('');
+    if (t && !tags.includes(t) && tags.length < 4) setTags([...tags, t]);
+  };
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) || 'Tags' },
+    { attr: 'tags', value: 'skills', expr: true },
+    ...(v.dismiss ? [{ attr: 'onRemove', value: '(t) => setSkills(skills.filter((s) => s !== t))', expr: true }] : []),
+    ...(v.dismiss && v.adder ? [{ attr: 'emptyFocus', value: 'addField', expr: true }] : []),
+    { attr: 'empty', value: 'No skills yet.' },
+  ];
+  return (
+    <Playground
+      name="Tag"
+      compact
+      values={v}
+      set={set}
+      file="Skills.tsx"
+      tag="TagList"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label', help: 'Names the list for screen readers.' },
+        { kind: 'text', key: 'tags', label: 'Tags', help: 'Up to 4, separated by commas.' },
+        { kind: 'boolean', key: 'dismiss', label: 'Dismissible', help: 'A remove button after each tag.' },
+        { kind: 'boolean', key: 'adder', label: 'Add field', help: 'Where focus goes when the last tag is removed.' },
+      ]}
+      preview={
+        <div className="pg-tags">
+          <TagList label={String(v.label) || 'Tags'} tags={tags} empty="No skills yet."
+            onRemove={v.dismiss ? (t) => setTags((all) => all.filter((x) => x !== t)) : undefined}
+            emptyFocus={v.adder ? field : undefined} />
+          {v.adder && (
+            <div className="pg-tags__add">
+              <label className="visually-hidden" htmlFor="pg-tag-add">Add a skill</label>
+              <input id="pg-tag-add" ref={field} className="pg__input" placeholder={tags.length < 4 ? 'Add a skill and press Enter' : 'Up to 4 in this demo'}
+                value={text} onChange={(e) => setText(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); add(); } }} />
+            </div>
+          )}
+        </div>
+      }
+    />
+  );
+}
+
 /* ---------- Breadcrumbs playground ---------- */
 function BreadcrumbsDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({ trail: 'Hiring, Jobs, Starfighter Pilot L4, Pilot screening v3', fold: false, label: 'Breadcrumb' });
@@ -2303,6 +2361,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   progress: () => <ProgressDemo />,
   loader: () => <LoaderDemo />,
   skeleton: () => <SkeletonDemo />,
+  tag: () => <TagDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,

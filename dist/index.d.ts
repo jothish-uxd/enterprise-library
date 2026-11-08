@@ -58,6 +58,8 @@ export type { SkeletonProps } from './components/Skeleton';
 export { Loader as ProgressIndicator, Loader as ProgressCircle } from './components/Loader';
 /** @deprecated Renamed LoaderProps in 0.3.13 */
 export type { LoaderProps as ProgressIndicatorProps } from './components/Loader';
+export { Tag, TagList } from './components/Tag';
+export type { TagProps, TagListProps } from './components/Tag';
 export { Tabs } from './components/Tabs';
 export type { TabItem, TabsProps } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';

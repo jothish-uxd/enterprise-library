@@ -25,3 +25,4 @@
   white-space: nowrap; font-family: var(--mono); font-size: var(--text-caption); color: var(--ink-soft);
   border: 1px solid var(--rule); border-radius: var(--radius-sm); padding: 1px 7px; background: var(--bg-subtle);
 }
+/* The rest of tag (strong, dismissible, lists) lives in tag.css */

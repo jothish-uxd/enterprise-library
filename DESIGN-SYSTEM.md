@@ -293,6 +293,14 @@ A status in words, with a small mark that repeats it by shape. Never colour, nev
 - The mark is an inline SVG with `aria-hidden`; the words are what's read. Class `.status-mark` (not `.status`, which apps use for their own labels).
 - Forced colors: marks and borders in CanvasText.
 
+### Tag (`tag.css` plus `.tag` in `type.css`, `components/Tag.tsx`)
+
+A short label on a thing: a type, a keyword, a skill. Generalised from Online Assessments' tag input and the `.tag` label both apps use.
+
+- `<Tag onDismiss dismissLabel strong>{label}</Tag>`. Mono caption on `--bg-subtle` with a `--rule` border. `strong`: full ink, ink border. `onDismiss` adds `.tag__dismiss`, a 16px × button with a 24px target (`::after`), named "Remove {label}".
+- `<TagList label tags onRemove emptyFocus empty />`: a named `<ul>` that wraps. Removing a tag moves focus to the next tag's remove button, else the previous, else `emptyFocus` (the field that adds tags); "Removed {label}" is announced politely.
+- Tags are text, not buttons, links or filters (use chips to filter). Forced colors: CanvasText borders, ButtonText ×.
+
 ### Tiles (`tiles.css`, `components/Tiles.tsx`)
 
 A grid of links into other pages: a section's index, a gallery of patterns or templates. Two layouts:
