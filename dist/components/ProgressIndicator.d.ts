@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 /**
- * ProgressCircle — a ring that fills as a task goes, or spins while it waits:
+ * ProgressIndicator (was ProgressCircle) — a ring that fills as a task goes, or spins while it waits:
  * the round, compact form of the progress bar, for a button, a table cell, a
  * card or a page that's loading.
  *
@@ -15,7 +15,7 @@ import { type ReactNode } from 'react';
  *   aria-busy, and announce when it's done if it took a while.
  * - size 'sm' (16px, inline with text), 'md' (32px), 'lg' (64px).
  */
-export interface ProgressCircleProps {
+export interface ProgressIndicatorProps {
     /** Says what's happening: "Loading results" */
     label: ReactNode;
     /** Leave out to spin: it can't be measured */
@@ -28,4 +28,4 @@ export interface ProgressCircleProps {
     labelPosition?: 'end' | 'below' | 'hidden';
     className?: string;
 }
-export declare function ProgressCircle({ label, value, max, valueText, size, labelPosition, className, }: ProgressCircleProps): import("react").JSX.Element;
+export declare function ProgressIndicator({ label, value, max, valueText, size, labelPosition, className, }: ProgressIndicatorProps): import("react").JSX.Element;

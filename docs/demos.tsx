@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, Banner, ProgressBar, ProgressCircle, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, Banner, ProgressBar, ProgressIndicator, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1318,8 +1318,8 @@ function ProgressDemo() {
   );
 }
 
-/* ---------- Progress circle playground ---------- */
-function ProgressCircleDemo() {
+/* ---------- Progress indicator playground ---------- */
+function ProgressIndicatorDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
     label: 'Scoring results', progress: 'none', words: false, size: 'md', position: 'end',
   });
@@ -1336,12 +1336,12 @@ function ProgressCircleDemo() {
   ];
   return (
     <Playground
-      name="Progress circle"
+      name="Progress indicator"
       compact
       values={v}
       set={set}
       file="Results.tsx"
-      tag="ProgressCircle"
+      tag="ProgressIndicator"
       attrs={attrs}
       controls={[
         { kind: 'text', key: 'label', label: 'Label', help: 'What’s happening. Always there, even when hidden.' },
@@ -1351,7 +1351,7 @@ function ProgressCircleDemo() {
         { kind: 'segmented', key: 'position', label: 'Label', options: [{ value: 'end', label: 'Beside' }, { value: 'below', label: 'Below' }, { value: 'hidden', label: 'Hidden' }] },
       ]}
       preview={
-        <ProgressCircle label={String(v.label) || 'Loading'} value={value} max={12} valueText={valueText}
+        <ProgressIndicator label={String(v.label) || 'Loading'} value={value} max={12} valueText={valueText}
           size={v.size as 'sm' | 'md' | 'lg'} labelPosition={v.position as 'end' | 'below' | 'hidden'} />
       }
     />
@@ -2234,7 +2234,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   banner: () => <BannerDemo />,
   toast: () => <ToastDemo />,
   progress: () => <ProgressDemo />,
-  'progress-circle': () => <ProgressCircleDemo />,
+  'progress-indicator': () => <ProgressIndicatorDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,

@@ -1,0 +1,44 @@
+/* Progress indicator: a ring that fills, or spins while it waits.
+   .progress-indicator            ring (__ring with an SVG: __track, __fill) and __label
+     --sm --md --lg            16px, 32px, 64px; at lg the value sits inside (__value)
+     --label-end --label-below --label-hidden
+     --spin                    no value: an ink arc goes round; dashed and still with reduced motion */
+
+.progress-indicator { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; color: var(--ink); font-size: var(--text-small); }
+.progress-indicator--label-below { flex-direction: column; gap: var(--space-2); text-align: center; }
+.progress-indicator--sm { gap: var(--space-1-5); }
+
+.progress-indicator__ring { position: relative; flex: none; width: 32px; height: 32px; }
+.progress-indicator--sm .progress-indicator__ring { width: 16px; height: 16px; }
+.progress-indicator--lg .progress-indicator__ring { width: 64px; height: 64px; }
+.progress-indicator__ring svg { display: block; width: 100%; height: 100%; transform: rotate(-90deg); }
+
+.progress-indicator__track, .progress-indicator__fill { fill: none; stroke-width: 3.5; }
+.progress-indicator--lg .progress-indicator__track, .progress-indicator--lg .progress-indicator__fill { stroke-width: 2.5; }
+.progress-indicator--sm .progress-indicator__track, .progress-indicator--sm .progress-indicator__fill { stroke-width: 4.5; }
+.progress-indicator__track { stroke: var(--bg-hover); }
+.progress-indicator__fill { stroke: var(--ink); stroke-linecap: round; }
+.progress-indicator--spin .progress-indicator__track { stroke: var(--rule); }
+
+.progress-indicator__value {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-family: var(--mono); font-size: var(--text-caption); font-variant-numeric: tabular-nums; color: var(--ink);
+}
+.progress-indicator__label { min-width: 0; font-weight: var(--weight-medium); }
+.progress-indicator__inline-value { margin-left: var(--space-2); font-family: var(--mono); font-size: var(--text-caption); font-weight: var(--weight-regular); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.progress-indicator--label-below .progress-indicator__inline-value { display: block; margin: var(--space-0-5) 0 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .progress-indicator__fill { transition: stroke-dasharray var(--duration-base) ease; }
+  .progress-indicator--spin svg { animation: progress-indicator-spin .9s linear infinite; }
+  @keyframes progress-indicator-spin { from { transform: rotate(-90deg); } to { transform: rotate(270deg); } }
+}
+/* Still: no arc, the whole track dashed in ink, so it reads as waiting */
+@media (prefers-reduced-motion: reduce) {
+  .progress-indicator--spin .progress-indicator__fill { stroke-dasharray: 4 4.333; stroke-linecap: butt; }
+}
+
+@media (forced-colors: active) {
+  .progress-indicator__track { stroke: GrayText; }
+  .progress-indicator__fill { stroke: CanvasText; }
+}

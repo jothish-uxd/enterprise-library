@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.12 — 2026-11-08
+
+- Progress circle is now **Progress indicator**, since it's a spinner as often as a ring: `ProgressIndicator`, `progress-indicator.css`, classes `.progress-indicator*`, docs page `#progress-indicator`. `ProgressCircle` still works as a deprecated alias.
+
 ## 0.3.11 — 2026-11-08
 
 - Progress circle (`ProgressCircle`, `progress-circle.css`): a ring that fills with a value, or spins without one (dashed and still with reduced motion), in three sizes with the label beside, below or hidden. Docs page with a playground, and when to use a circle, a spinner or a bar.

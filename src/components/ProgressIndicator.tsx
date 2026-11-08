@@ -1,7 +1,7 @@
 import { useId, type ReactNode } from 'react';
 
 /**
- * ProgressCircle — a ring that fills as a task goes, or spins while it waits:
+ * ProgressIndicator (was ProgressCircle) — a ring that fills as a task goes, or spins while it waits:
  * the round, compact form of the progress bar, for a button, a table cell, a
  * card or a page that's loading.
  *
@@ -16,7 +16,7 @@ import { useId, type ReactNode } from 'react';
  *   aria-busy, and announce when it's done if it took a while.
  * - size 'sm' (16px, inline with text), 'md' (32px), 'lg' (64px).
  */
-export interface ProgressCircleProps {
+export interface ProgressIndicatorProps {
   /** Says what's happening: "Loading results" */
   label: ReactNode;
   /** Leave out to spin: it can't be measured */
@@ -32,20 +32,20 @@ export interface ProgressCircleProps {
 
 const R = 15.9155; // circumference 100
 
-export function ProgressCircle({
+export function ProgressIndicator({
   label, value, max = 100, valueText, size = 'md', labelPosition = 'end', className = '',
-}: ProgressCircleProps) {
+}: ProgressIndicatorProps) {
   const id = useId();
   const known = typeof value === 'number' && Number.isFinite(value);
   const clamped = known ? Math.min(Math.max(value!, 0), max) : 0;
   const pct = max > 0 ? (clamped / max) * 100 : 0;
   const text = known ? (valueText ?? `${Math.round(pct)}%`) : undefined;
-  const cls = ['progress-circle', `progress-circle--${size}`, `progress-circle--label-${labelPosition}`,
-    !known && 'progress-circle--spin', className].filter(Boolean).join(' ');
+  const cls = ['progress-indicator', `progress-indicator--${size}`, `progress-indicator--label-${labelPosition}`,
+    !known && 'progress-indicator--spin', className].filter(Boolean).join(' ');
   return (
     <div className={cls}>
       <div
-        className="progress-circle__ring"
+        className="progress-indicator__ring"
         role="progressbar"
         aria-labelledby={`${id}-l`}
         aria-valuemin={known ? 0 : undefined}
@@ -54,15 +54,15 @@ export function ProgressCircle({
         aria-valuetext={text}
       >
         <svg viewBox="0 0 36 36" aria-hidden="true" focusable="false">
-          <circle className="progress-circle__track" cx="18" cy="18" r={R} />
-          <circle className="progress-circle__fill" cx="18" cy="18" r={R} pathLength={100}
+          <circle className="progress-indicator__track" cx="18" cy="18" r={R} />
+          <circle className="progress-indicator__fill" cx="18" cy="18" r={R} pathLength={100}
             strokeDasharray={known ? `${pct} 100` : '25 100'} />
         </svg>
-        {known && size === 'lg' && <span className="progress-circle__value" aria-hidden="true">{text}</span>}
+        {known && size === 'lg' && <span className="progress-indicator__value" aria-hidden="true">{text}</span>}
       </div>
-      <span id={`${id}-l`} className={labelPosition === 'hidden' ? 'visually-hidden' : 'progress-circle__label'}>
+      <span id={`${id}-l`} className={labelPosition === 'hidden' ? 'visually-hidden' : 'progress-indicator__label'}>
         {label}
-        {known && size !== 'lg' && labelPosition !== 'hidden' && <span className="progress-circle__inline-value" aria-hidden="true">{text}</span>}
+        {known && size !== 'lg' && labelPosition !== 'hidden' && <span className="progress-indicator__inline-value" aria-hidden="true">{text}</span>}
       </span>
     </div>
   );

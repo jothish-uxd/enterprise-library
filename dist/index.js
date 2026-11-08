@@ -30,7 +30,9 @@ export { HeaderNav } from './components/HeaderNav';
 export { Banner } from './components/Banner';
 export { ToastProvider, useToast } from './components/Toast';
 export { ProgressBar } from './components/ProgressBar';
-export { ProgressCircle } from './components/ProgressCircle';
+export { ProgressIndicator } from './components/ProgressIndicator';
+/** @deprecated Renamed ProgressIndicator in 0.3.12 */
+export { ProgressIndicator as ProgressCircle } from './components/ProgressIndicator';
 export { Tabs } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Stepper } from './components/Stepper';
