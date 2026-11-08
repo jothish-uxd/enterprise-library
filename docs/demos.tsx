@@ -1094,25 +1094,24 @@ function StatusMarkGallery() {
 /* ---------- Link playground ---------- */
 function LinkDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
-    text: 'proctoring policy', variant: 'inline', opens: 'same', href: 'https://example.com/policies/proctoring',
+    text: 'proctoring policy', where: 'inline', opens: 'same', href: 'https://example.com/policies/proctoring',
   });
   const set = (key: string, value: PgValue) => setV((old) => {
     const next = { ...old, [key]: value };
-    if (key === 'variant') {
+    if (key === 'where') {
       if (value === 'standalone' && old.text === 'proctoring policy') next.text = 'View all assessments';
       if (value === 'inline' && old.text === 'View all assessments') next.text = 'proctoring policy';
     }
     return next;
   });
   const newTab = v.opens === 'new';
-  const standalone = v.variant === 'standalone';
+  const standalone = v.where === 'standalone';
   const attrs: PgCodeLine[] = [
-    newTab ? { attr: 'href', value: String(v.href) } : { attr: 'to', value: '/policies/proctoring' },
+    newTab ? { attr: 'href', value: String(v.href) } : { attr: 'to', value: standalone ? '/assessments' : '/policies/proctoring' },
     ...(newTab ? [{ attr: 'newTab', value: true as const }] : []),
-    ...(standalone ? [{ attr: 'variant', value: 'standalone' }] : []),
   ];
   const link = (
-    <Link href={newTab ? String(v.href) : '#link'} newTab={newTab} variant={standalone ? 'standalone' : 'inline'}
+    <Link href={newTab ? String(v.href) : '#link'} newTab={newTab}
       onClick={(e) => e.preventDefault()}>
       {String(v.text) || 'Untitled'}
     </Link>
@@ -1129,7 +1128,7 @@ function LinkDemo() {
       codeChildren={[String(v.text) || 'Untitled']}
       controls={[
         { kind: 'text', key: 'text', label: 'Text', help: 'Say where it goes. Never “click here”.' },
-        { kind: 'segmented', key: 'variant', label: 'Where', options: [{ value: 'inline', label: 'In body text' }, { value: 'standalone', label: 'On its own' }] },
+        { kind: 'segmented', key: 'where', label: 'Shown', options: [{ value: 'inline', label: 'In body text' }, { value: 'standalone', label: 'On its own' }] },
         { kind: 'segmented', key: 'opens', label: 'Opens', options: [{ value: 'same', label: 'Same tab' }, { value: 'new', label: 'New tab' }] },
         { kind: 'text', key: 'href', label: 'Address', help: 'New-tab links use a plain address.' },
       ]}

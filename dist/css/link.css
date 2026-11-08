@@ -1,6 +1,5 @@
 /* Link: goes somewhere.
-   .link                 in body text: medium weight, full-ink underline; the underline goes on hover
-   .link--standalone     on its own line: no underline until hover
+   .link                 medium weight, full-ink underline, in body text or on its own; the underline goes on hover
    .link__icon           the new-tab icon, after the last word
    .prose a              plain links inside long-form content get the in-text style */
 
@@ -15,9 +14,6 @@
   text-decoration-color: currentColor; outline: 2px solid var(--focus); outline-offset: 2px;
 }
 
-.link--standalone { text-decoration-color: transparent; }
-.link--standalone:hover { text-decoration-color: currentColor; }
-
 .link__new-tab { white-space: nowrap; }
 .link__icon {
   display: inline-block; width: .8em; height: .8em; margin-left: .2em; vertical-align: -.05em;
@@ -31,5 +27,4 @@
 @media (forced-colors: active) {
   .link, .prose a:not([class]) { color: LinkText; text-decoration-color: LinkText; }
   .link:hover, .prose a:not([class]):hover { text-decoration-color: LinkText; }
-  .link--standalone { text-decoration-color: LinkText; }
 }

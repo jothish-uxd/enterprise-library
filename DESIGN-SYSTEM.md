@@ -187,11 +187,10 @@ Where people are in a sequence of steps, and how far each has got.
 
 Goes somewhere. To do something, use a Button.
 
-- `<Link to|href newTab variant>{where it goes}</Link>`. `to` is a router path, `href` a plain address.
-- `variant="inline"` (default), in body text: medium weight and a full-ink 1px underline, so a link stands apart from the words around it by more than colour (WCAG 1.4.1). On hover the underline goes; with keyboard focus it stays, plus the focus ring.
-- `variant="standalone"`, a link on its own line: medium weight, underlined only on hover.
+- `<Link to|href newTab>{where it goes}</Link>`. `to` is a router path, `href` a plain address.
+- One look in body text and on its own line: medium weight and a full-ink 1px underline, so a link reads as a link by more than colour (WCAG 1.4.1). On hover the underline goes; with keyboard focus it stays, plus the focus ring.
 - `newTab`: opens in a new tab with `rel="noopener noreferrer"`. A box-and-arrow icon (`aria-hidden`) follows the last word, held on the same line by a word joiner, and "(opens in a new tab)" is in the accessible name. Use it only when leaving would lose work, or for help read alongside a task.
-- Plain HTML: `a.link`, `a.link.link--standalone`. Links without a class inside `.prose` get the in-text style.
+- Plain HTML: `a.link`. Links without a class inside `.prose` get the in-text style.
 - Keyboard: Tab reaches it, Enter follows it. Screen readers: "proctoring policy, link"; new-tab links add "(opens in a new tab)". Link text says where it goes, never "click here".
 - Forced colors: LinkText, underline kept on hover.
 

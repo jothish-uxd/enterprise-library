@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.5 — 2026-11-08
+
+- Link: a link on its own line is underlined too, the same as in body text. The `variant` prop and `.link--standalone` are gone; a link looks the same wherever it sits.
+
 ## 0.3.4 — 2026-11-08
 
 - Link (`Link`, `link.css`): in body text, medium weight and underlined, the underline going on hover and staying with keyboard focus; on its own line, underlined only on hover. New-tab links show a box-and-arrow icon kept on the same line as the last word and say "(opens in a new tab)" to screen readers, with `rel="noopener noreferrer"`. Plain links inside `.prose` get the in-text style. Docs page with a playground.

@@ -4,12 +4,10 @@ import { Link as RouterLink } from 'react-router-dom';
 /**
  * Link — goes somewhere. (To do something, use a Button.)
  *
- * - variant 'inline' (default), for links inside body text: medium weight and
- *   a full-ink underline, so it stands apart from the words around it by more
- *   than colour (WCAG 1.4.1). On hover the underline goes; with keyboard focus
- *   it stays, with the focus ring.
- * - variant 'standalone', for a link on its own line ("View all assessments"):
- *   medium weight, no underline until hover.
+ * - In body text or on its own line, it looks the same: medium weight and a
+ *   full-ink underline, so it reads as a link by more than colour (WCAG 1.4.1).
+ *   On hover the underline goes; with keyboard focus it stays, with the focus
+ *   ring.
  * - newTab: opens in a new tab, with a small box-and-arrow icon kept on the
  *   same line as the last word, and "(opens in a new tab)" for screen readers,
  *   so nobody is surprised where they end up. Adds rel="noopener noreferrer".
@@ -24,7 +22,6 @@ export interface LinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>,
   href?: string;
   /** Opens in a new tab; shows the icon and says so to screen readers */
   newTab?: boolean;
-  variant?: 'inline' | 'standalone';
 }
 
 const NEW_TAB_ICON = (
@@ -33,8 +30,8 @@ const NEW_TAB_ICON = (
   </svg>
 );
 
-export function Link({ children, to, href, newTab, variant = 'inline', className = '', rel, ...rest }: LinkProps) {
-  const cls = ['link', variant === 'standalone' && 'link--standalone', newTab && 'link--new-tab', className].filter(Boolean).join(' ');
+export function Link({ children, to, href, newTab, className = '', rel, ...rest }: LinkProps) {
+  const cls = ['link', newTab && 'link--new-tab', className].filter(Boolean).join(' ');
   const content = newTab ? (
     <>
       {children}
