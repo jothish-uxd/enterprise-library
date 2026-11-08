@@ -1380,3 +1380,95 @@ a.stepper__step:hover { color: var(--ink); }
   .accordion__item, .accordion--separate .accordion__item { border-color: CanvasText; }
 }
 
+/* ---- navigation.css ---- */
+/* Navigation: moving between a product's pages.
+   .sidenav                   a sidebar's links in named groups
+     __back                   a link up one level, above everything
+     __group                  one group; --ruled when its title is for screen readers only,
+                              --icon when its title has an icon (items line up after it)
+     __heading, __icon        the group's title and its icon
+     __link                   one page; [aria-current] is the current page; --strong for the record itself
+     __count                  a count at the end of a link, in mono
+     __action                 a link at the end of a group, with a plus
+     __empty, __top, __footer
+   .headernav                 top-level sections across the app header
+     __link                   one section; [aria-current] has full ink and a 2px rule on the header's edge */
+
+/* ---------- SideNav ---------- */
+.sidenav { display: flex; flex-direction: column; min-width: 0; font-size: var(--text-body-sm); }
+.sidenav__group + .sidenav__group { margin-top: var(--space-8); }
+.sidenav__group--ruled { padding-top: var(--space-4); border-top: 1px solid var(--rule); }
+.sidenav__group + .sidenav__group--ruled { margin-top: var(--space-5); }
+.sidenav__top + .sidenav__group { margin-top: var(--space-5); }
+
+.sidenav__heading {
+  display: flex; align-items: center; gap: var(--space-2);
+  margin: 0 0 var(--space-2-5); font-size: var(--text-small); font-weight: var(--weight-medium); color: var(--ink-faint);
+  line-height: var(--leading-snug); letter-spacing: 0;
+}
+.sidenav__icon { display: inline-flex; flex: none; color: var(--ink-soft); }
+.sidenav__icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.sidenav__list { display: grid; gap: var(--space-0-5); margin: 0; padding: 0; list-style: none; }
+/* The tint bleeds past the text, so labels line up with titles */
+.sidenav__link {
+  position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2);
+  margin: 0 calc(var(--space-2-5) * -1); padding: var(--space-1-5) var(--space-2-5); border-radius: var(--radius-sm);
+  color: var(--ink-soft); text-decoration: none; line-height: var(--leading-snug);
+}
+.sidenav__group--icon .sidenav__link { padding-left: calc(var(--space-2-5) + 16px + var(--space-2)); }
+.sidenav__label { min-width: 0; overflow-wrap: anywhere; }
+.sidenav__link:hover { color: var(--ink); background: var(--bg-subtle); }
+.sidenav__link:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; }
+.sidenav__link[aria-current] { color: var(--ink); font-weight: var(--weight-semibold); background: var(--bg-hover); }
+.sidenav__link[aria-current]::before {
+  content: ""; position: absolute; left: 0; top: var(--space-1-5); bottom: var(--space-1-5);
+  border-left: 3px solid var(--ink); border-radius: var(--radius-xs);
+}
+.sidenav__link--strong { color: var(--ink); font-weight: var(--weight-semibold); }
+.sidenav__count { flex: none; font-family: var(--mono); font-size: var(--text-caption); font-weight: var(--weight-regular); color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+.sidenav__link[aria-current] .sidenav__count { color: var(--ink); }
+
+.sidenav__back, .sidenav__action {
+  display: inline-flex; align-items: center; gap: var(--space-1-5); align-self: flex-start;
+  color: var(--ink-faint); text-decoration: none; border-radius: var(--radius-xs);
+}
+.sidenav__back { margin-bottom: var(--space-4); font-size: var(--text-small); }
+.sidenav__action { margin-top: var(--space-1-5); padding: var(--space-1-5) 0; color: var(--ink-soft); }
+.sidenav__group--icon .sidenav__action { padding-left: calc(16px + var(--space-2)); }
+.sidenav__back svg, .sidenav__action svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.sidenav__back:hover, .sidenav__action:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.sidenav__back:focus-visible, .sidenav__action:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.sidenav__empty { margin: 0; padding-top: var(--space-1-5); font-size: var(--text-small); color: var(--ink-faint); }
+.sidenav__group--icon .sidenav__empty { padding-left: calc(16px + var(--space-2)); }
+.sidenav__footer { margin-top: auto; padding-top: var(--space-8); font-size: var(--text-caption); color: var(--ink-faint); line-height: var(--leading-body); }
+
+/* ---------- HeaderNav ---------- */
+/* The nav reaches 1px past the header's content, onto its bottom border, so the current rule sits on it */
+.headernav { align-self: stretch; display: flex; min-width: 0; margin-bottom: -1px; }
+.headernav__list {
+  display: flex; gap: var(--space-1); margin: 0; padding: 0; list-style: none;
+  overflow-x: auto; scrollbar-width: none;
+}
+.headernav__item { display: flex; flex: none; }
+.headernav__link {
+  display: flex; align-items: center; padding: 0 var(--space-2-5);
+  border-bottom: 2px solid transparent; border-radius: 0;
+  color: var(--ink-soft); text-decoration: none; font-size: var(--text-body-sm); font-weight: var(--weight-medium); white-space: nowrap;
+}
+.headernav__link:hover { color: var(--ink); }
+.headernav__link[aria-current] { color: var(--ink); border-bottom-color: var(--ink); }
+.headernav__link:focus-visible { outline: 2px solid var(--focus); outline-offset: -6px; border-radius: var(--radius-sm); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .sidenav__link { transition: color var(--duration-fast) ease, background-color var(--duration-fast) ease; }
+}
+
+@media (forced-colors: active) {
+  .sidenav__link[aria-current] { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+  .sidenav__link[aria-current] .sidenav__count { color: HighlightText; }
+  .sidenav__link[aria-current]::before { border-color: HighlightText; }
+  .headernav__link[aria-current] { border-bottom-color: Highlight; }
+}
+

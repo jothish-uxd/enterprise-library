@@ -197,6 +197,19 @@ Where people are in a sequence of steps, and how far each has got.
 - Plain steps are an ordered list named by `label`, the current one `aria-current="step"`. Steps with `to` or `href` are links in a `nav`, the current one `aria-current="page"`; only links are in the Tab order. Each step reads its number, name and status: "3. Proctoring, in progress, current step".
 - Rules: three to about seven steps, short noun labels; link only the steps people can go back to; see the Multi-step form pattern for saving and validation between steps.
 
+### Navigation: SideNav and HeaderNav (`navigation.css`, `components/SideNav.tsx`, `components/HeaderNav.tsx`)
+
+Moving between a product's pages. Generalised from the header tabs and sidebars in Cipher Lab and Online Assessments. Classes are `.sidenav__*` and `.headernav__*`, so they don't collide with apps' own `.nav-link`.
+
+- `<HeaderNav items label />`: top-level sections across the app header. A `<nav>` (default name "Primary") holding a list of links. The current section has full ink and a 2px ink rule; the nav reaches 1px past the header's content so the rule sits on the header's bottom border. Router items stay current on pages below them (`end` to stop that). The row scrolls sideways when it doesn't fit.
+- `<SideNav label groups back headingLevel top footer />`: the pages within a section or record. Each group is `{ title?, hideTitle?, icon?, items, empty?, action? }`; each item `{ label, to?, href?, current?, end?, count?, strong? }`.
+  - A titled group's heading (level 2 by default) names its list. `hideTitle` keeps it for screen readers and shows a rule above the group instead.
+  - The current page: semibold ink, the `--bg-hover` tint and a 3px ink bar; the tint bleeds past the text so labels line up with titles. A group `icon` sits beside its title and its items, empty text and action line up after it.
+  - `count` in mono at the end of an item, read after the label. `action` is a link with a plus at the end of a group. `back` is a link up one level.
+- The current page is `aria-current="page"`: set by the router for `to` items, by `current` for `href` items. Lists of links only: Tab and Enter, no arrow keys.
+- On phones, SideNav goes behind a menu button in the header (the app shell's job, not this component's).
+- Forced colors: the current SideNav item uses Highlight and HighlightText; the HeaderNav rule uses Highlight.
+
 ### Link (`link.css`, `components/Link.tsx`)
 
 Goes somewhere. To do something, use a Button.

@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, BrowserFrame, Button, Card, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1019,6 +1019,120 @@ function AccordionDemo() {
   );
 }
 
+/* ---------- Navigation playgrounds ---------- */
+const NAV_ICONS = {
+  layers: <svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5z" /><path d="m3 13 9 5 9-5" /></svg>,
+  people: <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5" /></svg>,
+};
+function StartAt({ path }: { path: string }) {
+  const navigate = useNavigate();
+  React.useEffect(() => { navigate(path, { replace: true }); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  return null;
+}
+function SideNavDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Starfighter Pilot L4', back: true, icons: true, counts: true, action: true, candidatesTitle: 'shown',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const base = '/jobs/pilot-l4';
+  const icon = (k: keyof typeof NAV_ICONS) => (v.icons ? NAV_ICONS[k] : undefined);
+  const groups = [
+    { items: [{ label: String(v.label) || 'Untitled job', to: base, end: true, strong: true }] },
+    {
+      title: 'Assessments', icon: icon('layers'),
+      items: [
+        { label: 'Pilot screening v3', to: `${base}/assessments/pilot-screening` },
+        { label: 'Navigation drills', to: `${base}/assessments/navigation-drills` },
+        { label: 'Astromech basics', to: `${base}/assessments/astromech-basics` },
+      ],
+      action: v.action ? { label: 'New assessment', to: `${base}/assessments/new` } : undefined,
+    },
+    {
+      title: 'Candidates', hideTitle: v.candidatesTitle === 'hidden', icon: icon('people'),
+      items: [
+        { label: 'In review', to: `${base}/candidates/in-review`, count: v.counts ? 12 : undefined },
+        { label: 'Shortlisted', to: `${base}/candidates/shortlisted`, count: v.counts ? 4 : undefined },
+        { label: 'Hired', to: `${base}/candidates/hired`, count: v.counts ? 1 : undefined },
+      ],
+    },
+  ];
+  const q = (x: string) => `'${x}'`;
+  const groupCode = [
+    `    { items: [{ label: ${q(String(v.label) || 'Untitled job')}, to: '${base}', end: true, strong: true }] },`,
+    `    { title: 'Assessments',${v.icons ? ' icon: <LayersIcon />,' : ''}\n      items: [{ label: 'Pilot screening v3', to: '${base}/assessments/pilot-screening' }, …]${v.action ? `,\n      action: { label: 'New assessment', to: '${base}/assessments/new' }` : ''} },`,
+    `    { title: 'Candidates',${v.candidatesTitle === 'hidden' ? ' hideTitle: true,' : ''}${v.icons ? ' icon: <PeopleIcon />,' : ''}\n      items: [{ label: 'In review', to: '${base}/candidates/in-review'${v.counts ? ', count: 12' : ''} }, …] },`,
+  ];
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) || 'Untitled job' },
+    ...(v.back ? [{ attr: 'back', value: "{ label: 'All jobs', to: '/jobs' }", expr: true }] : []),
+    { attr: 'groups', value: `[\n${groupCode.join('\n')}\n  ]`, expr: true },
+  ];
+  return (
+    <Playground
+      name="SideNav"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="JobSidebar.tsx"
+      tag="SideNav"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label', help: 'Names the navigation; here, the job it belongs to.' },
+        { kind: 'boolean', key: 'back', label: 'Back link', help: 'A link up one level, above everything.' },
+        { kind: 'boolean', key: 'icons', label: 'Group icons', help: 'Items line up after the icon.' },
+        { kind: 'boolean', key: 'counts', label: 'Counts' },
+        { kind: 'boolean', key: 'action', label: 'Add link', help: 'A link at the end of a group.' },
+        { kind: 'segmented', key: 'candidatesTitle', label: 'Candidates title', options: [{ value: 'shown', label: 'Shown' }, { value: 'hidden', label: 'Screen readers' }] },
+      ]}
+      preview={
+        <div className="pg-sidenav">
+          <StartAt path={`${base}/assessments/pilot-screening`} />
+          <SideNav label={String(v.label) || 'Untitled job'} groups={groups}
+            back={v.back ? { label: 'All jobs', to: '/jobs' } : undefined} />
+        </div>
+      }
+    />
+  );
+}
+
+function HeaderNavDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({ items: 'Overview, Jobs, Talent, Reports', label: 'Primary' });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const names = String(v.items).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
+  const items = names.map((n) => ({ label: n, to: `/${slug(n)}` }));
+  const attrs: PgCodeLine[] = [
+    { attr: 'items', value: `[\n${items.map((it) => `    { label: '${it.label}', to: '${it.to}' },`).join('\n')}\n  ]`, expr: true },
+    ...(v.label !== 'Primary' ? [{ attr: 'label', value: String(v.label) }] : []),
+  ];
+  return (
+    <Playground
+      name="HeaderNav"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="AppHeader.tsx"
+      tag="HeaderNav"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'items', label: 'Sections', help: 'Up to 4, separated by commas. Short nouns.' },
+        { kind: 'text', key: 'label', label: 'Label', help: 'Names the navigation for screen readers.' },
+      ]}
+      preview={
+        <div className="pg-headernav">
+          <StartAt path={items[1]?.to ?? items[0]?.to ?? '/'} />
+          <div className="pg-appheader">
+            <span className="pg-appheader__mark" aria-hidden="true" />
+            <span className="pg-appheader__name">Product</span>
+            <HeaderNav items={items} label={String(v.label) || 'Primary'} />
+          </div>
+        </div>
+      }
+    />
+  );
+}
+
 /* ---------- Breadcrumbs playground ---------- */
 function BreadcrumbsDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({ trail: 'Hiring, Jobs, Starfighter Pilot L4, Pilot screening v3', fold: false, label: 'Breadcrumb' });
@@ -1888,6 +2002,8 @@ const DEMOS: Record<string, () => ReactNode> = {
   dialog: () => <DialogDemo />,
   menu: () => <MenuDemo />,
   accordion: () => <AccordionDemo />,
+  sidenav: () => <SideNavDemo />,
+  headernav: () => <HeaderNavDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,

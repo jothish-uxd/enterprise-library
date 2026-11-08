@@ -1,6 +1,6 @@
 {
   "name": "@jothish-uxd/enterprise-library",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "Enterprise Library: tokens, components and accessible patterns shared by Sleepy's apps.",
   "license": "UNLICENSED",
   "type": "module",
