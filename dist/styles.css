@@ -1641,49 +1641,107 @@ a.stepper__step:hover { color: var(--ink); }
   .progress__note .alert-icon { color: CanvasText; }
 }
 
-/* ---- progress-indicator.css ---- */
-/* Progress indicator: a ring that fills, or spins while it waits.
-   .progress-indicator            ring (__ring with an SVG: __track, __fill) and __label
-     --sm --md --lg            16px, 32px, 64px; at lg the value sits inside (__value)
+/* ---- loader.css ---- */
+/* Loader: something is loading or working, and how far it's got when that can be measured.
+   .loader                     __mark (role=progressbar) and __label (with __inline-value)
+     --circle --ticks --line --dots --skeleton
+     --sm --md --lg            16px, 32px, 64px marks (line: 2, 4, 6px high; skeleton: line heights)
      --label-end --label-below --label-hidden
-     --spin                    no value: an ink arc goes round; dashed and still with reduced motion */
+     --waiting                 no value: it moves; with reduced motion it holds still */
 
-.progress-indicator { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; color: var(--ink); font-size: var(--text-small); }
-.progress-indicator--label-below { flex-direction: column; gap: var(--space-2); text-align: center; }
-.progress-indicator--sm { gap: var(--space-1-5); }
+.loader { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; color: var(--ink); font-size: var(--text-small); }
+.loader--label-below { flex-direction: column; text-align: center; }
+.loader--sm { gap: var(--space-1-5); }
+.loader__label { min-width: 0; font-weight: var(--weight-medium); }
+.loader__inline-value { margin-left: var(--space-2); font-family: var(--mono); font-size: var(--text-caption); font-weight: var(--weight-regular); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.loader--label-below .loader__inline-value { display: block; margin: var(--space-0-5) 0 0; }
+.loader__value { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--mono); font-size: var(--text-caption); font-variant-numeric: tabular-nums; }
 
-.progress-indicator__ring { position: relative; flex: none; width: 32px; height: 32px; }
-.progress-indicator--sm .progress-indicator__ring { width: 16px; height: 16px; }
-.progress-indicator--lg .progress-indicator__ring { width: 64px; height: 64px; }
-.progress-indicator__ring svg { display: block; width: 100%; height: 100%; transform: rotate(-90deg); }
+/* Round marks: circle and ticks */
+.loader--circle .loader__mark, .loader--ticks .loader__mark { position: relative; flex: none; width: 32px; height: 32px; }
+.loader--sm.loader--circle .loader__mark, .loader--sm.loader--ticks .loader__mark { width: 16px; height: 16px; }
+.loader--lg.loader--circle .loader__mark, .loader--lg.loader--ticks .loader__mark { width: 64px; height: 64px; }
+.loader__mark svg { display: block; width: 100%; height: 100%; }
 
-.progress-indicator__track, .progress-indicator__fill { fill: none; stroke-width: 3.5; }
-.progress-indicator--lg .progress-indicator__track, .progress-indicator--lg .progress-indicator__fill { stroke-width: 2.5; }
-.progress-indicator--sm .progress-indicator__track, .progress-indicator--sm .progress-indicator__fill { stroke-width: 4.5; }
-.progress-indicator__track { stroke: var(--bg-hover); }
-.progress-indicator__fill { stroke: var(--ink); stroke-linecap: round; }
-.progress-indicator--spin .progress-indicator__track { stroke: var(--rule); }
+/* Circle */
+.loader--circle svg { transform: rotate(-90deg); }
+.loader__track, .loader--circle .loader__fill { fill: none; stroke-width: 3.5; }
+.loader--lg .loader__track, .loader--lg.loader--circle .loader__fill { stroke-width: 2.5; }
+.loader--sm .loader__track, .loader--sm.loader--circle .loader__fill { stroke-width: 4.5; }
+.loader__track { stroke: var(--bg-hover); }
+.loader--circle .loader__fill { stroke: var(--ink); stroke-linecap: round; }
+.loader--circle.loader--waiting .loader__track { stroke: var(--rule); }
 
-.progress-indicator__value {
-  position: absolute; inset: 0; display: grid; place-items: center;
-  font-family: var(--mono); font-size: var(--text-caption); font-variant-numeric: tabular-nums; color: var(--ink);
-}
-.progress-indicator__label { min-width: 0; font-weight: var(--weight-medium); }
-.progress-indicator__inline-value { margin-left: var(--space-2); font-family: var(--mono); font-size: var(--text-caption); font-weight: var(--weight-regular); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
-.progress-indicator--label-below .progress-indicator__inline-value { display: block; margin: var(--space-0-5) 0 0; }
+/* Ticks: lit ticks are ink; waiting, they fade round from ink to the rule colour */
+.loader__tick { stroke: var(--rule-strong); stroke-width: 3; stroke-linecap: round; }
+.loader--sm .loader__tick { stroke-width: 4; }
+.loader__tick.is-on { stroke: var(--ink); }
+/* The head is the last tick (just before the top), so turning clockwise it leads and the fade trails */
+.loader__tick--11, .loader__tick--10 { stroke: var(--ink); }
+.loader__tick--9, .loader__tick--8 { stroke: var(--ink-soft); }
+.loader__tick--7, .loader__tick--6 { stroke: var(--ink-faint); }
+
+/* Line: thin and full width */
+.loader--line { display: flex; width: 100%; align-items: center; }
+.loader--line.loader--label-below { align-items: stretch; text-align: left; }
+.loader--line .loader__mark { position: relative; flex: 1; min-width: 0; height: 4px; overflow: hidden; border-radius: var(--radius-full); background: var(--bg-hover); }
+.loader--line.loader--sm .loader__mark { height: 2px; }
+.loader--line.loader--lg .loader__mark { height: 6px; }
+.loader--line .loader__fill { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--ink); }
+.loader--line.loader--waiting .loader__fill { position: absolute; inset: 0 auto 0 0; width: 33%; }
+.loader--line.loader--label-end .loader__label { flex: none; }
+
+/* Dots */
+.loader--dots .loader__mark { display: inline-flex; align-items: center; gap: var(--space-1); flex: none; height: 32px; }
+.loader--sm.loader--dots .loader__mark { height: 16px; gap: var(--space-0-5); }
+.loader--lg.loader--dots .loader__mark { height: 64px; gap: var(--space-2); }
+.loader__dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--ink); }
+.loader--sm .loader__dot { width: 4px; height: 4px; }
+.loader--lg .loader__dot { width: 10px; height: 10px; }
+.loader__dot:nth-child(2) { background: var(--ink-soft); }
+.loader__dot:nth-child(3) { background: var(--ink-faint); }
+
+/* Skeleton: grey lines where content will appear */
+.loader--skeleton { display: block; width: 100%; }
+.loader--skeleton .loader__mark { display: grid; gap: var(--space-2-5); }
+.loader__bone { display: block; height: 12px; border-radius: var(--radius-xs); background: var(--bg-hover); }
+.loader--sm .loader__bone { height: 8px; }
+.loader--lg .loader__bone { height: 16px; }
+.loader__bone:first-child { width: 45%; height: 16px; }
+.loader--lg .loader__bone:first-child { height: 24px; }
+.loader__bone:nth-child(3n) { width: 72%; }
+.loader__bone:nth-child(3n+2) { width: 92%; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .progress-indicator__fill { transition: stroke-dasharray var(--duration-base) ease; }
-  .progress-indicator--spin svg { animation: progress-indicator-spin .9s linear infinite; }
-  @keyframes progress-indicator-spin { from { transform: rotate(-90deg); } to { transform: rotate(270deg); } }
+  .loader--circle .loader__fill { transition: stroke-dasharray var(--duration-base) ease; }
+  .loader--line .loader__fill { transition: width var(--duration-base) ease; }
+  .loader--circle.loader--waiting svg { animation: loader-spin .9s linear infinite; }
+  .loader--ticks.loader--waiting svg { animation: loader-turn 1s steps(12) infinite; }
+  .loader--line.loader--waiting .loader__fill { animation: loader-slide 1.4s ease-in-out infinite; }
+  .loader__dot { animation: loader-dot 1.2s ease-in-out infinite; background: var(--ink); }
+  .loader__dot:nth-child(2) { animation-delay: .15s; background: var(--ink); }
+  .loader__dot:nth-child(3) { animation-delay: .3s; background: var(--ink); }
+  .loader__bone {
+    background: linear-gradient(90deg, var(--bg-hover) 0 40%, var(--bg-subtle) 50%, var(--bg-hover) 60% 100%) 0 0 / 300% 100%;
+    animation: loader-shimmer 1.6s linear infinite;
+  }
+  @keyframes loader-spin { from { transform: rotate(-90deg); } to { transform: rotate(270deg); } }
+  @keyframes loader-turn { to { transform: rotate(360deg); } }
+  @keyframes loader-slide { from { left: -33%; } to { left: 100%; } }
+  @keyframes loader-dot { 0%, 80%, 100% { transform: scale(.6); opacity: .35; } 40% { transform: scale(1); opacity: 1; } }
+  @keyframes loader-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
 }
-/* Still: no arc, the whole track dashed in ink, so it reads as waiting */
+/* Still: circle dashed, line hatched; ticks, dots and skeleton hold their fade */
 @media (prefers-reduced-motion: reduce) {
-  .progress-indicator--spin .progress-indicator__fill { stroke-dasharray: 4 4.333; stroke-linecap: butt; }
+  .loader--circle.loader--waiting .loader__fill { stroke-dasharray: 4 4.333; stroke-linecap: butt; }
+  .loader--line.loader--waiting .loader__fill { width: 100%; background: repeating-linear-gradient(-45deg, var(--ink) 0 3px, transparent 3px 6px); }
 }
 
 @media (forced-colors: active) {
-  .progress-indicator__track { stroke: GrayText; }
-  .progress-indicator__fill { stroke: CanvasText; }
+  .loader__track, .loader__tick { stroke: GrayText; }
+  .loader--circle .loader__fill, .loader__tick.is-on, .loader__tick--11, .loader__tick--10 { stroke: CanvasText; }
+  .loader--line .loader__mark { border: 1px solid CanvasText; }
+  .loader--line .loader__fill, .loader__dot { background: CanvasText; forced-color-adjust: none; }
+  .loader__bone { background: GrayText; forced-color-adjust: none; }
 }
 

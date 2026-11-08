@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.13 — 2026-11-08
+
+- Progress indicator is now **Loader** (`Loader`, `loader.css`, `.loader*`, docs page `#loader`), with five types: circle (fills or spins), ticks (light up or turn), line (fills or slides), dots (pulse) and skeleton (grey lines where content will appear). Every type is still with reduced motion. `ProgressIndicator` and `ProgressCircle` still work as deprecated aliases.
+- Docs: the Loader playground switches type with chips above the preview; playgrounds can take a row above the preview.
+
 ## 0.3.12 — 2026-11-08
 
 - Progress circle is now **Progress indicator**, since it's a spinner as often as a ring: `ProgressIndicator`, `progress-indicator.css`, classes `.progress-indicator*`, docs page `#progress-indicator`. `ProgressCircle` still works as a deprecated alias.

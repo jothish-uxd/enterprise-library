@@ -50,10 +50,12 @@ export { ToastProvider, useToast } from './components/Toast';
 export type { ToastOptions, ToastProviderProps } from './components/Toast';
 export { ProgressBar } from './components/ProgressBar';
 export type { ProgressBarProps } from './components/ProgressBar';
-export { ProgressIndicator } from './components/ProgressIndicator';
-export type { ProgressIndicatorProps } from './components/ProgressIndicator';
-/** @deprecated Renamed ProgressIndicator in 0.3.12 */
-export { ProgressIndicator as ProgressCircle } from './components/ProgressIndicator';
+export { Loader } from './components/Loader';
+export type { LoaderProps, LoaderType } from './components/Loader';
+/** @deprecated Renamed Loader in 0.3.13 */
+export { Loader as ProgressIndicator, Loader as ProgressCircle } from './components/Loader';
+/** @deprecated Renamed LoaderProps in 0.3.13 */
+export type { LoaderProps as ProgressIndicatorProps } from './components/Loader';
 export { Tabs } from './components/Tabs';
 export type { TabItem, TabsProps } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';

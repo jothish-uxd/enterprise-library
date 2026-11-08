@@ -242,14 +242,22 @@ How far a task has got: uploads, scoring, training. Generalised from Cipher Lab'
 - Not a live region and not focusable: announce the start and end with a toast or status message, and put Cancel or Retry beside it as a button.
 - Ink fill on a `--bg-hover` track with a hairline (`md`, 8px) or none (`sm`, 4px). Forced colors: CanvasText fill on a Canvas track with a CanvasText border.
 
-### Progress indicator (`progress-indicator.css`, `components/ProgressIndicator.tsx`)
+### Loader (`loader.css`, `components/Loader.tsx`)
 
-The round, compact form of the progress bar: a ring that fills, or a spinner while it waits. Generalised from Online Assessments' spinners.
+Shows that something is loading or working, and how far it's got when that can be measured. Was Progress circle (0.3.11) and Progress indicator (0.3.12); `ProgressCircle` and `ProgressIndicator` remain as deprecated aliases. Generalised from Online Assessments' spinners and Cipher Lab's pulse.
 
-- `<ProgressIndicator label value max valueText size labelPosition />`. Sizes `sm` 16px (inline: buttons, cells), `md` 32px, `lg` 64px with the value inside in mono. The label sits beside (`end`), `below`, or is `hidden` and still names it.
-- With a `value`, an ink arc fills clockwise from the top over a `--bg-hover` track (SVG, `pathLength="100"`). Without one, it spins: a quarter arc goes round a `--rule` track. With reduced motion it stops and the whole ring is dashed ink.
-- `role="progressbar"` named by the label, with `aria-valuenow`/`-min`/`-max` and `aria-valuetext` when measured; a spinner has no value. Not a live region, not focusable: mark the loading area `aria-busy="true"` and announce the end if the wait was long.
-- No error state: show failures with an alert or a progress bar's error. Forced colors: CanvasText arc on a GrayText track.
+- `<Loader type label value max valueText size labelPosition lines />`. Types:
+  - `circle` (default): an ink arc fills clockwise over a `--bg-hover` track, or a quarter arc spins over a `--rule` track.
+  - `ticks`: twelve ticks round a circle; measured, the first n are ink and the rest `--rule-strong`; waiting, they fade from ink through `--ink-soft` and `--ink-faint` and turn in 12 steps.
+  - `line`: full width, 2/4/6px; it fills, or a third-width band slides along it.
+  - `dots`: three dots pulsing in turn; never measured.
+  - `skeleton`: grey lines (`lines`, default 3) in the shape of what's coming, shimmering; never measured; its label is always visually hidden.
+- Sizes `sm` 16px, `md` 32px, `lg` 64px (circle and ticks show the value inside, in mono). Labels beside (`end`), `below`, or `hidden`.
+- `role="progressbar"` named by the label, with value attributes only when measured. Not a live region, not focusable: mark the loading area `aria-busy="true"` and announce the end if the wait was long.
+- Reduced motion: nothing moves. Circle goes dashed, line hatched; ticks, dots and skeleton hold a still fade.
+- No error state: show failures with an alert or a progress bar's error. Forced colors: CanvasText and GrayText.
+- Classes `.loader*` (the docs page has its own `.skeleton`).
+- Docs: the playground has a row of chips above the preview that switch the type (`above` slot in `Playground`).
 
 ### Link (`link.css`, `components/Link.tsx`)
 
