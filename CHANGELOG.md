@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.9 — 2026-11-08
+
+- Alerts (`alerts.css`): `Banner`, global (full width under the header, tinted) or inline (a hairline box with a bar in the tone's colour), in error, warning, success and info, each with its own icon shape and a word for screen readers; and `ToastProvider` with `useToast()`, ink toasts in a "Notifications" region that are announced once, pause on hover and focus, stay when they have an action, and collapse past three. Docs page with a playground for each; the Notifications pattern links to it.
+- Docs: playgrounds can show plain code for hook-based components; the page's own `.banner` rules no longer reach demos.
+
 ## 0.3.8 — 2026-11-08
 
 - Docs: component names are in sentence case with spaces wherever people read them (Status mark, Stat filter, Browser frame, Reset button, Choice card, Side navigation, Header navigation, Multi-select). React names stay in code. No API changes.

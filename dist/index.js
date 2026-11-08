@@ -27,6 +27,8 @@ export { Menu } from './components/Menu';
 export { Accordion } from './components/Accordion';
 export { SideNav } from './components/SideNav';
 export { HeaderNav } from './components/HeaderNav';
+export { Banner } from './components/Banner';
+export { ToastProvider, useToast } from './components/Toast';
 export { Tabs } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Stepper } from './components/Stepper';

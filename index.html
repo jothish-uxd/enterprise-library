@@ -23,6 +23,7 @@
   @import url("dist/css/tabs.css") layer(lib);
   @import url("dist/css/accordion.css") layer(lib);
   @import url("dist/css/navigation.css") layer(lib);
+  @import url("dist/css/alerts.css") layer(lib);
   @import url("dist/css/breadcrumbs.css") layer(lib);
   @import url("dist/css/stepper.css") layer(lib);
   @import url("dist/css/status-mark.css") layer(lib);
@@ -685,11 +686,11 @@
 
   /* ---------- Notifications ---------- */
   .demo-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-  .banner { flex-wrap: wrap; gap: 10px 12px; margin-bottom: 16px; }
-  .banner > svg { width: 18px; height: 18px; flex: none; margin-top: 2px; }
-  .banner > div { flex: 1 1 220px; }
-  .banner strong { display: block; font-weight: 600; }
-  .banner span { color: var(--ink); }
+  .banner:where(:not(.lib *)) { flex-wrap: wrap; gap: 10px 12px; margin-bottom: 16px; }
+  .banner:where(:not(.lib *)) > svg { width: 18px; height: 18px; flex: none; margin-top: 2px; }
+  .banner:where(:not(.lib *)) > div { flex: 1 1 220px; }
+  .banner:where(:not(.lib *)) strong { display: block; font-weight: 600; }
+  .banner:where(:not(.lib *)) span { color: var(--ink); }
   .toast-region { margin-top: 20px; min-height: 64px; display: grid; justify-items: end; gap: 8px; }
   .toast-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; justify-items: end; width: 100%; }
   .toast {
@@ -885,6 +886,19 @@
   .pg-dialog--drawer .pg-dialog__copy { width: 300px; height: 280px; border-width: 1px; border-radius: 0; }
   .pg__stage-inner > .pg-menu { display: grid; justify-items: center; gap: 12px; align-self: start; margin-top: 24px; }
   .pg-menu p { margin: 0; }
+  .pg__stage-inner > .pg-banner { width: 100%; max-width: 560px; min-width: 0; }
+  .pg-banner--global { border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--bg); }
+  .pg-appheader--flat { border: 0; border-bottom: 1px solid var(--rule); border-radius: 0; height: 48px; }
+  .pg-banner__page { display: grid; gap: 10px; padding: 20px 24px 28px; }
+  .pg-banner--inline .pg-banner__page { padding: 16px 0 0; }
+  .pg-banner__page span { display: block; height: 8px; border-radius: 4px; background: var(--bg-hover); }
+  .pg-banner__page span:nth-child(2) { width: 80%; } .pg-banner__page span:nth-child(3) { width: 55%; }
+  .pg-banner__heading { margin: 0 0 12px; font-weight: 600; font-size: 15px; }
+  .pg-banner__gone { margin: 0; padding: 12px 24px; color: var(--ink-soft); }
+  .pg-banner--inline .pg-banner__gone { padding: 12px 0; }
+  .pg-banner__again { appearance: none; border: 0; background: none; padding: 0; font: inherit; color: var(--ink); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .pg__stage:has(.pg-toast) { position: relative; }
+  .pg-toast .toaster { position: absolute; right: 16px; bottom: 16px; width: min(360px, calc(100% - 32px)); }
   .pg__stage-inner > .pg-sidenav { width: 240px; max-width: 100%; align-self: start; margin-top: 24px; }
   .pg__stage-inner > .pg-headernav { width: 100%; max-width: 560px; min-width: 0; }
   .pg-appheader { display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 16px; border: 1px solid var(--rule); border-radius: 8px; background: var(--bg); min-width: 0; }
@@ -1062,7 +1076,7 @@
   <button class="icon-button menu-button" id="menuButton" type="button" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Menu</span></button>
   <a class="wordmark" href="#overview"><svg class="wordmark-glyph" viewBox="0 0 20 20" aria-hidden="true"><rect x="1" y="1" width="8" height="8" fill="currentColor"/><rect x="11" y="1" width="8" height="8" fill="currentColor" opacity=".7"/><rect x="1" y="11" width="8" height="8" fill="currentColor" opacity=".45"/><rect x="11.75" y="11.75" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Enterprise Library</a>
   <span class="header-sep" aria-hidden="true">/</span>
-  <span class="badge">v0.3.8</span>
+  <span class="badge">v0.3.9</span>
   <nav class="section-nav" aria-label="Sections">
     <ul>
       <li><a class="section-link" href="#overview" data-section="overview">Overview</a></li>
@@ -1108,6 +1122,7 @@
       <ul class="nav-list" aria-label="Components">
         <li><a class="nav-link" href="#components">All components</a></li>
         <li><a class="nav-link" href="#accordion">Accordion</a></li>
+        <li><a class="nav-link" href="#alerts">Alerts</a></li>
         <li><a class="nav-link" href="#breadcrumbs">Breadcrumbs</a></li>
         <li><a class="nav-link" href="#browserframe">Browser frame</a></li>
         <li><a class="nav-link" href="#buttons">Buttons</a></li>
@@ -1192,8 +1207,8 @@
     <h1 class="page-title" id="h-overview" tabindex="-1">Enterprise software, accessible by default.</h1>
     <p class="page-lede">Foundations, components and whole patterns for dense, task-heavy screens: data tables, filters, bulk actions and multi-step forms, plus admin screens like audit logs and usage caps. Each one decides where focus goes, what a screen reader hears, and how every state looks.</p>
     <div class="install">
-      <div class="install-row"><span class="prompt" aria-hidden="true">$</span><code>npm install github:jothish-uxd/enterprise-library#v0.3.8</code><button class="copy-button" type="button" data-copy-text="npm install github:jothish-uxd/enterprise-library#v0.3.8" data-copy-label="install command"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div>
-      <p class="note">Version 0.3.8: tokens, styles and components. The patterns below are working examples, coming next as React components. <a href="#getting-started">Getting started</a></p>
+      <div class="install-row"><span class="prompt" aria-hidden="true">$</span><code>npm install github:jothish-uxd/enterprise-library#v0.3.9</code><button class="copy-button" type="button" data-copy-text="npm install github:jothish-uxd/enterprise-library#v0.3.9" data-copy-label="install command"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div>
+      <p class="note">Version 0.3.9: tokens, styles and components. The patterns below are working examples, coming next as React components. <a href="#getting-started">Getting started</a></p>
     </div>
   </div>
 
@@ -1332,7 +1347,7 @@
 
   <section class="doc-section" id="gs-install" aria-labelledby="h-gs-install">
     <h2 id="h-gs-install">Install</h2>
-    <p>Each version is a GitHub Release. Pin the tag so an app only changes when you move it.</p><div class="code-block"><div class="code-block-bar"><span>Terminal</span><button class="copy-button" type="button" data-copy-label="Terminal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>npm install github:jothish-uxd/enterprise-library#v0.3.8</code></pre></div>
+    <p>Each version is a GitHub Release. Pin the tag so an app only changes when you move it.</p><div class="code-block"><div class="code-block-bar"><span>Terminal</span><button class="copy-button" type="button" data-copy-label="Terminal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>npm install github:jothish-uxd/enterprise-library#v0.3.9</code></pre></div>
   </section>
   <section class="doc-section" id="gs-use" aria-labelledby="h-gs-use">
     <h2 id="h-gs-use">Use it</h2>
@@ -1354,7 +1369,7 @@ import { Select, StatFilter, Card, ChoiceCard, SortHeader } from &#x27;@jothish-
   </section>
   <section class="doc-section" id="gs-move" aria-labelledby="h-gs-move">
     <h2 id="h-gs-move">Moving from @jothish-uxd/design-system</h2>
-    <ul class="a11y-list"><li>Install <code>github:jothish-uxd/enterprise-library#v0.3.8</code> in place of <code>github:jothish-uxd/design-system#v0.1.0</code>.</li><li>Change imports from <code>@jothish-uxd/design-system</code> to <code>@jothish-uxd/enterprise-library</code>, including <code>styles.css</code>.</li><li>Nothing is renamed. <code>--ok</code> still works, as an alias of <code>--success</code>.</li><li>Replace hand-typed sizes, gaps, radii and shadows with tokens as you touch each screen; sizes between ramp steps round to the nearest step.</li></ul>
+    <ul class="a11y-list"><li>Install <code>github:jothish-uxd/enterprise-library#v0.3.9</code> in place of <code>github:jothish-uxd/design-system#v0.1.0</code>.</li><li>Change imports from <code>@jothish-uxd/design-system</code> to <code>@jothish-uxd/enterprise-library</code>, including <code>styles.css</code>.</li><li>Nothing is renamed. <code>--ok</code> still works, as an alias of <code>--success</code>.</li><li>Replace hand-typed sizes, gaps, radii and shadows with tokens as you touch each screen; sizes between ramp steps round to the nearest step.</li></ul>
   </section>
   <section class="doc-section" id="quick-start" aria-labelledby="h-quick-start">
     <h2 id="h-quick-start">Patterns, as they’ll ship</h2>
@@ -1503,9 +1518,9 @@ export function AccessRequests({ rows, onUpdate }) {
 <section class="panel" id="panel-components" data-section="components" aria-labelledby="h-components" hidden>
   <h1 class="page-title" id="h-components" tabindex="-1">Components</h1>
   <p class="page-lede">Single controls and surfaces. Each one is a real HTML element first, follows the ARIA Authoring Practices where it needs ARIA, and documents its keys and what a screen reader hears.</p>
-  <div class="chips lib-filter" role="group" aria-label="Filter components by group"><button class="chip" type="button" aria-pressed="true" data-group="">All <span class="count">21</span></button><button class="chip" type="button" aria-pressed="false" data-group="Actions and inputs">Actions and inputs <span class="count">4</span></button><button class="chip" type="button" aria-pressed="false" data-group="Data and surfaces">Data and surfaces <span class="count">6</span></button><button class="chip" type="button" aria-pressed="false" data-group="Filters and views">Filters and views <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Navigation">Navigation <span class="count">6</span></button><button class="chip" type="button" aria-pressed="false" data-group="Presenting apps">Presenting apps <span class="count">2</span></button></div>
+  <div class="chips lib-filter" role="group" aria-label="Filter components by group"><button class="chip" type="button" aria-pressed="true" data-group="">All <span class="count">22</span></button><button class="chip" type="button" aria-pressed="false" data-group="Actions and inputs">Actions and inputs <span class="count">4</span></button><button class="chip" type="button" aria-pressed="false" data-group="Data and surfaces">Data and surfaces <span class="count">7</span></button><button class="chip" type="button" aria-pressed="false" data-group="Filters and views">Filters and views <span class="count">3</span></button><button class="chip" type="button" aria-pressed="false" data-group="Navigation">Navigation <span class="count">6</span></button><button class="chip" type="button" aria-pressed="false" data-group="Presenting apps">Presenting apps <span class="count">2</span></button></div>
   <p class="sr-only" id="cmp-filter-status" role="status" aria-live="polite"></p>
-  <ul class="lib tiles tiles--separate lib-index" id="cmp-cards"><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#accordion"><span class="tile__head"><span class="tile__title">Accordion</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Sections people open one or more of, so a long page shows its outline first.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#breadcrumbs"><span class="tile__head"><span class="tile__title">Breadcrumbs</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Where this page sits: the pages above it, ending with this one.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#browserframe"><span class="tile__head"><span class="tile__title">Browser frame</span><span class="tile__tag">React</span></span><span class="tile__desc">A plain browser window for presenting an app inside a page.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#buttons"><span class="tile__head"><span class="tile__title">Buttons</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#card"><span class="tile__head"><span class="tile__title">Card</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Card with header, body and footer, and choice card for picking.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#chips"><span class="tile__head"><span class="tile__title">Chips</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Pill buttons that filter; they wrap, and several can be on.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#dialog"><span class="tile__head"><span class="tile__title">Dialog</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A modal for a decision or a short task; confirms, small forms and drawers.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#forms"><span class="tile__head"><span class="tile__title">Forms</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Input, text area, select and multi-select, checkboxes and radios.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#link"><span class="tile__head"><span class="tile__title">Link</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Goes somewhere; underlined in text, and says when it opens a new tab.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#menu"><span class="tile__head"><span class="tile__title">Menu</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A button that opens a short list of actions on one thing.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#navigation"><span class="tile__head"><span class="tile__title">Navigation</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Header navigation for top-level sections, side navigation for the pages within one.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#resetbutton"><span class="tile__head"><span class="tile__title">Reset button</span><span class="tile__tag">React</span></span><span class="tile__desc">Clears a demo’s saved changes after a confirm.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#segmented"><span class="tile__head"><span class="tile__title">Segmented control</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Choose one of a few options in a tray: a filter, or grid or list.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#statfilter"><span class="tile__head"><span class="tile__title">Stat filter</span><span class="tile__tag">React</span></span><span class="tile__desc">Counts that also filter what’s below them.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#statusmark"><span class="tile__head"><span class="tile__title">Status mark</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A status in words with a mark that repeats it by shape, never colour.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#stepper"><span class="tile__head"><span class="tile__title">Stepper</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Where people are in a sequence of steps, and how far each has got.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#switch"><span class="tile__head"><span class="tile__title">Switch</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">One setting on or off, applied straight away; says why when it’s unavailable.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#table"><span class="tile__head"><span class="tile__title">Table</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Hairline rows, sorting, selectable rows, sticky header, empty state.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tabs"><span class="tile__head"><span class="tile__title">Tabs</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Switch between panels of related content in one place.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tiles"><span class="tile__head"><span class="tile__title">Tiles</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A grid of links into other pages, tiled or as cards.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#tooltip"><span class="tile__head"><span class="tile__title">Tooltip</span><span class="tile__tag">React</span></span><span class="tile__desc">Detail on hover, text only; or on click, with links.</span></a></li></ul>
+  <ul class="lib tiles tiles--separate lib-index" id="cmp-cards"><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#accordion"><span class="tile__head"><span class="tile__title">Accordion</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Sections people open one or more of, so a long page shows its outline first.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#alerts"><span class="tile__head"><span class="tile__title">Alerts</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Global and inline banners for problems; toasts for quick results.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#breadcrumbs"><span class="tile__head"><span class="tile__title">Breadcrumbs</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Where this page sits: the pages above it, ending with this one.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#browserframe"><span class="tile__head"><span class="tile__title">Browser frame</span><span class="tile__tag">React</span></span><span class="tile__desc">A plain browser window for presenting an app inside a page.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#buttons"><span class="tile__head"><span class="tile__title">Buttons</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Primary, secondary, ghost and danger; three sizes; icon and icon-only.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#card"><span class="tile__head"><span class="tile__title">Card</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Card with header, body and footer, and choice card for picking.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#chips"><span class="tile__head"><span class="tile__title">Chips</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Pill buttons that filter; they wrap, and several can be on.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#dialog"><span class="tile__head"><span class="tile__title">Dialog</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A modal for a decision or a short task; confirms, small forms and drawers.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#forms"><span class="tile__head"><span class="tile__title">Forms</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Input, text area, select and multi-select, checkboxes and radios.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#link"><span class="tile__head"><span class="tile__title">Link</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Goes somewhere; underlined in text, and says when it opens a new tab.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#menu"><span class="tile__head"><span class="tile__title">Menu</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A button that opens a short list of actions on one thing.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#navigation"><span class="tile__head"><span class="tile__title">Navigation</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Header navigation for top-level sections, side navigation for the pages within one.</span></a></li><li class="tile" data-group="Presenting apps"><a class="tile__link" href="#resetbutton"><span class="tile__head"><span class="tile__title">Reset button</span><span class="tile__tag">React</span></span><span class="tile__desc">Clears a demo’s saved changes after a confirm.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#segmented"><span class="tile__head"><span class="tile__title">Segmented control</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Choose one of a few options in a tray: a filter, or grid or list.</span></a></li><li class="tile" data-group="Filters and views"><a class="tile__link" href="#statfilter"><span class="tile__head"><span class="tile__title">Stat filter</span><span class="tile__tag">React</span></span><span class="tile__desc">Counts that also filter what’s below them.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#statusmark"><span class="tile__head"><span class="tile__title">Status mark</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A status in words with a mark that repeats it by shape, never colour.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#stepper"><span class="tile__head"><span class="tile__title">Stepper</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Where people are in a sequence of steps, and how far each has got.</span></a></li><li class="tile" data-group="Actions and inputs"><a class="tile__link" href="#switch"><span class="tile__head"><span class="tile__title">Switch</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">One setting on or off, applied straight away; says why when it’s unavailable.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#table"><span class="tile__head"><span class="tile__title">Table</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Hairline rows, sorting, selectable rows, sticky header, empty state.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tabs"><span class="tile__head"><span class="tile__title">Tabs</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">Switch between panels of related content in one place.</span></a></li><li class="tile" data-group="Navigation"><a class="tile__link" href="#tiles"><span class="tile__head"><span class="tile__title">Tiles</span><span class="tile__tag">CSS + React</span></span><span class="tile__desc">A grid of links into other pages, tiled or as cards.</span></a></li><li class="tile" data-group="Data and surfaces"><a class="tile__link" href="#tooltip"><span class="tile__head"><span class="tile__title">Tooltip</span><span class="tile__tag">React</span></span><span class="tile__desc">Detail on hover, text only; or on click, with links.</span></a></li></ul>
 
   <section class="doc-section" id="cmp-next" aria-labelledby="h-cmp-next">
     <h2 id="h-cmp-next">Coming next</h2>
@@ -2071,6 +2086,70 @@ export function AccessRequests({ rows, onUpdate }) {
     <ul class="a11y-list"><li>Links go to pages. A control that changes the view on the same page is a <a href="#tabs">Tab</a> or a <a href="#segmented">segmented control</a>.</li><li>Labels are short nouns, the same as the page title they lead to.</li><li>Mark the current page with <code>aria-current</code>, never with colour alone.</li><li>Header navigation sits in the app header and stretches to its height. On phones the row scrolls sideways; side navigation goes behind a menu button.</li></ul>
   </section>
   <nav class="pager" aria-label="More in components" data-current="navigation"></nav>
+</section>
+
+<!-- =====================================================================
+     Alerts
+     ===================================================================== -->
+<section class="panel" id="panel-alerts" data-section="components" aria-labelledby="h-alerts" hidden>
+  <p class="page-kicker">Component · CSS + React</p>
+  <h1 class="page-title" id="h-alerts" tabindex="-1">Alerts</h1>
+  <p class="page-lede">Banners for problems that need attention, and toasts for the quick result of something people just did. Tone shows in an icon’s shape and a word for screen readers; colour only repeats it.</p>
+
+  <section class="doc-section" id="al-which" aria-labelledby="h-al-which">
+    <h2 id="h-al-which">Which one</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Which alert to use</caption><thead><tr><th scope="col"></th><th scope="col">Use it for</th><th scope="col">Example</th></tr></thead><tbody><tr><th scope="row">Global banner</th><td>A problem with the whole product, until it’s fixed. Full width, under the header.</td><td>“Sign-in is failing for some people.”</td></tr><tr><th scope="row">Inline banner</th><td>A problem or note about one part of the page, beside it. Subtler: a hairline box with a bar in the tone’s colour.</td><td>“3 questions have no answer key.”</td></tr><tr><th scope="row">Toast</th><td>The result of something people just did. It goes away on its own.</td><td>“Assessment duplicated. Undo”</td></tr><tr><th scope="row">Field error</th><td>One field that’s wrong: use the field’s own error, not a banner.</td><td>“Enter an email address.”</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="al-banner" aria-labelledby="h-al-banner">
+    <h2 id="h-al-banner">Banner</h2>
+    <p>Global or inline, in four tones. Errors, warnings and successes carry their colour; info stays ink.</p>
+  </section>  <div class="lib lib-playground is-wide" data-react="banner"></div>
+
+  <section class="doc-section" id="al-tones" aria-labelledby="h-al-tones">
+    <h2 id="h-al-tones">Tones</h2>
+    <div class="table-scroll"><table class="doc-table wide-table"><caption class="sr-only">Banner tones</caption><thead><tr><th scope="col">Tone</th><th scope="col">Icon</th><th scope="col">Read as</th><th scope="col">For</th></tr></thead><tbody><tr><th scope="row">Error</th><td>Filled circle with !</td><td>“Error:”</td><td>Something failed and needs fixing</td></tr><tr><th scope="row">Warning</th><td>Filled triangle with !</td><td>“Warning:”</td><td>Something will go wrong if nothing changes</td></tr><tr><th scope="row">Success</th><td>Filled circle with a check</td><td>“Done:”</td><td>Something finished that people were waiting for</td></tr><tr><th scope="row">Info</th><td>Ring with i, in ink</td><td>“Note:”</td><td>Something worth knowing, with nothing wrong</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="al-toast" aria-labelledby="h-al-toast">
+    <h2 id="h-al-toast">Toast</h2>
+    <p>Shown at the bottom corner, in ink, whatever the tone. Press “Show toast” a few times: after three, the rest wait behind “2 more”.</p>
+  </section>  <div class="lib lib-playground" data-react="toast"></div>
+
+  <section class="doc-section" id="al-sr" aria-labelledby="h-al-sr">
+    <h2 id="h-al-sr">Keyboard and screen readers</h2>
+    <ul class="a11y-list"><li>Nothing takes focus. A banner is announced when it appears: errors right away (<code>role="alert"</code>), the others politely (<code>role="status"</code>). A banner already on screen when the page loads uses <code>announce="off"</code>.</li><li>Each toast is announced politely, once, through one live region: “Done: Assessment duplicated. Undo is available in Notifications.”</li><li>Toasts sit in a region named “Notifications”, so screen reader users can jump to it from the landmarks list and reach an action such as Undo.</li><li>A toast with an action stays until dismissed. Others stay at least 6 seconds, and pause while the pointer is over them or focus is in them.</li><li><kbd>Escape</kbd> or the close button (“Dismiss”) closes a toast. If focus was in it, focus goes back to where it was before.</li><li>The tone is said in words (“Error:”), since the icon is hidden. In Windows high contrast, icons and borders use system colours.</li></ul>
+  </section>
+  <section class="doc-section" id="al-usage" aria-labelledby="h-al-usage">
+    <h2 id="h-al-usage">Usage</h2>
+    <div class="code-block"><div class="code-block-bar"><span>Page.tsx</span><button class="copy-button" type="button" data-copy-label="Page.tsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import { Banner, Button, ToastProvider, useToast } from &#x27;@jothish-uxd/enterprise-library&#x27;;
+
+&lt;Banner tone=&quot;error&quot; variant=&quot;global&quot; title=&quot;Sign-in is failing for some people.&quot;
+  action={&lt;Button variant=&quot;secondary&quot; size=&quot;sm&quot;&gt;View status&lt;/Button&gt;}&gt;
+  We’re working on it. Work already open is saved.
+&lt;/Banner&gt;
+
+&lt;Banner tone=&quot;warning&quot; title=&quot;3 questions have no answer key.&quot;&gt;
+  Candidates can still take the assessment, but those questions won’t be scored.
+&lt;/Banner&gt;
+
+// Toasts: wrap the app once, then call toast() anywhere inside it
+&lt;ToastProvider&gt;&lt;App /&gt;&lt;/ToastProvider&gt;
+
+const { toast } = useToast();
+toast({ message: &#x27;Assessment duplicated&#x27;, tone: &#x27;success&#x27;, action: { label: &#x27;Undo&#x27;, onClick: undo } });</code></pre></div>
+  </section>
+  <section class="doc-section" id="al-props" aria-labelledby="h-al-props">
+    <h2 id="h-al-props">Banner props</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">Banner props</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>tone</code></td><td><code class="type">&#x27;error&#x27; | &#x27;warning&#x27; | &#x27;success&#x27; | &#x27;info&#x27;</code></td><td>Its icon, word and colour (default info)</td></tr><tr><td><code>variant</code></td><td><code class="type">&#x27;global&#x27; | &#x27;inline&#x27;</code></td><td>Full width under the header, or beside the content (default inline)</td></tr><tr><td><code>title</code></td><td><code class="type">ReactNode</code></td><td>A short headline, in bold</td></tr><tr><td><code>children</code></td><td><code class="type">ReactNode</code></td><td>What happened and what to do</td></tr><tr><td><code>action</code></td><td><code class="type">ReactNode</code></td><td>A button or link that fixes it</td></tr><tr><td><code>onDismiss</code></td><td><code class="type">() =&amp;gt; void</code></td><td>Adds a “Dismiss” button</td></tr><tr><td><code>announce</code></td><td><code class="type">&#x27;assertive&#x27; | &#x27;polite&#x27; | &#x27;off&#x27;</code></td><td>Overrides the announcement (errors assertive, the rest polite)</td></tr></tbody></table></div>
+  </section>
+  <section class="doc-section" id="al-tprops" aria-labelledby="h-al-tprops">
+    <h2 id="h-al-tprops">Toast options</h2>
+    <div class="table-scroll"><table class="doc-table options-table wide-table"><caption class="sr-only">Toast options</caption><thead><tr><th scope="col">Prop</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>message</code></td><td><code class="type">ReactNode</code></td><td>What just happened, in a few words</td></tr><tr><td><code>tone</code></td><td><code class="type">&#x27;info&#x27; | &#x27;success&#x27; | &#x27;error&#x27;</code></td><td>Its icon and word (default info)</td></tr><tr><td><code>action</code></td><td><code class="type">{ label, onClick }</code></td><td>One action, such as Undo; the toast stays until dismissed</td></tr><tr><td><code>duration</code></td><td><code class="type">number</code></td><td>How long it stays, in ms (at least 6000)</td></tr></tbody></table></div><p class="note"><code>ToastProvider</code> takes <code>label</code> (default “Notifications”) and <code>max</code> (default 3). <code>useToast()</code> returns <code>toast()</code>, which returns an id, and <code>dismiss(id)</code>.</p>
+  </section>
+  <section class="doc-section" id="al-rules" aria-labelledby="h-al-rules">
+    <h2 id="h-al-rules">Rules</h2>
+    <ul class="a11y-list"><li>Say what happened and what to do, in plain words. Lead with the problem, not “Error”.</li><li>One banner per problem. Don’t stack banners; fix the cause or combine them.</li><li>Don’t let a global error be dismissed while it’s still happening.</li><li>Never put the only way to do something in a toast; it goes away. Undo is fine because the change can also be reversed elsewhere.</li><li>Toasts are for results, not problems that block work. Use a banner for those.</li><li>Colour only in error, warning and success; info stays ink.</li></ul>
+  </section>
+  <nav class="pager" aria-label="More in components" data-current="alerts"></nav>
 </section>
 <!-- =====================================================================
      Table
@@ -3365,7 +3444,7 @@ export function AccessRequests({ rows, onUpdate }) {
 <section class="panel" id="panel-notifications" data-section="patterns" aria-labelledby="h-notifications" hidden>
   <p class="page-kicker">Pattern · Live</p>
   <h1 class="page-title" id="h-notifications" tabindex="-1">Notifications</h1>
-  <p class="page-lede">Toasts for quick results and banners for problems that need attention. Each one is announced once, and none disappears before a slow reader is done with it.</p>
+  <p class="page-lede">Toasts for quick results and banners for problems that need attention. Each one is announced once, and none disappears before a slow reader is done with it. Built from the <a href="#alerts">Alerts</a> components.</p>
   <div class="preview" data-demo="toasts"></div>
 
   <section class="doc-section" aria-labelledby="h-nt-focus">

@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, Banner, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1133,6 +1133,138 @@ function HeaderNavDemo() {
   );
 }
 
+/* ---------- Alerts playgrounds ---------- */
+const BANNER_TEXT: Record<string, { title: string; message: string; action: string }> = {
+  error: { title: 'Sign-in is failing for some people.', message: 'We’re working on it. Work already open is saved.', action: 'View status' },
+  warning: { title: '3 questions have no answer key.', message: 'Candidates can still take the assessment, but those questions won’t be scored.', action: 'Review questions' },
+  success: { title: 'All 132 results are scored.', message: 'You can now share them with the hiring team.', action: 'Share results' },
+  info: { title: 'Scheduled maintenance on Sunday, 2:00–3:00 AM.', message: 'Assessments in progress will pause and resume.', action: 'Learn more' },
+};
+function BannerDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    variant: 'global', tone: 'error', ...BANNER_TEXT.error, showAction: true, dismiss: false, showTitle: true,
+  });
+  const [gone, setGone] = useState(false);
+  const set = (key: string, value: PgValue) => setV((old) => {
+    const next = { ...old, [key]: value };
+    if (key === 'tone') {
+      const was = BANNER_TEXT[String(old.tone)];
+      const now = BANNER_TEXT[String(value)];
+      (['title', 'message', 'action'] as const).forEach((k) => { if (old[k] === was[k]) next[k] = now[k]; });
+    }
+    if (key === 'dismiss') setGone(false);
+    return next;
+  });
+  const tone = v.tone as 'error' | 'warning' | 'success' | 'info';
+  const variant = v.variant as 'global' | 'inline';
+  const attrs: PgCodeLine[] = [
+    { attr: 'tone', value: tone },
+    { attr: 'variant', value: variant },
+    ...(v.showTitle && v.title ? [{ attr: 'title', value: String(v.title) }] : []),
+    ...(v.showAction && v.action ? [{ attr: 'action', value: `<Button variant="secondary" size="sm">${v.action}</Button>`, expr: true }] : []),
+    ...(v.dismiss ? [{ attr: 'onDismiss', value: 'dismiss', expr: true }] : []),
+  ];
+  const banner = gone ? (
+    <p className="pg-banner__gone t-small">Dismissed. <button type="button" className="pg-banner__again" onClick={() => setGone(false)}>Show it again</button></p>
+  ) : (
+    <Banner tone={tone} variant={variant} title={v.showTitle ? String(v.title) || undefined : undefined}
+      action={v.showAction && v.action ? <Button variant="secondary" size="sm">{String(v.action)}</Button> : undefined}
+      onDismiss={v.dismiss ? () => setGone(true) : undefined} announce="off">
+      {String(v.message) || undefined}
+    </Banner>
+  );
+  return (
+    <Playground
+      name="Banner"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="Page.tsx"
+      tag="Banner"
+      attrs={attrs}
+      codeChildren={v.message ? [String(v.message)] : undefined}
+      controls={[
+        { kind: 'segmented', key: 'variant', label: 'Variant', options: [{ value: 'global', label: 'Global' }, { value: 'inline', label: 'Inline' }] },
+        { kind: 'select', key: 'tone', label: 'Tone', options: [{ value: 'error', label: 'Error' }, { value: 'warning', label: 'Warning' }, { value: 'success', label: 'Success' }, { value: 'info', label: 'Info' }] },
+        { kind: 'boolean', key: 'showTitle', label: 'Title', help: 'A short headline in bold.' },
+        { kind: 'text', key: 'title', label: 'Title text' },
+        { kind: 'text', key: 'message', label: 'Message', help: 'What happened and what to do.' },
+        { kind: 'boolean', key: 'showAction', label: 'Action', help: 'A button or link that fixes it.' },
+        { kind: 'text', key: 'action', label: 'Action label' },
+        { kind: 'boolean', key: 'dismiss', label: 'Dismissible', help: 'Leave off for problems that aren’t fixed yet.' },
+      ]}
+      preview={variant === 'global' ? (
+        <div className="pg-banner pg-banner--global">
+          <div className="pg-appheader pg-appheader--flat">
+            <span className="pg-appheader__mark" aria-hidden="true" />
+            <span className="pg-appheader__name">Product</span>
+          </div>
+          {banner}
+          <div className="pg-banner__page" aria-hidden="true"><span /><span /><span /></div>
+        </div>
+      ) : (
+        <div className="pg-banner pg-banner--inline">
+          <p className="pg-banner__heading">Questions</p>
+          {banner}
+          <div className="pg-banner__page" aria-hidden="true"><span /><span /></div>
+        </div>
+      )}
+    />
+  );
+}
+
+function ToastTrigger({ v }: { v: Record<string, PgValue> }) {
+  const { toast } = useToast();
+  const tone = v.tone as 'info' | 'success' | 'error';
+  return (
+    <Button variant="secondary" onClick={() => toast({
+      message: String(v.message) || 'Done', tone,
+      action: v.showAction && v.action ? { label: String(v.action), onClick: () => {} } : undefined,
+      duration: Number(v.duration),
+    })}>Show toast</Button>
+  );
+}
+function ToastDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    message: 'Assessment duplicated', tone: 'success', showAction: true, action: 'Undo', duration: '6000',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const opts = [
+    `message: '${String(v.message) || 'Done'}'`,
+    ...(v.tone !== 'info' ? [`tone: '${v.tone}'`] : []),
+    ...(v.showAction && v.action ? [`action: { label: '${v.action}', onClick: undo }`] : []),
+    ...(!(v.showAction && v.action) && v.duration !== '6000' ? [`duration: ${v.duration}`] : []),
+  ];
+  const raw = `// Once, around the app\n<ToastProvider>\n  <App />\n</ToastProvider>\n\n// Anywhere inside it\nconst { toast } = useToast();\ntoast({\n${opts.map((o) => `  ${o},`).join('\n')}\n});`;
+  return (
+    <Playground
+      name="Toast"
+      compact
+      values={v}
+      set={set}
+      file="DuplicateButton.tsx"
+      tag="ToastProvider"
+      attrs={[]}
+      codeRaw={raw}
+      controls={[
+        { kind: 'text', key: 'message', label: 'Message', help: 'Says what just happened, in a few words.' },
+        { kind: 'select', key: 'tone', label: 'Tone', options: [{ value: 'info', label: 'Info' }, { value: 'success', label: 'Success' }, { value: 'error', label: 'Error' }] },
+        { kind: 'boolean', key: 'showAction', label: 'Action', help: 'A toast with an action stays until dismissed.' },
+        { kind: 'text', key: 'action', label: 'Action label' },
+        { kind: 'select', key: 'duration', label: 'Stays for', options: [{ value: '6000', label: '6 seconds' }, { value: '10000', label: '10 seconds' }] },
+      ]}
+      preview={
+        <div className="pg-toast">
+          <ToastProvider>
+            <ToastTrigger v={v} />
+          </ToastProvider>
+        </div>
+      }
+    />
+  );
+}
+
 /* ---------- Breadcrumbs playground ---------- */
 function BreadcrumbsDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({ trail: 'Hiring, Jobs, Starfighter Pilot L4, Pilot screening v3', fold: false, label: 'Breadcrumb' });
@@ -1340,11 +1472,11 @@ type PgControl =
   | { kind: 'segmented'; key: string; label: string; options: { value: string; label: string }[] };
 type PgCodeLine = { attr: string; value: string | true; expr?: boolean };
 
-function PgCode({ file, tag, attrs, children }: { file: string; tag: string; attrs: PgCodeLine[]; children?: string[] }) {
+function PgCode({ file, tag, attrs, children, raw }: { file: string; tag: string; attrs: PgCodeLine[]; children?: string[]; raw?: string }) {
   const [copied, setCopied] = useState<'' | 'ok' | 'fail'>('');
   const open = !attrs.length ? `<${tag}` : `<${tag}\n${attrs.map((a) => `  ${a.value === true ? a.attr : a.expr ? `${a.attr}={${a.value}}` : `${a.attr}="${a.value}"`}`).join('\n')}`;
   const close = attrs.length ? '\n>' : '>';
-  const text = children?.length ? `${open}${close}\n${children.map((c) => `  ${c}`).join('\n')}\n</${tag}>` : `${open}${attrs.length ? '\n' : ' '}/>`;
+  const text = raw ?? (children?.length ? `${open}${close}\n${children.map((c) => `  ${c}`).join('\n')}\n</${tag}>` : `${open}${attrs.length ? '\n' : ' '}/>`);
   const copy = () => {
     const done = (ok: boolean) => { setCopied(ok ? 'ok' : 'fail'); window.setTimeout(() => setCopied(''), 2000); };
     try { navigator.clipboard.writeText(text).then(() => done(true), () => done(false)); } catch { done(false); }
@@ -1359,19 +1491,21 @@ function PgCode({ file, tag, attrs, children }: { file: string; tag: string; att
         </button>
       </div>
       <pre><code>
+        {raw ? raw.split(/('[^']*')/).map((part, i) => (i % 2 ? <span key={i} className="tok-s">{part}</span> : part)) : <>
         {'<'}<span className="tok-k">{tag}</span>{attrs.length ? '\n' : null}
         {attrs.map((a) => (
           <span key={a.attr}>{'  '}{a.attr}{a.value === true ? null : a.expr ? <>{'={'}{String(a.value).split(/('[^']*')/).map((part, i) => (i % 2 ? <span key={i} className="tok-s">{part}</span> : part))}{'}'}</> : <>=<span className="tok-s">"{a.value}"</span></>}{'\n'}</span>
         ))}
         {children?.length ? <>{attrs.length ? '>' : '>'}{'\n'}{children.map((c) => <span key={c}>{'  '}{c.startsWith('<') ? <>{'<'}<span className="tok-k">{c.slice(1).split(/[\s/>]/)[0]}</span>{c.slice(1 + c.slice(1).split(/[\s/>]/)[0].length)}</> : c}{'\n'}</span>)}{'</'}<span className="tok-k">{tag}</span>{'>'}</> : attrs.length ? '/>' : ' />'}
+        </>}
       </code></pre>
       <p className="visually-hidden" role="status" aria-live="polite">{copied === 'ok' ? `Copied ${file} to clipboard.` : copied === 'fail' ? `Couldn't copy ${file}. Select the text and copy it manually.` : ''}</p>
     </div>
   );
 }
 
-function Playground({ name, controls, values, set, preview, file, tag, attrs, wide, compact, codeChildren }: {
-  wide?: boolean; compact?: boolean | number; codeChildren?: string[]; name: string; controls: PgControl[]; values: Record<string, PgValue>; set: (key: string, v: PgValue) => void;
+function Playground({ name, controls, values, set, preview, file, tag, attrs, wide, compact, codeChildren, codeRaw }: {
+  codeRaw?: string; wide?: boolean; compact?: boolean | number; codeChildren?: string[]; name: string; controls: PgControl[]; values: Record<string, PgValue>; set: (key: string, v: PgValue) => void;
   preview: ReactNode; file: string; tag: string; attrs: PgCodeLine[];
 }) {
   const id = React.useId();
@@ -1408,7 +1542,7 @@ function Playground({ name, controls, values, set, preview, file, tag, attrs, wi
           );
         })}
       </div>
-      <PgCode file={file} tag={tag} attrs={attrs} children={codeChildren} />
+      <PgCode file={file} tag={tag} attrs={attrs} children={codeChildren} raw={codeRaw} />
     </div>
   );
 }
@@ -2004,6 +2138,8 @@ const DEMOS: Record<string, () => ReactNode> = {
   accordion: () => <AccordionDemo />,
   sidenav: () => <SideNavDemo />,
   headernav: () => <HeaderNavDemo />,
+  banner: () => <BannerDemo />,
+  toast: () => <ToastDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,

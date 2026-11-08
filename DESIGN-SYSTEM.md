@@ -77,6 +77,25 @@ A stack of sections people open one or more of, so a long page shows its outline
 - `layout="joined"` (default): rules between sections. `layout="separate"`: each section a bordered box (generalised from Online Assessments' test cases).
 - Reduced motion: the chevron doesn't animate. Forced colors: rings and rules in CanvasText, unavailable sections in GrayText.
 
+### Alerts: banner and toast (`alerts.css`, `components/Banner.tsx`, `components/Toast.tsx`, `components/AlertIcon.tsx`)
+
+Banners for problems that need attention; toasts for the quick result of something people just did. Built from the Notifications pattern and Online Assessments' toasts. Colour appears here only for error, warning and success.
+
+- Tones: `error` (filled circle with !), `warning` (filled triangle with !), `success` (filled circle with a check), `info` (ring with i, ink). The icon is hidden; a visually hidden word ("Error:", "Warning:", "Done:", "Note:") says the tone.
+- `<Banner tone variant title action onDismiss announce>{message}</Banner>`.
+  - `variant="global"`: full width under the header, `--{tone}-bg` fill and a 1px rule in the tone's colour (info: `--bg-subtle` and `--rule-strong`). For problems with the whole product.
+  - `variant="inline"` (default): a hairline box with a 3px bar in the tone's colour, beside the content it's about.
+  - A grid of icon, text, action and close; in a container 480px or narrower, the action moves under the text.
+  - Announced on arrival: errors `role="alert"`, the rest `role="status"`; `announce="off"` for a banner already on screen at load. `onDismiss` adds a close button named "Dismiss".
+- `<ToastProvider label max>` once around the app; `useToast()` returns `toast({ message, tone, action, duration })` and `dismiss(id)`.
+  - Toasts are ink (`--ink` on `--on-ink`) whatever the tone, fixed to the bottom right (full width on phones), in a region named "Notifications".
+  - One polite live region announces each toast once; focus never moves.
+  - A toast with an action stays until dismissed; others stay `duration` (at least 6s) and pause while hovered or focused.
+  - At most `max` (3) show; the rest wait behind "N more".
+  - Escape or "Dismiss" closes one; if focus was in it, it returns to where it was before.
+- Reduced motion: toasts appear without sliding. Forced colors: icons and borders in system colours, toasts outlined.
+- Class names `.banner`, `.toaster` (not `.toast`, which apps use for their own).
+
 ### Buttons (`buttons.css`, `components/Button.tsx`)
 
 `.btn` with a variant (`--primary`, `--secondary`, `--ghost`, `--danger`), a size (`--sm` 30px, default 36px, `--lg` 44px), an optional leading `.btn__icon`, and `--icon` for square icon-only buttons. `aria-pressed="true"` gives a toggle its ink border and wash. `.link-button` (and `--danger`) and `.btn-row`.

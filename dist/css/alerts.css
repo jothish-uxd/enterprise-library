@@ -1,0 +1,118 @@
+/* Alerts: banners for problems that need attention, toasts for quick results.
+   .alert-icon                 14px; one shape per tone (filled circle !, filled triangle !, filled circle ✓, ring i)
+   .banner                     icon, text (__title, __message), __action, __close
+     --global                  full width under the header: tinted with the tone, ruled with its colour
+     --inline                  in the content: a hairline box with a 3px bar in the tone's colour
+     --error --warning --success --info
+   .toaster                    the "Notifications" region, fixed to the bottom corner
+     __list, __toast           ink toasts, newest last; __message, __action, __close
+     __more                    "2 more", when more than three are waiting */
+
+/* ---------- Icon ---------- */
+.alert-icon { flex: none; width: 16px; height: 16px; color: var(--ink); }
+.alert-icon__fill, .alert-icon__dot, .alert-icon__ink { fill: currentColor; }
+.alert-icon__tri { stroke: currentColor; stroke-width: 1.2; stroke-linejoin: round; }
+.alert-icon__cut { fill: none; stroke: var(--bg); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.alert-icon__dot { fill: var(--bg); }
+.alert-icon__ring, .alert-icon__line { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+
+/* ---------- Banner ---------- */
+.banner {
+  --tone: var(--ink); --tone-bg: var(--bg-subtle);
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: start; gap: var(--space-2) var(--space-3);
+  container-type: inline-size; min-width: 0; color: var(--ink); font-size: var(--text-body-sm); line-height: var(--leading-body);
+}
+.banner--error { --tone: var(--error); --tone-bg: var(--error-bg); }
+.banner--warning { --tone: var(--warning); --tone-bg: var(--warning-bg); }
+.banner--success { --tone: var(--success); --tone-bg: var(--success-bg); }
+.banner .alert-icon { color: var(--tone); margin-top: 3px; }
+.banner--global .alert-icon__cut, .banner--global .alert-icon__dot { stroke: var(--tone-bg); }
+.banner--global .alert-icon__dot { fill: var(--tone-bg); }
+.banner__text { grid-column: 2; min-width: 0; }
+.banner__title { font-weight: var(--weight-semibold); }
+.banner__action { grid-column: 3; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.banner__close {
+  grid-column: 4; grid-row: 1; appearance: none; display: inline-grid; place-items: center; width: 28px; height: 28px; margin: -2px calc(var(--space-1) * -1) 0 0;
+  padding: 0; border: 0; border-radius: var(--radius-sm); background: none; color: var(--ink-soft); cursor: pointer;
+}
+.banner__close svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.banner__close:hover { color: var(--ink); background: var(--bg-hover); }
+.banner__close:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; }
+
+/* Global: the width of the page, under the header */
+.banner--global {
+  padding: var(--space-3) var(--space-6); background: var(--tone-bg);
+  border-bottom: 1px solid var(--tone);
+}
+.banner--global.banner--info { border-bottom-color: var(--rule-strong); }
+.banner--global .banner__close:hover { background: none; color: var(--ink); }
+
+/* Inline: subtle, beside the content it's about */
+.banner--inline {
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-3-5);
+  border: 1px solid var(--rule-strong); border-left: 3px solid var(--tone); border-radius: var(--radius-md); background: var(--bg);
+}
+
+/* ---------- Toasts ---------- */
+.toaster {
+  position: fixed; right: var(--space-6); bottom: var(--space-6); z-index: 90;
+  display: grid; justify-items: end; gap: var(--space-2);
+  width: min(400px, calc(100vw - var(--space-8))); pointer-events: none;
+}
+.toaster > * { pointer-events: auto; }
+.toaster__list { display: grid; gap: var(--space-2); width: 100%; margin: 0; padding: 0; list-style: none; }
+.toaster__toast {
+  display: flex; align-items: flex-start; gap: var(--space-2-5);
+  padding: var(--space-3) var(--space-2) var(--space-3) var(--space-3-5);
+  border-radius: var(--radius-md); background: var(--ink); color: var(--on-ink); box-shadow: var(--shadow-popover);
+  font-size: var(--text-body-sm); line-height: var(--leading-snug);
+}
+.toaster__toast .alert-icon { color: var(--on-ink); margin-top: 1px; }
+.toaster__toast .alert-icon__cut { stroke: var(--ink); }
+.toaster__toast .alert-icon__dot { fill: var(--ink); }
+.toaster__message { flex: 1; min-width: 0; margin: 0; }
+.toaster__action, .toaster__close, .toaster__more {
+  appearance: none; border: 0; background: none; font: inherit; cursor: pointer; border-radius: var(--radius-sm);
+}
+.toaster__action {
+  flex: none; margin: calc(var(--space-1) * -1) 0; padding: var(--space-1) var(--space-1-5);
+  color: var(--on-ink); font-weight: var(--weight-semibold); text-decoration: underline; text-underline-offset: 3px;
+}
+.toaster__close { display: inline-grid; place-items: center; flex: none; width: 24px; height: 24px; margin: -3px 0; padding: 0; color: var(--on-ink); }
+.toaster__close svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.toaster__close:hover { background: var(--ink-soft); }
+.toaster__action:hover { text-decoration-thickness: 2px; }
+.toaster__action:focus-visible, .toaster__close:focus-visible { outline: 2px solid var(--on-ink); outline-offset: 0; }
+.toaster__more {
+  padding: var(--space-1) var(--space-2-5); border: 1px solid var(--rule-strong); background: var(--bg); color: var(--ink);
+  font-size: var(--text-small); font-weight: var(--weight-medium); box-shadow: var(--shadow-popover);
+}
+.toaster__more:hover { background: var(--bg-hover); }
+.toaster__more:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Narrow: the action goes under the message */
+@container (max-width: 480px) {
+  .banner__action { grid-column: 2 / 4; }
+}
+
+@media (max-width: 480px) {
+  .toaster { right: var(--space-4); left: var(--space-4); bottom: var(--space-4); width: auto; }
+  .banner--global { padding: var(--space-3) var(--space-4); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .toaster__toast { animation: toaster-in var(--duration-base) ease-out; }
+  @keyframes toaster-in { from { opacity: 0; transform: translateY(var(--space-2)); } }
+}
+
+@media (forced-colors: active) {
+  .alert-icon, .banner .alert-icon { color: CanvasText; }
+  .alert-icon__cut { stroke: Canvas; }
+  .alert-icon__dot { fill: Canvas; }
+  .banner--global, .banner--inline { border-color: CanvasText; }
+  .toaster__toast { border: 1px solid CanvasText; }
+  .toaster__toast .alert-icon { color: CanvasText; }
+  .toaster__toast .alert-icon__cut { stroke: Canvas; }
+  .toaster__toast .alert-icon__dot { fill: Canvas; }
+  .toaster__action, .toaster__close { color: ButtonText; }
+}
