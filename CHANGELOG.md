@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.6 — 2026-11-08
+
+- Accordion (`Accordion`, `accordion.css`): headings holding one button each, any number open or one at a time, joined or separate, with status and actions beside the header button. Unavailable sections stay reachable and say why. Closed panels stay mounted and open from find-in-page where supported. Generalised from Online Assessments' test case cards. Docs page with a playground.
+
 ## 0.3.5 — 2026-11-08
 
 - Link: a link on its own line is underlined too, the same as in body text. The `variant` prop and `.link--standalone` are gone; a link looks the same wherever it sits.

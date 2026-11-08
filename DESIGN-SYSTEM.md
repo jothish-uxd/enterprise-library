@@ -61,6 +61,20 @@ Stylesheets: `styles.css` has everything. Each file also ships under `css/`: `to
 
 ## Components
 
+### Accordion (`accordion.css`, `components/Accordion.tsx`)
+
+A stack of sections people open one or more of, so a long page shows its outline first: setup sections, test cases, FAQs (WAI-ARIA accordion). Not for views people switch between (Tabs) or a single show/hide.
+
+- `<Accordion items defaultOpen | open onOpenChange single headingLevel layout />`. Each item is `{ value, title, content, meta?, actions?, disabled?, disabledReason? }`.
+- Each header is a heading (`headingLevel`, default 3) holding one button with `aria-expanded` and `aria-controls`. `meta` (a StatusMark, a count) and `actions` (icon buttons) sit beside the button, never inside it. In a narrow container (440px or less) they move under the title.
+- With 6 sections or fewer, each panel is a `region` named by its header; with more, it isn't, so landmarks don't pile up.
+- Keyboard: Tab between headers and into open panels; Enter or Space opens and closes; Up and Down move between headers and wrap; Home and End jump.
+- `single`: one open at a time. Otherwise any number.
+- Open or closed is the chevron's shape (in a ring, pointing right or down; the ring goes full ink when open), never colour. An unavailable section uses `aria-disabled`, stays reachable, has a dashed ring and faint title, and `disabledReason` shows in a tooltip and is its description.
+- Closed panels stay mounted with `hidden="until-found"`, so what people typed survives and find-in-page opens the matching section where supported. Padding lives on `.accordion__body`, since a panel hidden until found keeps its box.
+- `layout="joined"` (default): rules between sections. `layout="separate"`: each section a bordered box (generalised from Online Assessments' test cases).
+- Reduced motion: the chevron doesn't animate. Forced colors: rings and rules in CanvasText, unavailable sections in GrayText.
+
 ### Buttons (`buttons.css`, `components/Button.tsx`)
 
 `.btn` with a variant (`--primary`, `--secondary`, `--ghost`, `--danger`), a size (`--sm` 30px, default 36px, `--lg` 44px), an optional leading `.btn__icon`, and `--icon` for square icon-only buttons. `aria-pressed="true"` gives a toggle its ink border and wash. `.link-button` (and `--danger`) and `.btn-row`.

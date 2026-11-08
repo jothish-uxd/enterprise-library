@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Card, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, BrowserFrame, Button, Card, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -941,6 +941,84 @@ function TabsDemo() {
   );
 }
 
+/* ---------- Accordion playground ---------- */
+const ACC_TEXT: Record<string, string> = {
+  basics: 'Name, role and level, and who can see the assessment.',
+  questions: 'Twelve questions in three parts. Candidates can go back to earlier answers.',
+  proctoring: 'The webcam records while the assessment is open. Recordings are kept for 30 days.',
+  scoring: 'Each part is scored on its own; the pass mark applies to the total.',
+};
+const ACC_STATUS: [('check' | 'half' | 'dashed'), string][] = [['check', 'Complete'], ['half', 'In progress'], ['dashed', 'Not started'], ['dashed', 'Not started']];
+function AccordionDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    sections: 'Basics, Questions, Proctoring, Scoring', layout: 'joined', single: false, level: '3',
+    status: false, actions: false, disableLast: false, reason: 'Add questions before you set scoring.',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const names = String(v.sections).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
+  const items = names.map((n, i) => {
+    const off = !!v.disableLast && i === names.length - 1 && names.length > 1;
+    const val = slug(n);
+    const [mark, words] = ACC_STATUS[i];
+    return {
+      value: val, title: n,
+      content: <p className="t-body-sm">{ACC_TEXT[val] ?? `${n}: what belongs here.`}</p>,
+      meta: v.status ? <StatusMark mark={mark} size="sm">{words}</StatusMark> : undefined,
+      actions: v.actions ? (
+        <>
+          <Button variant="ghost" size="sm" iconOnly icon={MENU_ICONS.Rename}>{`Rename ${n}`}</Button>
+          <Button variant="ghost" size="sm" iconOnly icon={MENU_ICONS.Delete}>{`Delete ${n}`}</Button>
+        </>
+      ) : undefined,
+      disabled: off, disabledReason: off && v.reason ? String(v.reason) : undefined,
+    };
+  });
+  const comp = (n: string) => { const c = camel(n); return c[0].toUpperCase() + c.slice(1); };
+  const attrs: PgCodeLine[] = [
+    { attr: 'items', value: `[\n${items.map((it, i) => {
+      const extra = [
+        v.status && `meta: <StatusMark mark="${ACC_STATUS[i][0]}" size="sm">${ACC_STATUS[i][1]}</StatusMark>`,
+        v.actions && 'actions: <SectionActions />',
+        it.disabled && `disabled: true${it.disabledReason ? `, disabledReason: '${it.disabledReason}'` : ''}`,
+      ].filter(Boolean);
+      return `    { value: '${it.value}', title: '${it.title}', content: <${comp(it.title)} />${extra.map((x) => `,\n      ${x}`).join('')} },`;
+    }).join('\n')}\n  ]`, expr: true },
+    ...(items[0] ? [{ attr: 'defaultOpen', value: `['${items[0].value}']`, expr: true }] : []),
+    ...(v.single ? [{ attr: 'single', value: true as const }] : []),
+    ...(v.level !== '3' ? [{ attr: 'headingLevel', value: String(v.level), expr: true }] : []),
+    ...(v.layout === 'separate' ? [{ attr: 'layout', value: 'separate' }] : []),
+  ];
+  const key = `${names.join('|')}-${v.single}`;
+  return (
+    <Playground
+      name="Accordion"
+      compact
+      wide
+      values={v}
+      set={set}
+      file="AssessmentSetup.tsx"
+      tag="Accordion"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'sections', label: 'Sections', help: 'Up to 4, separated by commas.' },
+        { kind: 'segmented', key: 'layout', label: 'Layout', options: [{ value: 'joined', label: 'Joined' }, { value: 'separate', label: 'Separate' }] },
+        { kind: 'boolean', key: 'single', label: 'One at a time', help: 'Opening a section closes the one that was open.' },
+        { kind: 'select', key: 'level', label: 'Heading level', options: [{ value: '2', label: 'h2' }, { value: '3', label: 'h3' }, { value: '4', label: 'h4' }] },
+        { kind: 'boolean', key: 'status', label: 'Status', help: 'Beside the title, outside the button.' },
+        { kind: 'boolean', key: 'actions', label: 'Actions', help: 'Icon buttons at the end of the header.' },
+        { kind: 'boolean', key: 'disableLast', label: 'Disable last section' },
+        { kind: 'text', key: 'reason', label: 'Disabled reason', help: 'Shown in a tooltip and read as its description.' },
+      ]}
+      preview={
+        <div className="pg-accordion">
+          <Accordion key={key} items={items} defaultOpen={items[0] ? [items[0].value] : []} single={!!v.single}
+            headingLevel={Number(v.level) as 2 | 3 | 4} layout={v.layout as 'joined' | 'separate'} />
+        </div>
+      }
+    />
+  );
+}
+
 /* ---------- Breadcrumbs playground ---------- */
 function BreadcrumbsDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({ trail: 'Hiring, Jobs, Starfighter Pilot L4, Pilot screening v3', fold: false, label: 'Breadcrumb' });
@@ -1809,6 +1887,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   input: () => <InputDemo />,
   dialog: () => <DialogDemo />,
   menu: () => <MenuDemo />,
+  accordion: () => <AccordionDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,

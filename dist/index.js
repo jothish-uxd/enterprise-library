@@ -24,6 +24,7 @@ export { SegmentedControl } from './components/SegmentedControl';
 export { ChipGroup } from './components/ChipGroup';
 export { Dialog } from './components/Dialog';
 export { Menu } from './components/Menu';
+export { Accordion } from './components/Accordion';
 export { Tabs } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Stepper } from './components/Stepper';

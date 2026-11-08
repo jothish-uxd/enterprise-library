@@ -1,0 +1,70 @@
+/* Accordion: a stack of sections people open one or more of.
+   .accordion               joined: rules between sections, for a page's flow
+   .accordion--separate     separate: each section its own bordered box
+   .accordion__item         one section; .is-open, .is-disabled
+   .accordion__head         the header row: heading with the trigger, then __meta and __actions
+   .accordion__trigger      the button: a chevron in a ring and the title
+   .accordion__panel        the panel (hidden="until-found" when closed); padding lives on __body,
+                            since a panel hidden until found still has a box */
+
+.accordion { display: grid; min-width: 0; border-top: 1px solid var(--rule); container-type: inline-size; }
+.accordion__item { min-width: 0; border-bottom: 1px solid var(--rule); }
+
+.accordion__head {
+  display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2) var(--space-3);
+  padding: var(--space-1) 0;
+}
+.accordion__heading { flex: 1 1 12rem; min-width: 0; margin: 0; font-size: var(--text-body); font-weight: var(--weight-semibold); line-height: var(--leading-snug); }
+.accordion__trigger {
+  appearance: none; display: flex; align-items: flex-start; gap: var(--space-2-5); width: 100%;
+  padding: var(--space-2-5) var(--space-1); border: 0; border-radius: var(--radius-sm); background: none;
+  font: inherit; color: var(--ink); text-align: left; cursor: pointer;
+}
+.accordion__trigger:hover .accordion__title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.accordion__trigger:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; }
+.accordion__title { min-width: 0; padding-top: 1px; }
+
+/* Chevron in a ring: points right when closed, down when open */
+.accordion__chevron {
+  flex: none; width: 20px; height: 20px; padding: 2px; box-sizing: border-box;
+  border: 1.5px solid var(--ink-soft); border-radius: var(--radius-full);
+  fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+.is-open > .accordion__head .accordion__chevron { transform: rotate(90deg); border-color: var(--ink); }
+
+.accordion__meta { display: flex; align-items: center; gap: var(--space-2); }
+.accordion__actions { display: flex; align-items: center; gap: var(--space-1); margin-left: auto; }
+
+.accordion__body { padding: 0 var(--space-1) var(--space-5) calc(var(--space-1) + 20px + var(--space-2-5)); color: var(--ink); }
+.accordion__body > :first-child { margin-top: 0; }
+.accordion__body > :last-child { margin-bottom: 0; }
+
+/* Unavailable: reachable, can't open */
+.is-disabled .accordion__trigger { color: var(--ink-faint); cursor: not-allowed; }
+.is-disabled .accordion__trigger:hover .accordion__title { text-decoration: none; }
+.is-disabled .accordion__chevron { border-color: var(--rule-strong); border-style: dashed; }
+
+/* Separate: each section a bordered box */
+.accordion--separate { gap: var(--space-2); border-top: 0; }
+.accordion--separate .accordion__item { border: 1px solid var(--rule-strong); border-radius: var(--radius-md); background: var(--bg); }
+.accordion--separate .accordion__head { padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2); }
+.accordion--separate .accordion__body { padding: 0 var(--space-4) var(--space-4) calc(var(--space-2) + var(--space-1) + 20px + var(--space-2-5)); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .accordion__chevron { transition: transform var(--duration-fast) ease; }
+}
+
+/* Narrow: the title takes the first row; status and actions go under it, lined up with the title */
+@container (max-width: 440px) {
+  .accordion__heading { flex-basis: 100%; }
+  .accordion__head { row-gap: 0; padding-bottom: var(--space-2); }
+  .accordion__meta { margin-left: calc(var(--space-1) + 20px + var(--space-2-5)); }
+  .accordion__body, .accordion--separate .accordion__body { padding-left: var(--space-3); }
+}
+
+@media (forced-colors: active) {
+  .accordion__chevron, .is-open > .accordion__head .accordion__chevron { border-color: CanvasText; }
+  .is-disabled .accordion__trigger { color: GrayText; }
+  .is-disabled .accordion__chevron { border-color: GrayText; }
+  .accordion__item, .accordion--separate .accordion__item { border-color: CanvasText; }
+}

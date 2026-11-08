@@ -37,6 +37,8 @@ export { Dialog } from './components/Dialog';
 export type { DialogProps } from './components/Dialog';
 export { Menu } from './components/Menu';
 export type { MenuItem, MenuProps } from './components/Menu';
+export { Accordion } from './components/Accordion';
+export type { AccordionItem, AccordionProps } from './components/Accordion';
 export { Tabs } from './components/Tabs';
 export type { TabItem, TabsProps } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
