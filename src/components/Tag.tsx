@@ -53,7 +53,9 @@ const labelOf = (t: TagItem) => (typeof t === 'string' ? t : t.label);
 
 export interface TagListProps {
   /** Names the list for screen readers: "Skills" */
-  label: string;
+  label?: string;
+  /** Or the id of a visible element that names it */
+  labelledBy?: string;
   tags: TagItem[];
   /** Makes the tags removable */
   onRemove?: (tag: string) => void;
@@ -64,7 +66,7 @@ export interface TagListProps {
   className?: string;
 }
 
-export function TagList({ label, tags, onRemove, emptyFocus, empty, className = '' }: TagListProps) {
+export function TagList({ label, labelledBy, tags, onRemove, emptyFocus, empty, className = '' }: TagListProps) {
   const id = useId();
   const list = useRef<HTMLUListElement>(null);
   const [said, setSaid] = useState('');
@@ -83,7 +85,7 @@ export function TagList({ label, tags, onRemove, emptyFocus, empty, className = 
   return (
     <div className={['tag-list', className].filter(Boolean).join(' ')}>
       {tags.length > 0 ? (
-        <ul ref={list} className="tag-list__items" aria-label={label}>
+        <ul ref={list} className="tag-list__items" aria-label={labelledBy ? undefined : label} aria-labelledby={labelledBy}>
           {tags.map((t, i) => {
             const name = labelOf(t);
             const extra = typeof t === 'string' ? {} : { color: t.color, mark: t.mark };
@@ -92,6 +94,82 @@ export function TagList({ label, tags, onRemove, emptyFocus, empty, className = 
         </ul>
       ) : empty ? <p className="tag-list__empty">{empty}</p> : null}
       <span className="visually-hidden" role="status" id={`${id}-s`}>{said}</span>
+    </div>
+  );
+}
+
+export interface TagInputProps {
+  /** The field's visible label, which also names the list: "Skills" */
+  label: ReactNode;
+  tags: TagItem[];
+  onChange: (tags: string[]) => void;
+  /** Under the field; default "Press Enter to add each one." */
+  description?: ReactNode;
+  error?: ReactNode;
+  required?: boolean;
+  placeholder?: string;
+  /** The most tags allowed */
+  max?: number;
+  /** Shown under the field when there are no tags */
+  empty?: ReactNode;
+  className?: string;
+}
+
+/**
+ * TagInput — a labelled field that adds tags, with the tags listed below it,
+ * each removable. Generalised from a skills field.
+ *
+ * - Type and press Enter (or a comma) to add. Blank entries and duplicates
+ *   aren't added; "Added Navigation", "Navigation is already added" and
+ *   "You can add up to 5" are announced politely.
+ * - The list below is named by the label: "Skills, list, 3 items". Removing a
+ *   tag moves focus to the next tag's remove button, and back to the field
+ *   when none are left.
+ * - required, description and error work as on Input.
+ */
+export function TagInput({
+  label, tags, onChange, description = 'Press Enter to add each one.', error, required, placeholder, max, empty, className = '',
+}: TagInputProps) {
+  const id = useId();
+  const field = useRef<HTMLInputElement>(null);
+  const [text, setText] = useState('');
+  const [said, setSaid] = useState('');
+  const names = tags.map(labelOf);
+
+  const say = (m: string) => { setSaid(''); setTimeout(() => setSaid(m), 30); };
+  const add = () => {
+    const t = text.trim().replace(/,+$/, '').trim();
+    if (!t) return;
+    if (names.some((n) => n.toLowerCase() === t.toLowerCase())) { say(`${t} is already added`); setText(''); return; }
+    if (max !== undefined && names.length >= max) { say(`You can add up to ${max}`); return; }
+    onChange([...names, t]);
+    setText('');
+    say(`Added ${t}`);
+  };
+
+  const helpId = error ? `${id}-e` : description ? `${id}-h` : undefined;
+  return (
+    <div className={['field', 'tag-input', className].filter(Boolean).join(' ')}>
+      <label className="field__label" id={`${id}-l`} htmlFor={`${id}-i`}>
+        {label}{required && <span className="field__required" aria-hidden="true">*</span>}
+      </label>
+      <input
+        ref={field}
+        id={`${id}-i`}
+        value={text}
+        placeholder={placeholder}
+        aria-required={required || undefined}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={helpId}
+        onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); add(); } }}
+      />
+      {error
+        ? <span className="field-error" id={`${id}-e`}><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" /><path d="M8 4.8v3.6M8 11h.01" /></svg>{error}</span>
+        : description && <span className="field-help" id={`${id}-h`}>{description}</span>}
+      <TagList labelledBy={`${id}-l`} tags={tags} empty={empty} emptyFocus={field}
+        onRemove={(t) => onChange(names.filter((n) => n !== t))} />
+      <span className="visually-hidden" role="status">{said}</span>
     </div>
   );
 }

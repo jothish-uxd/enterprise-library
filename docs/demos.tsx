@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, Banner, ProgressBar, Loader, Skeleton, Tag, TagList, type TagColor, type StatusMarkShape, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, Banner, ProgressBar, Loader, Skeleton, Tag, TagInput, type TagColor, type StatusMarkShape, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1426,7 +1426,6 @@ function SkeletonDemo() {
 
 /* ---------- Tag playground ---------- */
 const TAG_COLORS = ['gray', 'red', 'amber', 'green', 'teal', 'blue', 'purple', 'pink'].map((c) => ({ value: c, label: c[0].toUpperCase() + c.slice(1) }));
-const TAG_MARKS = [{ value: 'none', label: 'None' }, ...['dashed', 'ring', 'half', 'filled', 'check', 'slash'].map((m) => ({ value: m, label: m[0].toUpperCase() + m.slice(1) }))];
 const TAG_ROWS: { name: string; role: string; status: string; color: TagColor; mark: StatusMarkShape }[] = [
   { name: 'Wedge Antilles', role: 'Starfighter Pilot L4', status: 'Hired', color: 'green', mark: 'check' },
   { name: 'Biggs Darklighter', role: 'Starfighter Pilot L4', status: 'In review', color: 'blue', mark: 'half' },
@@ -1435,34 +1434,23 @@ const TAG_ROWS: { name: string; role: string; status: string; color: TagColor; m
 ];
 function TagDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({
-    view: 'list', label: 'Skills', tags: 'Navigation, Astromech repair, Piloting, Diplomacy', color: 'gray', mark: 'none', dismiss: true, adder: true, marks: true,
+    view: 'field', label: 'Skills', showDesc: true, description: 'Press Enter to add each one.', required: false, limit: true, color: 'gray', marks: true,
   });
-  const start = String(v.tags).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4);
-  const [tags, setTags] = useState<string[]>(start);
-  const [text, setText] = useState('');
-  const field = useRef<HTMLInputElement>(null);
-  const set = (key: string, value: PgValue) => setV((old) => {
-    const next = { ...old, [key]: value };
-    if (key === 'tags') setTags(String(value).split(',').map((x) => x.trim()).filter(Boolean).slice(0, 4));
-    return next;
-  });
-  const add = () => {
-    const t = text.trim().replace(/,$/, '');
-    setText('');
-    if (t && !tags.includes(t) && tags.length < 4) setTags([...tags, t]);
-  };
+  const [tags, setTags] = useState<string[]>(['Navigation', 'Astromech repair', 'Piloting']);
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
   const table = v.view === 'table';
   const color = v.color as TagColor;
-  const mark = v.mark === 'none' ? undefined : (v.mark as StatusMarkShape);
-  const items = tags.map((t) => (color === 'gray' && !mark ? t : { label: t, ...(color !== 'gray' ? { color } : {}), ...(mark ? { mark } : {}) }));
+  const items = tags.map((t) => (color === 'gray' ? t : { label: t, color }));
   const attrs: PgCodeLine[] = table ? [
     { attr: 'color', value: 'green' },
     ...(v.marks ? [{ attr: 'mark', value: 'check' }] : []),
   ] : [
     { attr: 'label', value: String(v.label) || 'Tags' },
-    { attr: 'tags', value: color === 'gray' && !mark ? 'skills' : `skills.map((label) => ({ label${color !== 'gray' ? `, color: '${color}'` : ''}${mark ? `, mark: '${mark}'` : ''} }))`, expr: true },
-    ...(v.dismiss ? [{ attr: 'onRemove', value: '(t) => setSkills(skills.filter((s) => s !== t))', expr: true }] : []),
-    ...(v.dismiss && v.adder ? [{ attr: 'emptyFocus', value: 'addField', expr: true }] : []),
+    { attr: 'tags', value: color === 'gray' ? 'skills' : `skills.map((label) => ({ label, color: '${color}' }))`, expr: true },
+    { attr: 'onChange', value: 'setSkills', expr: true },
+    ...(!v.showDesc ? [{ attr: 'description', value: 'null', expr: true }] : v.description !== 'Press Enter to add each one.' ? [{ attr: 'description', value: String(v.description) }] : []),
+    ...(v.required ? [{ attr: 'required', value: true as const }] : []),
+    ...(v.limit ? [{ attr: 'max', value: '4', expr: true }] : []),
     { attr: 'empty', value: 'No skills yet.' },
   ];
   return (
@@ -1473,20 +1461,20 @@ function TagDemo() {
       values={v}
       set={set}
       file={table ? 'CandidateTable.tsx' : 'Skills.tsx'}
-      tag={table ? 'Tag' : 'TagList'}
+      tag={table ? 'Tag' : 'TagInput'}
       attrs={attrs}
       codeChildren={table ? ['Hired'] : undefined}
       controls={[
-        { kind: 'segmented', key: 'view', label: 'Show in', options: [{ value: 'list', label: 'A list' }, { value: 'table', label: 'A table' }] },
+        { kind: 'segmented', key: 'view', label: 'Show in', options: [{ value: 'field', label: 'A field' }, { value: 'table', label: 'A table' }] },
         ...(table ? [
           { kind: 'boolean' as const, key: 'marks', label: 'Status marks', help: 'A shape for each status, so it isn’t colour alone.' },
         ] : [
-          { kind: 'text' as const, key: 'label', label: 'Label', help: 'Names the list for screen readers.' },
-          { kind: 'text' as const, key: 'tags', label: 'Tags', help: 'Up to 4, separated by commas.' },
+          { kind: 'text' as const, key: 'label', label: 'Label', help: 'Above the field; it names the list too.' },
+          { kind: 'boolean' as const, key: 'showDesc', label: 'Description' },
+          { kind: 'text' as const, key: 'description', label: 'Description text' },
+          { kind: 'boolean' as const, key: 'required', label: 'Required' },
+          { kind: 'boolean' as const, key: 'limit', label: 'At most 4', help: 'Says so when someone tries to add a fifth.' },
           { kind: 'select' as const, key: 'color', label: 'Color', options: TAG_COLORS },
-          { kind: 'select' as const, key: 'mark', label: 'Mark', options: TAG_MARKS },
-          { kind: 'boolean' as const, key: 'dismiss', label: 'Dismissible', help: 'A remove button after each tag.' },
-          { kind: 'boolean' as const, key: 'adder', label: 'Add field', help: 'Where focus goes when the last tag is removed.' },
         ]),
       ]}
       preview={table ? (
@@ -1504,17 +1492,9 @@ function TagDemo() {
         </div>
       ) : (
         <div className="pg-tags">
-          <TagList label={String(v.label) || 'Tags'} tags={items} empty="No skills yet."
-            onRemove={v.dismiss ? (t) => setTags((all) => all.filter((x) => x !== t)) : undefined}
-            emptyFocus={v.adder ? field : undefined} />
-          {v.adder && (
-            <div className="pg-tags__add">
-              <label className="visually-hidden" htmlFor="pg-tag-add">Add a skill</label>
-              <input id="pg-tag-add" ref={field} className="pg__input" placeholder={tags.length < 4 ? 'Add a skill and press Enter' : 'Up to 4 in this demo'}
-                value={text} onChange={(e) => setText(e.target.value)}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); add(); } }} />
-            </div>
-          )}
+          <TagInput label={String(v.label) || 'Tags'} tags={items} onChange={setTags}
+            description={v.showDesc ? (String(v.description) || undefined) : null}
+            required={!!v.required} max={v.limit ? 4 : undefined} empty="No skills yet." />
         </div>
       )}
     />

@@ -4,7 +4,8 @@
                        a tint for categories and statuses (--tag-* tokens); always with words
    .tag__mark          a status mark shape before the label
    .tag--dismissible   a remove button (__dismiss) after the label; its target is 24px
-   .tag-list           a list of tags that wraps; __items, __empty */
+   .tag-list           a list of tags that wraps; __items, __empty
+   .tag-input          a .field that adds tags, with its tag list below the input */
 
 .tag { display: inline-flex; align-items: center; gap: var(--space-1); line-height: var(--leading-snug); }
 .tag--strong { color: var(--ink); border-color: var(--ink); background: var(--bg); }
@@ -39,6 +40,8 @@
 
 .tag-list__items { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
 .tag-list__empty { margin: 0; font-size: var(--text-small); color: var(--ink-faint); }
+.tag-input .tag-list { margin-top: var(--space-1); }
+.tag-input .tag-list:not(:has(.tag-list__items, .tag-list__empty)) { display: none; }
 
 @media (forced-colors: active) {
   .tag, .tag--strong, .tag[class*="tag--"] { border-color: CanvasText; color: CanvasText; }

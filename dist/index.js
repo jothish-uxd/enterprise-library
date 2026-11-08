@@ -34,7 +34,7 @@ export { Loader, AI_LOADER_TYPES } from './components/Loader';
 export { Skeleton } from './components/Skeleton';
 /** @deprecated Renamed Loader in 0.3.13 */
 export { Loader as ProgressIndicator, Loader as ProgressCircle } from './components/Loader';
-export { Tag, TagList } from './components/Tag';
+export { Tag, TagList, TagInput } from './components/Tag';
 export { Tabs } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Stepper } from './components/Stepper';

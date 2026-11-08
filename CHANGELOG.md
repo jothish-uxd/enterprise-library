@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.20 — 2026-11-08
+
+- Tag input (`TagInput`): a labelled field that adds tags on Enter or a comma and lists them below it, each removable; refuses blanks and duplicates, takes a `max`, and announces what happened. Focus returns to the field when the last tag is removed. `TagList` can be named by a visible element (`labelledBy`).
+- Docs: the Tag playground shows the tag input in place of a demo-only field.
+
 ## 0.3.19 — 2026-11-08
 
 - Tag colours: `color` on `Tag` (gray, red, amber, green, teal, blue, purple, pink) from new `--tag-*` tokens, for scanning categories and statuses in large sets of data, with text at least 5.8:1 on its tint. `mark` adds a status mark shape so a status reads by shape too. `TagList` takes `{ label, color, mark }`. `StatusMarkIcon` is exported for reuse.

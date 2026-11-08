@@ -39,7 +39,9 @@ export type TagItem = string | {
 };
 export interface TagListProps {
     /** Names the list for screen readers: "Skills" */
-    label: string;
+    label?: string;
+    /** Or the id of a visible element that names it */
+    labelledBy?: string;
     tags: TagItem[];
     /** Makes the tags removable */
     onRemove?: (tag: string) => void;
@@ -49,4 +51,33 @@ export interface TagListProps {
     empty?: ReactNode;
     className?: string;
 }
-export declare function TagList({ label, tags, onRemove, emptyFocus, empty, className }: TagListProps): import("react").JSX.Element;
+export declare function TagList({ label, labelledBy, tags, onRemove, emptyFocus, empty, className }: TagListProps): import("react").JSX.Element;
+export interface TagInputProps {
+    /** The field's visible label, which also names the list: "Skills" */
+    label: ReactNode;
+    tags: TagItem[];
+    onChange: (tags: string[]) => void;
+    /** Under the field; default "Press Enter to add each one." */
+    description?: ReactNode;
+    error?: ReactNode;
+    required?: boolean;
+    placeholder?: string;
+    /** The most tags allowed */
+    max?: number;
+    /** Shown under the field when there are no tags */
+    empty?: ReactNode;
+    className?: string;
+}
+/**
+ * TagInput — a labelled field that adds tags, with the tags listed below it,
+ * each removable. Generalised from a skills field.
+ *
+ * - Type and press Enter (or a comma) to add. Blank entries and duplicates
+ *   aren't added; "Added Navigation", "Navigation is already added" and
+ *   "You can add up to 5" are announced politely.
+ * - The list below is named by the label: "Skills, list, 3 items". Removing a
+ *   tag moves focus to the next tag's remove button, and back to the field
+ *   when none are left.
+ * - required, description and error work as on Input.
+ */
+export declare function TagInput({ label, tags, onChange, description, error, required, placeholder, max, empty, className, }: TagInputProps): import("react").JSX.Element;
