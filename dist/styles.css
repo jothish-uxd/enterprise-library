@@ -1276,3 +1276,40 @@ a.stepper__step:hover { color: var(--ink); }
   .status-mark--badge.status-mark--check .status-mark__tick { stroke: Canvas; }
 }
 
+/* ---- link.css ---- */
+/* Link: goes somewhere.
+   .link                 in body text: medium weight, full-ink underline; the underline goes on hover
+   .link--standalone     on its own line: no underline until hover
+   .link__icon           the new-tab icon, after the last word
+   .prose a              plain links inside long-form content get the in-text style */
+
+.link, .prose a:not([class]) {
+  color: var(--ink); font-weight: var(--weight-medium);
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;
+  text-decoration-color: currentColor; border-radius: var(--radius-xs);
+}
+.link:hover, .prose a:not([class]):hover { text-decoration-color: transparent; }
+/* Keyboard focus keeps the underline, with the focus ring */
+.link:focus-visible, .prose a:not([class]):focus-visible {
+  text-decoration-color: currentColor; outline: 2px solid var(--focus); outline-offset: 2px;
+}
+
+.link--standalone { text-decoration-color: transparent; }
+.link--standalone:hover { text-decoration-color: currentColor; }
+
+.link__new-tab { white-space: nowrap; }
+.link__icon {
+  display: inline-block; width: .8em; height: .8em; margin-left: .2em; vertical-align: -.05em;
+  fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .link, .prose a:not([class]) { transition: text-decoration-color var(--duration-fast) ease; }
+}
+
+@media (forced-colors: active) {
+  .link, .prose a:not([class]) { color: LinkText; text-decoration-color: LinkText; }
+  .link:hover, .prose a:not([class]):hover { text-decoration-color: LinkText; }
+  .link--standalone { text-decoration-color: LinkText; }
+}
+

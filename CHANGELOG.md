@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.4 — 2026-11-08
+
+- Link (`Link`, `link.css`): in body text, medium weight and underlined, the underline going on hover and staying with keyboard focus; on its own line, underlined only on hover. New-tab links show a box-and-arrow icon kept on the same line as the last word and say "(opens in a new tab)" to screen readers, with `rel="noopener noreferrer"`. Plain links inside `.prose` get the in-text style. Docs page with a playground.
+- Docs: the page's own link style no longer reaches library demos.
+
 ## 0.3.3 — 2026-11-06
 
 - StatusMark (`StatusMark`, `status-mark.css`): a status in words with a mark that repeats it by shape (dashed, ring, half, filled, check, slash), plain or as a badge, with a muted form for statuses that are over. Brings together the status labels in Cipher Lab and Online Assessments and the docs' access-request pattern. Docs page with a playground and a table of all six marks.

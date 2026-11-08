@@ -28,3 +28,4 @@ export { Tabs } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Stepper } from './components/Stepper';
 export { StatusMark } from './components/StatusMark';
+export { Link } from './components/Link';

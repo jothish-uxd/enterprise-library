@@ -183,6 +183,18 @@ Where people are in a sequence of steps, and how far each has got.
 - Plain steps are an ordered list named by `label`, the current one `aria-current="step"`. Steps with `to` or `href` are links in a `nav`, the current one `aria-current="page"`; only links are in the Tab order. Each step reads its number, name and status: "3. Proctoring, in progress, current step".
 - Rules: three to about seven steps, short noun labels; link only the steps people can go back to; see the Multi-step form pattern for saving and validation between steps.
 
+### Link (`link.css`, `components/Link.tsx`)
+
+Goes somewhere. To do something, use a Button.
+
+- `<Link to|href newTab variant>{where it goes}</Link>`. `to` is a router path, `href` a plain address.
+- `variant="inline"` (default), in body text: medium weight and a full-ink 1px underline, so a link stands apart from the words around it by more than colour (WCAG 1.4.1). On hover the underline goes; with keyboard focus it stays, plus the focus ring.
+- `variant="standalone"`, a link on its own line: medium weight, underlined only on hover.
+- `newTab`: opens in a new tab with `rel="noopener noreferrer"`. A box-and-arrow icon (`aria-hidden`) follows the last word, held on the same line by a word joiner, and "(opens in a new tab)" is in the accessible name. Use it only when leaving would lose work, or for help read alongside a task.
+- Plain HTML: `a.link`, `a.link.link--standalone`. Links without a class inside `.prose` get the in-text style.
+- Keyboard: Tab reaches it, Enter follows it. Screen readers: "proctoring policy, link"; new-tab links add "(opens in a new tab)". Link text says where it goes, never "click here".
+- Forced colors: LinkText, underline kept on hover.
+
 ### StatusMark (`status-mark.css`, `components/StatusMark.tsx`)
 
 A status in words, with a small mark that repeats it by shape. Never colour, never the mark alone.

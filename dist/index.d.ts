@@ -45,3 +45,5 @@ export { Stepper } from './components/Stepper';
 export type { Step, StepStatus, StepperProps } from './components/Stepper';
 export { StatusMark } from './components/StatusMark';
 export type { StatusMarkProps, StatusMarkShape } from './components/StatusMark';
+export { Link } from './components/Link';
+export type { LinkProps } from './components/Link';

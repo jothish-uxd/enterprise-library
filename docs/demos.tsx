@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  BrowserFrame, Button, Card, Breadcrumbs, Checkbox, Dialog, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  BrowserFrame, Button, Card, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1091,6 +1091,55 @@ function StatusMarkGallery() {
   );
 }
 
+/* ---------- Link playground ---------- */
+function LinkDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    text: 'proctoring policy', variant: 'inline', opens: 'same', href: 'https://example.com/policies/proctoring',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => {
+    const next = { ...old, [key]: value };
+    if (key === 'variant') {
+      if (value === 'standalone' && old.text === 'proctoring policy') next.text = 'View all assessments';
+      if (value === 'inline' && old.text === 'View all assessments') next.text = 'proctoring policy';
+    }
+    return next;
+  });
+  const newTab = v.opens === 'new';
+  const standalone = v.variant === 'standalone';
+  const attrs: PgCodeLine[] = [
+    newTab ? { attr: 'href', value: String(v.href) } : { attr: 'to', value: '/policies/proctoring' },
+    ...(newTab ? [{ attr: 'newTab', value: true as const }] : []),
+    ...(standalone ? [{ attr: 'variant', value: 'standalone' }] : []),
+  ];
+  const link = (
+    <Link href={newTab ? String(v.href) : '#link'} newTab={newTab} variant={standalone ? 'standalone' : 'inline'}
+      onClick={(e) => e.preventDefault()}>
+      {String(v.text) || 'Untitled'}
+    </Link>
+  );
+  return (
+    <Playground
+      name="Link"
+      compact
+      values={v}
+      set={set}
+      file="Invite.tsx"
+      tag="Link"
+      attrs={attrs}
+      codeChildren={[String(v.text) || 'Untitled']}
+      controls={[
+        { kind: 'text', key: 'text', label: 'Text', help: 'Say where it goes. Never “click here”.' },
+        { kind: 'segmented', key: 'variant', label: 'Where', options: [{ value: 'inline', label: 'In body text' }, { value: 'standalone', label: 'On its own' }] },
+        { kind: 'segmented', key: 'opens', label: 'Opens', options: [{ value: 'same', label: 'Same tab' }, { value: 'new', label: 'New tab' }] },
+        { kind: 'text', key: 'href', label: 'Address', help: 'New-tab links use a plain address.' },
+      ]}
+      preview={standalone
+        ? <div className="pg-link">{link}</div>
+        : <p className="pg-link t-body">Read the {link} before you invite candidates. It explains what the webcam records and how long recordings are kept.</p>}
+    />
+  );
+}
+
 /* ---------- Playground: one component, controls beside it, code below ---------- */
 type PgValue = string | boolean;
 type PgControl =
@@ -1765,6 +1814,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,
   statusmark: () => <StatusMarkDemo />,
+  link: () => <LinkDemo />,
   'statusmark-gallery': () => <StatusMarkGallery />,
   tiles: () => <TilesDemo />,
   textarea: () => <TextAreaDemo />,
