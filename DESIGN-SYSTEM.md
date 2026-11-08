@@ -244,20 +244,26 @@ How far a task has got: uploads, scoring, training. Generalised from Cipher Lab'
 
 ### Loader (`loader.css`, `components/Loader.tsx`)
 
-Shows that something is loading or working, and how far it's got when that can be measured. Was Progress circle (0.3.11) and Progress indicator (0.3.12); `ProgressCircle` and `ProgressIndicator` remain as deprecated aliases. Generalised from Online Assessments' spinners and Cipher Lab's pulse.
+A small square mark that shows something is loading or working, and how far it's got when that can be measured. Was Progress circle (0.3.11) and Progress indicator (0.3.12); `ProgressCircle` and `ProgressIndicator` remain as deprecated aliases. Generalised from Online Assessments' spinners and Cipher Lab's pulse.
 
-- `<Loader type label value max valueText size labelPosition lines />`. Types:
+- `<Loader type label value max valueText size labelPosition />`. Seven types, all in the same square (`--loader-size`):
   - `circle` (default): an ink arc fills clockwise over a `--bg-hover` track, or a quarter arc spins over a `--rule` track.
-  - `ticks`: twelve ticks round a circle; measured, the first n are ink and the rest `--rule-strong`; waiting, they fade from ink through `--ink-soft` and `--ink-faint` and turn in 12 steps.
-  - `line`: full width, 2/4/6px; it fills, or a third-width band slides along it.
-  - `dots`: three dots pulsing in turn; never measured.
-  - `skeleton`: grey lines (`lines`, default 3) in the shape of what's coming, shimmering; never measured; its label is always visually hidden.
+  - `ticks`: twelve ticks; measured, the first n are ink and the rest `--rule-strong`; waiting, they fade from ink through `--ink-soft` and `--ink-faint` and turn in 12 steps.
+  - `dots`: three dots pulse in turn. `bars`: four bars rise and fall. `orbit`: a dot goes round a `--rule` ring. `pulse`: a ring grows from a dot and fades. `grid`: nine squares light up in a diagonal wave.
+  - Only circle and ticks take a `value`.
 - Sizes `sm` 16px, `md` 32px, `lg` 64px (circle and ticks show the value inside, in mono). Labels beside (`end`), `below`, or `hidden`.
 - `role="progressbar"` named by the label, with value attributes only when measured. Not a live region, not focusable: mark the loading area `aria-busy="true"` and announce the end if the wait was long.
-- Reduced motion: nothing moves. Circle goes dashed, line hatched; ticks, dots and skeleton hold a still fade.
-- No error state: show failures with an alert or a progress bar's error. Forced colors: CanvasText and GrayText.
-- Classes `.loader*` (the docs page has its own `.skeleton`).
-- Docs: the playground has a row of chips above the preview that switch the type (`above` slot in `Playground`).
+- Reduced motion: nothing moves. Circle and orbit go dashed; ticks, dots, bars, pulse and grid hold a still fade in ink shades.
+- No error state, and no line: for a wide bar use the progress bar (which slides without a value); for content placeholders use the skeleton. Forced colors: CanvasText and GrayText.
+- Docs: the playground switches type with chips above the preview (`above` slot in `Playground`).
+
+### Skeleton (`skeleton.css`, `components/Skeleton.tsx`)
+
+Grey shapes where content will appear, so the page holds its layout while it loads.
+
+- `<Skeleton label lines heading avatar rows />`: `lines` of text (default 3), a wider, taller `heading` bar, an `avatar` circle before the lines, and `rows` to repeat the block for a list. `--bg-hover` shapes that shimmer to `--bg-subtle`; still with reduced motion; GrayText in forced colors.
+- One `role="progressbar"` named by `label`, which is visually hidden; the shapes are `aria-hidden`. Mark the area `aria-busy` and swap the skeleton for the content in place.
+- Class `.skeleton*`; the docs page's own `.skeleton` rules are scoped away from demos.
 
 ### Link (`link.css`, `components/Link.tsx`)
 

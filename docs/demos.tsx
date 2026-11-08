@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, Banner, ProgressBar, Loader, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, Banner, ProgressBar, Loader, Skeleton, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1320,29 +1320,27 @@ function ProgressDemo() {
 
 /* ---------- Loader playground ---------- */
 const LOADER_TYPES: { value: string; label: string }[] = [
-  { value: 'circle', label: 'Circle' }, { value: 'ticks', label: 'Ticks' }, { value: 'line', label: 'Line' },
-  { value: 'dots', label: 'Dots' }, { value: 'skeleton', label: 'Skeleton' },
+  { value: 'circle', label: 'Circle' }, { value: 'ticks', label: 'Ticks' }, { value: 'dots', label: 'Dots' },
+  { value: 'bars', label: 'Bars' }, { value: 'orbit', label: 'Orbit' }, { value: 'pulse', label: 'Pulse' }, { value: 'grid', label: 'Grid' },
 ];
-const LOADER_MEASURED = ['circle', 'ticks', 'line'];
+const LOADER_MEASURED = ['circle', 'ticks'];
 function LoaderDemo() {
   const [type, setType] = useState('circle');
   const [v, setV] = useState<Record<string, PgValue>>({
-    label: 'Loading results', progress: 'none', words: false, size: 'md', position: 'end', lines: '3',
+    label: 'Loading results', progress: 'none', words: false, size: 'md', position: 'end',
   });
   const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
   const measurable = LOADER_MEASURED.includes(type);
   const known = measurable && v.progress !== 'none';
   const value = known ? Number(v.progress) : undefined;
   const valueText = known && v.words ? `${value} of 12` : undefined;
-  const skeleton = type === 'skeleton';
   const attrs: PgCodeLine[] = [
     ...(type !== 'circle' ? [{ attr: 'type', value: type }] : []),
     { attr: 'label', value: String(v.label) || 'Loading' },
     ...(known ? [{ attr: 'value', value: String(value), expr: true }, { attr: 'max', value: '12', expr: true }] : []),
     ...(valueText ? [{ attr: 'valueText', value: valueText }] : []),
     ...(v.size !== 'md' ? [{ attr: 'size', value: String(v.size) }] : []),
-    ...(!skeleton && v.position !== 'end' ? [{ attr: 'labelPosition', value: String(v.position) }] : []),
-    ...(skeleton && v.lines !== '3' ? [{ attr: 'lines', value: String(v.lines), expr: true }] : []),
+    ...(v.position !== 'end' ? [{ attr: 'labelPosition', value: String(v.position) }] : []),
   ];
   const controls: PgControl[] = [
     { kind: 'text', key: 'label', label: 'Label', help: 'What’s happening. Always there, even when hidden.' },
@@ -1351,9 +1349,7 @@ function LoaderDemo() {
       { kind: 'boolean' as const, key: 'words', label: 'Value in words', help: '“8 of 12” instead of “67%”.' },
     ] : []),
     { kind: 'segmented', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }, { value: 'lg', label: 'Large' }] },
-    ...(skeleton
-      ? [{ kind: 'segmented' as const, key: 'lines', label: 'Lines', options: [{ value: '2', label: '2' }, { value: '3', label: '3' }, { value: '4', label: '4' }] }]
-      : [{ kind: 'segmented' as const, key: 'position', label: 'Label', options: [{ value: 'end', label: 'Beside' }, { value: 'below', label: 'Below' }, { value: 'hidden', label: 'Hidden' }] }]),
+    { kind: 'segmented', key: 'position', label: 'Label', options: [{ value: 'end', label: 'Beside' }, { value: 'below', label: 'Below' }, { value: 'hidden', label: 'Hidden' }] },
   ];
   return (
     <Playground
@@ -1367,9 +1363,43 @@ function LoaderDemo() {
       above={<ChipGroup label="Loader type" size="sm" options={LOADER_TYPES} value={type} onChange={setType} />}
       controls={controls}
       preview={
-        <div className={`pg-loader pg-loader--${type}`}>
-          <Loader type={type as 'circle'} label={String(v.label) || 'Loading'} value={value} max={12} valueText={valueText}
-            size={v.size as 'sm' | 'md' | 'lg'} labelPosition={v.position as 'end' | 'below' | 'hidden'} lines={Number(v.lines)} />
+        <Loader type={type as 'circle'} label={String(v.label) || 'Loading'} value={value} max={12} valueText={valueText}
+          size={v.size as 'sm' | 'md' | 'lg'} labelPosition={v.position as 'end' | 'below' | 'hidden'} />
+      }
+    />
+  );
+}
+
+/* ---------- Skeleton playground ---------- */
+function SkeletonDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({ label: 'Loading candidates', lines: '2', heading: true, avatar: true, rows: '3' });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) || 'Loading' },
+    ...(v.lines !== '3' ? [{ attr: 'lines', value: String(v.lines), expr: true }] : []),
+    ...(v.heading ? [{ attr: 'heading', value: true as const }] : []),
+    ...(v.avatar ? [{ attr: 'avatar', value: true as const }] : []),
+    ...(v.rows !== '1' ? [{ attr: 'rows', value: String(v.rows), expr: true }] : []),
+  ];
+  return (
+    <Playground
+      name="Skeleton"
+      compact
+      values={v}
+      set={set}
+      file="CandidateList.tsx"
+      tag="Skeleton"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label', help: 'For screen readers: what’s loading.' },
+        { kind: 'boolean', key: 'heading', label: 'Heading', help: 'A wider, taller first bar.' },
+        { kind: 'segmented', key: 'lines', label: 'Lines', options: [{ value: '1', label: '1' }, { value: '2', label: '2' }, { value: '3', label: '3' }, { value: '4', label: '4' }] },
+        { kind: 'boolean', key: 'avatar', label: 'Avatar', help: 'A circle before the lines.' },
+        { kind: 'segmented', key: 'rows', label: 'Rows', options: [{ value: '1', label: '1' }, { value: '2', label: '2' }, { value: '3', label: '3' }, { value: '4', label: '4' }] },
+      ]}
+      preview={
+        <div className="pg-skeleton">
+          <Skeleton label={String(v.label) || 'Loading'} lines={Number(v.lines)} heading={!!v.heading} avatar={!!v.avatar} rows={Number(v.rows)} />
         </div>
       }
     />
@@ -2254,6 +2284,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   toast: () => <ToastDemo />,
   progress: () => <ProgressDemo />,
   loader: () => <LoaderDemo />,
+  skeleton: () => <SkeletonDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,

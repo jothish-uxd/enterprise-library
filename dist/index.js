@@ -31,6 +31,7 @@ export { Banner } from './components/Banner';
 export { ToastProvider, useToast } from './components/Toast';
 export { ProgressBar } from './components/ProgressBar';
 export { Loader } from './components/Loader';
+export { Skeleton } from './components/Skeleton';
 /** @deprecated Renamed Loader in 0.3.13 */
 export { Loader as ProgressIndicator, Loader as ProgressCircle } from './components/Loader';
 export { Tabs } from './components/Tabs';

@@ -1,0 +1,27 @@
+/* Skeleton: grey shapes where content will appear.
+   .skeleton             role=progressbar, its label for screen readers only
+     __row               one block; --avatar puts a circle (__avatar) before the lines
+     __lines, __bone     the lines; --heading is the wider, taller title bar */
+
+.skeleton { display: grid; gap: var(--space-5); width: 100%; min-width: 0; }
+.skeleton__row { display: block; }
+.skeleton__row--avatar { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-3); align-items: start; }
+.skeleton__avatar { width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--bg-hover); }
+.skeleton__lines { display: grid; gap: var(--space-2-5); }
+.skeleton__bone { display: block; height: 10px; border-radius: var(--radius-xs); background: var(--bg-hover); }
+.skeleton__bone--heading { width: 45%; height: 16px; }
+.skeleton__bone:nth-child(3n+1):not(.skeleton__bone--heading) { width: 92%; }
+.skeleton__bone:nth-child(3n) { width: 70%; }
+.skeleton__bone:last-child:not(:first-child) { width: 56%; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton__bone, .skeleton__avatar {
+    background: linear-gradient(90deg, var(--bg-hover) 0 40%, var(--bg-subtle) 50%, var(--bg-hover) 60% 100%) 0 0 / 300% 100%;
+    animation: skeleton-shimmer 1.6s linear infinite;
+  }
+  @keyframes skeleton-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+}
+
+@media (forced-colors: active) {
+  .skeleton__bone, .skeleton__avatar { background: GrayText; forced-color-adjust: none; }
+}

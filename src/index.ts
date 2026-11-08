@@ -53,6 +53,8 @@ export { ProgressBar } from './components/ProgressBar';
 export type { ProgressBarProps } from './components/ProgressBar';
 export { Loader } from './components/Loader';
 export type { LoaderProps, LoaderType } from './components/Loader';
+export { Skeleton } from './components/Skeleton';
+export type { SkeletonProps } from './components/Skeleton';
 /** @deprecated Renamed Loader in 0.3.13 */
 export { Loader as ProgressIndicator, Loader as ProgressCircle } from './components/Loader';
 /** @deprecated Renamed LoaderProps in 0.3.13 */

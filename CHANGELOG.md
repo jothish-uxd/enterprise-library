@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.14 — 2026-11-08
+
+- Loader is now small marks only, in seven types: circle, ticks, dots, and new bars, orbit, pulse and grid. Circle and ticks can show a value. The `line` type is gone (use the progress bar, which slides without a value), and so is `skeleton`, which is now its own component.
+- Skeleton (`Skeleton`, `skeleton.css`): grey shapes where content will appear, with lines, a heading bar, an avatar circle and repeated rows; one progress bar for screen readers; still with reduced motion. Docs page with a playground.
+- Docs: the progress bar page points to the loader and skeleton for small spaces.
+
 ## 0.3.13 — 2026-11-08
 
 - Progress indicator is now **Loader** (`Loader`, `loader.css`, `.loader*`, docs page `#loader`), with five types: circle (fills or spins), ticks (light up or turn), line (fills or slides), dots (pulse) and skeleton (grey lines where content will appear). Every type is still with reduced motion. `ProgressIndicator` and `ProgressCircle` still work as deprecated aliases.
