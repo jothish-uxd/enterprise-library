@@ -1,0 +1,47 @@
+/* Progress bar: how far a task has got.
+   .progress                   label row (__head: __label, __value), __track with __fill, __note
+   .progress--sm               a 4px track, for rows and cards (default 8px)
+   .progress--indeterminate    no value: a band slides along the track; hatched and still with reduced motion
+   .progress.is-error          stopped: the fill in --error, the track hatched, and the note says why */
+
+.progress { display: grid; gap: var(--space-1-5); min-width: 0; font-size: var(--text-small); color: var(--ink); }
+.progress__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.progress__label { min-width: 0; font-weight: var(--weight-medium); }
+.progress__value { flex: none; font-family: var(--mono); font-size: var(--text-caption); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+.progress__track {
+  position: relative; height: 8px; overflow: hidden;
+  border: 1px solid var(--rule); border-radius: var(--radius-full); background: var(--bg-hover);
+}
+.progress--sm .progress__track { height: 4px; border: 0; }
+.progress__fill { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--ink); }
+
+.progress__note { display: flex; align-items: flex-start; gap: var(--space-1-5); margin: 0; color: var(--ink-soft); }
+.progress__note .alert-icon { width: 14px; height: 14px; margin-top: 2px; color: var(--error); }
+
+/* Indeterminate: a band, a third of the track */
+.progress--indeterminate .progress__fill { position: absolute; inset: 0 auto 0 0; width: 33%; }
+
+/* Error: the colour, plus a hatched track so it doesn't rest on colour */
+.is-error .progress__fill { background: var(--error); }
+.is-error .progress__track {
+  background: repeating-linear-gradient(-45deg, var(--bg-hover) 0 4px, var(--rule) 4px 5px);
+  border-color: var(--error);
+}
+.is-error .progress__note { color: var(--error); }
+.is-error .progress__value { color: var(--error); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .progress__fill { transition: width var(--duration-base) ease; }
+  .progress--indeterminate .progress__fill { animation: progress-slide 1.4s ease-in-out infinite; }
+  @keyframes progress-slide { from { left: -33%; } to { left: 100%; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .progress--indeterminate .progress__fill { width: 100%; background: repeating-linear-gradient(-45deg, var(--ink) 0 4px, transparent 4px 8px); }
+}
+
+@media (forced-colors: active) {
+  .progress__track { border: 1px solid CanvasText; background: Canvas; }
+  .progress__fill, .is-error .progress__fill { background: CanvasText; forced-color-adjust: none; }
+  .progress__note .alert-icon { color: CanvasText; }
+}

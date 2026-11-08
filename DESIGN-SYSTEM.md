@@ -231,6 +231,17 @@ Moving between a product's pages. Generalised from the header tabs and sidebars 
 - On phones, SideNav goes behind a menu button in the header (the app shell's job, not this component's).
 - Forced colors: the current SideNav item uses Highlight and HighlightText; the HeaderNav rule uses Highlight.
 
+### Progress bar (`progress.css`, `components/ProgressBar.tsx`)
+
+How far a task has got: uploads, scoring, training. Generalised from Cipher Lab's training runs and Online Assessments' upload progress.
+
+- `<ProgressBar label value max valueText showValue hideLabel description error size />`.
+- `role="progressbar"` named by the visible label, with `aria-valuenow`, `-min`, `-max`; `valueText` ("9 of 12 files") is shown at the end of the label row (mono) and read as `aria-valuetext`, else the percent.
+- No `value`: indeterminate. A band a third of the track slides along it; with reduced motion the track is hatched ink and still. Read with no value.
+- `description` under the bar is its `aria-describedby`. `error` replaces it with the error icon, a hidden "Error:", and text in `--error`; the fill turns `--error`, the track is hatched and ruled in `--error`, so it doesn't rest on colour.
+- Not a live region and not focusable: announce the start and end with a toast or status message, and put Cancel or Retry beside it as a button.
+- Ink fill on a `--bg-hover` track with a hairline (`md`, 8px) or none (`sm`, 4px). Forced colors: CanvasText fill on a Canvas track with a CanvasText border.
+
 ### Link (`link.css`, `components/Link.tsx`)
 
 Goes somewhere. To do something, use a Button.

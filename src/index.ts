@@ -49,6 +49,8 @@ export type { BannerProps } from './components/Banner';
 export type { AlertTone } from './components/AlertIcon';
 export { ToastProvider, useToast } from './components/Toast';
 export type { ToastOptions, ToastProviderProps } from './components/Toast';
+export { ProgressBar } from './components/ProgressBar';
+export type { ProgressBarProps } from './components/ProgressBar';
 export { Tabs } from './components/Tabs';
 export type { TabItem, TabsProps } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';

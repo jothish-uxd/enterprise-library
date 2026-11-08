@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.10 — 2026-11-08
+
+- Progress bar (`ProgressBar`, `progress.css`): measured or not, the value in words or as a percent, a description, and an error state that stops the bar with a message, hatched track and icon. Not a live region; the docs say to announce the start and end instead. Generalised from Cipher Lab's training runs and Online Assessments' uploads. Docs page with a playground.
+
 ## 0.3.9 — 2026-11-08
 
 - Alerts (`alerts.css`): `Banner`, global (full width under the header, tinted) or inline (a hairline box with a bar in the tone's colour), in error, warning, success and info, each with its own icon shape and a word for screen readers; and `ToastProvider` with `useToast()`, ink toasts in a "Notifications" region that are announced once, pause on hover and focus, stay when they have an action, and collapse past three. Docs page with a playground for each; the Notifications pattern links to it.

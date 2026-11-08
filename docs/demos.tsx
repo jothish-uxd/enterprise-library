@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, Banner, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, Banner, ProgressBar, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1265,6 +1265,59 @@ function ToastDemo() {
   );
 }
 
+/* ---------- Progress bar playground ---------- */
+function ProgressDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({
+    label: 'Uploading files', progress: '9', words: true, showValue: true, size: 'md', hideLabel: false,
+    showDesc: true, description: 'About 1 minute left', showError: false, error: 'Upload stopped: the connection dropped. Retry to carry on from file 10.',
+  });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const known = v.progress !== 'none';
+  const value = known ? Number(v.progress) : undefined;
+  const valueText = known && v.words ? `${value} of 12 files` : undefined;
+  const attrs: PgCodeLine[] = [
+    { attr: 'label', value: String(v.label) || 'Uploading files' },
+    ...(known ? [{ attr: 'value', value: String(value), expr: true }, { attr: 'max', value: '12', expr: true }] : []),
+    ...(valueText ? [{ attr: 'valueText', value: valueText }] : []),
+    ...(!v.showValue ? [{ attr: 'showValue', value: 'false', expr: true }] : []),
+    ...(v.hideLabel ? [{ attr: 'hideLabel', value: true as const }] : []),
+    ...(v.showDesc && v.description && !v.showError ? [{ attr: 'description', value: String(v.description) }] : []),
+    ...(v.showError && v.error ? [{ attr: 'error', value: String(v.error) }] : []),
+    ...(v.size === 'sm' ? [{ attr: 'size', value: 'sm' }] : []),
+  ];
+  return (
+    <Playground
+      name="Progress bar"
+      compact
+      values={v}
+      set={set}
+      file="UploadProgress.tsx"
+      tag="ProgressBar"
+      attrs={attrs}
+      controls={[
+        { kind: 'text', key: 'label', label: 'Label', help: 'What’s in progress.' },
+        { kind: 'select', key: 'progress', label: 'Progress', options: [{ value: 'none', label: 'Not measured' }, { value: '0', label: '0 of 12' }, { value: '3', label: '3 of 12' }, { value: '9', label: '9 of 12' }, { value: '12', label: '12 of 12' }] },
+        { kind: 'boolean', key: 'words', label: 'Value in words', help: '“9 of 12 files” instead of “75%”.' },
+        { kind: 'boolean', key: 'showValue', label: 'Show value' },
+        { kind: 'segmented', key: 'size', label: 'Size', options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }] },
+        { kind: 'boolean', key: 'hideLabel', label: 'Hide label', help: 'Still names the bar for screen readers.' },
+        { kind: 'boolean', key: 'showDesc', label: 'Description' },
+        { kind: 'text', key: 'description', label: 'Description text', help: 'Time left, or what happens next.' },
+        { kind: 'boolean', key: 'showError', label: 'Error', help: 'It stopped; replaces the description.' },
+        { kind: 'text', key: 'error', label: 'Error text' },
+      ]}
+      preview={
+        <div className="pg-progress">
+          <ProgressBar label={String(v.label) || 'Uploading files'} value={value} max={12} valueText={valueText}
+            showValue={!!v.showValue} hideLabel={!!v.hideLabel} size={v.size as 'sm' | 'md'}
+            description={v.showDesc && v.description ? String(v.description) : undefined}
+            error={v.showError && v.error ? String(v.error) : undefined} />
+        </div>
+      }
+    />
+  );
+}
+
 /* ---------- Breadcrumbs playground ---------- */
 function BreadcrumbsDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({ trail: 'Hiring, Jobs, Starfighter Pilot L4, Pilot screening v3', fold: false, label: 'Breadcrumb' });
@@ -2140,6 +2193,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   headernav: () => <HeaderNavDemo />,
   banner: () => <BannerDemo />,
   toast: () => <ToastDemo />,
+  progress: () => <ProgressDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,
