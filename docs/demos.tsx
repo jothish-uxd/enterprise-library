@@ -1652,7 +1652,6 @@ function IconsDemo() {
         preview={
           <div className="pg-icon">
             <Icon name={name} size={v.size as 'sm' | 'md' | 'lg'} label={v.labelled && v.label ? String(v.label) : undefined} />
-            <Icon name={name} size={64} aria-hidden="true" className="pg-icon__big" />
           </div>
         }
       />

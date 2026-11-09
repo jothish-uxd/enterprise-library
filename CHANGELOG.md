@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.23 — 2026-11-08
+
+- Docs: the Icons playground shows one icon, at the size chosen, instead of also showing a large faint copy.
+
 ## 0.3.22 — 2026-11-08
 
 - Icons: 169 outline icons in ten groups, curated from Lucide (ISC). `Icon` component (16, 20 or 24px, a stroke that stays the same width at any size, decorative unless given a `label`), `ICONS` and `ICON_GROUPS`, and plain files in `dist/icons/` (one SVG per icon, a sprite, the licence). `icons/manifest.json` lists them; `npm run icons` rebuilds them and `npm run build` runs it.
