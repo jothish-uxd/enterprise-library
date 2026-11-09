@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.24 — 2026-11-08
+
+- Icons: an AI group with every icon Lucide tags as AI (18): sparkles, sparkle, square-sparkles, wand-sparkles, wand, pencil-sparkles, summary, message-circle-text, bot, bot-message-square, bot-off, brain, brain-circuit, brain-cog, brain-off, cpu-ai, cloud-cog and astroid. Code icons (cpu, workflow, git, code, terminal, braces) move to their own Code group. 183 icons in eleven groups.
+- Lucide updated from 0.460.0 to 1.70.0 (pinned); existing icons keep their names, with Lucide's refinements to some shapes.
+
 ## 0.3.23 — 2026-11-08
 
 - Docs: the Icons playground shows one icon, at the size chosen, instead of also showing a large faint copy.
