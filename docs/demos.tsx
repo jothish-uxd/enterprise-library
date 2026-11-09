@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, Banner, ProgressBar, Loader, Skeleton, Tag, TagInput, FormGroup, FormSection, type FormError, Icon, ICONS, ICON_GROUPS, type IconName, type TagColor, type StatusMarkShape, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, Banner, ProgressBar, Loader, Skeleton, Tag, TagInput, FormGroup, FormSection, type FormError, Icon, ICONS, List, DescriptionList, ICON_GROUPS, type IconName, type TagColor, type StatusMarkShape, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1683,6 +1683,64 @@ function IconsDemo() {
   );
 }
 
+/* ---------- Lists playground ---------- */
+const LIST_TYPES = [{ value: 'ul', label: 'Bulleted (ul)' }, { value: 'ol', label: 'Numbered (ol)' }, { value: 'dl', label: 'Description (dl)' }];
+const LIST_ITEMS = ['Check the candidate’s ID', 'Start the webcam recording', 'Read out the rules', 'Hand over to the candidate'];
+const DL_ITEMS = [
+  { term: 'Role', details: 'Starfighter Pilot L4' }, { term: 'Assessment', details: 'Pilot screening v3' },
+  { term: 'Proctoring', details: 'Recorded' }, { term: 'Due', details: '14 Nov 2026' },
+];
+function ListsDemo() {
+  const [type, setType] = useState('ul');
+  const [v, setV] = useState<Record<string, PgValue>>({ ulMarker: 'bullet', olMarker: 'number', divided: false, compact: false, nested: false, layout: 'stacked' });
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const marker = (type === 'ul' ? v.ulMarker : v.olMarker) as 'bullet' | 'number' | 'check' | 'none' | 'steps';
+  const nestable = (type === 'ul' && marker === 'bullet') || (type === 'ol' && marker === 'number');
+  const items = LIST_ITEMS.map((t, i) => (
+    <li key={t}>{t}{v.nested && nestable && i === 1 && (
+      <List marker={marker} compact><li>Check the light and the angle</li><li>Say that it’s recording</li></List>
+    )}</li>
+  ));
+  const attrs: PgCodeLine[] = type === 'dl' ? [
+    { attr: 'items', value: `[\n${DL_ITEMS.map((d) => `    { term: '${d.term}', details: '${d.details}' },`).join('\n')}\n  ]`, expr: true },
+    ...(v.layout !== 'stacked' ? [{ attr: 'layout', value: String(v.layout) }] : []),
+  ] : [
+    ...(marker !== 'bullet' ? [{ attr: 'marker', value: marker }] : []),
+    ...(v.divided ? [{ attr: 'divided', value: true as const }] : []),
+    ...(v.compact ? [{ attr: 'compact', value: true as const }] : []),
+  ];
+  return (
+    <Playground
+      name="Lists"
+      compact
+      values={v}
+      set={set}
+      file="Checklist.tsx"
+      tag={type === 'dl' ? 'DescriptionList' : 'List'}
+      attrs={attrs}
+      codeChildren={type === 'dl' ? undefined : LIST_ITEMS.map((t) => `<li>${t}</li>`)}
+      above={<ChipGroup label="List type" size="sm" options={LIST_TYPES} value={type} onChange={setType} />}
+      controls={type === 'dl' ? [
+        { kind: 'select', key: 'layout', label: 'Layout', options: [{ value: 'stacked', label: 'Stacked' }, { value: 'columns', label: 'Columns' }, { value: 'grid', label: 'Grid' }, { value: 'row', label: 'Row' }] },
+      ] : [
+        type === 'ul'
+          ? { kind: 'segmented', key: 'ulMarker', label: 'Marker', options: [{ value: 'bullet', label: 'Bullet' }, { value: 'check', label: 'Check' }, { value: 'none', label: 'None' }] }
+          : { kind: 'segmented', key: 'olMarker', label: 'Marker', options: [{ value: 'number', label: 'Number' }, { value: 'steps', label: 'Steps' }] },
+        { kind: 'boolean', key: 'divided', label: 'Divided', help: 'A rule between items.' },
+        { kind: 'boolean', key: 'compact', label: 'Compact' },
+        ...(nestable ? [{ kind: 'boolean' as const, key: 'nested', label: 'Nested list', help: 'A second level inside the second item.' }] : []),
+      ]}
+      preview={
+        <div className={`pg-lists pg-lists--${type === 'dl' ? String(v.layout) : 'list'}`}>
+          {type === 'dl'
+            ? <DescriptionList items={DL_ITEMS} layout={v.layout as 'stacked'} />
+            : <List marker={marker} divided={!!v.divided} compact={!!v.compact}>{items}</List>}
+        </div>
+      }
+    />
+  );
+}
+
 /* ---------- Breadcrumbs playground ---------- */
 function BreadcrumbsDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({ trail: 'Hiring, Jobs, Starfighter Pilot L4, Pilot screening v3', fold: false, label: 'Breadcrumb' });
@@ -2565,6 +2623,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   tag: () => <TagDemo />,
   'form-group': () => <FormGroupDemo />,
   icons: () => <IconsDemo />,
+  lists: () => <ListsDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,

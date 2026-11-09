@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.26 — 2026-11-09
+
+- Lists: `List` (bulleted `ul` with bullet, check or no marker; numbered `ol` with numbers or steps; divided, compact, inline; nested levels) and `DescriptionList` (`dl` stacked, in columns, as a grid or a row), with `role="list"` kept when markers are custom. Plain classes `.list*` and `.dl*`, and default styles for bare lists inside `.prose`.
+- Docs: Components → Lists, with a playground that switches between `ul`, `ol` and `dl`.
+
 ## 0.3.25 — 2026-11-08
 
 - Icons: the groups are in A–Z order, in `ICON_GROUPS` and on the Icons page.

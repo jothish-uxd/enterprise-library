@@ -1,0 +1,91 @@
+/* Lists: bulleted (ul), numbered (ol) and description (dl).
+   The native markers stay where they can, so screen readers say "list, 4 items" everywhere.
+
+   .list                    a ul or ol: bullets or numbers in faint ink, hanging outside the text
+     --check                checks instead of bullets (add role="list": Safari drops list semantics without markers)
+     --plain                no markers (role="list" too)
+     --steps                an ol with numbers in rings, for instructions
+     --divided              a rule between items, for lists of records
+     --compact              less space between items
+     --inline               items in a row, separated by a dot
+   .dl                      a description list: each term and its details, grouped in a <div>
+     --columns              term and details side by side, with rules between rows
+     --grid                 a grid of facts that fills the width
+     --row                  facts in a wrapping row
+   .prose ul, ol, dl        long-form content gets the default styles without classes */
+
+.list, .prose ul:not([class]), .prose ol:not([class]) {
+  display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-5);
+  font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--ink);
+}
+ul.list, .prose ul:not([class]) { list-style: disc; }
+ol.list, .prose ol:not([class]) { list-style: decimal; }
+.list > li::marker, .prose :is(ul, ol):not([class]) > li::marker { color: var(--ink-faint); }
+ol.list > li::marker, .prose ol:not([class]) > li::marker { font-family: var(--mono); font-size: var(--text-caption); font-variant-numeric: tabular-nums; }
+.list > li { padding-left: var(--space-1); }
+
+/* Nested: one level in, hollow bullets or letters */
+.list .list, .prose :is(ul, ol) :is(ul, ol) { margin-top: var(--space-2); }
+ul.list ul.list, .prose ul ul { list-style: circle; }
+ol.list ol.list, .prose ol ol { list-style: lower-alpha; }
+
+.list--compact { gap: var(--space-1); }
+
+/* No marker, or a check */
+/* Doubled class, to beat ul.list and ol.list */
+.list.list--plain, .list.list--check, .list.list--steps, .list.list--inline { list-style: none; padding-left: 0; }
+.list--plain > li { padding-left: 0; }
+.list--check > li { position: relative; padding-left: var(--space-6); }
+.list--check > li::before {
+  content: ""; position: absolute; left: 0; top: .45em; width: 14px; height: 8px;
+  border-left: 1.75px solid var(--ink); border-bottom: 1.75px solid var(--ink); transform: translateY(-2px) rotate(-45deg) scale(.8);
+}
+
+/* Steps: numbers in rings */
+.list--steps { gap: var(--space-4); counter-reset: list-step; }
+.list--steps > li { position: relative; min-height: 24px; padding: 2px 0 0 calc(24px + var(--space-3)); counter-increment: list-step; }
+.list--steps > li::before {
+  content: counter(list-step); position: absolute; left: 0; top: 0; display: grid; place-items: center;
+  width: 24px; height: 24px; border: 1.5px solid var(--ink); border-radius: var(--radius-full);
+  font-family: var(--mono); font-size: var(--text-caption); font-variant-numeric: tabular-nums; color: var(--ink);
+}
+
+/* Divided: a rule between items */
+.list--divided { gap: 0; }
+.list--divided > li { padding-block: var(--space-3); border-bottom: 1px solid var(--rule); }
+.list--divided > li:first-child { border-top: 1px solid var(--rule); }
+.list--divided.list--check > li::before { top: calc(var(--space-3) + .45em); }
+.list--divided.list--steps > li { padding-top: calc(var(--space-3) + 2px); }
+.list--divided.list--steps > li::before { top: var(--space-3); }
+
+/* Inline: a row, separated by dots */
+.list--inline { display: flex; flex-wrap: wrap; gap: var(--space-1) 0; }
+.list--inline > li { padding-left: 0; }
+.list--inline > li + li::before { content: "·"; margin: 0 var(--space-2); color: var(--ink-faint); }
+
+/* ---------- Description lists ---------- */
+.dl, .prose dl:not([class]) { display: grid; gap: var(--space-4); margin: 0; font-size: var(--text-body-sm); line-height: var(--leading-body); }
+.dl > div { display: grid; gap: var(--space-0-5); min-width: 0; }
+.dl dt, .prose dl:not([class]) dt { font-size: var(--text-small); color: var(--ink-faint); }
+.dl dd, .prose dl:not([class]) dd { margin: 0; font-weight: var(--weight-medium); color: var(--ink); overflow-wrap: anywhere; }
+
+/* Columns: term | details, ruled like a table */
+.dl--columns { gap: 0; }
+.dl--columns > div { grid-template-columns: minmax(8rem, 1fr) minmax(0, 2fr); gap: var(--space-4); padding-block: var(--space-2-5); border-bottom: 1px solid var(--rule); }
+.dl--columns > div:first-child { border-top: 1px solid var(--rule); }
+.dl--columns dt { font-size: var(--text-body-sm); }
+
+/* Grid: facts that fill the width */
+.dl--grid { grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: var(--space-4) var(--space-6); }
+
+/* Row: facts in a wrapping line */
+.dl--row { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-10); }
+
+@media (max-width: 480px) {
+  .dl--columns > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-0-5); }
+}
+
+@media (forced-colors: active) {
+  .list--check > li::before { border-color: CanvasText; }
+  .list--steps > li::before { border-color: CanvasText; color: CanvasText; }
+}

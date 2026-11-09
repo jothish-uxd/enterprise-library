@@ -64,6 +64,8 @@ export { FormGroup, FormSection, focusField } from './components/FormGroup';
 export type { FormGroupProps, FormSectionProps, FormError } from './components/FormGroup';
 export { Icon, ICONS, ICON_GROUPS } from './components/Icon';
 export type { IconProps, IconName } from './components/Icon';
+export { List, DescriptionList } from './components/List';
+export type { ListProps, DescriptionListProps } from './components/List';
 export { Tabs } from './components/Tabs';
 export type { TabItem, TabsProps } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';

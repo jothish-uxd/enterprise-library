@@ -287,6 +287,15 @@ A small square mark that shows something is loading or working, and how far it's
 - No error state, and no line: for a wide bar use the progress bar (which slides without a value); for content placeholders use the skeleton. Forced colors: CanvasText and GrayText.
 - Docs: the playground switches type with chips above the preview (`above` slot in `Playground`).
 
+### Lists (`lists.css`, `components/List.tsx`: `List`, `DescriptionList`)
+
+Bulleted (`ul`) when order doesn't matter, numbered (`ol`) when it does, description (`dl`) for terms and their details.
+
+- `<List marker divided compact inline label>`: `marker` is `bullet` (default) or `check` or `none` on a `ul`; `number` or `steps` (counter in a ring) on an `ol`. `divided` rules between items, `compact` tightens the gap, `inline` runs items on one line with dot separators. Nested lists step to circle bullets and lower-alpha numbers.
+- Custom markers (`check`, `none`, `steps`, `inline`) remove the native marker, so the list gets `role="list"` back for Safari and VoiceOver: "list, 4 items" still announces. Markers are drawn in faint ink and are never the only signal; a check marks a point, not a done state.
+- `<DescriptionList items layout>`: each item is a `<div>` holding a `dt` (small, faint) and one or more `dd` (medium weight). `layout` is `stacked` (default), `columns` (term beside details, ruled, stacks below 480px), `grid` (auto-fill cards of facts) or `row` (a wrapping line of facts). Screen readers announce term and definition pairs.
+- Plain classes for markup: `.list`, `.list--check|plain|steps|divided|compact|inline`, `.dl`, `.dl--columns|grid|row`. Inside `.prose`, bare `ul`, `ol` and `dl` take the default styles. Forced-colors fallbacks keep markers and rules visible.
+
 ### Skeleton (`skeleton.css`, `components/Skeleton.tsx`)
 
 Grey shapes where content will appear, so the page holds its layout while it loads.
