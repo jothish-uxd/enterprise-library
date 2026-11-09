@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.25 — 2026-11-08
+
+- Icons: the groups are in A–Z order, in `ICON_GROUPS` and on the Icons page.
+
 ## 0.3.24 — 2026-11-08
 
 - Icons: an AI group with every icon Lucide tags as AI (18): sparkles, sparkle, square-sparkles, wand-sparkles, wand, pencil-sparkles, summary, message-circle-text, bot, bot-message-square, bot-off, brain, brain-circuit, brain-cog, brain-off, cpu-ai, cloud-cog and astroid. Code icons (cpu, workflow, git, code, terminal, braces) move to their own Code group. 183 icons in eleven groups.

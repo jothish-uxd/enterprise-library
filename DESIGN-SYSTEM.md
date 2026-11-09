@@ -61,7 +61,7 @@ Stylesheets: `styles.css` has everything. Each file also ships under `css/`: `to
 
 ## Icons (`icon.css`, `components/Icon.tsx`, `icons/manifest.json`, `scripts/icons.mjs`)
 
-183 outline icons in eleven groups (actions, navigation, status, people and work, content and files, communication, data and time, trust and compliance, AI, code, devices and view). The AI group holds every icon Lucide tags as AI, except its cleaning icons (broom, mop and toothbrush with sparkles), curated from Lucide (ISC; notice in `dist/icons/LICENSE-lucide.txt`).
+183 outline icons in eleven groups, in A–Z order (actions, AI, code, communication, content and files, data and time, devices and view, navigation, people and work, status, trust and compliance). The AI group holds every icon Lucide tags as AI, except its cleaning icons (broom, mop and toothbrush with sparkles), curated from Lucide (ISC; notice in `dist/icons/LICENSE-lucide.txt`).
 
 - `<Icon name size label />`: a 24-unit SVG in `currentColor`. Sizes `sm` 16px, `md` 20px (default), `lg` 24px, or a number. The stroke uses `vector-effect: non-scaling-stroke` at 1.4, 1.5 and 1.6px, so it reads the same at every size.
 - Decorative by default (`aria-hidden`). `label` makes it `role="img"` with that name, only for an icon that stands alone and means something. Icon-only buttons are named by the button.
