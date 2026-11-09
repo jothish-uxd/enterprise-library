@@ -36,6 +36,7 @@ export { Skeleton } from './components/Skeleton';
 export { Loader as ProgressIndicator, Loader as ProgressCircle } from './components/Loader';
 export { Tag, TagList, TagInput } from './components/Tag';
 export { FormGroup, FormSection, focusField } from './components/FormGroup';
+export { Icon, ICONS, ICON_GROUPS } from './components/Icon';
 export { Tabs } from './components/Tabs';
 export { Breadcrumbs } from './components/Breadcrumbs';
 export { Stepper } from './components/Stepper';

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.22 — 2026-11-08
+
+- Icons: 169 outline icons in ten groups, curated from Lucide (ISC). `Icon` component (16, 20 or 24px, a stroke that stays the same width at any size, decorative unless given a `label`), `ICONS` and `ICON_GROUPS`, and plain files in `dist/icons/` (one SVG per icon, a sprite, the licence). `icons/manifest.json` lists them; `npm run icons` rebuilds them and `npm run build` runs it.
+- Docs: Foundations → Icons, with a playground and a searchable browser that copies an icon's code.
+
 ## 0.3.21 — 2026-11-08
 
 - Form group (`FormGroup`, `FormSection`, `focusField`, `form-group.css`): a header with a note about required fields, sections as named fieldsets, and Cancel and Submit. One error after a submit sends focus to that field; two or more also show an error summary at the top, with each problem as a link, and Tab from the summary goes straight to the first field with an error. Docs page after Forms, with a playground that validates as you'd expect.

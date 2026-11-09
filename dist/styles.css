@@ -1963,3 +1963,13 @@ a.stepper__step:hover { color: var(--ink); }
   .form-group__summary .alert-icon { color: CanvasText; }
 }
 
+/* ---- icon.css ---- */
+/* Icon: outline icons in the current text colour. Shapes from Lucide (ISC).
+   .icon             a 24-unit SVG; its stroke stays the same width at any size
+   --sm --md --lg    16, 20, 24px */
+
+.icon { display: inline-block; flex: none; vertical-align: -0.15em; width: 20px; height: 20px; stroke-width: 1.5; }
+.icon--sm { width: 16px; height: 16px; stroke-width: 1.4; }
+.icon--lg { width: 24px; height: 24px; stroke-width: 1.6; }
+.icon * { vector-effect: non-scaling-stroke; }
+

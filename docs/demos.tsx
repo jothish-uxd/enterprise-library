@@ -8,7 +8,7 @@ import React, { StrictMode, useRef, useState, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import {
-  Accordion, Banner, ProgressBar, Loader, Skeleton, Tag, TagInput, FormGroup, FormSection, type FormError, type TagColor, type StatusMarkShape, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
+  Accordion, Banner, ProgressBar, Loader, Skeleton, Tag, TagInput, FormGroup, FormSection, type FormError, Icon, ICONS, ICON_GROUPS, type IconName, type TagColor, type StatusMarkShape, ToastProvider, useToast, BrowserFrame, Button, Card, HeaderNav, SideNav, Breadcrumbs, Checkbox, Dialog, Link, Menu, StatusMark, Stepper, Tabs, CheckboxGroup, Input, Radio, RadioGroup, TextArea, ChipGroup, ChoiceCard, MultiSelect, ResetButton, SegmentedControl, Select, SortHeader, StatFilter, Switch, TableCheck, Tile, Tiles, TableEmpty, Tooltip,
   useFrameHistory, type SortDirection,
 } from '../src';
 
@@ -1610,6 +1610,80 @@ function FormGroupDemo() {
   );
 }
 
+/* ---------- Icons: playground and browser ---------- */
+function IconsDemo() {
+  const [v, setV] = useState<Record<string, PgValue>>({ name: 'sparkles', size: 'md', labelled: false, label: 'AI generated' });
+  const [query, setQuery] = useState('');
+  const [copied, setCopied] = useState('');
+  const set = (key: string, value: PgValue) => setV((old) => ({ ...old, [key]: value }));
+  const name = (String(v.name) in ICONS ? String(v.name) : 'sparkles') as IconName;
+  const q = query.trim().toLowerCase();
+  const groups = ICON_GROUPS.map((g) => ({
+    // Match the start of any word in the name, keywords or group, so “ai” finds AI icons, not “mail”
+    ...g, icons: g.icons.filter((i) => !q || `${i.name.replace(/-/g, ' ')} ${i.keywords} ${g.name}`.toLowerCase().split(/\s+/).some((w) => w.startsWith(q)) || i.name.startsWith(q)),
+  })).filter((g) => g.icons.length);
+  const count = groups.reduce((n, g) => n + g.icons.length, 0);
+  const attrs: PgCodeLine[] = [
+    { attr: 'name', value: name },
+    ...(v.size !== 'md' ? [{ attr: 'size', value: String(v.size) }] : []),
+    ...(v.labelled && v.label ? [{ attr: 'label', value: String(v.label) }] : []),
+  ];
+  const pick = (n: IconName) => {
+    set('name', n);
+    try { navigator.clipboard?.writeText(`<Icon name="${n}" />`); } catch { /* clipboard may be blocked */ }
+    setCopied(n);
+  };
+  return (
+    <>
+      <Playground
+        name="Icon"
+        compact
+        values={v}
+        set={set}
+        file="Example.tsx"
+        tag="Icon"
+        attrs={attrs}
+        controls={[
+          { kind: 'text', key: 'name', label: 'Name', help: 'Or pick one from the icons below.' },
+          { kind: 'segmented', key: 'size', label: 'Size', options: [{ value: 'sm', label: '16' }, { value: 'md', label: '20' }, { value: 'lg', label: '24' }] },
+          { kind: 'boolean', key: 'labelled', label: 'Label', help: 'Only when the icon stands alone and means something.' },
+          { kind: 'text', key: 'label', label: 'Label text' },
+        ]}
+        preview={
+          <div className="pg-icon">
+            <Icon name={name} size={v.size as 'sm' | 'md' | 'lg'} label={v.labelled && v.label ? String(v.label) : undefined} />
+            <Icon name={name} size={64} aria-hidden="true" className="pg-icon__big" />
+          </div>
+        }
+      />
+      <div className="icon-browser">
+        <div className="icon-browser__bar">
+          <Input label="Search icons" icon={<Icon name="search" size="sm" />} placeholder="Try “delete”, “ai” or “people”" value={query}
+            onChange={(e) => setQuery(e.target.value)} />
+          <p className="icon-browser__count" role="status">{count} {count === 1 ? 'icon' : 'icons'}{copied ? ` · Copied <Icon name="${copied}" />` : ''}</p>
+        </div>
+        {groups.length === 0 && <p className="icon-browser__empty">No icons match “{query}”. Try a simpler word, or ask for a new icon.</p>}
+        {groups.map((g) => (
+          <section key={g.name} className="icon-browser__group" aria-labelledby={`ig-${slug(g.name)}`}>
+            <h3 id={`ig-${slug(g.name)}`} className="icon-browser__title">{g.name} <span>{g.icons.length}</span></h3>
+            <ul className="icon-browser__grid">
+              {g.icons.map((i) => (
+                <li key={i.name}>
+                  <button type="button" className="icon-browser__tile" aria-pressed={name === i.name} onClick={() => pick(i.name)}
+                    aria-label={`${i.name}, copy code`}>
+                    <Icon name={i.name} size="lg" />
+                    <span className="icon-browser__name" aria-hidden="true">{i.name}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </>
+  );
+}
+
 /* ---------- Breadcrumbs playground ---------- */
 function BreadcrumbsDemo() {
   const [v, setV] = useState<Record<string, PgValue>>({ trail: 'Hiring, Jobs, Starfighter Pilot L4, Pilot screening v3', fold: false, label: 'Breadcrumb' });
@@ -2491,6 +2565,7 @@ const DEMOS: Record<string, () => ReactNode> = {
   skeleton: () => <SkeletonDemo />,
   tag: () => <TagDemo />,
   'form-group': () => <FormGroupDemo />,
+  icons: () => <IconsDemo />,
   tabs: () => <TabsDemo />,
   breadcrumbs: () => <BreadcrumbsDemo />,
   stepper: () => <StepperDemo />,

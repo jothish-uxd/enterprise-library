@@ -59,6 +59,17 @@ Fonts are loaded by the app, not the package:
 
 Stylesheets: `styles.css` has everything. Each file also ships under `css/`: `tokens`, `base` (element resets, skip it if the page has its own), `type`, `forms`, `buttons`, `table`, `card`, and one per component.
 
+## Icons (`icon.css`, `components/Icon.tsx`, `icons/manifest.json`, `scripts/icons.mjs`)
+
+169 outline icons in ten groups (actions, navigation, status, people and work, content and files, communication, data and time, trust and compliance, AI and code, devices and view), curated from Lucide (ISC; notice in `dist/icons/LICENSE-lucide.txt`).
+
+- `<Icon name size label />`: a 24-unit SVG in `currentColor`. Sizes `sm` 16px, `md` 20px (default), `lg` 24px, or a number. The stroke uses `vector-effect: non-scaling-stroke` at 1.4, 1.5 and 1.6px, so it reads the same at every size.
+- Decorative by default (`aria-hidden`). `label` makes it `role="img"` with that name, only for an icon that stands alone and means something. Icon-only buttons are named by the button.
+- Plain HTML: `dist/icons/svg/NAME.svg`, or `dist/icons/sprite.svg` with `<use href="…sprite.svg#icon-NAME">` (takes the text colour). Exported as `@jothish-uxd/enterprise-library/icons/*`.
+- `ICONS` (name → SVG markup) and `ICON_GROUPS` (groups with names and search words) are exported for pickers.
+- To add one: a line in `icons/manifest.json` (`[our name, Lucide name, search words]`), then `npm run icons` (also run by `npm run build`). `lucide-static` is a dev dependency, pinned.
+- Docs: Foundations → Icons has a playground and a searchable browser; clicking an icon selects it and copies its code.
+
 ## Components
 
 In docs and prose, components are named in sentence case with spaces (Status mark, Side navigation). The React name (`StatusMark`, `SideNav`) appears only in code.

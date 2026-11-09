@@ -1,0 +1,68 @@
+{
+  "source": "lucide-static",
+  "groups": [
+    ["Actions", [
+      ["plus", "plus", "add new create"], ["minus", "minus", "remove subtract"], ["x", "x", "close dismiss cancel clear"], ["check", "check", "done confirm tick"],
+      ["pencil", "pencil", "edit rename"], ["trash", "trash-2", "delete remove bin"], ["copy", "copy", "duplicate"], ["clipboard", "clipboard", "paste"],
+      ["download", "download", "export save"], ["upload", "upload", "import"], ["share", "share-2", "send"], ["external-link", "external-link", "new tab open"],
+      ["link", "link", "url chain"], ["refresh", "refresh-cw", "reload sync"], ["undo", "rotate-ccw", "back revert"], ["redo", "rotate-cw", "forward"],
+      ["save", "save", "disk"], ["send", "send", "submit paper plane"], ["archive", "archive", "box store"], ["filter", "filter", "funnel"],
+      ["sliders", "sliders-horizontal", "adjust settings controls"], ["search", "search", "find magnifier"], ["settings", "settings", "cog gear preferences"],
+      ["ellipsis", "ellipsis", "more menu overflow"], ["ellipsis-vertical", "ellipsis-vertical", "more menu overflow kebab"],
+      ["log-in", "log-in", "sign in"], ["log-out", "log-out", "sign out"], ["maximize", "maximize-2", "expand full screen"], ["minimize", "minimize-2", "collapse shrink"],
+      ["grip-vertical", "grip-vertical", "drag handle reorder"], ["printer", "printer", "print"], ["eye", "eye", "show view visible"], ["eye-off", "eye-off", "hide hidden"],
+      ["lock", "lock", "locked private secure"], ["lock-open", "lock-open", "unlock unlocked"], ["pin", "pin", "pinned"], ["star", "star", "favourite favorite"],
+      ["bookmark", "bookmark", "save for later"], ["flag", "flag", "report mark"], ["thumbs-up", "thumbs-up", "like good"], ["thumbs-down", "thumbs-down", "dislike bad"]
+    ]],
+    ["Navigation", [
+      ["arrow-left", "arrow-left", "back previous"], ["arrow-right", "arrow-right", "next forward"], ["arrow-up", "arrow-up", "up ascending"], ["arrow-down", "arrow-down", "down descending"],
+      ["arrow-up-right", "arrow-up-right", "out diagonal"], ["arrow-up-down", "arrow-up-down", "sort"], ["chevron-left", "chevron-left", "previous back"], ["chevron-right", "chevron-right", "next forward"],
+      ["chevron-up", "chevron-up", "collapse up"], ["chevron-down", "chevron-down", "expand down dropdown"], ["chevrons-left", "chevrons-left", "first page"], ["chevrons-right", "chevrons-right", "last page"],
+      ["menu", "menu", "hamburger navigation"], ["house", "house", "home"], ["layout-dashboard", "layout-dashboard", "dashboard overview"], ["panel-left", "panel-left", "sidebar"]
+    ]],
+    ["Status", [
+      ["circle-check", "circle-check", "success done complete"], ["circle-alert", "circle-alert", "error problem"], ["triangle-alert", "triangle-alert", "warning caution"],
+      ["info", "info", "information note"], ["circle-help", "circle-help", "help question"], ["circle-x", "circle-x", "failed cancelled"], ["ban", "ban", "blocked forbidden not allowed"],
+      ["circle-dot", "circle-dot", "active live selected"], ["circle-dashed", "circle-dashed", "draft not started pending"], ["circle-pause", "circle-pause", "on hold paused"],
+      ["hourglass", "hourglass", "pending waiting"], ["bell", "bell", "notification alert"], ["bell-off", "bell-off", "mute notifications off"], ["shield-check", "shield-check", "secure verified"]
+    ]],
+    ["People and work", [
+      ["user", "user", "person profile account"], ["users", "users", "people team group"], ["user-plus", "user-plus", "invite add person"], ["user-check", "user-check", "approved verified person"],
+      ["user-x", "user-x", "remove person rejected"], ["circle-user", "circle-user", "account avatar"], ["id-card", "id-card", "identity badge"], ["briefcase", "briefcase", "job role work"],
+      ["building", "building-2", "company organisation office"], ["graduation-cap", "graduation-cap", "learning education training"], ["award", "award", "certificate badge achievement"], ["target", "target", "goal objective"]
+    ]],
+    ["Content and files", [
+      ["file", "file", "document"], ["file-text", "file-text", "document text report"], ["files", "files", "documents"], ["file-search", "file-search", "find document review"],
+      ["folder", "folder", "directory"], ["folder-open", "folder-open", "directory open"], ["image", "image", "picture photo"], ["paperclip", "paperclip", "attach attachment"],
+      ["book-open", "book-open", "docs read guide"], ["notebook-pen", "notebook-pen", "notes write"], ["clipboard-list", "clipboard-list", "assessment checklist test"], ["list", "list", "items bullets"],
+      ["list-checks", "list-checks", "checklist tasks"], ["list-filter", "list-filter", "filter list"], ["table", "table", "grid data"], ["kanban", "kanban", "board columns"],
+      ["layers", "layers", "stack levels"], ["tag", "tag", "label"], ["hash", "hash", "number channel"], ["at-sign", "at-sign", "mention email"], ["quote", "quote", "citation"]
+    ]],
+    ["Communication", [
+      ["mail", "mail", "email message"], ["inbox", "inbox", "messages tray"], ["message-square", "message-square", "comment"], ["messages-square", "messages-square", "chat conversation"],
+      ["phone", "phone", "call"], ["video", "video", "camera meeting"], ["mic", "mic", "microphone audio"], ["megaphone", "megaphone", "announcement broadcast"]
+    ]],
+    ["Data and time", [
+      ["chart-column", "chart-column", "bar chart graph"], ["chart-line", "chart-line", "line chart trend graph"], ["chart-pie", "chart-pie", "pie chart share"], ["trending-up", "trending-up", "increase growth"],
+      ["trending-down", "trending-down", "decrease decline"], ["activity", "activity", "pulse monitoring"], ["gauge", "gauge", "meter speed score"], ["database", "database", "storage data"],
+      ["server", "server", "infrastructure"], ["cloud", "cloud", "hosted online"], ["calculator", "calculator", "math"], ["sigma", "sigma", "sum total"],
+      ["calendar", "calendar", "date schedule"], ["calendar-range", "calendar-range", "date range period"], ["clock", "clock", "time"], ["timer", "timer", "stopwatch duration"], ["history", "history", "past log recent"]
+    ]],
+    ["Trust and compliance", [
+      ["shield", "shield", "security protect"], ["key", "key", "password access credentials"], ["fingerprint", "fingerprint", "identity biometric"], ["scale", "scale", "compliance balance fairness"],
+      ["gavel", "gavel", "legal law ruling"], ["scan-search", "scan-search", "review inspect"], ["credit-card", "credit-card", "payment billing"], ["receipt", "receipt", "invoice billing"]
+    ]],
+    ["AI and code", [
+      ["sparkles", "sparkles", "ai generate magic"], ["bot", "bot", "ai assistant agent"], ["brain", "brain", "ai model reasoning"], ["wand-sparkles", "wand-sparkles", "ai generate improve"],
+      ["cpu", "cpu", "processor compute model"], ["workflow", "workflow", "pipeline automation flow"], ["git-branch", "git-branch", "branch version"], ["git-merge", "git-merge", "merge version"],
+      ["code", "code", "developer source"], ["terminal", "terminal", "console command line"], ["braces", "braces", "json object"]
+    ]],
+    ["Devices and view", [
+      ["monitor", "monitor", "desktop screen"], ["laptop", "laptop", "computer"], ["smartphone", "smartphone", "mobile phone"], ["layout-grid", "layout-grid", "grid tiles view"],
+      ["rows", "rows-3", "rows list view"], ["columns", "columns-3", "columns view"], ["globe", "globe", "web world language"], ["map-pin", "map-pin", "location place"],
+      ["sun", "sun", "light mode"], ["moon", "moon", "dark mode"], ["contrast", "contrast", "high contrast theme"], ["accessibility", "accessibility", "a11y person"],
+      ["keyboard", "keyboard", "keys shortcuts"], ["languages", "languages", "translate locale"], ["zoom-in", "zoom-in", "magnify bigger"], ["zoom-out", "zoom-out", "smaller"],
+      ["play", "play", "start run"], ["pause", "pause", "hold"], ["square", "square", "stop"], ["volume", "volume-2", "sound audio"], ["smile", "smile", "happy feedback"]
+    ]]
+  ]
+}
